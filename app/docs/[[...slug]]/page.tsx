@@ -12,6 +12,13 @@ import { getMDXComponents } from '@/mdx-components';
 
 export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
   const params = await props.params;
+
+  // Redirect to first root folder if no slug provided
+  if (!params.slug || params.slug.length === 0) {
+    const { redirect } = await import('next/navigation');
+    redirect('/docs/guide');
+  }
+
   const page = source.getPage(params.slug);
   if (!page) notFound();
 

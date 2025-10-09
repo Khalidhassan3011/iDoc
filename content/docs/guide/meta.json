@@ -1,0 +1,6 @@
+{
+  "title": "Guide",
+  "description": "Complete guide and tutorials",
+  "root": true,
+  "pages": ["index", "components"]
+}
