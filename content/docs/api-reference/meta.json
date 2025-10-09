@@ -1,6 +1,0 @@
-{
-  "title": "API Reference",
-  "description": "API documentation and reference",
-  "root": true,
-  "pages": ["index", "authentication"]
-}

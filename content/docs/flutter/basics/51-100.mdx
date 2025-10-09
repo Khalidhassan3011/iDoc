@@ -1,0 +1,993 @@
+---
+title: Basics Flutter Questions (Questions 51-100)
+description: Basics Flutter Questions (Questions 51-100)
+---
+
+# Basics Flutter Questions (Questions 51-100)
+
+> **Note:**
+  **Questions 51-100 of 192**
+
+  All questions consolidated from multiple sources with source attribution.
+
+---
+
+## 51. How does Flutter's rendering pipeline work?
+
+**📚 LEMON**
+
+Flutter's rendering follows a three-tree architecture:
+
+**Widget → Element → RenderObject**
+
+### Phases:
+- **Build phase:** Creates/updates the widget tree
+- **Layout phase:** Determines size and position of each RenderObject
+- **Paint phase:** Draws each RenderObject to layers
+- **Compositing phase:** Combines layers into a final scene
+- **Rasterization phase:** Converts the scene to actual pixels on screen
+
+This pipeline allows Flutter to efficiently update only what changed, providing smooth 60fps (or 120fps) performance.
+
+---
+
+## 52. How does Flutter's widget tree differ from element and render trees?
+
+**📚 LEMON**
+
+Flutter uses three trees:
+
+### Widget tree:
+- Immutable configuration
+- Describes the UI structure
+- Lightweight
+- Rebuilt frequently
+
+### Element tree:
+- Manages widget lifecycle and state
+- Mutable
+- Links widgets to render objects
+- Persists across builds
+- Handles widget updates efficiently
+
+### RenderObject tree:
+- Handles actual layout, painting, and hit testing
+- Performs the rendering
+- Updates only when necessary
+- Most expensive operations
+
+This separation allows Flutter to:
+- Rebuild widgets cheaply
+- Preserve state efficiently
+- Optimize rendering performance
+
+---
+
+## 53. How does InheritedWidget work, and when would you create one?
+
+**📚 LEMON**
+
+`InheritedWidget` propagates immutable data down the widget tree efficiently. It allows descendant widgets to access data without explicitly passing it through constructors.
+
+### Use cases:
+- Sharing themes across the app
+- Providing localization data
+- Sharing app-wide configuration
+- Any data that many widgets need to access
+
+Widgets can access the inherited data using `context.dependOnInheritedWidgetOfExactType<T>()`, and Flutter automatically rebuilds dependent widgets when the data changes.
+
+---
+
+## 54. How does setState() differ from ValueNotifier and ChangeNotifier?
+
+**📚 LEMON**
+
+### setState():
+- Scoped to a single `StatefulWidget`
+- Triggers rebuild of that widget only
+- Simple and straightforward
+- Best for local, widget-specific state
+
+### ValueNotifier:
+- Holds a single value
+- Notifies listeners when value changes
+- Can be used across multiple widgets
+- Lightweight for simple reactive state
+
+### ChangeNotifier:
+- Can manage complex state with multiple properties
+- Notifies listeners when `notifyListeners()` is called
+- Foundation for Provider pattern
+- Best for state shared across multiple widgets
+
+```dart
+// setState - widget-specific
+setState(() { counter++; });
+
+// ValueNotifier - reactive single value
+final counter = ValueNotifier<int>(0);
+counter.value++; // Auto-notifies listeners
+
+// ChangeNotifier - complex state
+class CounterModel extends ChangeNotifier {
+  int _counter = 0;
+  int get counter => _counter;
+  
+  void increment() {
+    _counter++;
+    notifyListeners();
+  }
+}
+```
+
+---
+
+## 55. How would you architect a plugin that uses platform channels?
+
+**📚 LEMON**
+
+Structure for a robust plugin:
+
+1. **Create a MethodChannel** in Dart
+2. **Define a clear contract** for native methods
+3. **Implement platform-specific code:**
+   - Android: Kotlin/Java
+   - iOS: Swift/Objective-C
+4. **Handle result parsing** in Dart
+5. **Add error handling** for platform failures
+
+### Best practices:
+- Version your API
+- Document platform requirements
+- Handle platform differences gracefully
+- Provide example implementations
+- Write platform tests
+
+---
+
+## 56. How would you debounce a TextField input?
+
+**📚 LEMON**
+
+Two common approaches:
+
+### Using Timer:
+```dart
+Timer? _debounce;
+
+void onSearchChanged(String query) {
+  if (_debounce?.isActive ?? false) _debounce!.cancel();
+  _debounce = Timer(const Duration(milliseconds: 500), () {
+    // Perform search
+  });
+}
+
+@override
+void dispose() {
+  _debounce?.cancel();
+  super.dispose();
+}
+```
+
+### Using RxDart's debounceTime:
+```dart
+StreamController<String> _searchController = StreamController();
+
+_searchController.stream
+  .debounceTime(Duration(milliseconds: 500))
+  .listen((query) {
+    // Perform search
+  });
+```
+
+Debouncing prevents excessive API calls or expensive operations while typing.
+
+---
+
+## 57. How would you execute code only in debug mode?
+
+**📚 INTERVIEWBIT**
+
+We first need to import the dart foundation in order to run the code only in debug mode:
+
+```dart
+import 'package:flutter/foundation.dart' as Foundation;
+```
+
+The next step is to use `kReleaseMode` as follows:
+
+```dart
+if (Foundation.kReleaseMode) {  // is Release Mode??
+  print('release mode');
+} else {
+  print('debug mode');
+}
+```
+
+---
+
+## 58. How would you implement dynamic theming?
+
+**📚 LEMON**
+
+Implement theme switching with state management:
+
+```dart
+class ThemeProvider extends ChangeNotifier {
+  ThemeMode _themeMode = ThemeMode.light;
+  
+  ThemeMode get themeMode => _themeMode;
+  
+  void toggleTheme() {
+    _themeMode = _themeMode == ThemeMode.light 
+      ? ThemeMode.dark 
+      : ThemeMode.light;
+    notifyListeners();
+  }
+}
+
+// In main:
+ChangeNotifierProvider(
+  create: (_) => ThemeProvider(),
+  child: Consumer<ThemeProvider>(
+    builder: (context, themeProvider, _) {
+      return MaterialApp(
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        themeMode: themeProvider.themeMode,
+        home: HomePage(),
+      );
+    },
+  ),
+)
+```
+
+---
+
+## 59. How would you make HTTP requests in the Flutter framework?
+
+**📚 GITHUB**
+
+Making HTTP requests in Flutter can be done using the `http` package. This package provides a simple API for sending HTTP requests and receiving HTTP responses.
+
+Here is an example of how to make a GET request to retrieve data from an API:
+
+```dart
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+Future<void> fetchData() async {
+  final response = await http.get('https://jsonplaceholder.typicode.com/posts');
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response, then parse the JSON
+    final data = json.decode(response.body);
+    print(data);
+  } else {
+    // If the server did not return a 200 OK response, then throw an exception
+    throw Exception('Failed to load data');
+  }
+}
+```
+
+In this example, we use the `http.get` method to send a GET request to the specified URL. The `await` keyword is used to wait for the response before continuing. If the response has a status code of 200, we parse the JSON data using the `json.decode` method. If the status code is not 200, we throw an exception.
+
+The `http` package is a simple and powerful tool for making HTTP requests in Flutter, and it can be used for a variety of tasks, including retrieving data from APIs, submitting form data, and uploading files.
+
+---
+
+## 60. How would you optimize build performance in a complex widget tree?
+
+**📚 LEMON**
+
+Optimization strategies:
+
+- **Use const constructors** - Allows widget reuse and prevents unnecessary rebuilds
+- **Use RepaintBoundary** - Isolates parts of the tree from repainting
+- **Use ValueListenableBuilder** - Rebuilds only the listening widget, not the entire tree
+- **Isolate rebuilds** - Extract dynamic parts into separate widgets
+- **Avoid deep widget nesting** - Flatten the tree where possible
+- **Use keys appropriately** - Help Flutter identify and reuse widgets
+- **Cache expensive computations** - Store results rather than recalculating
+- **Use ListView.builder for lists** - Lazy loading of list items
+
+---
+
+## 61. How would you profile and analyze a Flutter app's performance?
+
+**📚 LEMON**
+
+Multiple tools and techniques:
+
+### Flutter DevTools:
+- Performance tab for frame rendering analysis
+- Timeline view for detailed profiling
+- Memory tab for memory leaks
+
+### Command line:
+- Run with `flutter run --profile` (optimized but debuggable)
+- Use `flutter run --release` for final performance testing
+
+### In code:
+- Import `dart:developer`
+- Use `Timeline.startSync()` and `Timeline.finishSync()`
+- Use `FlutterFrameTiming` for frame metrics
+
+### What to check:
+- Frame render times (should be less than 16ms for 60fps)
+- Widget rebuild frequency
+- Garbage collection patterns
+- CPU and memory usage
+- Expensive operations causing UI jank
+- Shader compilation jank
+
+---
+
+## 62. How would you securely store tokens on a device?
+
+**📚 LEMON**
+
+Use `flutter_secure_storage` package, which leverages:
+- **Android:** Android Keystore for encrypted storage
+- **iOS:** iOS Keychain for secure storage
+
+```dart
+final storage = FlutterSecureStorage();
+
+// Write
+await storage.write(key: 'token', value: 'your_secure_token');
+
+// Read
+String? token = await storage.read(key: 'token');
+
+// Delete
+await storage.delete(key: 'token');
+```
+
+**Never store sensitive data in:**
+- shared_preferences (unencrypted)
+- Plain files
+- App memory without encryption
+
+---
+
+## 63. How would you write a performant infinite scroll list?
+
+**📚 LEMON**
+
+Implement using these strategies:
+
+1. **Use ListView.builder()** - Creates items lazily
+2. **Implement ScrollController** - Detect when user reaches bottom
+3. **Load items in batches** - Don't load all data at once
+4. **Cache loaded items** - Prevent reloading same data
+5. **Add loading indicator** - Show when fetching more items
+
+```dart
+ScrollController _scrollController = ScrollController();
+
+@override
+void initState() {
+  super.initState();
+  _scrollController.addListener(() {
+    if (_scrollController.position.pixels == 
+        _scrollController.position.maxScrollExtent) {
+      _loadMore();
+    }
+  });
+}
+
+Widget build(BuildContext context) {
+  return ListView.builder(
+    controller: _scrollController,
+    itemCount: items.length + (isLoading ? 1 : 0),
+    itemBuilder: (context, index) {
+      if (index == items.length) {
+        return CircularProgressIndicator();
+      }
+      return ListTile(title: Text(items[index]));
+    },
+  );
+}
+```
+
+---
+
+## 64. In What technology is Flutter built?
+
+**📚 SIMPLILEARN**
+
+Flutter is built using:
+
+- C
+- C++
+- Skia - 2D rendering engine
+- Dart - object-oriented language
+
+---
+
+## 65. Is Dart language necessary for Flutter?
+
+**📚 SIMPLILEARN**
+
+It is compulsory to know the Dart language to use Flutter. Flutter applications make use of the Dart language for coding mobile phone apps.
+
+---
+
+## 66. Is Flutter a front-end framework or back-end?
+
+**📚 TURINGQUESTIONS**
+
+Flutter is primarily a **front-end framework**. It provides tools and widgets to build beautiful and engaging user interfaces, and it supports various platforms such as iOS, Android, and the web. However, the framework does provide some back-end functionalities. Flutter applications can communicate with web APIs or connect to backend services through third-party packages or plugins.
+
+---
+
+## 67. Is Flutter free?
+
+**📚 TURINGQUESTIONS**
+
+**Yes.** It is a free and open source mobile UI framework created by Google. Here, with only one codebase, you can create native mobile applications.
+
+---
+
+## 68. Is Flutter Open Source or not?
+
+**📚 INTERVIEWBIT**
+
+Yes, Flutter is a free and open-source UI software development kit from Google that allows developers to build cross-platform mobile apps with ease.
+
+---
+
+## 69. List some important features of flutter
+
+**📚 INTERVIEWBIT**
+
+Among the main features of flutter for developing mobile frameworks are:
+
+- **Flexibility, scalability, and integration**: Flutter's easy-to-use and easy-to-integrate framework provides enhanced flexibility, scalability, and integration capabilities
+- **Hot Reload**: If the developer modifies the code, the changes can be seen immediately with Hot Reload. Thus, the changes are instantly visible within the app
+- **One-Stop Solution**: Flutter app development relies on a single framework and platform for the development, deployment, and management of changes, rather than using separate platforms and frameworks for different purposes
+- **Native Performance and Internationalized Flutter Libraries**: Flutter app development provides widgets customized for Android, iOS, and Google Fuchsia. Using widgets, you can integrate all the functionalities of the platform, such as scrolling, navigation, icons, and fonts
+- **Huge Widget Library**: It is because of Flutter's ready-to-use widget library that developers can develop apps faster when using the framework. In addition to a wide variety of widgets, it also includes animations with which you can spice up your application
+
+---
+
+## 70. Name some apps that mostly use flutter
+
+**📚 INTERVIEWBIT**
+
+Flutter is used today by many organizations for developing apps. The following are some of the most popular apps built on Flutter:
+
+- Google Ads
+- Reflectly
+- Alibaba
+- Birch Finance
+- Coach Yourself
+- Tencent
+- Watermaniac, etc.
+
+---
+
+## 71. Name some best editors for flutter development
+
+**📚 INTERVIEWBIT**
+
+With the Flutter development tools, developers can make Flutter development faster and thus boost their productivity. Here are some popular IDEs for Flutter development:
+
+- Android Studio
+- Visual Studio
+- IntelliJ IDEA
+- Xcode
+- Eclipse
+- Emacs
+- Vim, etc.
+
+---
+
+## 72. Name some popular apps made with Flutter.
+
+**📚 GITHUB**
+
+- BMW
+- Google Pay
+- Alibaba
+- Beika
+- Dream11
+- eBay
+- Nubank
+- Reflectly
+- Rive
+- Toyota
+- Tencent
+- Hamilton
+- iRobot
+
+_Source: [Flutter Showcase](https://flutter.dev/showcase)_
+
+---
+
+## 73. Name some popular apps that use Flutter.
+
+**📚 TURINGQUESTIONS**
+
+Some of the most popular apps that employ Flutter include:
+
+- Google Ads
+- Hamilton
+- KlasterMe
+- Reflectly
+
+---
+
+## 74. Name the different types of build modes in Flutter.
+
+**📚 TURINGQUESTIONS**
+
+There are three types of build modes in Flutter:
+
+**Debug** - It is used to test the apps. On Android Studio, you can find a green play button on the top panel.
+```bash
+flutter run
+```
+
+**Profile** - In this mode, some debugging ability is maintained - enough to profile your app's performance, and also, it has the performance as the release mode.
+```bash
+flutter run --profile
+```
+
+**Release** - It is used for deploying the app on marketplaces.
+```bash
+flutter run --release
+```
+
+---
+
+## 75. Name two database packages mostly used in Flutter
+
+**📚 INTERVIEWBIT**
+
+### Firebase database
+
+Gives users access to and control over the cloud database. Firebase basically provides a NoSQL database for Flutter apps with the ability to manage data retrieval and storage through JSON protocol. Data sync and quick loading make it one of the most suitable options for Flutter Apps.
+
+**Features:**
+- NoSQL DB
+- APIs (REST only)
+- Authentication
+- Analytics
+- Storage
+
+### SQFlite database
+
+Users can access and modify the SQLite database using this. With this database, you have full control over your database, queries, relationships, and anything you could desire.
+
+**Features:**
+- Serverless
+- Zero configuration
+- Open-Source
+- Compact
+- Single DB file
+
+---
+
+## 76. Suppose you have to represent real world behavior in Flutter, which animation would you use?
+
+**📚 TURINGQUESTIONS**
+
+The choice of animation in Flutter would depend on the specific behavior that needs to be represented. Flutter provides several animation options that can be used to represent real-world behavior. These include:
+
+- Physics-based animation
+- Tween animation
+- Curved animation
+- Hero animation
+
+---
+
+## 77. The most useful editors for Flutter apps
+
+**📚 SIMPLILEARN**
+
+The most useful editors for Flutter apps are:
+
+- Visual Studio
+- Android Studio
+- Xcode
+- IntelliJ IDEA
+- Eclipse
+- Vim
+- Emacs
+
+---
+
+## 78. Uses of keys in Flutter?
+
+**📚 SIMPLILEARN**
+
+Keys in flutter are used primarily to:
+
+- Preserve the state of modified widgets in the widget trees
+- Reorganize and modify the collections of widgets having equivalent types and defined states
+- It does not modify a tree that consists of only stateless widgets
+
+---
+
+## 79. What are different build modes in flutter?
+
+**📚 INTERVIEWBIT**
+
+Depending on your development phase, the framework compiles your code in different ways or modes, which we called a build mode. Flutter's tooling allows the application to be compiled in three modes:
+
+- **Debug Mode**: This mode enables debugging of apps on a physical device, emulator, or simulator. Assertions and service extensions are enabled here. Quick deployment is then achieved by optimizing compilation
+- **Profile Mode**: In this mode, some debugging abilities are maintained, enough to analyze the app's performance while testing. Tracing and some extensions are enabled in this case. On emulators and simulators, profile mode is disabled since their behavior does not reproduce real-world performance. Command: `flutter run --profile`
+- **Release Mode**: When deploying the app, this mode is used to minimize the size of the footprint and maximize optimization. Debugging, assertions and service extensions are disabled here. Faster startup, faster execution, and less size are its key features. Command: `flutter run --release`
+
+---
+
+## 80. What are different types of Streams?
+
+**📚 INTERVIEWBIT**
+
+The streams' functionality is part of Dart and is inherited by Flutter. In Flutter, there are two kinds of streams:
+
+### Single Subscription Streams
+
+- Deliver events sequentially
+- Considered as sequences contained within a larger whole
+- Used when the order in which events are received matters, such as reading a file
+- Can have only one listener throughout the sequence
+- Without a listener, the event won't be triggered
+
+### Broadcast Streams
+
+- Deliver events to their subscribers
+- Subscribers can start listening immediately upon subscribing
+- Versatile streams that allow several listeners to listen simultaneously
+- One can listen again even after canceling a previous subscription
+
+---
+
+## 81. What are isolates in Dart and when should they be used?
+
+**📚 LEMON**
+
+Isolates are parallel computing units in Dart that run code without sharing memory. Each isolate has its own memory heap and event loop.
+
+### Use isolates for:
+- CPU-intensive tasks (parsing large JSON, image processing)
+- Long-running computations
+- Preventing UI blocking
+- Complex mathematical calculations
+- Heavy data transformations
+
+### Key points:
+- Isolates don't share memory (unlike threads)
+- Communication happens through message passing
+- Use `compute()` function for simple cases
+- Use `Isolate.spawn()` for more complex scenarios
+
+---
+
+## 82. What are keys and how do you use them?
+
+**📚 TURINGQUESTIONS**
+
+A set of IDs for Widgets, Elements and SemanticsNodes make up the key class. Keys are responsible for preserving the state of widgets when they are updated inside the widget tree. Keys may also be used to modify and rearrange collections of widgets of the same type and defined states.
+
+Otherwise, keys may be superfluous to the code, even if they aren't harmful in any manner. Keys are useful when you need to edit a widget tree with stateful widgets, but not when the tree is entirely made up of stateless widgets.
+
+---
+
+## 83. What are keys used for in animations?
+
+**📚 LEMON**
+
+Keys preserve widget identity across frames in animations:
+
+### Purpose:
+- Help Flutter track widgets during animation
+- Preserve state when widgets move
+- Ensure smooth transitions
+- Prevent widget confusion in lists
+
+### Types:
+- `ValueKey` - Based on a value
+- `ObjectKey` - Based on object identity
+- `UniqueKey` - Generates unique key
+- `GlobalKey` - Access from anywhere
+
+---
+
+## 84. What are packages and plugins in Flutter?
+
+**📚 GITHUB**
+**📚 SIMPLILEARN**
+**📚 TURINGQUESTIONS**
+
+Similar types of classes, interfaces, and sub-packages are known as packages in Flutter or any other object-oriented language. The packages and plugins are used in development to reduce the coder's effort. The coder need not write the code for everything and can use packages and plugins to reduce the coding effort.
+
+The distinction between packages and plugins is minute:
+
+- **Packages**: Are new components or written code in Dart language
+- **Plugins**: Use native code to allow more functionality
+
+Sometimes the two terms are confused as the same, but a minute distinction exists.
+
+---
+
+## 85. What are some common Flutter performance optimization techniques?
+
+**📚 GEEKSFORGEEKS**
+
+Flutter provides many tools and techniques for optimizing the performance of your application:
+
+- **Minimizing widget rebuilds**: Use the `const` and `final` keywords for widgets that don't change
+- **Reducing the size of widgets**: Use SizedBox to create empty space and Spacer to fill space
+- **Using the right widgets**: Use StatelessWidgets for static content, StatefulWidgets for dynamic content
+- **Reducing unnecessary layers**: Use ClipRRect and RepaintBoundary widgets
+- **Minimizing expensive operations**: Use const keyword and lazy loading
+- **Using the right data structures**: Use Set and Map for efficient lookups
+- **Avoid using large assets**: Use smaller size assets for faster rendering
+
+---
+
+## 86. What are some operators commonly used in Dart?
+
+**📚 TURINGQUESTIONS**
+
+Here are some of the operators that are commonly used to build apps in Dart:
+
+- **`=`** (assignment operator): Used to assign a value to a variable.
+- **`??`** (null-aware operator): Used to check whether a variable is null or not and provide a default value if it is null.
+- **`!`** (bang operator): Used to assert that an expression is not null.
+- **`.`** (dot operator): Used to access properties and methods of an object.
+
+---
+
+## 87. What are some ways to handle dependency injection in Flutter?
+
+**📚 LEMON**
+
+Several approaches:
+
+### Provider:
+- Most popular
+- Integrates with widget tree
+- Simple and intuitive
+
+### get_it:
+- Service locator pattern
+- Independent of widget tree
+- Great for services and repositories
+
+### Riverpod:
+- Evolution of Provider
+- Compile-time safety
+- No BuildContext dependency
+- Better testing support
+
+### Injectable + get_it:
+- Code generation for dependency injection
+- Reduces boilerplate
+- Type-safe
+
+Choose based on:
+- App complexity
+- Testing requirements
+- Team familiarity
+- Performance needs
+
+---
+
+## 88. What are the advantages of using Flutter?
+
+**📚 SIMPLILEARN**
+
+Flutter has various advantages to coding mobile apps:
+
+- **Reduce the amount of code**: Hot reload feature provided by Flutter helps in faster performance. The app is coded in C/C++ code to make it as close to machine code as possible for faster app development. The widget availability in Flutter reduces the time spent on coding and uses reusable code
+- **Cross-Platform development**: Flutter code can be used across platforms to reduce the effort on the development team's side
+- **Live and Hot Reloading**: It helps write the code faster and more easily. The code can be easily modified when a change is made
+- **Works like a Native app**: Flutter code is as close to machine code as possible. This reduces the errors due to the interpretation of code. The app works in a native environment, and the coded apps are fast and easy to use
+- **Community**: Flutter has a thriving community to help you with the questions you might have
+- **Minimal Code**: The Flutter app is coded using the Dart programming language. This increases the speed of development, and the UI is fast. Dart uses JIT and AOT compilation which is very fast
+- **Faster documentation**: It has fast and well-organized documentation. The central depository stores the documents for future reference
+- **Customized designs**: The customized layered architecture allows the designing of custom designs, faster rendering and expressive UIs
+
+---
+
+## 89. What are the different types of streams in Dart?
+
+**📚 TURINGQUESTIONS**
+
+Streams provide an asynchronous sequence of data. Asynchronous programming uses the idea of streams. They refer to a program's asynchronous succession of data occurrences. We put a value on one end and a listener on the other, similar to a pipe. Several listeners can be combined into a single stream, and when they are placed in the pipeline, they will all get the same data. It is possible to utilize the SteamController to establish new streams or manage existing ones. There are two types of streams:
+
+### Single Subscription Streams
+These streams convey events in chronological order. They're thought of as individual sequences inside a greater totality. When the sequence in which events are received matters, such as when reading a file, these streams are employed. Throughout the sequence, there can only be one listener, and the event will not be triggered if there isn't one.
+
+### Broadcast Streams
+These broadcasts provide subscribers with information about upcoming events. Subscribers can instantly begin listening to events after subscribing to them. These are flexible streams that allow several listeners to listen at the same time. Furthermore, even after canceling a previous membership, one may listen again.
+
+---
+
+## 90. What are the different types of widgets in Flutter?
+
+**📚 GEEKSFORGEEKS**
+
+In Flutter, widgets are the building blocks for creating UI elements. There are two types of widgets in Flutter:
+
+**Stateless widgets:** These widgets are immutable, meaning they cannot be changed once they are created. Stateless Widget are used when the UI elements do not need to be redrawn or updated frequently, such as a static text label or an icon. Stateless widgets are defined using the StatelessWidget class.
+
+**Stateful widgets:** These widgets are mutable and can be updated dynamically based on user interactions or other events. Stateful Widget are used when the UI elements need to be updated frequently, such as a list or form. Stateful widgets are defined using the StatefulWidget class. Note that stateful widgets require a State object to handle the mutable state, which is managed by the framework.
+
+---
+
+## 91. What are the limitations of Flutter?
+
+**📚 SIMPLILEARN**
+**📚 TURINGQUESTIONS**
+
+Since Flutter is still a relatively new tool, it has some limitations. They are as follows:
+
+- The number of third-party libraries is very small
+- The release size of Flutter is larger than expected
+- Flutter requires to be used along with another OOP language, Dart which cannot compete with other OOP languages such as Java, C#
+- Due to Flutter's limited complexity, mobile ad platforms do not support it
+- Flutter is still not used by a wide audience
+
+---
+
+## 92. What are the most useful editors for Flutter apps?
+
+**📚 SIMPLILEARN**
+
+Flutter tools make use of plugins to code mobile phone apps. The plugins can help in Dart code compilation, analysis of the code, and development of apps.
+
+### Some used Flutter tools for IDE development are:
+
+- Visual Studio
+- Android Studio
+- Xcode
+- IntelliJ IDEA
+- Eclipse
+- Emacs
+
+---
+
+## 93. What are the popular apps which make use of Flutter?
+
+**📚 SIMPLILEARN**
+
+Some of the most popular apps using Flutter are:
+
+- Reflectly
+- Google Ads
+- Alibaba
+- Tencent
+- Birch Finance
+- Coach Yourself
+- Watermaniac
+
+In general, Flutter is used to develop android, iOS, Linux, Mac, and Web applications from a single codebase or with high brand designs.
+
+---
+
+## 94. What are the resources to learn Flutter?
+
+**📚 SIMPLILEARN**
+
+You can learn flutter from Flutter Documentation available as open source on Google.
+
+---
+
+## 95. What are the risks of using BuildContext after await?
+
+**📚 LEMON**
+
+After an `await`, the widget might be disposed, leading to:
+
+### Risks:
+- Widget no longer mounted
+- BuildContext invalid
+- Runtime errors when using context
+- Unexpected behavior
+
+### Solutions:
+
+**1. Check if mounted:**
+```dart
+Future<void> loadData() async {
+  final data = await fetchData();
+  if (!mounted) return;
+  Navigator.push(context, ...); // ✅ Safe
+}
+```
+
+**2. Capture context before await:**
+```dart
+Future<void> loadData() async {
+  final nav = Navigator.of(context);
+  final data = await fetchData();
+  nav.push(...); // ✅ Safe
+}
+```
+
+---
+
+## 96. What are the types of widgets present in flutter?
+
+**📚 INTERVIEWBIT**
+
+In flutter, widgets can be divided into two categories:
+
+- **Stateless Widget**: A widget that does nothing is a Stateless Widget. In essence, they are static and don't store any state. Thus, they don't save values that may change
+- **Stateful Widget**: A widget that does anything is a Stateful Widget. Stateful widgets are dynamic by nature, which means they can monitor changes and update the UI accordingly
+
+---
+
+## 97. What are widgets in Flutter?
+
+**📚 GITHUB**
+**📚 SIMPLILEARN**
+
+Flutter apps make use of widgets to code mobile phone applications. You will almost exclusively build on Flutter using widgets. Widgets define the view of the app. When you change the code, the widget code is automatically adjusted. Widgets are nested with each other to get the final design of the app. This means the widget is the base on which the app is coded.
+
+---
+
+## 98. What build modes are available in Flutter?
+
+**📚 SIMPLILEARN**
+
+Flutter is made up of three build modes:
+
+- **Debug Mode**: This mode is for debugging apps on a device or a simulator
+- **Profile Mode**: Some debugging abilities are available, along with an analysis of app's performance in testing rounds
+- **Release Mode**: This mode is used when deploying the app. This mode is for faster performance. You cannot debug or edit the code in this mode
+
+---
+
+## 99. What do you mean by Dart? Write its importance
+
+**📚 INTERVIEWBIT**
+
+Dart, a programming language developed by Google, is used to code Flutter apps as well as server and desktop applications. By using Dart, Flutter avoids the use of a separate declarative layout language such as JSX or XML.
+
+A simple Dart program:
+
+```dart
+void main() {
+  for (int i = 0; i < 5; i++) {
+    print('hello ${i + 1}');
+  }
+}
+```
+
+### Importance of Dart:
+
+- Developers can read and visualize the layout of Dart very easily and effortlessly since it is declarative and programmatic
+- Unlike other programming languages, it supports the majority of the basic programming concepts like classes, interfaces, and functions
+- Arrays are not directly supported by Dart. Rather, it supports the collection that replicates the data structure like arrays, generics, and optional typing
+- Despite being similar to JavaScript, Dart runs code several times faster
+- For better performance and to reduce code execution time, the Dart virtual machine (VM) uses both Just-in-Time (JIT) and Ahead-of-Time (AOT) compilers
+- Dart is object-oriented programming, which makes it very scalable and stable for creating even complex applications
+
+---
+
+## 100. What do you mean by flutter SDK?
+
+**📚 INTERVIEWBIT**
+
+A Flutter SDK (Software Development Kit) enables developers to build applications for mobile, web, and desktop using a single codebase.
+
+### Flutter SDK includes:
+
+- Dart SDK
+- Rendering engine, widgets, APIs for testing and integration
+- Compilation tools for Native Machine Code (code for iOS and Android)
+- React-style modern framework
+- Interop and plugin APIs to connect with system and 3rd-party SDKs
+- A headless test runner that runs tests on Windows, Linux, and Mac
+- Dart DevTools to test, debug, and profile your app
+- Flutter and Dart command-line tools to develop, build, test and compile your apps across platforms
+
+---

@@ -1,0 +1,252 @@
+---
+title: Flutter Interview Questions for Experienced
+description: Flutter Interview Questions for Experienced
+---
+
+# Flutter Interview Questions for Experienced
+
+> **Note:**
+  **Source:** All questions are from [InterviewBit Flutter Interview Questions](https://www.interviewbit.com/flutter-interview-questions/)
+
+  **Total Questions:** 15
+
+---
+
+## 1. What do you mean by Streams?
+
+In asynchronous programming, streams are used to provide a sequence of data in an asynchronous manner. Similar to a pipe, we put a value on one end and a listener receives it on the other. Several listeners can be put into one stream, and they'll all get the same value when they're put in the pipeline. It's possible to create and manage streams through the StreamController.
+
+The Stream API provides the `await for` and `listen()` methods for processing streams. Streams can be created in many ways, but they can only be used in the same manner.
+
+### Example:
+
+```dart
+Future<int> sumStream(Stream<int> stream) async {
+  var sum = 0;
+  await for (var value in stream) {
+    sum += value;
+  }
+  return sum;
+}
+```
+
+---
+
+## 2. What are different types of Streams?
+
+The streams' functionality is part of Dart and is inherited by Flutter. In Flutter, there are two kinds of streams:
+
+### Single Subscription Streams
+
+- Deliver events sequentially
+- Considered as sequences contained within a larger whole
+- Used when the order in which events are received matters, such as reading a file
+- Can have only one listener throughout the sequence
+- Without a listener, the event won't be triggered
+
+### Broadcast Streams
+
+- Deliver events to their subscribers
+- Subscribers can start listening immediately upon subscribing
+- Versatile streams that allow several listeners to listen simultaneously
+- One can listen again even after canceling a previous subscription
+
+---
+
+## 3. What do you mean by flutter SDK?
+
+A Flutter SDK (Software Development Kit) enables developers to build applications for mobile, web, and desktop using a single codebase.
+
+### Flutter SDK includes:
+
+- Dart SDK
+- Rendering engine, widgets, APIs for testing and integration
+- Compilation tools for Native Machine Code (code for iOS and Android)
+- React-style modern framework
+- Interop and plugin APIs to connect with system and 3rd-party SDKs
+- A headless test runner that runs tests on Windows, Linux, and Mac
+- Dart DevTools to test, debug, and profile your app
+- Flutter and Dart command-line tools to develop, build, test and compile your apps across platforms
+
+---
+
+## 4. Write difference between Hot reload and Hot restart
+
+For any dart application, the initial execution requires a fair amount of time. Therefore, to solve this problem, flutter has two features: Hot Reload and Hot Restart, which reduce the execution time of our app after we run it.
+
+| Hot Reload | Hot Restart |
+|------------|-------------|
+| Takes approximately one second to perform | Takes slightly longer than hot reload |
+| Quickly compiles new code and sends it to Dart Virtual Machine (DVM) | Destroys preserved states and compiles code from the beginning |
+| Updates the app's UI after DVM completes the update | Code gets compiled again from scratch |
+| Preserved state is not destroyed | Preserved states are destroyed |
+| Faster for quick changes and bug fixes | Faster than full restart but slower than hot reload |
+
+---
+
+## 5. Explain BuildContext
+
+BuildContexts are used to identify or locate widgets in widget trees. Each widget has its own BuildContext, i.e., one BuildContext per widget. Basically, we're using it to find references to other widgets and themes. In addition, you can utilize it to interact with widget parents and access widget data.
+
+---
+
+## 6. What do you mean by Widget testing?
+
+Flutter supports three types of tests:
+
+### Unit tests
+
+- Test a class or method
+- Do not check for rendering to screen, interacting with external services, or user interactions
+
+### Widget tests
+
+- Test a single widget
+- Ensure that the widget's UI looks as expected and responds appropriately to events
+- Ensure that the widget design, rendering, and interaction with other widgets are up to the mark
+
+### Integration tests
+
+- Test the critical flows of the entire app
+- Check whether all widgets and services work together as expected
+- Can be used to measure and benchmark the performance of your app
+
+---
+
+## 7. What is state management?
+
+Whether you are building a mobile app or a web application, State Management is crucial. Using it, states of various UI controls are centralized to handle data flow across an application. It can be a text field, radio button, checkbox, dropdown, toggle, form, and so on.
+
+In Flutter, state management can be categorized into two types:
+
+### Ephemeral State
+
+- Also called UI state or local state
+- Pertains to a particular widget
+- State contained within the specific widget
+- Supported by StatefulWidget
+
+### App State
+
+- Different from the ephemeral state
+- State intended to share across different parts of the app
+- Maintained between sessions
+- Can be used globally
+- Supported by scoped_model
+
+---
+
+## 8. Explain pubspec.yaml file
+
+The pubspec.yaml file, also known as 'pubspec', is a file that is included when you create a Flutter project and is located at the top of the project tree. This file contains information about the dependencies like packages and their versions, fonts, etc., that a project requires. It makes sure that the next time you build the project, you will get the same package version. Additionally, you can set constraints for the app.
+
+This specification is written in YAML, which can be read by humans.
+
+### The following are included in this file:
+
+- General project settings, like name of the project, version, description, etc.
+- Dependencies within a project
+- The assets of the project (e.g., images, audio, etc.)
+
+---
+
+## 9. What do you understand about tween animation?
+
+The shortened version of in-between animation is tween animation. The start and endpoints of an animation must be specified in tween animation. Using this method, the animation can begin at the beginning and can progress through a series of values until it reaches the endpoint. Transition speed and duration are also determined by using the tween animation. Calculating the transition from the beginning to the end will be easier with the widget framework.
+
+---
+
+## 10. How can we create HTTP requests in Flutter?
+
+To create HTTP requests, use the HTTP package: `import 'package:http/http.dart' as http;`
+
+### Example:
+
+```dart
+http.get('https://jsonplaceholder.typicode.com/albums/1');
+```
+
+It will return a `Future<http.Response>`.
+
+---
+
+## 11. Name two database packages mostly used in Flutter
+
+### Firebase database
+
+Gives users access to and control over the cloud database. Firebase basically provides a NoSQL database for Flutter apps with the ability to manage data retrieval and storage through JSON protocol. Data sync and quick loading make it one of the most suitable options for Flutter Apps.
+
+**Features:**
+- NoSQL DB
+- APIs (REST only)
+- Authentication
+- Analytics
+- Storage
+
+### SQFlite database
+
+Users can access and modify the SQLite database using this. With this database, you have full control over your database, queries, relationships, and anything you could desire.
+
+**Features:**
+- Serverless
+- Zero configuration
+- Open-Source
+- Compact
+- Single DB file
+
+---
+
+## 12. Explain Flutter Provider
+
+The provider is built using widgets. You can use all the objects in the provider as if they were just part of Flutter with the new widget subclasses it creates. This also means that the provider is not cross-platform. The provider is the simplest way to handle state management. Basically, it works on the concept of PUB-SUB i.e., there is one provider and several subscribers.
+
+---
+
+## 13. What is await in Flutter? Write its usage
+
+Until the async method is finished, await interrupts the process flow. Await generally means: Wait here until this function is finished so that you can get its return value. Await can only be used with async. Using this, all currently running functions are put on hold until the Future is complete.
+
+---
+
+## 14. Write the difference between SizedBox Vs Container
+
+| Container | SizedBox |
+|-----------|----------|
+| Multiple child widgets can be controlled by adjusting size, padding, and color | Specific size box with limited functionality |
+| Allows setting widget's color or decoration | Does not allow setting color or decoration |
+| Used when styling is needed (color, shape, size constraint) | Used only to resize the widget passed as a child |
+| More versatile with multiple properties | Forces child widget to have a specific size |
+
+---
+
+## 15. What do you mean by Null-aware operators?
+
+Null-aware operators in dart allow you to make computations based on whether or not a value is null. Dart provides some useful information to handle the null values.
+
+### The "??=" assignment operator
+
+Assigns a value to a variable only if it is null.
+
+```dart
+int a;                        // a is initialized with null value
+a ??= 10;
+print(a);                     // It will print 10
+```
+
+### The "??" null-aware operator
+
+Computes and returns the value between two expressions. In the first step, expression 1 is checked for nullness, and if it is not null, its value is returned; otherwise, expression 2 is evaluated, and its value is returned.
+
+```dart
+print(5 ?? 10);              // It will print 5
+print(null ?? 10);           // It will print 10
+```
+
+### The "?." Safe Navigation Operator
+
+Also known as the Elvis operator. It is possible to use the `?.` operator when calling a method/getter on an object, as long as the object isn't null (otherwise, the method will return null).
+
+```dart
+obj?.child?.child?.getter    // Returns null if obj, child1, or child2 are null
+                             // Otherwise, the getter is called and returned
+```

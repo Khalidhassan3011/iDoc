@@ -16,7 +16,7 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
   // Redirect to first root folder if no slug provided
   if (!params.slug || params.slug.length === 0) {
     const { redirect } = await import('next/navigation');
-    redirect('/docs/guide');
+    redirect('/docs/flutter');
   }
 
   const page = source.getPage(params.slug);

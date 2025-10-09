@@ -1,0 +1,677 @@
+---
+title: Advanced Flutter Questions
+description: Advanced Flutter Questions
+---
+
+# Advanced Flutter Questions
+
+> **Note:**
+  **Source:** All questions are from [Turing.com Flutter Interview Questions](https://www.turing.com/interview-questions/flutter)
+
+  **Total Questions:** 11
+
+---
+
+## 1. Flutter Vs React: Which is better?
+
+ADVANCED
+
+It's difficult to decide which framework to choose as they both are exceptionally good and loved by companies and developers. However, you can pick one based on your particular needs.
+
+### Flutter Advantages:
+- Single codebase for iOS, Android, Web, Desktop
+- Hot reload for faster development
+- Rich widget library
+- Excellent performance (compiled to native code)
+- Growing community and Google support
+
+### React Native Advantages:
+- JavaScript-based (larger developer pool)
+- Mature ecosystem with many libraries
+- Strong community support
+- Good for web developers transitioning to mobile
+- Better suited for apps requiring frequent native module integration
+
+**Recommendation:** Choose Flutter for better performance and unified UI, choose React Native if you have a JavaScript team or need extensive third-party native modules.
+
+---
+
+## 2. Why do we need separate directories for iOS and Android in Flutter?
+
+ADVANCED
+
+Here's why you would need two different directories for Android and iOS files in Flutter:
+
+### Android Folder
+You need an Android folder to keep files of an Android project. When any Flutter framework creates the code, the compiler converts the Flutter code into native code that is then imported to Android projects creating a native Android app.
+
+The Android folder contains:
+- `build.gradle` files for build configuration
+- `AndroidManifest.xml` for app permissions and settings
+- Native Java/Kotlin code
+- Platform-specific resources
+
+### iOS Folder
+This stores all the files for Mac projects. If you're creating a project for the iOS platform, the iOS folder will be used. iOS apps can only be developed using the Xcode IDE and macOS in Flutter, which is why you'd need the iOS folder.
+
+The iOS folder contains:
+- `Info.plist` for app configuration
+- Native Swift/Objective-C code
+- Xcode project files
+- Platform-specific assets and settings
+
+---
+
+## 3. Can you explain how to use Flutter's built-in navigation system to create a multi-level navigation hierarchy?
+
+ADVANCED
+
+Flutter's navigation system allows you to create a multi-level navigation hierarchy by using the **Navigator** widget to manage a stack of pages. You can push new pages onto the stack using the `Navigator.push` method and remove them using the `Navigator.pop` method.
+
+```dart
+// Push a new route
+Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => SecondScreen()),
+);
+
+// Pop the current route
+Navigator.pop(context);
+
+// Push and remove all previous routes
+Navigator.pushAndRemoveUntil(
+  context,
+  MaterialPageRoute(builder: (context) => HomeScreen()),
+  (route) => false,
+);
+
+// Named routes for complex navigation
+Navigator.pushNamed(context, '/details');
+```
+
+**Multi-level navigation example:**
+```dart
+// Level 1: Home
+Navigator.pushNamed(context, '/products');
+
+// Level 2: Product List
+Navigator.pushNamed(context, '/product-details');
+
+// Level 3: Product Details
+Navigator.pushNamed(context, '/checkout');
+
+// Navigate back multiple levels
+Navigator.popUntil(context, ModalRoute.withName('/products'));
+```
+
+---
+
+## 4. Can you describe how to use Flutter's gesture recognition system to detect user input?
+
+ADVANCED
+
+Flutter's gesture recognition system provides a set of pre-defined gestures, such as tap, drag, and scale, that allow you to detect user input and react to it. You can use the **GestureDetector** widget to listen for gestures and the `GestureDetector.onTap` method to handle taps. You can also create custom gestures by subclassing the **GestureRecognizer** class.
+
+```dart
+GestureDetector(
+  onTap: () => print('Tapped'),
+  onDoubleTap: () => print('Double tapped'),
+  onLongPress: () => print('Long pressed'),
+  onPanUpdate: (details) => print('Dragging: ${details.delta}'),
+  onScaleUpdate: (details) => print('Scaling: ${details.scale}'),
+  child: Container(
+    width: 200,
+    height: 200,
+    color: Colors.blue,
+    child: Center(child: Text('Tap me!')),
+  ),
+)
+```
+
+**Custom Gesture Recognizer:**
+```dart
+class CustomGestureRecognizer extends OneSequenceGestureRecognizer {
+  @override
+  void addPointer(PointerEvent event) {
+    startTrackingPointer(event.pointer);
+  }
+
+  @override
+  void handleEvent(PointerEvent event) {
+    if (event is PointerMoveEvent) {
+      // Custom gesture logic
+    }
+  }
+
+  @override
+  String get debugDescription => 'custom';
+
+  @override
+  void didStopTrackingLastPointer(int pointer) {}
+}
+```
+
+---
+
+## 5. How would you create a custom widget in Flutter, and what are the benefits of doing so?
+
+ADVANCED
+
+To create a custom widget in Flutter, you need to create a new class that extends either **StatefulWidget** or **StatelessWidget**, depending on whether your widget needs to be stateful or not.
+
+### Benefits of creating custom widgets:
+
+1. **Reusability**: Use the same widget across multiple screens
+2. **Encapsulation**: Complex logic is hidden inside the widget
+3. **Improved code organization**: Cleaner, more maintainable code
+4. **Easier testing**: Test widgets in isolation
+5. **Better performance**: Can optimize rebuild behavior
+
+**Example:**
+```dart
+class CustomButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
+  final Color color;
+
+  const CustomButton({
+    Key? key,
+    required this.text,
+    required this.onPressed,
+    this.color = Colors.blue,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
+// Usage
+CustomButton(
+  text: 'Submit',
+  onPressed: () => print('Submitted'),
+  color: Colors.green,
+)
+```
+
+---
+
+## 6. What is the difference between hot reload and hot restart?
+
+ADVANCED
+
+### Hot Reload
+
+In Flutter, **Hot Reload** is the easiest and quickest way to make any changes, create UIs, fix bugs, and add features to the app. A Hot Reload performs all these changes rapidly and makes changes in the UI without disturbing the entire app.
+
+**How to perform Hot Reload:**
+1. Run the Flutter editor using command prompt or editor
+2. Once the project is created, you can use debug mode and perform hot reload
+3. In Windows, use `Ctrl+\` to perform hot reload. For Mac devices, use `Cmd+S`. If using command prompt, enter `r`
+
+**Characteristics:**
+- Preserves app state
+- Fast (< 1 second)
+- Ideal for UI changes
+- Doesn't restart the app
+
+### Hot Restart
+
+A **Hot Restart** is different from Hot Reload as it demolishes the preserved states of the app and compiles the code from scratch.
+
+Hot Restart takes more time compared to Hot Reload but takes less time than the full restart function.
+
+**How to perform Hot Restart:**
+1. Run the editor using command prompt
+2. Make some changes and run the hot restart
+3. To start hot restart use the hot reload button or press `Ctrl+Shift+\` (Windows) or `Cmd+Shift+\` (Mac)
+
+**Characteristics:**
+- Resets app state
+- Slower than hot reload (few seconds)
+- Needed for code structure changes
+- Restarts the app completely
+
+| Feature | Hot Reload | Hot Restart |
+|---------|-----------|-------------|
+| Speed | Very Fast (~1s) | Fast (~2-5s) |
+| State | Preserved | Reset |
+| Use Case | UI changes | Logic changes |
+| Shortcut (Windows) | Ctrl+\ | Ctrl+Shift+\ |
+
+---
+
+## 7. Can you describe how to use the Flutter animations API to create custom animations?
+
+ADVANCED
+
+The Flutter animations API provides a set of classes and widgets that allow you to create custom animations, such as tween animations or physics-based animations. You can use the **AnimationController** class to manage the animation's state, and the **Tween** class to define the animation's values over time.
+
+```dart
+class MyAnimatedWidget extends StatefulWidget {
+  @override
+  _MyAnimatedWidgetState createState() => _MyAnimatedWidgetState();
+}
+
+class _MyAnimatedWidgetState extends State<MyAnimatedWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Create controller
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+
+    // Create tween
+    _animation = Tween<double>(begin: 0, end: 300).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    // Start animation
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        return Container(
+          width: _animation.value,
+          height: _animation.value,
+          color: Colors.blue,
+        );
+      },
+    );
+  }
+}
+```
+
+**Advanced: Custom Implicit Animation**
+```dart
+class MyImplicitAnimation extends ImplicitlyAnimatedWidget {
+  final double size;
+
+  const MyImplicitAnimation({
+    Key? key,
+    required this.size,
+    required Duration duration,
+  }) : super(key: key, duration: duration);
+
+  @override
+  ImplicitlyAnimatedWidgetState<MyImplicitAnimation> createState() =>
+      _MyImplicitAnimationState();
+}
+
+class _MyImplicitAnimationState
+    extends AnimatedWidgetBaseState<MyImplicitAnimation> {
+  Tween<double>? _sizeTween;
+
+  @override
+  void forEachTween(TweenVisitor<dynamic> visitor) {
+    _sizeTween = visitor(
+      _sizeTween,
+      widget.size,
+      (value) => Tween<double>(begin: value as double),
+    ) as Tween<double>?;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: _sizeTween!.evaluate(animation),
+      height: _sizeTween!.evaluate(animation),
+      color: Colors.blue,
+    );
+  }
+}
+```
+
+---
+
+## 8. Can you describe in detail the Flutter IDEs?
+
+ADVANCED
+
+Some of the most popular Flutter IDEs include the following:
+
+### IntelliJ IDEA
+**IntelliJ IDEA** is feature-rich, boasts extensive support for many languages, and provides smart coding assistance. Most beginner developers would probably get by with the free Community Edition, but the paid Ultimate Edition is required to access additional features.
+
+**Features:**
+- Advanced code completion
+- Refactoring tools
+- Built-in version control
+- Database tools (Ultimate)
+- Web development support (Ultimate)
+
+### Android Studio
+**Android Studio** works like IntelliJ IDEA but for Android only. Unlike the latter, though, Android Studio is free and open-source. With smart coding assistance and a built-in debugger, it seems the best choice when programming for Android devices.
+
+**Features:**
+- Official Android IDE
+- Flutter plugin support
+- Android Emulator integration
+- Layout inspector
+- APK analyzer
+
+### Visual Studio Code
+**Visual Studio Code**, or simply VS Code, is a free tool backed by Microsoft. It speeds up development and lowers development time. It works with Windows, macOS, and Linux.
+
+**Features:**
+- Lightweight and fast
+- Extensive extension marketplace
+- Flutter and Dart extensions
+- Integrated terminal
+- Git integration
+- IntelliSense
+
+**Comparison:**
+
+| IDE | Cost | Size | Best For |
+|-----|------|------|----------|
+| IntelliJ IDEA | Free/Paid | Large | Java developers, enterprise |
+| Android Studio | Free | Large | Android-focused development |
+| VS Code | Free | Small | Lightweight, cross-platform |
+
+---
+
+## 9. How do you implement a custom transition between screens in Flutter?
+
+ADVANCED
+
+To implement a custom transition between screens, you can use the **PageRouteBuilder** class and provide a custom `transitionsBuilder` function.
+
+**For example, to create a fade transition:**
+
+```dart
+class FadeRoute extends PageRouteBuilder {
+  final Widget page;
+
+  FadeRoute({required this.page})
+      : super(
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) =>
+              page,
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+        );
+}
+```
+
+**Then, to use the custom transition:**
+```dart
+Navigator.of(context).push(FadeRoute(page: MyNewPage()));
+```
+
+**Advanced: Slide and Fade Transition**
+```dart
+class SlideRightRoute extends PageRouteBuilder {
+  final Widget page;
+
+  SlideRightRoute({required this.page})
+      : super(
+          pageBuilder: (context, animation, secondaryAnimation) => page,
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            var tween = Tween(begin: begin, end: end)
+                .chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
+
+            return SlideTransition(
+              position: offsetAnimation,
+              child: FadeTransition(
+                opacity: animation,
+                child: child,
+              ),
+            );
+          },
+        );
+}
+```
+
+---
+
+## 10. How do you implement a draggable widget in Flutter?
+
+ADVANCED
+
+To implement a draggable widget in Flutter, you can use the **Draggable** and **DragTarget** widgets.
+
+**Example: Create a draggable widget that can be dropped onto a specific target:**
+
+```dart
+class DraggableExample extends StatefulWidget {
+  @override
+  _DraggableExampleState createState() => _DraggableExampleState();
+}
+
+class _DraggableExampleState extends State<DraggableExample> {
+  Color targetColor = Colors.grey;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        // Draggable Widget
+        Draggable<Color>(
+          data: Colors.blue,
+          feedback: Container(
+            width: 100,
+            height: 100,
+            color: Colors.blue.withOpacity(0.5),
+            child: Center(child: Text('Dragging')),
+          ),
+          childWhenDragging: Container(
+            width: 100,
+            height: 100,
+            color: Colors.grey,
+          ),
+          child: Container(
+            width: 100,
+            height: 100,
+            color: Colors.blue,
+            child: Center(child: Text('Drag me!')),
+          ),
+        ),
+
+        // Drag Target
+        DragTarget<Color>(
+          onAccept: (color) {
+            setState(() {
+              targetColor = color;
+            });
+          },
+          onWillAccept: (color) => true,
+          builder: (context, candidateData, rejectedData) {
+            return Container(
+              width: 200,
+              height: 200,
+              color: targetColor,
+              child: Center(child: Text('Drop here')),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+```
+
+**Advanced: Long-press Draggable**
+```dart
+LongPressDraggable<String>(
+  data: 'Item 1',
+  feedback: Material(
+    elevation: 4.0,
+    child: Container(
+      padding: EdgeInsets.all(16),
+      color: Colors.blue,
+      child: Text('Dragging Item 1'),
+    ),
+  ),
+  child: ListTile(
+    title: Text('Long press to drag'),
+  ),
+)
+```
+
+---
+
+## 11. How do you implement a custom animation curve in Flutter?
+
+ADVANCED
+
+To implement a custom animation curve in Flutter, you can create a class that extends the **Curve** class and provide a custom implementation of the `transform` method.
+
+**Example: Create a bounce-in curve:**
+
+```dart
+class BounceInCurve extends Curve {
+  @override
+  double transform(double t) {
+    if (t < 0.5) {
+      return 8 * t * t * t * t;
+    } else {
+      final f = (t - 1);
+      return 1 - 8 * f * f * f * f;
+    }
+  }
+}
+```
+
+In the `transform` method, you can use any mathematical formula to create a custom curve. In this example, we're using a mathematical formula that simulates a bounce-in effect.
+
+**Then, to use the custom curve in an animation:**
+
+```dart
+class MyAnimatedWidget extends StatefulWidget {
+  @override
+  _MyAnimatedWidgetState createState() => _MyAnimatedWidgetState();
+}
+
+class _MyAnimatedWidgetState extends State<MyAnimatedWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+
+    _animation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: BounceInCurve(), // Using custom curve
+      ),
+    );
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: _animation.value,
+          child: Container(
+            width: 100,
+            height: 100,
+            color: Colors.blue,
+          ),
+        );
+      },
+    );
+  }
+}
+```
+
+In this example, we're using the **BounceInCurve** as the curve property of the **CurvedAnimation** widget. This will create an animation with the bounce-in effect.
+
+**More Custom Curve Examples:**
+
+```dart
+// Elastic curve
+class ElasticCurve extends Curve {
+  @override
+  double transform(double t) {
+    return pow(2, -10 * t) * sin((t - 0.075) * (2 * pi) / 0.3) + 1;
+  }
+}
+
+// Custom ease-in-out curve
+class CustomEaseInOut extends Curve {
+  @override
+  double transform(double t) {
+    if (t < 0.5) {
+      return 4 * t * t * t;
+    }
+    return (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+  }
+}
+```
+
+---
+
+> **Note:**
+  **🎉 Completed!** You've reviewed all 11 advanced Flutter interview questions from Turing.com.
+
+  **Total Questions: 100** (57 Basic + 32 Intermediate + 11 Advanced)

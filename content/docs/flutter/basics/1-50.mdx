@@ -1,0 +1,858 @@
+---
+title: Basics Flutter Questions (Questions 1-50)
+description: Basics Flutter Questions (Questions 1-50)
+---
+
+# Basics Flutter Questions (Questions 1-50)
+
+> **Note:**
+  **Questions 1-50 of 192**
+
+  All questions consolidated from multiple sources with source attribution.
+
+---
+
+## 1. Are there any popular apps which make use of Flutter?
+
+**📚 SIMPLILEARN**
+
+There are many popular apps which use Flutter. Some of the apps are:
+
+- Reflectly
+- Google Ads
+- Alibaba
+- Tencent
+- Birch Finance
+- And many more
+
+The use of Flutter in mobile applications is very high.
+
+---
+
+## 2. Benefits of Flutter Inspector
+
+**📚 SIMPLILEARN**
+
+Flutter Inspector can:
+
+- Select widget mode in a widget tree
+- Provide the toggle platform
+- Show paint baselines and debug paint
+- Refresh the widgets as well as show or hide the performance overlay
+
+---
+
+## 3. Can you name some best editors for Flutter development?
+
+**📚 TURINGQUESTIONS**
+
+Some popular IDEs (Integrated Development Environment) for Flutter include the following:
+
+- Android Studio
+- IntelliJ Idea
+- Emac
+- Visual Studio
+- Codemagic
+
+---
+
+## 4. Can you name the command used to compile the release mode?
+
+**📚 TURINGQUESTIONS**
+
+The command `flutter run --release` is used to compile the release mode. Release mode for a web app means that the app is compiled with the dart2js compiler for best performance.
+
+---
+
+## 5. Can you state a few examples of stateless widget?
+
+**📚 TURINGQUESTIONS**
+
+Some examples of a stateless widget include the following:
+
+- **Text** - This displays a string of text with a single style.
+- **Container** - This widget can contain other widgets and provide padding, margins, and other layout properties.
+- **Icon** - This is used for the list of available material icons that can be used with this class.
+
+---
+
+## 6. Can you tell us how many kinds of widgets there are in Flutter?
+
+**📚 TURINGQUESTIONS**
+
+There are two main types of widgets in Flutter. These include:
+
+**StatelessWidget** - It does not have any state information. It is static throughout its lifecycle. Examples are Row, Text, Column, and Container.
+
+**StatefulWidget** - It has state information. It contains two classes: the state object and the Widget. It is dynamic because it can change the inner data during the Widget's lifetime. Examples are Radio, Form, Checkbox, and TextField.
+
+---
+
+## 7. Can you tell us how we can test a single widget in Flutter?
+
+**📚 TURINGQUESTIONS**
+
+**Widget tests** allow building and interacting with widgets in a test environment. It is used to check whether the Widget works as expected or not. Hence, using this testing UI component, you can test a single widget.
+
+---
+
+## 8. Can you tell us the four main elements of Flutter?
+
+**📚 TURINGQUESTIONS**
+
+The four main elements of Flutter are:
+
+1. Flutter engine
+2. Widgets
+3. Design-specific widgets
+4. Foundation Library
+
+---
+
+## 9. Can you tell us what will be the default return type, if you don't specify the return type for a function?
+
+**📚 TURINGQUESTIONS**
+
+In Flutter, Dart is the programming language used to develop the framework. In Dart, if you don't specify the return type for a function, the default return type will be **dynamic**. This means, if you declare a function in Flutter without specifying a return type, Dart assumes that the function can return any type of value and assigns the dynamic type to the return value by default.
+
+---
+
+## 10. Can you tell us what you know about Rune In Dart?
+
+**📚 TURINGQUESTIONS**
+
+In dart programming language strings are a sequence of UTF-16 which is a 16 bit unicode Transformation Format. **Rune** refers to an integer that is used to describe any Unicode code point.
+
+---
+
+## 11. Can you tell us which class is responsible for implementing the basic material design visual layout structure for an app in Flutter?
+
+**📚 TURINGQUESTIONS**
+
+The **scaffold class** is a widget in Flutter that is used to implement the basic material design visual layout structure. The scaffold class makes it faster to create a general-purpose mobile application. Moreover, it contains almost everything we need to create a functional and responsive Flutter application.
+
+---
+
+## 12. Can you tell us which function compiles and updates the app?
+
+**📚 TURINGQUESTIONS**
+
+In Flutter, there are several functions and commands that can be used to compile and update the app. However, the most commonly used function for this purpose is **hot reload**.
+
+Hot reload is a development feature in Flutter that allows you to update your app's code in real-time, without restarting the entire app.
+
+---
+
+## 13. Can you tell which function is accountable for starting the program?
+
+**📚 TURINGQUESTIONS**
+
+**main()** function is used to start a program. This function is highly critical as, without it, one cannot write any function.
+
+---
+
+## 14. Can you use WidgetsApp for basic navigation?
+
+**📚 TURINGQUESTIONS**
+
+Yes, a material app widget builds a navigator, which manages a stack of widgets identified by strings, also known as routes objects and gives you two ways for managing the stack.
+
+---
+
+## 15. Define spacer widget?
+
+**📚 TURINGQUESTIONS**
+
+In Flutter, the **Spacer widget** is a flexible widget that takes up available space within a Row, Column, or Flex layout. It is commonly used to create vertical or horizontal space between widgets, or to distribute available space between multiple widgets.
+
+> **Note:**
+  **Completed!** You've reviewed all 57 basic Flutter interview questions from Turing.com.
+
+---
+
+## 16. Difference between runApp() and main() in flutter
+
+**📚 SIMPLILEARN**
+
+| main() | runApp() |
+|--------|----------|
+| It is a function used to start the program | It is used to return the widgets that are connected to the screen as the root of the widget tree to be rendered on the screen |
+| In Flutter, it is impossible to write any program without the main() function | This function is called the main function and is also the driver of the app |
+
+---
+
+## 17. Different types of streams in Dart
+
+**📚 SIMPLILEARN**
+
+There are two types of streams in Dart: **Single Subscription Streams** and **Broadcast Streams**.
+
+### Single Subscription Streams
+
+- The events within a larger whole are delivered sequentially with single subscription streams
+- They are used for events that are in received matters or for reading a file
+- There is only one listener throughout the sequence to trigger the event, else the event won't be triggered
+
+### Broadcast Streams
+
+- Initially, the event needs to be subscribed to by the listener, then only these streams deliver events to their subscribers and subscribers can immediately start listening to events
+- There are several listeners to events simultaneously
+- Besides, one can also listen to the event again even after canceling a previous subscription
+
+---
+
+## 18. Differentiate between `mainAxisAlignment` and `crossAxisAlignment`.
+
+**📚 GITHUB**
+
+The `mainAxisAlignment` determines how the children should be placed along the main axis in a flex layout. Whereas, the `crossAxisAlignment` determines how the children will be placed along the cross axis in a flex layout.
+
+For a `Row` widget:
+- **mainAxisAlignment** --> Horizontal axis
+- **crossAxisAlignment** --> Vertical axis
+
+For a `Column` widget:
+- **mainAxisAlignment** --> Vertical axis
+- **crossAxisAlignment** --> Horizontal axis
+
+---
+
+## 19. Differentiate between `StatelessWidget` and `StatefulWidget` in Flutter.
+
+**📚 GITHUB**
+
+`StatelessWidget`s are those that do not change, or are immutable. Its appearance and properties remain constant throughout the widget's lifetime. **Icon**, **IconButton**, **Text** are examples of stateless widgets.
+
+`StatefulWidget`s are those that change their properties while running. They are dynamic, which means they can be rebuilt multiple times during their lifetime. It can alter its appearance in response to events caused by the user interactions or when data is received. **Checkbox**, **Radio**, **Slider**, **InkWell**, **Form**, and **TextField** are examples of stateful widgets.
+
+---
+
+## 20. Differentiate between final, const and static keyword.
+
+**📚 GITHUB**
+
+The `final` keyword defines a variable that can be initialized once and cannot be changed after being assigned a value for the first time.
+
+The `const` keyword defines a constant variable that should not be changed over time.
+
+Now the only difference between the final and const variable is that **final is a runtime-constant**, which in turn means that its value can be assigned at runtime instead of the compile-time that we had for the const keyword.
+
+The `static` keyword is used for a class-level variable and method that is the same for every instance of a class, this means if a data member is static, it can be accessed without creating an object. The static keyword allows data members to persist Values between different instances of a class.
+
+---
+
+## 21. Differentiate between Hot Restart and Hot Reload?
+
+**📚 SIMPLILEARN**
+
+### Hot Restart
+
+- It sets the state value as default by destroying the preserved state value
+- So if you are using States value in your application then after every hot restart the developer gets a fully compiled application and all the states will be set to their defaults
+- Hot Restart uses completely new typed code to rebuild the app widget tree
+- Hot Restart takes much higher time than Hot reload
+
+### Hot Reload
+
+- It has a combination of the Small r key on the command prompt or Terminal
+- It compiles the newly added code very quickly and sends it to the Dart Virtual Machine
+- Once the Dart Virtual machine code is updated, the hot reload feature updates the app UI including widgets
+- Hot Reload will not update the application if it has state values that are preserved by the hot restart feature
+
+## FAQs
+
+### 1. What is flutter used for?
+
+Flutter is used to create fast, beautiful, natively compiled mobile applications with one programming language and a single codebase.
+
+### 2. Is Flutter an SDK?
+
+Yes, Flutter is an SDK.
+
+### 3. How do I prepare for a flutter interview?
+
+To understand the flutter framework thoroughly, one can start with the flutter documentation developed by Google and also available as free in open source form. This will cover your basics and help you understand the ins and outs of the flutter framework. Then you can start going through a list of questions about the flutter to ace your flutter interview.
+
+### 4. Is Flutter a frontend or backend?
+
+Flutter is a frontend development framework.
+
+---
+
+## 22. Differentiate between named parameters and positional parameters in Flutter.
+
+**📚 GITHUB**
+
+A `Positional Parameter` is linked by its position. Positional parameters must be specified in the order in which they appear. `Named Parameters` are referenced by name, which means that they can be used during the function invocation in an order different from the function declaration.
+
+To declare a positional optional parameter, we use square brackets `[ ]`, whereas to declare a named optional parameters we use curly braces `{ }`.
+
+```dart
+doSomething(String name, [String greeting = 'Hello']); // Positional Optional Parameter
+doSomething({String? name, String greeting = 'Hello'}); // Named Optional Parameter
+```
+
+---
+
+## 23. Explain App state
+
+**📚 INTERVIEWBIT**
+
+App State may also be referred to as a shared state or application state. It is possible to share app states across sections of your app and maintain user sessions in the same way.
+
+Here are some examples of App State:
+
+- Login info
+- User preferences
+- E-commerce shopping cart
+- Social networking notifications, etc.
+
+---
+
+## 24. Explain BuildContext
+
+**📚 INTERVIEWBIT**
+
+BuildContexts are used to identify or locate widgets in widget trees. Each widget has its own BuildContext, i.e., one BuildContext per widget. Basically, we're using it to find references to other widgets and themes. In addition, you can utilize it to interact with widget parents and access widget data.
+
+---
+
+## 25. Explain Container class in a flutter
+
+**📚 INTERVIEWBIT**
+
+Basically, in Flutter, a container is a widget that has the capacity to accommodate multiple child widgets and manage them efficiently through dimensions, padding, and background color. Whenever we want to style the background of a widget, either because of a color, shape, or size constraint, we may use a container widget. With the Container class, widgets can be stored and positioned on the screen at our discretion. In general, it resembles a box for storing contents.
+
+A basic container has padding, margin, and border properties surrounding its child widget.
+
+---
+
+## 26. Explain Flutter Inspector
+
+**📚 INTERVIEWBIT**
+
+In the same manner, as with Native Android, the XML file allows us to view our app's blueprint and properties. There is a powerful tool called Flutter Inspector for Flutter applications that allows you to visualize the blueprint of your widgets and their properties. Using it, you can diagnose various layout issues and understand the current layout.
+
+### Flutter Inspector offers the following benefits:
+
+- Select widget mode
+- Toggle platform
+- Show paint baselines
+- Show debug paint
+- Refresh widget
+- Enable slow animations
+- Show/hide performance overlay
+
+---
+
+## 27. Explain Flutter Provider
+
+**📚 INTERVIEWBIT**
+
+The provider is built using widgets. You can use all the objects in the provider as if they were just part of Flutter with the new widget subclasses it creates. This also means that the provider is not cross-platform. The provider is the simplest way to handle state management. Basically, it works on the concept of PUB-SUB i.e., there is one provider and several subscribers.
+
+---
+
+## 28. Explain packages and plugins in Flutter
+
+**📚 INTERVIEWBIT**
+
+A package is a collection of classes, interfaces, and sub-packages that enable the creation of modular code that can be shared easily among users. Applications can be quickly developed using packages instead of developing everything from scratch. You can import new widgets or functionality into an app using a package in Flutter.
+
+There is a slight difference between plugins and packages:
+
+- **Plugins**: Using native code, enables more usability and makes it easier to use the device.
+- **Packages**: These are new code or components written in the dart programming language.
+
+Packages and plugins are often referred to as packages on DartPub, and specific distinctions between the two are made only during the creation of a new package.
+
+---
+
+## 29. Explain profile mode in Flutter?
+
+**📚 TURINGQUESTIONS**
+
+The **profile mode** in Flutter is used to test the functionality of an app while launching it. It compiles and launches your app almost identically to release mode but with additional functionality to allow debugging performance problems.
+
+---
+
+## 30. Explain pubspec.yaml file
+
+**📚 INTERVIEWBIT**
+
+The pubspec.yaml file, also known as 'pubspec', is a file that is included when you create a Flutter project and is located at the top of the project tree. This file contains information about the dependencies like packages and their versions, fonts, etc., that a project requires. It makes sure that the next time you build the project, you will get the same package version. Additionally, you can set constraints for the app.
+
+This specification is written in YAML, which can be read by humans.
+
+### The following are included in this file:
+
+- General project settings, like name of the project, version, description, etc.
+- Dependencies within a project
+- The assets of the project (e.g., images, audio, etc.)
+
+---
+
+## 31. Explain the Flutter Architecture
+
+**📚 INTERVIEWBIT**
+**📚 SIMPLILEARN**
+
+Flutter architecture is made up of three layers:
+
+- **Upper Layer**: It has Dart programming language including the widgets, animations, illustrations, customizations, etc.
+- **The middle layer**: It is also called the Flutter Engine used for text display, formatting, and layout
+- **Bottom Layer**: It is also called the built-in service and is used to manage the plugins or packages
+
+---
+
+## 32. Explain the flutter widget and write its importance
+
+**📚 INTERVIEWBIT**
+
+Generally, a Flutter app consists of a number of widgets. A widget is a way to declare and construct user interfaces. In Flutter, you must write code inside a widget in order to build anything. With the widget, you can see how your app would appear with its current configuration. As soon as you modify the code, the widget will rebuild its description based on the difference between the old and new widget, and the changes will sync up with the UI of the app.
+
+The Flutter widget can be created as follows:
+
+```dart
+class ImageWidget extends StatelessWidget {
+  // Class Stuff
+}
+```
+
+The app is built by nesting widgets within each other. This means the root of your app is a widget, and everything below it is a widget.
+
+---
+
+## 33. Explain the term "Tree shaking" in Flutter.
+
+**📚 TURINGQUESTIONS**
+
+**Tree shaking** is a method of removing the unused module in the bundle during the development process. Tree shaking serves as a sort of optimization technique that optimizes the code by removing the dead code.
+
+While importing or exporting codes, there might be dead codes hanging around. Removing these dead codes reduces the code size which in turn improves the performance of the application.
+
+---
+
+## 34. Flutter is developed by which company?
+
+**📚 TURINGQUESTIONS**
+
+**Google**
+
+---
+
+## 35. Flutter is written in which language?
+
+**📚 TURINGQUESTIONS**
+
+Flutter was written in the **Dart language**. While writing and debugging an application, Flutter runs in the Dart virtual machine, which features a just-in-time execution engine.
+
+---
+
+## 36. How can we create HTTP requests in Flutter?
+
+**📚 INTERVIEWBIT**
+
+To create HTTP requests, use the HTTP package: `import 'package:http/http.dart' as http;`
+
+### Example:
+
+```dart
+http.get('https://jsonplaceholder.typicode.com/albums/1');
+```
+
+It will return a `Future<http.Response>`.
+
+---
+
+## 37. How can you reduce execution time for running code?
+
+**📚 TURINGQUESTIONS**
+
+It will depend on the size and adaptability of the app packages. According to which we can integrate just-in-time compilers to run code which will enhance the app's performance. Dart code execution is faster than many other languages where Ahead-of-time compilers also shorten execution times. And, for merging sequential streams, integrating these compilers helps in run-time reduction and functionality increase in a variety of applications.
+
+---
+
+## 38. How can you test a single Widget?
+
+**📚 TURINGQUESTIONS**
+
+Using the **Widget tests** technique, you can make sure that various portions of the user interface work as intended without the need for a physical device or simulator. This technique is the best way to isolate small parts of your app and find out whether your code is behaving as expected.
+
+---
+
+## 39. How do Object, dynamic, and var differ in Dart?
+
+**📚 GITHUB**
+
+In Dart, Object, dynamic, and var are used for variable declarations but differ in how types are handled:
+
+**Object:** The base class for all types in Dart. Variables declared as Object can hold any type of value, but you need to explicitly cast them when accessing methods or properties specific to that type.
+
+```dart
+Object obj = "Hello";
+```
+
+**dynamic:** Allows any type, similar to Object, but without the need for casting. At runtime, the type is resolved dynamically, and any method or property can be accessed without compile-time checks.
+
+```dart
+dynamic obj = "Hello"; // obj.length; (no type safety, but flexible)
+```
+
+**var:** Inferred type based on the assigned value. The type is determined at compile time and is fixed for the variable after assignment.
+
+```dart
+var obj = "Hello"; // (obj is inferred as String)
+```
+
+---
+
+## 40. How do you handle background fetch on Android and iOS?
+
+**📚 LEMON**
+
+Use platform-specific plugins:
+
+### Recommended plugin: workmanager
+```dart
+import 'package:workmanager/workmanager.dart';
+
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    // Background fetch logic
+    await fetchData();
+    return Future.value(true);
+  });
+}
+
+void main() {
+  Workmanager().initialize(callbackDispatcher);
+  
+  Workmanager().registerPeriodicTask(
+    "1",
+    "fetchTask",
+    frequency: Duration(hours: 1),
+  );
+}
+```
+
+### Platform considerations:
+- **Android:** Uses WorkManager API, respects battery optimization
+- **iOS:** Limited background execution, uses background fetch API
+
+---
+
+## 41. How do you manage app state across multiple modules?
+
+**📚 LEMON**
+
+Use centralized state management solutions:
+
+### Riverpod:
+- Providers accessible from anywhere
+- No BuildContext needed
+- Type-safe and testable
+
+### Bloc/Cubit:
+- Clear separation of business logic
+- Predictable state transitions
+- Great for complex flows
+
+### Redux:
+- Single source of truth
+- Predictable state container
+- Time-travel debugging
+
+### Best practices:
+- Create shared state objects/services
+- Use dependency injection to provide state
+- Maintain consistent state management architecture
+- Define clear data flow patterns
+- Separate business logic from UI
+
+---
+
+## 42. How do you navigate between screens in Flutter?
+
+**📚 GITHUB**
+
+In Flutter, we can navigate between screens using the `Navigator` class. We can push a new screen onto the stack using the `push` method, and pop the current screen off the stack using the `pop` method. We can also use named routes to navigate between screens. To do this, we need to define a map of named routes in the `MaterialApp`, and then use the `Navigator.pushNamed` method to navigate to a specific named route.
+
+Here are the basic steps to navigate between screens in Flutter:
+
+1. Define the screens or pages as separate widgets, each with its own unique name and content.
+2. Use the `Navigator.push()` method to push a new Route onto the stack.
+   ```dart
+   Navigator.push(
+     context,
+     MaterialPageRoute(builder: (context) => SecondScreen()),
+   );
+   ```
+3. Now, to go back to the previous screen use the `Navigator.pop()` method.
+   ```dart
+   Navigator.pop(context),
+   ```
+
+---
+
+## 43. How do you pass data between screens in Flutter?
+
+**📚 GITHUB**
+
+In Flutter, we can pass data between screens using various methods. Some of the most commonly used methods are:
+
+1. **Using constructor parameters**: We can pass data between screens by passing the required data as parameters to the constructor of the destination screen.
+
+   ```dart
+   Navigator.push(
+     context,
+     MaterialPageRoute(
+       builder: (context) => SecondScreen(data: 'Hello World!'),
+     ),
+   );
+
+   class SecondScreen extends StatelessWidget {
+     final String data;
+
+     SecondScreen({required this.data});
+
+     @override
+     Widget build(BuildContext context) {
+       return Scaffold( ... );
+     }
+   }
+   ```
+
+2. **Using named routes**: We can define named routes in the app and pass data as arguments to these routes.
+
+   ```dart
+   Navigator.pushNamed(
+     context,
+     '/second',
+     arguments: 'Hello World!',
+   );
+
+   class SecondScreen extends StatelessWidget {
+     @override
+     Widget build(BuildContext context) {
+       final String data = ModalRoute.of(context)!.settings.arguments as String;
+
+       return Scaffold( ... );
+     }
+   }
+   ```
+
+3. **Using a state management library**: We can use a state management library like Provider, Riverpod, Bloc, or MobX to manage the state of the app and pass data between screens. This approach is especially useful when complex data needs to be shared between multiple screens.
+
+---
+
+## 44. How do you persist offline data in Flutter?
+
+**📚 LEMON**
+
+Several options depending on needs:
+
+### For structured data:
+- **sqflite** - SQLite database for relational data
+- **Hive** - Lightweight, fast NoSQL database
+- **ObjectBox** - High-performance NoSQL database with relations
+
+### For simple key-value storage:
+- **shared_preferences** - Simple key-value storage for user preferences
+
+Choose based on:
+- Data complexity (relational vs. simple key-value)
+- Performance requirements
+- Query needs
+- Data volume
+
+---
+
+## 45. How do you test a widget that uses animation?
+
+**📚 LEMON**
+
+Use `WidgetTester` methods:
+
+### pumpAndSettle():
+- Waits for all animations to complete
+- Useful for implicit animations
+
+### pump(Duration):
+- Advances clock by specified duration
+- Simulates animation frames
+- Allows testing specific animation states
+
+```dart
+testWidgets('Animation test', (WidgetTester tester) async {
+  await tester.pumpWidget(MyAnimatedWidget());
+  
+  // Trigger animation
+  await tester.tap(find.byType(ElevatedButton));
+  
+  // Wait for animation to complete
+  await tester.pumpAndSettle();
+  
+  // Verify final state
+  expect(find.text('Animated'), findsOneWidget);
+});
+```
+
+---
+
+## 46. How do you update a large list efficiently without rebuilding the entire list?
+
+**📚 LEMON**
+
+Several optimization strategies:
+
+### 1. Use ListView.builder:
+- Creates items lazily
+- Only renders visible items
+
+### 2. Assign Keys to items:
+```dart
+ListView.builder(
+  itemBuilder: (context, index) {
+    return ListTile(
+      key: ValueKey(items[index].id),
+      title: Text(items[index].name),
+    );
+  },
+)
+```
+
+### 3. Use AnimatedList:
+- Provides smooth insert/remove animations
+- Efficiently updates individual items
+
+### 4. Selectively rebuild:
+- Use `ValueListenableBuilder` for individual items
+- Separate item widgets
+- Use `const` constructors where possible
+
+### 5. Pagination:
+- Load and render data in chunks
+- Implement infinite scroll
+
+### Best practices:
+- Avoid rebuilding the entire list
+- Use keys to preserve state
+- Implement lazy loading
+- Cache item widgets when possible
+
+---
+
+## 47. How do you use the `Positioned` widget in Flutter?
+
+**📚 GITHUB**
+
+In Flutter, the `Positioned` widget is used to position a child widget within a `Stack` widget. The `Positioned` widget takes four optional arguments: `left`, `top`, `right`, and `bottom`, which specify the position of the child widget relative to the edges of the parent `Stack` widget.
+
+For example:
+
+```dart
+Stack(
+  children: [
+    Positioned(
+      left: 10,
+      top: 10,
+      child: Text('Hi there!'),
+    ),
+    Positioned(
+      right: 10,
+      bottom: 10,
+      child: Text('Bye there!'),
+    ),
+  ],
+),
+```
+
+In this example, we create a Stack widget with two child widgets that are positioned at opposite corners of the Stack. The first child widget is positioned 10 pixels from the left and top edges of the Stack, while the second child widget is positioned 10 pixels from the right and bottom edges of the Stack.
+
+---
+
+## 48. How do you write a custom RenderBox?
+
+**📚 LEMON**
+
+To create a custom `RenderBox`:
+
+1. Extend `RenderBox`
+2. Implement required methods:
+   - `performLayout()`: Calculate and set the size
+   - `paint()`: Draw the widget
+   - Optional: `hitTest()` for touch interactions
+
+Use custom `RenderBox` for:
+- Low-level rendering needs
+- Custom layout algorithms
+- Performance-critical rendering
+- Unique visual effects not achievable with standard widgets
+
+This gives you complete control over layout and painting but requires understanding Flutter's rendering pipeline.
+
+---
+
+## 49. How do you write platform-specific code in Flutter?
+
+**📚 LEMON**
+
+Use `MethodChannel` for communication between Dart and native code:
+
+### Dart side:
+```dart
+const platform = MethodChannel('com.example/channel');
+
+try {
+  final result = await platform.invokeMethod('methodName', arguments);
+} catch (e) {
+  // Handle error
+}
+```
+
+### Native side:
+- **Android:** Implement in Kotlin/Java within the MainActivity
+- **iOS:** Implement in Swift/Objective-C within the AppDelegate
+
+This allows you to:
+- Access platform-specific APIs
+- Use native functionality not available in Flutter
+- Integrate with existing native code
+
+---
+
+## 50. How does Flutter handle accessibility?
+
+**📚 LEMON**
+
+Flutter provides comprehensive accessibility support:
+
+### Built-in features:
+- Semantic widgets automatically expose information
+- Screen reader support (TalkBack/VoiceOver)
+- Semantic labels and hints
+- Semantic actions
+
+### Semantics widget:
+```dart
+Semantics(
+  label: 'Submit button',
+  hint: 'Double tap to submit the form',
+  button: true,
+  child: GestureDetector(
+    onTap: _submit,
+    child: Container(...),
+  ),
+)
+```
+
+### Best practices:
+- Provide meaningful labels
+- Ensure sufficient contrast ratios
+- Support text scaling
+- Test with screen readers
+- Use semantic widgets for custom controls
+- Provide alternative text for images
+
+---

@@ -1,0 +1,460 @@
+---
+title: Intermediate Flutter Questions
+description: Intermediate Flutter Questions
+---
+
+# Intermediate Flutter Questions
+
+> **Note:**
+  **Source:** All questions are from [Turing.com Flutter Interview Questions](https://www.turing.com/interview-questions/flutter)
+
+  **Total Questions:** 32
+
+---
+
+## 1. Tell me about Flutter Provider.
+
+INTERMEDIATE
+
+Widgets are used to build the provider. Inside the provider, one can use all the objects as if they are a part of it with the new widget subclasses it creates. Primarily, it works on the concept of **PUB-SUB** which means one provider with many subscribers.
+
+---
+
+## 2. What are the advantages of using Flutter?
+
+INTERMEDIATE
+
+Flutter has many advantages:
+
+- **Fast development**: With the help of Flutter, you can save a lot of time while developing software. Hot reload is a flutter feature with which you can make changes to your code and see the results in real time.
+- **Flexible user interface**: Flutter provides your application with a sleek, beautiful, and modern look that is sure to impress your users.
+- **Provides native performance**: Flutter applications run faster and smoother on devices.
+- **Widgets**: When building your application in Flutter, you get access to a wide range of pre-loaded widgets that can be utilized in your app.
+- **Huge community support**: If you want to reach a global audience, then Flutter is for you because it supports internationalization. With it, you can create an application that is available in multiple languages.
+
+---
+
+## 3. What is the purpose of the Navigator in Flutter and how is it used?
+
+INTERMEDIATE
+
+**Navigator** is a widget in Flutter that manages a stack of screens or "routes" in an application. It is used to navigate between different screens and to manage the state of the navigation stack. Navigator is typically used in conjunction with MaterialApp or CupertinoApp to create a navigation hierarchy for an application.
+
+---
+
+## 4. Can you tell us some examples of App State?
+
+INTERMEDIATE
+
+Some examples of App State include:
+
+- Login info
+- Notifications in a social networking app
+- User preferences
+
+---
+
+## 5. Explain Streams in Flutter?
+
+INTERMEDIATE
+
+**Future** and **Stream** are classes in Dart that define asynchronous programming. It behaves asynchronously as it doesn't return the next event when requested. Instead, it informs when the next event will be returned when ready.
+
+---
+
+## 6. What is the lifecycle of a StatefulWidget?
+
+INTERMEDIATE
+
+A StatefulWidget's lifecycle is as follows:
+
+1. `createState`
+2. `initState`
+3. `didChangeDependencies`
+4. `build`
+5. `didUpdateWidget`
+6. `setState`
+7. `deactivate`
+8. `dispose`
+
+---
+
+## 7. Define the term Cookbook.
+
+INTERMEDIATE
+
+A **cookbook** provides specific programming solutions for some common problems experienced by developers during the development process. Each recipe can be used independently during the development process.
+
+---
+
+## 8. What do you mean by Container class?
+
+INTERMEDIATE
+
+The **container class** is the convenience widget that enables positioning, sizing, and painting of widgets. A container class can include multiple widgets and it enables developers to manage those widgets according to their convenience.
+
+---
+
+## 9. What is Flutter Architecture?
+
+INTERMEDIATE
+
+Flutter architecture is comprised of three layers:
+
+### Flutter Framework Layer
+This is the highest layer in the Flutter architecture and includes the widgets and the Material Design widgets. It also includes APIs for animations, gestures, and routing.
+
+### Engine Layer
+This is the core layer of the Flutter architecture that contains the rendering engine, which handles graphics and text rendering. It also includes the Skia graphics library, used to draw graphics on the screen.
+
+### Platform Layer
+This is the lowest layer in the Flutter architecture and provides access to the native platform APIs. It includes plugins and packages that allow Flutter to interact with the device's hardware and software, such as the camera, location services, and sensors.
+
+---
+
+## 10. Can you give some reasons why Flutter is better than its alternatives?
+
+INTERMEDIATE
+
+Flutter has several advantages over its alternatives. Here are some of the main reasons why Flutter is a great choice for building mobile apps:
+
+- Flutter offers a **hot-reload feature** that enables developers to see changes in their code instantly without having to wait for the app to recompile.
+- Flutter allows you to build apps that work seamlessly on **multiple platforms**, including Android, iOS, and the web.
+- Flutter offers a rich set of **customizable widgets**, allowing developers to create beautiful and responsive designs that adapt to different screen sizes and orientations.
+- Flutter uses a compiled programming language, **Dart**, which is optimized for performance and runs natively on the device.
+
+---
+
+## 11. Explain how you will deploy a Flutter app to the Google Play/App Store?
+
+INTERMEDIATE
+
+For deploying Flutter apps to the Google Play Store or App Store, you will need to know the guidelines suggested by each. In both cases, it's important to make sure your app meets the requirements and guidelines of the respective app store before submitting it for review. This includes things like app content, user data privacy, user interface, and more.
+
+### Deploying to Google Play Store:
+
+1. Create a Google Play Developer account
+2. Create a signing key
+3. Configure your app
+4. Submit your app for review
+5. Publish your app
+
+### Deploying to App Store:
+
+1. Create an Apple Developer account
+2. Create a signing certificate and provisioning profile
+3. Configure your app
+4. Submit your app for review
+5. Publish your app
+
+---
+
+## 12. Explain the Primary Axis and Cross Axis Alignment.
+
+INTERMEDIATE
+
+An alignment defines how a row or a column is aligned with respect to the horizontal or vertical axis. For example, for a row its main axis is horizontal and so its cross axis will be vertical.
+
+- **PrimaryAxisAlignment**: the rows run horizontally, and the columns run vertically.
+- **CrossAxisAlignment**: the rows run vertically, and the columns run horizontally.
+
+---
+
+## 13. Can you tell us a way to access screen size in the future?
+
+INTERMEDIATE
+
+You can access the screen size using the **MediaQuery** class. The MediaQuery class provides information about the current device's screen size and orientation.
+
+```dart
+final size = MediaQuery.of(context).size;
+final width = size.width;
+final height = size.height;
+```
+
+---
+
+## 14. What's the difference between container and sizedBox?
+
+INTERMEDIATE
+
+Container and SizedBox are both widgets in Flutter that can be used to size and position child widgets, but they have some differences.
+
+The **Container** widget is a multi-purpose widget that can be used to apply decoration, padding, margin, and constraints to a child widget. The Container widget can also be used as a layout widget to position its child widget within its bounds.
+
+The **SizedBox** widget, on the other hand, is a simple widget that has a fixed width and height. The SizedBox widget is useful when you need to add fixed-size gaps in between widgets or to set a minimum or maximum size for a widget.
+
+---
+
+## 15. When do you use release mode and what's the function of release mode?
+
+INTERMEDIATE
+
+A **release mode** is used when one needs to optimize and produce the codes without any debug data. The release mode is used for deploying the app.
+
+The command used to compile the release mode is:
+```bash
+flutter run --release
+```
+
+---
+
+## 16. Can you name some popular database packages in Flutter?
+
+INTERMEDIATE
+
+Here are two widely used packages in Flutter:
+
+- **Firebase**: It is used to use or modify the cloud database
+- **Sqflite**: It is used to modify the SQLite database
+
+---
+
+## 17. What are the advantages of a Flutter Inspector?
+
+INTERMEDIATE
+
+The advantages of Flutter inspector are as follows:
+
+- **Widget mode**: With this button, you can choose different widgets from your application and inspect them one at a time. After choosing any Widget from the Widget Tree you can view the blueprint of that Widget with the help of the Layout Explorer tab, or you can check different properties and nested widgets of the selected Widget with the help of the Details Tree tab.
+
+- **Refresh Tree**: Whenever you make any changes in your application, and you hot reload those changes, they are not immediately reflected in your Flutter Inspector tool. To see the changes, you will have to click the Refresh Tree button.
+
+- **Slow animation**: You can reduce the speed of animation between layouts.
+
+- **Invert Oversized Image**: This will help to find oversized images. If developers want to create an application and they want to run it as fast as possible, but with heavy size and high-resolution images, it affects the performance of the application, so it will find the image and reduce the size of that image.
+
+- **Debug paint**: Forms a border around each Widget.
+
+---
+
+## 18. Define factory constructors.
+
+INTERMEDIATE
+
+A **factory constructor** invokes another constructor, which is allowed to return an instance of a derived class, null or an existing instance. Factory constructors are defined using the `factory` keyword.
+
+```dart
+class Logger {
+  static final Map<String, Logger> _cache = {};
+
+  factory Logger(String name) {
+    return _cache.putIfAbsent(name, () => Logger._internal(name));
+  }
+
+  Logger._internal(this.name);
+
+  final String name;
+}
+```
+
+---
+
+## 19. List the responsibilities of FlutterActivity.
+
+INTERMEDIATE
+
+The roles of a **FlutterActivity** are:
+
+- Configuring the appearance of the status bar
+- Displaying Android launch screen
+- Displaying flutter splash screen
+- Choosing an execution path for the Dart app bundle
+- Adding transparency, which is an optional responsibility
+- Saving and restoring instance state
+
+---
+
+## 20. Name the different types of grid view in Flutter.
+
+INTERMEDIATE
+
+The different types of grid views in Flutter are:
+
+- `GridView.count()`
+- `GridView.custom()`
+- `GridView.builder()`
+- `GridView.extent()`
+
+---
+
+## 21. How would you implement a custom transition between screens in Flutter?
+
+INTERMEDIATE
+
+You can use the **PageRouteBuilder** class to create custom transitions between screens. This class allows you to define custom animations, such as sliding or fading, for the page transition.
+
+```dart
+Navigator.push(
+  context,
+  PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => SecondPage(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(
+        opacity: animation,
+        child: child,
+      );
+    },
+  ),
+);
+```
+
+---
+
+## 22. Can you explain how to use the Provider package for state management in Flutter?
+
+INTERMEDIATE
+
+The **Provider** package is a state management library that allows you to share data between widgets efficiently. You can use the Provider package to create a data model, expose it using a provider, and then access it in your widgets using the `Provider.of` method.
+
+```dart
+// Create a model
+class Counter with ChangeNotifier {
+  int _count = 0;
+  int get count => _count;
+
+  void increment() {
+    _count++;
+    notifyListeners();
+  }
+}
+
+// Provide it
+ChangeNotifierProvider(
+  create: (context) => Counter(),
+  child: MyApp(),
+)
+
+// Consume it
+final counter = Provider.of<Counter>(context);
+```
+
+---
+
+## 23. What is the difference between Expanded and Flexible?
+
+INTERMEDIATE
+
+**Flexible** takes the least space needed to fit in a child widget. On the other hand, **Expanded** takes the rest of the size in the widget.
+
+---
+
+## 24. Can you tell us some differences between const and final in Flutter?
+
+INTERMEDIATE
+
+The only difference between `const` and `final` is that the **const variables are evaluated at compile-time** and are immutable whereas **final variables are evaluated at runtime** and can only be set once.
+
+```dart
+final currentTime = DateTime.now(); // Runtime value
+const pi = 3.14159; // Compile-time constant
+```
+
+---
+
+## 25. How would you optimize the performance of a Flutter app?
+
+INTERMEDIATE
+
+Some techniques to optimize the performance of a Flutter app include:
+
+- Using the `const` keyword to make widgets immutable
+- Avoiding unnecessary widget rebuilds
+- Using the Provider package for efficient state management
+- Minimizing the number of expensive operations in the build method
+
+So, if your app is small, you can pass your data using the constructor of the widget class, but for a larger app, this is not an easy task. Unknowingly we use inherited widgets in many places while developing the flutter app: `Theme.of(context)`, `Navigator.of(context)`, and `MediaQuery.of(context)`.
+
+---
+
+## 26. Can you describe how to implement internationalization in a Flutter app?
+
+INTERMEDIATE
+
+Flutter provides the **Intl** package, which allows you to add support for multiple languages to your app. You can use the package to define messages in different languages, format numbers, dates, and times, and apply pluralization rules based on the language.
+
+---
+
+## 27. Differentiate between setState and Provider?
+
+INTERMEDIATE
+
+The `setState()` is used for managing the **local state**. Calling the setState() function notifies the framework about the change in the state of the object and that may affect the user interaction in the subtree.
+
+Whereas, **provider** is a state management technique in Flutter that allows widgets to access data from a central location (i.e., a "provider"). Providers can be used to manage the application state, such as user authentication or data fetched from an API.
+
+---
+
+## 28. Is it possible to nest a Scaffold? Why or why not?
+
+INTERMEDIATE
+
+**Yes, it is possible.** Scaffold is a widget, so you can put it anywhere you want. Scaffold provides APIs like Drawer, SnackBar, BottomNavigationBar, FloatingActionButton, etc. However, it is not necessary to nest scaffolds as they can be used on their own.
+
+---
+
+## 29. Can you explain how to use streams and futures in Flutter? Also, tell us some similarities and differences between Future and Stream?
+
+INTERMEDIATE
+
+Streams and futures are powerful tools for handling asynchronous operations in Flutter. You can use a **stream** to listen for a series of events, such as user input or network responses, and react to them in real-time. A **future**, on the other hand, represents a value that may not be available yet and allows you to execute asynchronous code and retrieve the result when it's ready.
+
+### Similarities between future and stream:
+
+- Both work asynchronously
+- Both have some potential value
+
+### Differences between future and stream:
+
+- Future has **one response** whereas a stream can have **multiple responses**
+- Futures are used in HTTP calls
+- A Stream is a series of futures
+
+---
+
+## 30. Can you tell us the difference between WidgetsApp and MaterialApp?
+
+INTERMEDIATE
+
+The main difference between **WidgetsApp** and **MaterialApp** is that the widget offers basic navigation, whereas MaterialApp is built on top of WidgetsApp.
+
+---
+
+## 31. Can you state some difference between runApp() and main()?
+
+INTERMEDIATE
+
+**Main()**: Main() function starts the program. You cannot write a program in Flutter without using the main() function.
+
+**runApp()**: runApp() is used to launch the software. RunApp() allows you to return the widgets that are connected to the screen as the widget tree's root.
+
+```dart
+void main() {
+  runApp(MyApp());
+}
+```
+
+---
+
+## 32. What's the need of mixins?
+
+INTERMEDIATE
+
+**Multiple inheritances are not supported in Dart.** Hence, you would need **mixins** to use multiple inheritance in Flutter, as they allow you to write reusable class code in multiple class hierarchies.
+
+```dart
+mixin Musical {
+  void playInstrument() {
+    print('Playing music');
+  }
+}
+
+class Performer with Musical {
+  // Can now use playInstrument()
+}
+```
+
+---
+
+> **Note:**
+  **Completed!** You've reviewed all 32 intermediate Flutter interview questions from Turing.com.

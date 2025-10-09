@@ -1,0 +1,23 @@
+{
+  "title": "Flutter",
+  "description": "Flutter interview questions and preparation guide",
+  "root": true,
+  "pages": [
+    "index",
+    "important-topics",
+    "best-practices",
+    "common-mistakes",
+    "---",
+    "basics",
+    "intermediate",
+    "advanced",
+    "---2",
+    "turing-questions",
+    "geeksforgeeks",
+    "interviewbit",
+    "medium",
+    "github",
+    "simplilearn",
+    "lemon"
+  ]
+}

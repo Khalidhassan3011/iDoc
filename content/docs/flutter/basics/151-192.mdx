@@ -1,0 +1,535 @@
+---
+title: Basics Flutter Questions (Questions 151-192)
+description: Basics Flutter Questions (Questions 151-192)
+---
+
+# Basics Flutter Questions (Questions 151-192)
+
+> **Note:**
+  **Questions 151-192 of 192**
+
+  All questions consolidated from multiple sources with source attribution.
+
+---
+
+## 151. What is the purpose of the `Visibility` widget in Flutter?
+
+**📚 GITHUB**
+
+In Flutter, the `Visibility` widget is used to control the visibility of a child widget based on a certain condition. The `Visibility` widget can be used to show or hide a widget dynamically, based on user interactions or other conditions.
+
+The `Visibility` widget has a visible property that determines whether its child is visible or not. If visible is set to true, the child is visible, and if it's set to false, the child is hidden.
+
+Here are some use cases for the `Visibility` widget:
+
+- Hiding/showing a widget based on a certain condition (e.g. a user's authentication status)
+- Hiding/showing a widget based on user interactions (e.g. a dropdown menu that appears when a button is pressed)
+- Animating the appearance/disappearance of a widget (e.g. fading in/out a widget when it appears/disappears)
+
+```dart
+Visibility(
+  visible: true, // currently visible, set to `false` to disappear
+  child: Text(
+    'Hello, World!',
+    style: TextStyle(fontSize: 24),
+  ),
+),
+```
+
+---
+
+## 152. What is the purpose of the Expanded widget in Flutter?
+
+**📚 GITHUB**
+
+In Flutter, the `Expanded` widget is used to adjust the available space for a child widget of a `Row`, `Column`, or `Flex` widget, by dividing the remaining free space among the children.
+
+When an `Expanded` widget is used, the child widget of the Row, Column, or Flex takes up as much available space as possible in the direction of the `mainAxisSize` property of the parent widget. This means that if the parent widget is a Row, the Expanded widget expands the child widget horizontally, and if the parent is a Column, the Expanded widget expands the child widget vertically.
+
+If there is more than one Expanded widget in the same Row, Column, or Flex, the available space is divided among the children based on their `flex` property, which determines the proportion of the remaining free space that each child should occupy.
+
+---
+
+## 153. What is the purpose of the Material Design Icons package in Flutter?
+
+**📚 GITHUB**
+
+The Material Design Icons package in Flutter provides a set of icons that follow the Material Design guidelines for iconography. These icons are designed to be simple, easy to recognize, and scalable, making them ideal for use in mobile apps and web applications.
+
+The Material Design Icons package contains over 4,000 icons that cover a wide range of categories, including action icons, alert icons, communication icons, content icons, device icons, editor icons, file icons, hardware icons, image icons, maps icons, navigation icons, notification icons, places icons, social icons, toggle icons, and more.
+
+To use  Material Design Icons, first we need to add the package as a dependency to your Flutter project. Then, we can use any of the icons in the app by importing the `MaterialIcons` class and referencing the icon by name.
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('My App'),
+      ),
+      body: Center(
+        child: Icon(MdiIcons.home),
+      ),
+    );
+  }
+}
+```
+
+Overall, the Material Design Icons package is a useful resource for Flutter developers, as it provides a large set of high-quality icons that can be used to enhance the user experience of their apps.
+
+---
+
+## 154. What is the purpose of the scaffold widget in Flutter?
+
+**📚 GITHUB**
+
+The `Scaffold` widget in Flutter is a basic structure or layout for a screen or a page in a Flutter application. It provides a visual structure for displaying a material design-style layout, which includes app bars, drawers, floating action buttons, and more.
+
+The Scaffold widget serves as a container for different widgets, such as a `AppBar`, `BottomNavigationBar`, `Drawer`, and `FloatingActionButton`. It also provides a body property for adding the main content of the screen, and backgroundColor property for setting the background color of the screen.
+
+Using a Scaffold widget can help to quickly build a basic structure for a Flutter application's user interface. The widgets it contains can be customized to achieve a wide range of designs and functionalities.
+
+---
+
+## 155. What is the use of Mixins?
+
+**📚 INTERVIEWBIT**
+
+Multiple inheritances are not supported by Dart. Thus, we need mixins to implement multiple inheritances in Flutter/Dart. The use of mixins makes it easy to write reusable class code in multiple class hierarchy levels. Mixins can also be used to provide some utility functions (such as RenderSliverHelpers in Flutter).
+
+---
+
+## 156. What is the use of the Await function?
+
+**📚 TURINGQUESTIONS**
+
+The **Await** function is an asynchronous function. Its job is to wait until it gets the final value. Await is used with async functions and that run asynchronously, giving users the choice to wait for the asynchronous mode to finish before continuing.
+
+---
+
+## 157. What is the use of Ticker in Flutter?
+
+**📚 INTERVIEWBIT**
+
+We use a ticker to tell how often our animation is refreshed in Flutter. Signals are sent at a constant frequency, such as 60 times per second, using this type of signal-sending class. We understand it better with our watch, which ticks constantly. For each tick, a callback method is provided that has the time since the first tick at each second since it was started. The tickers are synchronized immediately, even if they begin at different times.
+
+---
+
+## 158. What is the widget lifecycle of a StatefulWidget?
+
+**📚 LEMON**
+
+The lifecycle stages are:
+
+1. **createState()** - Creates the mutable state object
+2. **initState()** - Called once when state is created
+3. **didChangeDependencies()** - Called when dependencies change
+4. **build()** - Called to build the widget tree (called frequently)
+5. **didUpdateWidget()** - Called when the widget configuration changes
+6. **setState()** - Triggers a rebuild (can be called multiple times)
+7. **deactivate()** - Called when widget is removed from tree
+8. **dispose()** - Called when state is permanently removed
+
+Understanding this lifecycle is crucial for:
+- Resource management
+- Avoiding memory leaks
+- Proper initialization and cleanup
+
+---
+
+## 159. What is used to import packages for your project?
+
+**📚 TURINGQUESTIONS**
+
+**pubspec.yaml** file is used to import packages in the Dart code. It allows us to set the constraints for the application. This file contains project dependencies, general project settings, and project assets.
+
+---
+
+## 160. What process will you use to reduce widget rebuild?
+
+**📚 TURINGQUESTIONS**
+
+On rebuilding, the state of the widget changes. This, however, helps the user to see the UI reflect state changes. At this point recreating sections of the user interface that do not need to be changed is unnecessary.
+
+To avoid the needless rebuilding of the widgets one can divide the widget tree into small individual widgets each having its own build process. Here **const constructor** can be used to inform Flutter that the widgets don't need to be rebuilt.
+
+---
+
+## 161. What technology is Flutter built with?
+
+**📚 GITHUB**
+
+Flutter is an open-source UI software development toolkit created by Google for building natively compiled applications across mobile, web, and desktop from a single codebase. It's primarily developed using the Dart programming language, also by Google, which supports ahead-of-time (AOT) compilation for high-performance execution.
+
+The architecture of Flutter comprises three main components:
+
+1. **Flutter Framework**: Written in Dart, this layer provides a comprehensive set of libraries and widgets, including Material Design and Cupertino (iOS-style) widgets, enabling developers to craft highly customizable user interfaces.
+
+2. **Flutter Engine**: Primarily written in C++, the engine is responsible for rendering and core functionalities. Initially, Flutter utilized the Skia graphics library for rendering. However, with the release of Flutter 3.27, the Impeller rendering engine has become the default on both iOS and Android platforms. Impeller aims to deliver more predictable performance by precompiling shaders and leveraging modern graphics APIs like Metal.
+
+3. **Embedder**: This component allows Flutter applications to run on various platforms by providing an entry point and access to native APIs. It's platform-specific and integrates the Flutter engine into the target operating system.
+
+**Further Reading:**
+
+- [Flutter Architectural Overview](https://docs.flutter.dev/resources/architectural-overview)
+
+---
+
+## 162. What was the first version of Flutter which ran on an Android operating system?
+
+**📚 TURINGQUESTIONS**
+
+**Sky** is the first version of Flutter which ran on Android OS. It was announced at the 2015 Dart developer summit with the stated goal of being able to render consistently at 120 frames per second.
+
+---
+
+## 163. What's the core of the Flutter layout mechanism?
+
+**📚 TURINGQUESTIONS**
+
+The main core of the Flutter layout mechanism is the **Widgets**. The widgets are the building blocks of the user interface, and they are arranged in a tree-like structure known as the widget tree. The image, text, icon, and even the layout of your application are all widgets.
+
+---
+
+## 164. What's the difference between Provider, Riverpod, and Bloc?
+
+**📚 LEMON**
+
+- **Provider:** A wrapper around `InheritedWidget` for dependency injection and state management. Simple to use and integrates well with Flutter's widget tree.
+
+- **Riverpod:** A safer, more testable evolution of Provider. It doesn't depend on `BuildContext` and offers compile-time safety, better testing support, and can be used outside the widget tree.
+
+- **Bloc:** Uses streams and events for reactive state management. Follows a unidirectional data flow pattern with clear separation between business logic and UI. More verbose but highly structured and predictable.
+
+### Choose based on:
+- Simplicity: Provider
+- Type safety and testability: Riverpod
+- Complex business logic and predictability: Bloc
+
+---
+
+## 165. What's the function of the future in Dart?
+
+**📚 TURINGQUESTIONS**
+
+A **future** function is used to predict a potential error or value that may occur in the future. It can be completed with a value or an error. Here, developers can plug callbacks for each case. Some programming languages use "promise" for the same function.
+
+---
+
+## 166. What's the latest version of Flutter?
+
+**📚 TURINGQUESTIONS**
+
+**3.7** is the latest version of Flutter (as of the time of writing). Along with an improved framework, this new version also has great new features like enhanced material 3 support, cascading menus and menu bars, impeller preview, custom context menus, and DevTools updates among others.
+
+---
+
+## 167. What's the name of a constructor for a class in Flutter?
+
+**📚 TURINGQUESTIONS**
+
+The name of a constructor for a class is **the same as that of the class itself**. Constructor is a special strategy that is used to create objects with predetermined values for the properties. There are three types of constructors in Flutter: named constructor, standard constructor, and factory constructor.
+
+---
+
+## 168. What's the purpose of GlobalKey, and what are its downsides?
+
+**📚 LEMON**
+
+`GlobalKey` allows access to a widget's state from anywhere in the widget tree.
+
+### Uses:
+- Access state across different parts of the tree
+- Call methods on a widget's state
+- Maintain state when moving widgets
+- Form validation across complex UIs
+
+### Downsides:
+- Potential memory leaks if not disposed properly
+- Slower widget tree comparisons
+- Can break Flutter's declarative paradigm
+- Makes code harder to test and maintain
+
+**Recommendation:** Use sparingly and consider alternatives like state management solutions first.
+
+---
+
+## 169. What's the role of BuildContext in Flutter?
+
+**📚 TURINGQUESTIONS**
+
+In Flutter, the **BuildContext** is an object that provides access to the location of a widget in the widget tree hierarchy and to various services such as Theme, MediaQuery, and Navigator. The BuildContext is used by widgets to access the properties of their parent widget, such as its size, position, and theme. It is also used to navigate between screens using the Navigator widget.
+
+---
+
+## 170. What's the role of image.network() constructor in Flutter?
+
+**📚 TURINGQUESTIONS**
+
+The **Image.network()** constructor is a widget in Flutter that allows you to display images from the network in your application. It is used to load and display images from a URL.
+
+**Example:**
+```dart
+Image.network('https://picsum.photos/250?image=9')
+```
+
+---
+
+## 171. What's the role of RepaintBoundary?
+
+**📚 LEMON**
+
+`RepaintBoundary` prevents unnecessary repaints by isolating parts of the widget tree. When a `RepaintBoundary` is used:
+
+- Flutter creates a separate layer for that subtree
+- Changes inside don't trigger repaints outside
+- Changes outside don't trigger repaints inside
+
+### Benefits:
+- Improves rendering performance
+- Reduces the area that needs to be redrawn
+- Minimizes computational overhead
+
+### Use cases:
+- Complex widgets that don't change frequently
+- Animations that shouldn't affect other widgets
+- Expensive-to-render sections
+- Widgets that update independently
+
+```dart
+RepaintBoundary(
+  child: ComplexWidgetThatRarelyChanges(),
+)
+```
+
+---
+
+## 172. What's the use of Navigation.push in Flutter?
+
+**📚 TURINGQUESTIONS**
+
+The role of **Navigation.push** in Flutter is to add a route to a bundle of other routes which are managed by the navigator.
+
+---
+
+## 173. When should you use mainAxisAlignment and crossAxisAlignment?
+
+**📚 SIMPLILEARN**
+
+The crossAxisAlignment and mainAxisAlignment are used to control how a row and column widget aligns with their children depending on our choice.
+
+### mainAxisAlignment
+
+In mainAxisAlignment, the rows will run horizontally whereas the columns will run vertically.
+
+### crossAxisAlignment
+
+In crossAxisAlignment, The rows will run vertically whereas the columns will run horizontally.
+
+---
+
+## 174. When to use mainAxisAlignment and crossAxisAlignment
+
+**📚 INTERVIEWBIT**
+
+The mainAxisAlignment is how items are aligned on that axis, whereas crossAxisAlignment is how items are aligned on the other axis. Row and column widgets can align their children according to our preferences using the crossAxisAlignment and the mainAxisAlignment properties.
+
+### For Row Widget:
+- Children are arranged horizontally
+- `mainAxisAlignment` = Horizontal Axis
+- `crossAxisAlignment` = Vertical Axis
+
+### For Column Widget:
+- Children are arranged vertically
+- `mainAxisAlignment` = Vertical Axis
+- `crossAxisAlignment` = Horizontal Axis
+
+---
+
+## 175. When was the first version of Flutter released?
+
+**📚 TURINGQUESTIONS**
+
+The first version of Flutter was released in **May 2017**, but it was first announced in 2015. In December 2018, Google released Flutter 1.0. In December 2019, Flutter 1.12 was released.
+
+---
+
+## 176. Which folder is used to write Android apps in Flutter?
+
+**📚 TURINGQUESTIONS**
+
+**Android Folder** is used to write Android apps in Flutter. The Android Folder contains files and folders required for running the application, and these files are autogenerated during the creation of a Flutter project.
+
+---
+
+## 177. Which one is better, either flutter or react native?
+
+**📚 INTERVIEWBIT**
+
+Today, thousands of mobile apps are being built with the two most popular cross-platform development frameworks i.e., React Native and Flutter. There are many similarities between React Native and Flutter including reloading quickly, excellent UI, awesome tooling, and capability to build native apps.
+
+- **React Native**: This is an entirely JavaScript-based application using React. Facebook backed and open-sourced it in 2015
+- **Flutter**: It is written in the Dart programming language. In comparison to React Native, Flutter is a relatively new framework. Flutter was originally backed by another giant called Google
+
+Choosing between them is difficult from the developer's perspective.
+
+---
+
+## 178. Which operator is used to evaluate and return values between two expressions?
+
+**📚 TURINGQUESTIONS**
+
+The **`??` operator** is used to evaluate and return values between two expressions. This operator first checks the expression 1 and, if it is non-null, returns its value; otherwise, it will evaluate and return the value of expression 2.
+
+---
+
+## 179. Which widget allows us to refresh the screen?
+
+**📚 TURINGQUESTIONS**
+
+**RefreshIndicator Widget** enables us to refresh the screen. When the user pulls down on the widget, the onRefresh callback is triggered, which typically involves fetching new data from a server or updating the UI in some way.
+
+---
+
+## 180. Which widget can be used to display one after another in scroll format?
+
+**📚 TURINGQUESTIONS**
+
+The **ListView Widget** is used to display a large number of items as a scrollable list. ListView is an advanced version of the Column widget that automatically provides scrolling when the list of items won't fit on the screen.
+
+---
+
+## 181. Which widget in Flutter is a box that comes with a different size?
+
+**📚 TURINGQUESTIONS**
+
+**SizedBox** is a widget in Flutter that allows us to specify an arbitrary size for a widget. It is basically used to add empty space between widgets. SizedBox also supports specifying a specific aspect ratio for its child.
+
+---
+
+## 182. Why do we use a ticker in Flutter?
+
+**📚 TURINGQUESTIONS**
+
+**Tickers** are used in Flutter as they provide a secure way of updating the UI at 60 frames per second. It is a class that listens to the frameCallback and calls a tick function that forwards the elapsed duration between the current frame and last frame to the ticker listener.
+
+---
+
+## 183. Why do we use const keyword in Flutter?
+
+**📚 TURINGQUESTIONS**
+
+We use the **const** keyword to declare constants. Basically, when we know the value of a variable at compile time. This means the compiler knows in advance what value to store.
+
+---
+
+## 184. Why does a flutter app usually take a long developing time?
+
+**📚 INTERVIEWBIT**
+
+The first time you build a Flutter application, it takes much longer than usual since Flutter creates a device-specific IPA or APK file. Xcode and Gradle are used in this process to build a file, which usually takes a lot of time.
+
+---
+
+## 185. Why does it generally take a long time to develop a Flutter app?
+
+**📚 TURINGQUESTIONS**
+
+Because Flutter generates a device-specific IPA or APK file, building a Flutter application takes substantially longer the first time. This method, which normally takes a long time, uses Xcode and Gradle to build a file.
+
+---
+
+## 186. Why HTTP package is used in Flutter?
+
+**📚 TURINGQUESTIONS**
+
+**HTTP package** is used in Flutter for making HTTP requests to web servers. It allows Flutter developers to send HTTP requests and receive HTTP responses from APIs or web servers. Flutter apps need to communicate with APIs or web servers to fetch data or send data to the server. The HTTP package provides a convenient and easy-to-use way to make HTTP requests in Flutter.
+
+---
+
+## 187. Why is Flutter preferred over other mobile app developing tools?
+
+**📚 TURINGQUESTIONS**
+
+Flutter is a free and open-source mobile UI framework, introduced by Google in May 2017. Flutter enables you to develop a native mobile app using only one codebase. This implies you may design two separate apps using the same programming language and codebase (for iOS and Android).
+
+Flutter is preferred over other mobile app development tools like Java and React Native due to a myriad of reasons. A few of them are:
+
+- Flutter supports cross-platform development
+- Programming in Flutter is extremely easy and flexible
+- The building process in Flutter is much faster than that in all its competitors
+
+---
+
+## 188. Write difference between Hot reload and Hot restart
+
+**📚 INTERVIEWBIT**
+
+For any dart application, the initial execution requires a fair amount of time. Therefore, to solve this problem, flutter has two features: Hot Reload and Hot Restart, which reduce the execution time of our app after we run it.
+
+| Hot Reload | Hot Restart |
+|------------|-------------|
+| Takes approximately one second to perform | Takes slightly longer than hot reload |
+| Quickly compiles new code and sends it to Dart Virtual Machine (DVM) | Destroys preserved states and compiles code from the beginning |
+| Updates the app's UI after DVM completes the update | Code gets compiled again from scratch |
+| Preserved state is not destroyed | Preserved states are destroyed |
+| Faster for quick changes and bug fixes | Faster than full restart but slower than hot reload |
+
+---
+
+## 189. Write the advantages of using flutter
+
+**📚 INTERVIEWBIT**
+
+For developing mobile applications, Flutter usually fulfills the custom needs and requirements. It offers the following advantages:
+
+- **Reduce Code Development**: Flutter's hot reload feature allows it to offer faster performance. With it, the application gets compiled using the arm C/C++ library, making it closer to machine code and enabling it to run more quickly. The Flutter team has put lots of effort into providing a wide variety of ready-to-use widgets
+- **Cross-platform Development**: Using Flutter, you can write code, manage, and run it across multiple platforms. For the developers, this saves time, money, and effort
+- **Live and Hot Reloading**: This makes the app development process simpler and faster. Additionally, it also allows us to modify or update the code once a change is made
+- **Similar to Native App performance**: In contrast to most cross-platform frameworks, Flutter does not rely on intermediate code representations or interpretations. The Flutter application is built directly into the machine code, which eliminates any performance issues associated with the interpretation process
+- **Good Community Support**: Developers can ask questions about issues and get answers quickly
+- **Little/Minimal Code**: Each Flutter app is built using Dart programming language, which uses JIT and AOT compilation for faster startup time, faster performance, and smoother functionality
+- **Documentation**: Flutter's documentation is well-organized and informative. It serves as a central repository for all written documents
+- **Expressive and Flexible UI**: Flutter offers a customizable layered architecture that allows for highly customizable designs, expressive UIs, and fast rendering
+
+---
+
+## 190. Write the difference between runApp() and main() in flutter
+
+**📚 INTERVIEWBIT**
+
+- **main()**: This function starts the program. Flutter does not allow us to write any program without the main() function
+- **runApp()**: Using runApp(), you are able to return the widgets that are connected to the screen as a root of the widget tree that will be rendered on the screen. This function is called in the main function, which is the driver of the app
+
+---
+
+## 191. Write the difference between SizedBox Vs Container
+
+**📚 INTERVIEWBIT**
+
+| Container | SizedBox |
+|-----------|----------|
+| Multiple child widgets can be controlled by adjusting size, padding, and color | Specific size box with limited functionality |
+| Allows setting widget's color or decoration | Does not allow setting color or decoration |
+| Used when styling is needed (color, shape, size constraint) | Used only to resize the widget passed as a child |
+| More versatile with multiple properties | Forces child widget to have a specific size |
+
+---
+
+## 192. Write the limitations of flutter
+
+**📚 INTERVIEWBIT**
+
+Flutter has the following limitations:
+
+- **Third-party libraries are limited**: Since Flutter is relatively new, the number of third-party libraries is small. Additionally, some widgets in Flutter are only available on one platform
+- **Release size is larger**: Developers get frustrated when the release size is not as expected
+- **Requirements of Dart**: Dart is an Object-oriented programming language, but it cannot compete with Java, JavaScript, or C# since it is still relatively new. As a result, not many developers choose it
+- **Limited complexity**: Flutter's 3D modeling, Unity integration, and game engines fall short. Therefore, most ad mobile platforms also don't support it
+- **Lack of overall support**: Flutter is not so widely used yet. Even though it enjoys the attention of tech enthusiasts, it still lacks the continuous support that will come with time. Currently, the only support that Flutter receives comes from its community
+
+---

@@ -1,21 +1,32 @@
-# Multi-Doc Setup Guide
+# Multi-Doc Setup Guide - Interview Doc
 
 ## Overview
 
-This project now uses Fumadocs multi-doc functionality with multiple root folders. This allows you to organize documentation into separate sections with their own navigation.
+This project uses Fumadocs multi-doc functionality with multiple root folders. The documentation is organized into separate sections: **Flutter** interview questions and **Problem Solving** challenges.
 
 ## Current Structure
 
 ```
 content/docs/
-├── guide/
-│   ├── meta.json          # Root folder config
-│   ├── index.mdx         # Welcome page
-│   └── components.mdx    # Components documentation
-└── api-reference/
-    ├── meta.json          # Root folder config
-    ├── index.mdx         # API overview
-    └── authentication.mdx # Authentication guide
+├── flutter/
+│   ├── meta.json              # Root folder config with Flutter icon
+│   ├── index.mdx             # Flutter overview
+│   ├── important-topics.mdx  # Top 10 topics
+│   ├── best-practices.mdx    # Best practices
+│   ├── common-mistakes.mdx   # Common mistakes
+│   ├── basics/               # 192 basic questions
+│   ├── intermediate/         # 102 intermediate questions
+│   ├── advanced/             # 28 advanced questions
+│   ├── turing-questions/     # 100 questions from Turing
+│   ├── geeksforgeeks/        # 10 questions from GeeksforGeeks
+│   ├── interviewbit/         # 38 questions from InterviewBit
+│   ├── medium/               # 100 questions from Medium
+│   ├── github/               # 100 questions from GitHub
+│   ├── simplilearn/          # 32 questions from Simplilearn
+│   └── lemon/                # 57 questions from Lemon.io
+└── problem-solving/
+    ├── meta.json             # Root folder config with Code icon
+    └── index.mdx             # Problem solving overview
 ```
 
 ## How It Works
@@ -24,29 +35,48 @@ content/docs/
 
 Each folder marked with `"root": true` in its `meta.json` becomes a separate documentation section:
 
-**content/docs/guide/meta.json:**
+**content/docs/flutter/meta.json:**
 ```json
 {
-  "title": "Guide",
-  "description": "Complete guide and tutorials",
+  "title": "Flutter",
+  "description": "Flutter interview questions and preparation guide",
+  "icon": "Flutter",
   "root": true,
-  "pages": ["index", "components"]
+  "pages": [
+    "index",
+    "important-topics",
+    "best-practices",
+    "common-mistakes",
+    "---",
+    "basics",
+    "intermediate",
+    "advanced",
+    "---2",
+    "turing-questions",
+    "geeksforgeeks",
+    "interviewbit",
+    "medium",
+    "github",
+    "simplilearn",
+    "lemon"
+  ]
 }
 ```
 
-**content/docs/api-reference/meta.json:**
+**content/docs/problem-solving/meta.json:**
 ```json
 {
-  "title": "API Reference",
-  "description": "API documentation and reference",
+  "title": "Problem Solving",
+  "description": "Problem solving and coding challenges",
+  "icon": "Code",
   "root": true,
-  "pages": ["index", "authentication"]
+  "pages": ["index"]
 }
 ```
 
-### Automatic Sidebar Tabs
+### Automatic Sidebar Tabs with Icons
 
-Fumadocs automatically creates sidebar tabs for each root folder. Users can switch between "Guide" and "API Reference" sections using these tabs.
+Fumadocs automatically creates sidebar tabs for each root folder with custom icons. Users can switch between "Flutter" (with Flutter icon) and "Problem Solving" (with Code icon) sections using these tabs.
 
 ## Adding New Documentation Sections
 
@@ -95,11 +125,12 @@ To add a new documentation section:
 ## Configuration Files
 
 Modified files:
-- `app/docs/[[...slug]]/page.tsx` - Added redirect from `/docs` to `/docs/guide`
+- `app/docs/[[...slug]]/page.tsx` - Added redirect from `/docs` to `/docs/flutter`
+- `lib/source.ts` - Added icon handler for Flutter and Code icons
+- `lib/layout.shared.tsx` - Changed site name to "Interview Doc"
 
 No changes needed to:
 - `source.config.ts` - Uses single defineDocs
-- `lib/source.ts` - Single loader handles all sections
 - `app/docs/layout.tsx` - Automatically picks up root folders
 
 ## Development
@@ -115,13 +146,13 @@ The dev server will be available at http://localhost:3000 (or another port if 30
 
 When using root folders, you must navigate to a specific section:
 
-- `/docs` - Automatically redirects to `/docs/guide` (first root folder)
-- `/docs/guide` - Guide section homepage
-- `/docs/guide/components` - Components page in Guide section
-- `/docs/api-reference` - API Reference section homepage
-- `/docs/api-reference/authentication` - Authentication page in API section
+- `/docs` - Automatically redirects to `/docs/flutter` (first root folder)
+- `/docs/flutter` - Flutter section homepage
+- `/docs/flutter/basics` - Basic Flutter questions
+- `/docs/flutter/important-topics` - Top 10 important topics
+- `/docs/problem-solving` - Problem Solving section homepage
 
-The sidebar will show tabs at the top allowing you to switch between "Guide" and "API Reference" sections.
+The sidebar will show tabs at the top with icons allowing you to switch between "Flutter" and "Problem Solving" sections.
 
 ## More Information
 

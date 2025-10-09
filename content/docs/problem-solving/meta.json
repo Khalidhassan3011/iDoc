@@ -1,0 +1,6 @@
+{
+  "title": "Problem Solving",
+  "description": "Problem solving and coding challenges",
+  "root": true,
+  "pages": ["index"]
+}

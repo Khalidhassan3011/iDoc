@@ -1,0 +1,282 @@
+---
+title: Flutter Interview Questions for Freshers
+description: Flutter Interview Questions for Freshers
+---
+
+# Flutter Interview Questions for Freshers
+
+> **Note:**
+  **Source:** All questions are from [InterviewBit Flutter Interview Questions](https://www.interviewbit.com/flutter-interview-questions/)
+
+  **Total Questions:** 23
+
+---
+
+## 1. What is the use of Ticker in Flutter?
+
+We use a ticker to tell how often our animation is refreshed in Flutter. Signals are sent at a constant frequency, such as 60 times per second, using this type of signal-sending class. We understand it better with our watch, which ticks constantly. For each tick, a callback method is provided that has the time since the first tick at each second since it was started. The tickers are synchronized immediately, even if they begin at different times.
+
+---
+
+## 2. Explain Flutter Inspector
+
+In the same manner, as with Native Android, the XML file allows us to view our app's blueprint and properties. There is a powerful tool called Flutter Inspector for Flutter applications that allows you to visualize the blueprint of your widgets and their properties. Using it, you can diagnose various layout issues and understand the current layout.
+
+### Flutter Inspector offers the following benefits:
+
+- Select widget mode
+- Toggle platform
+- Show paint baselines
+- Show debug paint
+- Refresh widget
+- Enable slow animations
+- Show/hide performance overlay
+
+---
+
+## 3. How would you execute code only in debug mode?
+
+We first need to import the dart foundation in order to run the code only in debug mode:
+
+```dart
+import 'package:flutter/foundation.dart' as Foundation;
+```
+
+The next step is to use `kReleaseMode` as follows:
+
+```dart
+if (Foundation.kReleaseMode) {  // is Release Mode??
+  print('release mode');
+} else {
+  print('debug mode');
+}
+```
+
+---
+
+## 4. What is the use of Mixins?
+
+Multiple inheritances are not supported by Dart. Thus, we need mixins to implement multiple inheritances in Flutter/Dart. The use of mixins makes it easy to write reusable class code in multiple class hierarchy levels. Mixins can also be used to provide some utility functions (such as RenderSliverHelpers in Flutter).
+
+---
+
+## 5. Explain packages and plugins in Flutter
+
+A package is a collection of classes, interfaces, and sub-packages that enable the creation of modular code that can be shared easily among users. Applications can be quickly developed using packages instead of developing everything from scratch. You can import new widgets or functionality into an app using a package in Flutter.
+
+There is a slight difference between plugins and packages:
+
+- **Plugins**: Using native code, enables more usability and makes it easier to use the device.
+- **Packages**: These are new code or components written in the dart programming language.
+
+Packages and plugins are often referred to as packages on DartPub, and specific distinctions between the two are made only during the creation of a new package.
+
+---
+
+## 6. Explain the flutter architecture
+
+The structure of Flutter consists of three layers:
+
+1. **Upper layers**: The Dart-based platform that takes care of app widgets, gestures, animations, illustrations, and materials
+2. **Flutter engine**: Handles the display and formatting of text
+3. **Built-in service**: Used for the management of plugins, packages, and event loops
+
+---
+
+## 7. List some important features of flutter
+
+Among the main features of flutter for developing mobile frameworks are:
+
+- **Flexibility, scalability, and integration**: Flutter's easy-to-use and easy-to-integrate framework provides enhanced flexibility, scalability, and integration capabilities
+- **Hot Reload**: If the developer modifies the code, the changes can be seen immediately with Hot Reload. Thus, the changes are instantly visible within the app
+- **One-Stop Solution**: Flutter app development relies on a single framework and platform for the development, deployment, and management of changes, rather than using separate platforms and frameworks for different purposes
+- **Native Performance and Internationalized Flutter Libraries**: Flutter app development provides widgets customized for Android, iOS, and Google Fuchsia. Using widgets, you can integrate all the functionalities of the platform, such as scrolling, navigation, icons, and fonts
+- **Huge Widget Library**: It is because of Flutter's ready-to-use widget library that developers can develop apps faster when using the framework. In addition to a wide variety of widgets, it also includes animations with which you can spice up your application
+
+---
+
+## 8. Write the limitations of flutter
+
+Flutter has the following limitations:
+
+- **Third-party libraries are limited**: Since Flutter is relatively new, the number of third-party libraries is small. Additionally, some widgets in Flutter are only available on one platform
+- **Release size is larger**: Developers get frustrated when the release size is not as expected
+- **Requirements of Dart**: Dart is an Object-oriented programming language, but it cannot compete with Java, JavaScript, or C# since it is still relatively new. As a result, not many developers choose it
+- **Limited complexity**: Flutter's 3D modeling, Unity integration, and game engines fall short. Therefore, most ad mobile platforms also don't support it
+- **Lack of overall support**: Flutter is not so widely used yet. Even though it enjoys the attention of tech enthusiasts, it still lacks the continuous support that will come with time. Currently, the only support that Flutter receives comes from its community
+
+---
+
+## 9. What are different build modes in flutter?
+
+Depending on your development phase, the framework compiles your code in different ways or modes, which we called a build mode. Flutter's tooling allows the application to be compiled in three modes:
+
+- **Debug Mode**: This mode enables debugging of apps on a physical device, emulator, or simulator. Assertions and service extensions are enabled here. Quick deployment is then achieved by optimizing compilation
+- **Profile Mode**: In this mode, some debugging abilities are maintained, enough to analyze the app's performance while testing. Tracing and some extensions are enabled in this case. On emulators and simulators, profile mode is disabled since their behavior does not reproduce real-world performance. Command: `flutter run --profile`
+- **Release Mode**: When deploying the app, this mode is used to minimize the size of the footprint and maximize optimization. Debugging, assertions and service extensions are disabled here. Faster startup, faster execution, and less size are its key features. Command: `flutter run --release`
+
+---
+
+## 10. Explain the flutter widget and write its importance
+
+Generally, a Flutter app consists of a number of widgets. A widget is a way to declare and construct user interfaces. In Flutter, you must write code inside a widget in order to build anything. With the widget, you can see how your app would appear with its current configuration. As soon as you modify the code, the widget will rebuild its description based on the difference between the old and new widget, and the changes will sync up with the UI of the app.
+
+The Flutter widget can be created as follows:
+
+```dart
+class ImageWidget extends StatelessWidget {
+  // Class Stuff
+}
+```
+
+The app is built by nesting widgets within each other. This means the root of your app is a widget, and everything below it is a widget.
+
+---
+
+## 11. What are the types of widgets present in flutter?
+
+In flutter, widgets can be divided into two categories:
+
+- **Stateless Widget**: A widget that does nothing is a Stateless Widget. In essence, they are static and don't store any state. Thus, they don't save values that may change
+- **Stateful Widget**: A widget that does anything is a Stateful Widget. Stateful widgets are dynamic by nature, which means they can monitor changes and update the UI accordingly
+
+---
+
+## 12. What do you mean by Dart? Write its importance
+
+Dart, a programming language developed by Google, is used to code Flutter apps as well as server and desktop applications. By using Dart, Flutter avoids the use of a separate declarative layout language such as JSX or XML.
+
+A simple Dart program:
+
+```dart
+void main() {
+  for (int i = 0; i < 5; i++) {
+    print('hello ${i + 1}');
+  }
+}
+```
+
+### Importance of Dart:
+
+- Developers can read and visualize the layout of Dart very easily and effortlessly since it is declarative and programmatic
+- Unlike other programming languages, it supports the majority of the basic programming concepts like classes, interfaces, and functions
+- Arrays are not directly supported by Dart. Rather, it supports the collection that replicates the data structure like arrays, generics, and optional typing
+- Despite being similar to JavaScript, Dart runs code several times faster
+- For better performance and to reduce code execution time, the Dart virtual machine (VM) uses both Just-in-Time (JIT) and Ahead-of-Time (AOT) compilers
+- Dart is object-oriented programming, which makes it very scalable and stable for creating even complex applications
+
+---
+
+## 13. Explain App state
+
+App State may also be referred to as a shared state or application state. It is possible to share app states across sections of your app and maintain user sessions in the same way.
+
+Here are some examples of App State:
+
+- Login info
+- User preferences
+- E-commerce shopping cart
+- Social networking notifications, etc.
+
+---
+
+## 14. Write the difference between runApp() and main() in flutter
+
+- **main()**: This function starts the program. Flutter does not allow us to write any program without the main() function
+- **runApp()**: Using runApp(), you are able to return the widgets that are connected to the screen as a root of the widget tree that will be rendered on the screen. This function is called in the main function, which is the driver of the app
+
+---
+
+## 15. Write the advantages of using flutter
+
+For developing mobile applications, Flutter usually fulfills the custom needs and requirements. It offers the following advantages:
+
+- **Reduce Code Development**: Flutter's hot reload feature allows it to offer faster performance. With it, the application gets compiled using the arm C/C++ library, making it closer to machine code and enabling it to run more quickly. The Flutter team has put lots of effort into providing a wide variety of ready-to-use widgets
+- **Cross-platform Development**: Using Flutter, you can write code, manage, and run it across multiple platforms. For the developers, this saves time, money, and effort
+- **Live and Hot Reloading**: This makes the app development process simpler and faster. Additionally, it also allows us to modify or update the code once a change is made
+- **Similar to Native App performance**: In contrast to most cross-platform frameworks, Flutter does not rely on intermediate code representations or interpretations. The Flutter application is built directly into the machine code, which eliminates any performance issues associated with the interpretation process
+- **Good Community Support**: Developers can ask questions about issues and get answers quickly
+- **Little/Minimal Code**: Each Flutter app is built using Dart programming language, which uses JIT and AOT compilation for faster startup time, faster performance, and smoother functionality
+- **Documentation**: Flutter's documentation is well-organized and informative. It serves as a central repository for all written documents
+- **Expressive and Flexible UI**: Flutter offers a customizable layered architecture that allows for highly customizable designs, expressive UIs, and fast rendering
+
+---
+
+## 16. Name some best editors for flutter development
+
+With the Flutter development tools, developers can make Flutter development faster and thus boost their productivity. Here are some popular IDEs for Flutter development:
+
+- Android Studio
+- Visual Studio
+- IntelliJ IDEA
+- Xcode
+- Eclipse
+- Emacs
+- Vim, etc.
+
+---
+
+## 17. Name some apps that mostly use flutter
+
+Flutter is used today by many organizations for developing apps. The following are some of the most popular apps built on Flutter:
+
+- Google Ads
+- Reflectly
+- Alibaba
+- Birch Finance
+- Coach Yourself
+- Tencent
+- Watermaniac, etc.
+
+---
+
+## 18. What do you mean by keys in flutter? When one should use it
+
+Keys are used in Flutter as identifiers for widgets, elements, and semantic nodes. GlobalKeys and LocalKeys are the subclasses of Key. Within the widget tree, keys are responsible for preserving the state of modified widgets. With keys, you can also reorganize and modify collections of widgets that have an equivalent type and defined state. The primary use of keys is to modify a widget tree that contains stateful widgets, not to modify a tree that is totally composed of stateless widgets.
+
+---
+
+## 19. Explain Container class in a flutter
+
+Basically, in Flutter, a container is a widget that has the capacity to accommodate multiple child widgets and manage them efficiently through dimensions, padding, and background color. Whenever we want to style the background of a widget, either because of a color, shape, or size constraint, we may use a container widget. With the Container class, widgets can be stored and positioned on the screen at our discretion. In general, it resembles a box for storing contents.
+
+A basic container has padding, margin, and border properties surrounding its child widget.
+
+---
+
+## 20. Which one is better, either flutter or react native?
+
+Today, thousands of mobile apps are being built with the two most popular cross-platform development frameworks i.e., React Native and Flutter. There are many similarities between React Native and Flutter including reloading quickly, excellent UI, awesome tooling, and capability to build native apps.
+
+- **React Native**: This is an entirely JavaScript-based application using React. Facebook backed and open-sourced it in 2015
+- **Flutter**: It is written in the Dart programming language. In comparison to React Native, Flutter is a relatively new framework. Flutter was originally backed by another giant called Google
+
+Choosing between them is difficult from the developer's perspective.
+
+---
+
+## 21. When to use mainAxisAlignment and crossAxisAlignment
+
+The mainAxisAlignment is how items are aligned on that axis, whereas crossAxisAlignment is how items are aligned on the other axis. Row and column widgets can align their children according to our preferences using the crossAxisAlignment and the mainAxisAlignment properties.
+
+### For Row Widget:
+- Children are arranged horizontally
+- `mainAxisAlignment` = Horizontal Axis
+- `crossAxisAlignment` = Vertical Axis
+
+### For Column Widget:
+- Children are arranged vertically
+- `mainAxisAlignment` = Vertical Axis
+- `crossAxisAlignment` = Horizontal Axis
+
+---
+
+## 22. Is Flutter Open Source or not?
+
+Yes, Flutter is a free and open-source UI software development kit from Google that allows developers to build cross-platform mobile apps with ease.
+
+---
+
+## 23. Why does a flutter app usually take a long developing time?
+
+The first time you build a Flutter application, it takes much longer than usual since Flutter creates a device-specific IPA or APK file. Xcode and Gradle are used in this process to build a file, which usually takes a lot of time.

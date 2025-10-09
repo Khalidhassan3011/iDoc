@@ -1,0 +1,340 @@
+---
+title: Flutter Interview Questions - Freshers & Intermediate
+description: Flutter Interview Questions - Freshers & Intermediate
+---
+
+# Flutter Interview Questions - Freshers & Intermediate
+
+> **Note:**
+  **Source:** All questions are from [Lemon.io - Flutter Interview Questions](https://lemon.io/interview-questions/flutter)
+
+  **Total Questions:** 29
+
+---
+
+## 1. What is a StatefulWidget and when would you use it?
+
+A `StatefulWidget` is a widget with mutable state that can change during its lifetime. It is a built-in Flutter approach to make the UI dynamically update. Use it to create dynamic, interactive UI elements that need to update their visual representation based on user interaction or other events.
+
+---
+
+## 2. What is the difference between hot reload and hot restart?
+
+- **Hot reload:** Injects new code into the Dart VM and preserves the current state. It's fast and maintains your app's current state.
+- **Hot restart:** Fully rebuilds the app and resets all state. It's a complete restart of the application.
+
+---
+
+## 3. What's the purpose of the build() method in Flutter?
+
+The `build()` method describes how to display the widget using a tree of other widgets. It's called every time the UI needs to be updated. The method returns a widget tree that represents the visual structure of your widget.
+
+---
+
+## 4. Explain setState() and when to call it
+
+`setState()` tells Flutter that the state of the widget has changed and the UI should be rebuilt. Use it when you want to update the visual representation of data. Call it whenever you modify state variables that affect what the widget displays.
+
+---
+
+## 5. What is the difference between final and const?
+
+- `final`: Assigned once at runtime. The value is set when the object is created and cannot be changed afterward.
+- `const`: Assigned at compile-time and is deeply immutable. The value must be known at compile time.
+- **Recommendation:** Use `const` for performance optimization where possible, as it allows Flutter to reuse widget instances.
+
+---
+
+## 6. How do you navigate to a new screen in Flutter?
+
+Use the `Navigator.push()` method with a `MaterialPageRoute` to navigate to a new screen.
+
+```dart
+Navigator.push(
+  context, 
+  MaterialPageRoute(builder: (_) => NewScreen())
+);
+```
+
+---
+
+## 7. What does ListView.builder do?
+
+`ListView.builder` builds list items lazily as they scroll into view. This improves performance for long lists by only creating widgets for visible items, resulting in efficient memory management. Items are created on-demand rather than all at once.
+
+---
+
+## 8. How do you use FutureBuilder?
+
+`FutureBuilder` listens to a Future and rebuilds its child based on the connection state. It handles three main states:
+- **Waiting:** While the future is loading
+- **Done:** When the future completes successfully
+- **Error:** If the future completes with an error
+
+This widget is ideal for loading asynchronous data and showing appropriate UI for each state.
+
+---
+
+## 9. What are keys in Flutter and why are they used?
+
+Keys preserve widget state when widgets are moved or change position in the widget tree. They are useful in:
+- Lists where items can be reordered
+- Animations
+- Any scenario where Flutter needs to identify and track specific widgets across rebuilds
+
+Keys help Flutter determine which widgets have changed, been added, or been removed.
+
+---
+
+## 10. How do you handle user input with TextField?
+
+Use a `TextEditingController` to read and manipulate input from a TextField. You can:
+- Access the current text value via `controller.text`
+- Listen for changes using `controller.addListener()`
+- Use the `onChanged` callback for real-time updates as the user types
+
+---
+
+## 11. What is SingleChildScrollView and when do you use it?
+
+`SingleChildScrollView` is a scrollable container for a single widget (like a `Column`). Use it when the content might overflow vertically and needs to be scrollable. It's ideal for forms or layouts that might exceed the screen height.
+
+---
+
+## 12. What is the purpose of the pubspec.yaml file?
+
+The `pubspec.yaml` file is the configuration file where you declare:
+- Project metadata (name, description, version)
+- Dependencies (packages your app uses)
+- Assets (images, fonts, other files)
+- Font declarations
+- Flutter SDK constraints
+
+---
+
+## 13. What does the main() function do in a Flutter app?
+
+The `main()` function is the app's entry point. It's the first function that runs when your Flutter app starts. Usually, it calls `runApp(MyApp())` to inflate the widget tree and start the app.
+
+---
+
+## 14. How do you create a rounded button in Flutter?
+
+Use an `ElevatedButton` with a custom shape such as `RoundedRectangleBorder` with a `borderRadius` property.
+
+```dart
+ElevatedButton(
+  style: ElevatedButton.styleFrom(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20),
+    ),
+  ),
+  onPressed: () {},
+  child: Text('Rounded Button'),
+)
+```
+
+---
+
+## 15. How do you add padding or margin around a widget?
+
+- Use `Padding(padding: EdgeInsets.all(16))` to add internal spacing
+- Or wrap the widget in a `Container` with `margin` or `padding` properties
+
+Both approaches allow you to add space around widgets.
+
+---
+
+## 16. What's the purpose of Expanded?
+
+`Expanded` forces a child of `Row`, `Column`, or `Flex` to take up all remaining available space. It's used to fill available space in flex layouts and can accept a `flex` parameter to control how much space it takes relative to other `Expanded` widgets.
+
+---
+
+## 17. What is MediaQuery.of(context).size used for?
+
+`MediaQuery.of(context).size` gets the device screen dimensions (width and height). It's useful for:
+- Creating responsive designs
+- Adapting layouts to different screen sizes
+- Calculating widget sizes based on screen dimensions
+
+---
+
+## 18. What is the difference between MainAxisAlignment and CrossAxisAlignment?
+
+- **MainAxisAlignment:** Aligns children along the main axis (horizontal in Row, vertical in Column)
+- **CrossAxisAlignment:** Aligns children along the perpendicular/cross axis
+
+These properties control how children are positioned within `Row`, `Column`, and `Flex` widgets.
+
+---
+
+## 19. What is the difference between Column and ListView?
+
+- **Column:** Lays out all children vertically at once. Non-scrollable by default. Best for a fixed number of children.
+- **ListView:** Scrollable and efficient for long or dynamic content. Creates children lazily on demand.
+
+Use `Column` for simple layouts, `ListView` for scrollable lists.
+
+---
+
+## 20. What is a Container in Flutter?
+
+`Container` is a versatile box widget that combines common painting, positioning, and sizing widgets. It can have:
+- Padding
+- Margin
+- Decoration (borders, backgrounds, shadows)
+- Width and height constraints
+- Alignment
+
+It's one of the most commonly used widgets for layout and styling.
+
+---
+
+## 21. What does Stack do and when should it be used?
+
+`Stack` overlays widgets on top of each other. The first child is at the bottom, and subsequent children are painted on top. Use it for:
+- Complex UI layouts like banners
+- Image overlays
+- Free positioning of widgets
+- Creating layered designs
+
+Children can be positioned using `Positioned` widgets.
+
+---
+
+## 22. How do you show a dialog in Flutter?
+
+Use `showDialog()` with a widget like `AlertDialog`:
+
+```dart
+showDialog(
+  context: context,
+  builder: (context) => AlertDialog(
+    title: Text('Dialog Title'),
+    content: Text('Dialog content'),
+    actions: [
+      TextButton(
+        onPressed: () => Navigator.pop(context),
+        child: Text('OK'),
+      ),
+    ],
+  ),
+);
+```
+
+---
+
+## 23. How do you validate a form in Flutter?
+
+1. Wrap input fields in a `Form` widget
+2. Assign a `GlobalKey<FormState>()`
+3. Add `validator` functions to form fields
+4. Call `formKey.currentState!.validate()` to validate all fields
+
+```dart
+final formKey = GlobalKey<FormState>();
+
+Form(
+  key: formKey,
+  child: TextFormField(
+    validator: (value) {
+      if (value?.isEmpty ?? true) return 'Required';
+      return null;
+    },
+  ),
+)
+
+// To validate:
+if (formKey.currentState!.validate()) {
+  // Form is valid
+}
+```
+
+---
+
+## 24. How do you load an image from the internet?
+
+Use `Image.network()` with the URL:
+
+```dart
+Image.network('https://example.com/image.jpg')
+```
+
+You can optionally add:
+- `loadingBuilder` to show a loading indicator
+- `errorBuilder` to handle loading errors
+
+---
+
+## 25. How do you detect a button press?
+
+Set the `onPressed` callback in button widgets like `TextButton`, `ElevatedButton`, or `IconButton`:
+
+```dart
+ElevatedButton(
+  onPressed: () {
+    // Handle button press
+  },
+  child: Text('Press Me'),
+)
+```
+
+---
+
+## 26. What does SafeArea do?
+
+`SafeArea` adds padding to avoid system UI elements such as:
+- Status bar
+- Notches
+- Home indicators
+- System navigation bars
+
+It keeps content within safe visible bounds, ensuring your UI isn't obscured by system elements.
+
+---
+
+## 27. What is the purpose of the initState() method?
+
+`initState()` is called once when the widget is inserted into the widget tree. Use it to:
+- Initialize data
+- Set up listeners
+- Start animations
+- Subscribe to streams
+- Perform one-time setup operations
+
+It's called before the first `build()` call.
+
+---
+
+## 28. How can you prevent a widget from rebuilding?
+
+Several strategies:
+- Use `const` constructors to create compile-time constants
+- Use `Keys` to preserve widget identity
+- Extract static widgets into separate const widgets
+- Use `RepaintBoundary` to isolate rebuilds
+- Implement `shouldRebuild` in custom widgets
+
+---
+
+## 29. How do you apply custom fonts in a Flutter app?
+
+1. Add the font files to your assets (usually in a `fonts/` directory)
+2. Declare them in `pubspec.yaml`:
+```yaml
+flutter:
+  fonts:
+    - family: CustomFont
+      fonts:
+        - asset: fonts/CustomFont-Regular.ttf
+        - asset: fonts/CustomFont-Bold.ttf
+          weight: 700
+```
+3. Reference them using `TextStyle`:
+```dart
+Text(
+  'Custom Font Text',
+  style: TextStyle(fontFamily: 'CustomFont'),
+)
+```

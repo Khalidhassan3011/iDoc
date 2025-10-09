@@ -1,0 +1,785 @@
+---
+title: Basics Flutter Questions (Questions 101-150)
+description: Basics Flutter Questions (Questions 101-150)
+---
+
+# Basics Flutter Questions (Questions 101-150)
+
+> **Note:**
+  **Questions 101-150 of 192**
+
+  All questions consolidated from multiple sources with source attribution.
+
+---
+
+## 101. What do you mean by keys in flutter?
+
+**📚 SIMPLILEARN**
+
+Keys in flutter are identifiers for widgets, elements, and semantic nodes, whereas GlobalKeys and LocalKeys are the subclasses of Key.
+
+---
+
+## 102. What do you mean by keys in flutter? When one should use it
+
+**📚 INTERVIEWBIT**
+
+Keys are used in Flutter as identifiers for widgets, elements, and semantic nodes. GlobalKeys and LocalKeys are the subclasses of Key. Within the widget tree, keys are responsible for preserving the state of modified widgets. With keys, you can also reorganize and modify collections of widgets that have an equivalent type and defined state. The primary use of keys is to modify a widget tree that contains stateful widgets, not to modify a tree that is totally composed of stateless widgets.
+
+---
+
+## 103. What do you mean by Null-aware operators?
+
+**📚 GITHUB**
+**📚 INTERVIEWBIT**
+
+Null aware operator allows us to make computations based on whether or not a value is null.
+
+Example of null-aware operators are:
+
+- **Optional Chaining Operator (?.):**
+
+  We use ?. when we want to call a method/getter on an object if and only if that object is not null (otherwise, return null).
+
+  ```dart
+  String? name = user?.name;
+
+  // This code is same as
+  // String? name = (user == null) ? null : user.name;
+  ```
+
+- **Default Operator (??):**
+
+  We use ?? when you want to evaluate and return an expression if another expression resolves to null. It is also called the **if-null operator** and **coalescing operator**. The null-aware operator is ??, which returns the expression on its left unless that expression's value is null. In which case it's null it returns the expression on its right.
+
+  ```dart
+  String? hello;
+  String? greeting = hello ?? 'Hey';
+
+  // This code is same as
+  // String? greeting = (hello == null) ? 'Hey' : hello;
+  ```
+
+- **Logical Nullish Assignment (??=):**
+
+  We use ??= when we want to assign a value to an object if that object is null. Otherwise, it returns the object.
+
+  ```dart
+  int? x;
+  x ??= 3;  // Assigns 3 to the variable `x`
+  x ??= 5;  // As x is not null now, it's value is still 3
+  ```
+
+---
+
+## 104. What do you mean by open-source software? Is Flutter open-source?
+
+**📚 GITHUB**
+
+Open-source software is software with source code that anyone can inspect, modify, and enhance. Open-source software is developed in a decentralized and collaborative way, relying on peer review and community production. Open source software is often cheaper, more flexible, and has more longevity than its proprietary peers because it is developed by communities rather than a single author or company.
+
+Yes, Flutter is an open-source software development kit.
+
+---
+
+## 105. What do you mean by Streams?
+
+**📚 INTERVIEWBIT**
+
+In asynchronous programming, streams are used to provide a sequence of data in an asynchronous manner. Similar to a pipe, we put a value on one end and a listener receives it on the other. Several listeners can be put into one stream, and they'll all get the same value when they're put in the pipeline. It's possible to create and manage streams through the StreamController.
+
+The Stream API provides the `await for` and `listen()` methods for processing streams. Streams can be created in many ways, but they can only be used in the same manner.
+
+### Example:
+
+```dart
+Future<int> sumStream(Stream<int> stream) async {
+  var sum = 0;
+  await for (var value in stream) {
+    sum += value;
+  }
+  return sum;
+}
+```
+
+---
+
+## 106. What do you mean by Widget testing?
+
+**📚 INTERVIEWBIT**
+
+Flutter supports three types of tests:
+
+### Unit tests
+
+- Test a class or method
+- Do not check for rendering to screen, interacting with external services, or user interactions
+
+### Widget tests
+
+- Test a single widget
+- Ensure that the widget's UI looks as expected and responds appropriately to events
+- Ensure that the widget design, rendering, and interaction with other widgets are up to the mark
+
+### Integration tests
+
+- Test the critical flows of the entire app
+- Check whether all widgets and services work together as expected
+- Can be used to measure and benchmark the performance of your app
+
+---
+
+## 107. What do you understand about tween animation?
+
+**📚 INTERVIEWBIT**
+
+The shortened version of in-between animation is tween animation. The start and endpoints of an animation must be specified in tween animation. Using this method, the animation can begin at the beginning and can progress through a series of values until it reaches the endpoint. Transition speed and duration are also determined by using the tween animation. Calculating the transition from the beginning to the end will be easier with the widget framework.
+
+---
+
+## 108. What does the acronym SDK stand for?
+
+**📚 TURINGQUESTIONS**
+
+**Software Development Kit** is a set of software tools and programs provided by software and hardware vendors that developers can use to develop applications for specific platforms. An SDK helps developers easily integrate their apps with a vendor's services. SDKs can include APIs (Application Programming Interfaces), sample code, documentation, and other resources that help developers create software applications.
+
+---
+
+## 109. What is `assert` used for in Dart and Flutter?
+
+**📚 GITHUB**
+
+The `assert` is a statement in Dart and Flutter that checks if a boolean condition is true and triggers an exception if the condition is false. It is typically used for debugging purposes, as it is intended to be used in development only and will be ignored in a production environment.
+
+An `assert` statement takes the following form:
+
+```
+assert(condition);
+```
+
+where `condition` is the boolean expression to be evaluated. If `condition` is `true`, the `assert` statement does nothing. However, if `condition` is `false`, the `assert` statement throws an `AssertionError` with a message indicating that the condition failed.
+
+Here's an example of using an `assert` statement to check if a variable has a certain value:
+
+```dart
+int score = 50;
+assert(score >= 60, "Score must be at least 60");
+```
+
+In this example, if `score` is less than 60, the `assert` statement will throw an `AssertionError` with the message `Score must be at least 60`.
+
+In summary, `assert` is used in Dart and Flutter to validate conditions during development and help catch potential bugs before they make it to production.
+
+---
+
+## 110. What is `Hot Reload` and `Hot Restart` in Flutter?
+
+**📚 GITHUB**
+
+Flutter's `Hot Reload` feature injects the updated source code files into the running **Dart Virtual Machine (VM)**, and rebuilds the widget tree preserving the app state to quickly view the effects of the changes.
+
+Whereas `Hot Restart` loads the updated source code files into the VM and restarts the Flutter app, losing all the previous app states.
+
+---
+
+## 111. What is `pubspec.yaml` file and what does it do?
+
+**📚 GITHUB**
+
+Every Flutter project includes a `pubspec.yaml` file, which is generated while creating a new Flutter project. It's located at the top of the project tree and contains metadata about the project that the Dart and Flutter tooling needs to know.
+
+The pubspec file specifies dependencies that the project requires, such as particular packages (and their versions), fonts, or image files. It also specifies other requirements, such as dependencies on developer packages (like testing or mocking packages), or particular constraints on the version of the Flutter SDK.
+
+---
+
+## 112. What is `TextEditingController`?
+
+**📚 GITHUB**
+
+The `TextEditingController` is a class in the Flutter framework that provides control over the text in a text field. It allows you to read and modify the text, set the selection, and listen to changes to the text.
+
+It is typically used in conjunction with a `TextField` widget to create an editable text input field in a Flutter application. The `TextEditingController` is assigned to the `controller` property of the `TextField`, and it can be used to retrieve the entered text, set the initial text, or respond to changes in the text.
+
+---
+
+## 113. What is a `Theme` in Flutter?
+
+**📚 GITHUB**
+
+In Flutter, a `Theme` is a widget that provides a way to customize the visual appearance of an app. A `Theme` widget can be used to set the colors, fonts, and other visual properties for a specific part or the entire app.
+
+Using a `Theme` widget, we can define a set of colors, fonts, and other properties that apply to all widgets within the Theme's subtree. This can make it easier to maintain consistency in the app's visual appearance and reduce the amount of duplicated code.
+
+Here are some common use cases for using a Theme widget:
+
+- Setting the app's primary and accent colors
+- Defining text styles for various widget types (e.g. headings, body text, etc.)
+- Setting default button styles
+- Defining shapes and elevations for Material Design widgets
+- Setting default padding and margins for widgets
+
+```dart
+MaterialApp(
+  theme: ThemeData(
+    primaryColor: Colors.blue,
+    accentColor: Colors.orange,
+    textTheme: TextTheme(
+      headline1: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+      bodyText1: TextStyle(fontSize: 18),
+    ),
+  ),
+),
+```
+
+---
+
+## 114. What is a container class in a flutter?
+
+**📚 SIMPLILEARN**
+
+A container class in flutter is a widget having the capacity to accommodate multiple child widgets and manage them efficiently through dimensions, padding, and background color.
+
+---
+
+## 115. What is a layout in Flutter?
+
+**📚 TURINGQUESTIONS**
+
+A **layout** in Flutter refers to how widgets are arranged on the screen. The layout is determined by the constraints passed down from the parent widget, and it determines the position and size of the child widget.
+
+---
+
+## 116. What is a modal bottom sheet in Flutter?
+
+**📚 GITHUB**
+
+In Flutter, a modal bottom sheet is a type of popup that is displayed at the bottom of the screen and covers a portion of the parent widget. Modal bottom sheets are commonly used to display additional options or information that are related to the parent widget, but require additional user input to complete an action.
+
+Modal bottom sheets are created using the `showModalBottomSheet()` method, which takes a `BuildContext` and a `builder` argument. The `builder` argument is a callback that returns a widget that represents the content of the modal bottom sheet.
+
+```dart
+showModalBottomSheet(
+  context: context,
+  builder: (BuildContext context) {
+    return Container(
+      // WRITE YOUR CODE HERE
+    );
+  },
+);
+```
+
+---
+
+## 117. What is an `AspectRatio` widget used for?
+
+**📚 GITHUB**
+
+The `AspectRatio` widget in Flutter is used to ensure that a widget maintains a specific aspect ratio, regardless of the size of the parent container. This can be useful in cases where you want a widget to have a specific shape, such as a square or a rectangle with a fixed width-to-height ratio.
+
+The aspect ratio is defined as the width of the widget divided by its height. The `AspectRatio` widget takes the aspect ratio as an argument and sets the width or height of the widget such that the aspect ratio is maintained. The other dimension is automatically adjusted to match.
+
+For example, if you want to create a square widget, you can wrap the widget in an AspectRatio widget with an aspect ratio of 1.0, and the widget will always be square, regardless of the size of the parent container.
+
+---
+
+## 118. What is await in Flutter? Write its usage
+
+**📚 INTERVIEWBIT**
+
+Until the async method is finished, await interrupts the process flow. Await generally means: Wait here until this function is finished so that you can get its return value. Await can only be used with async. Using this, all currently running functions are put on hold until the Future is complete.
+
+---
+
+## 119. What is Dart and Why does Flutter use it?
+
+**📚 GITHUB**
+
+Dart is a programming language designed for client development, such as for the web and mobile apps. It is developed by Google and can also be used to build server and desktop applications. It is an object-oriented, class-based, garbage-collected language with C-style syntax.
+
+- Dart allows Flutter to avoid the need for a separate declarative layout language like JSX or XML, or separate visual interface builders, because Dart's declarative, programmatic layout is easy to read and visualize.
+- Dart uses the Just In Time compilation. This drastically reduces the time of development and responds faster.
+
+---
+
+## 120. What is Dart, and why is it used in Flutter?
+
+**📚 GEEKSFORGEEKS**
+
+Dart is a client-side programming language that is used in Flutter for developing applications for multiple platforms like Android, iOS, Linux, Mac, Windows, and the web. Dart is used in Flutter because of the following reasons:
+
+- Dart is optimized for client-side development, which makes it perfect for cross-platform application development with Flutter
+- Dart is a modern programming language that is easy to learn and use
+- Dart is a compiled language, which means that it is faster than interpreted languages like JavaScript
+- Dart has a sound-type system, which makes it easy to write and maintain large-scale applications
+
+---
+
+## 121. What is Dart?
+
+**📚 TURINGQUESTIONS**
+
+**Dart** is a general-purpose, object-oriented programming language that was initially developed by Google in 2011. It is designed to be fast, efficient, and scalable, making it ideal for building a wide range of applications, including web and mobile apps, server-side applications, and command-line tools.
+
+---
+
+## 122. What is Fat Arrow Notation in Dart?
+
+**📚 GITHUB**
+
+A fat arrow (=>) is used to define a single expression in a function. This is a cleaner way to write functions with a single statement.
+
+Syntax:
+
+```
+ReturnType FunctionName(Params) => Expression;
+```
+
+Example:
+
+```dart
+// Without fat arrow notation
+String findSquare(int n) {
+  return 'The square of $n is ${n * n}.';
+}
+
+// With fat arrow notation
+String findSquare(int n) => 'The square of $n is ${n * n}.';
+```
+
+---
+
+## 123. What is Flutter Inspector?
+
+**📚 SIMPLILEARN**
+
+The Flutter Inspector is a powerful tool used to visualize the blueprint of your widgets and their properties in Flutter.
+
+---
+
+## 124. What is Flutter?
+
+**📚 GEEKSFORGEEKS**
+**📚 GITHUB**
+**📚 SIMPLILEARN**
+**📚 TURINGQUESTIONS**
+
+Flutter is an open-source, cross-platform application development framework that allows developers to create high-performance, beautiful, responsive applications for multiple platforms like Android, iOS, Linux, Mac, Windows, and the web using a single codebase. It is unique from other mobile app development frameworks for the following reasons:
+
+- Flutter uses the Dart programming language, which is optimized for client-side development
+- Flutter provides a rich set of pre-built widgets that can be customized to create beautiful and responsive UI
+- Flutter uses a reactive programming model that allows for real-time updates and fast rendering of UI
+- Flutter has a hot reload feature that allows developers to see the changes in real time without having to rebuild the entire app
+
+---
+
+## 125. What is pubspec.yaml file?
+
+**📚 TURINGQUESTIONS**
+
+While creating a Flutter project, a particular type of file is always included at the top of the project. This file is known as the pubspec.yaml file, also called 'pubspec'. This file contains information about a project's dependencies, such as packages and their versions, typefaces, and so on. It ensures that the package version is the same the next time you create the project. You can also place restrictions on the app. This project's configuration file will be used a lot while working with the Flutter project. This specification is written in YAML, a human-readable markup language.
+
+---
+
+## 126. What is State in Flutter?
+
+**📚 GEEKSFORGEEKS**
+
+In Flutter, state refers to the data or information that can change dynamically during the lifetime of a widget. Widgets are the building blocks of a Flutter app, and they can be either stateful or stateless.
+
+- Stateful widgets maintain state information and can update their state when required
+- The state is managed by a separate object known as a State object
+- The state object is created when a stateful widget is inserted into the widget tree and is destroyed when the widget is removed from the tree
+
+---
+
+## 127. What is state management?
+
+**📚 INTERVIEWBIT**
+
+Whether you are building a mobile app or a web application, State Management is crucial. Using it, states of various UI controls are centralized to handle data flow across an application. It can be a text field, radio button, checkbox, dropdown, toggle, form, and so on.
+
+In Flutter, state management can be categorized into two types:
+
+### Ephemeral State
+
+- Also called UI state or local state
+- Pertains to a particular widget
+- State contained within the specific widget
+- Supported by StatefulWidget
+
+### App State
+
+- Different from the ephemeral state
+- State intended to share across different parts of the app
+- Maintained between sessions
+- Can be used globally
+- Supported by scoped_model
+
+---
+
+## 128. What is the App state?
+
+**📚 SIMPLILEARN**
+
+App State is a shared state or application state. App states can be shared across sections of your app and maintain user sessions in the same way.
+
+### App state includes activities such as:
+
+- Login info
+- User preferences
+- E-commerce shopping cart
+- Social networking notifications
+- etc.
+
+---
+
+## 129. What is the Dart programming language?
+
+**📚 SIMPLILEARN**
+
+Dart is an object-oriented programming language with a syntax like the C Language. The language is open source and was developed by Google in 2011. The language was conceptualized to code the mobile app frontend. The app is used for coding frontend user interfaces. Flutter apps make use of the Dart programming language.
+
+---
+
+## 130. What is the Dart programming language? Explain in detail
+
+**📚 SIMPLILEARN**
+
+Your preparation for the flutter interview questions is incomplete, if you don't know about the dart programming language. Because, flutter doesn't exist without Dart Programming language. Dart programming language is object-oriented, open source, and quite similar to the syntax of C language, and developed by Google in 2011.
+
+### Features of Dart Programming Language:
+
+- Dart is declarative and programmatic which helps developers to read and visualize the layout very easily in an effortless manner
+- Dart supports basic programming concepts such as classes, interfaces, and functions as well as the collection that replicates the data structure such as arrays, generics, and optional typing
+- Dart code runs faster several times as compared to JavaScript
+- The Dart virtual machine (VM) uses both Just-in-Time (JIT) and Ahead-of-Time (AOT) compilers to reduce code execution time and offer better performance
+- Dart is very scalable and stable while creating complex applications due to its object-oriented programming interface
+
+---
+
+## 131. What is the difference between `Container` and `SizedBox` widget?
+
+**📚 GITHUB**
+
+**SizedBox** is a widget for giving some constant height or width between two widgets. It does not contain any decorative properties just like color, shape, borderRadius etc.
+
+On the other hand **Container** is a widget that any person can modify according to their needs.
+
+When used for whitespace, there is a linter warning to prefer SizedBox instead of Container. Because a Container is a heavier widget than a SizedBox, and as bonus, SizedBox has a const constructor, so it won't even create a new instance during runtime.
+
+---
+
+## 132. What is the difference between `main()` and `runApp()` functions in Flutter?
+
+**📚 GITHUB**
+
+The `main()` function tells Dart where the program starts, and it must be in the file that is considered the "entry point" for the program. By convention, this will be in a file called `main.dart`. This main function can execute any code within it's code block.
+
+The `runApp()` function takes (as parameter) widget that would be attached to the screen as a root of the widget tree that will be rendered.
+
+---
+
+## 133. What is the difference between Cupertino and Material Design in Flutter?
+
+**📚 GITHUB**
+
+Cupertino and Material Design are two design languages used in Flutter for building iOS and Android apps, respectively. While both design languages follow different design principles and have unique features, they share some similarities as well.
+
+Here are some of the main differences between Cupertino and Material Design in Flutter:
+
+1. **Visual Design**: Cupertino design is characterized by its use of translucency, minimalism, and flat design, whereas Material Design uses bold typography, bright colors, and depth effects to create a layered look.
+
+2. **Navigation and Layout**: Cupertino design uses a bottom navigation bar for app navigation and has a more top-down layout approach, while Material Design uses a drawer for navigation and has a left-to-right layout approach.
+
+3. **Widgets**: Cupertino and Material Design have different sets of widgets that reflect their design language. For example, Cupertino widgets have a more minimalist look, with more whitespace and fewer borders, whereas Material Design widgets are more vibrant, with bright colors and more pronounced borders.
+
+4. **Iconography**: The icons used in Cupertino and Material Design are also different. Cupertino icons have a more minimalist design, with fewer details and a more stylized look, whereas Material Design icons are more detailed and three-dimensional.
+
+Despite these differences, both design languages share some commonalities in the way they implement responsive design and use animations to enhance the user experience. Flutter allows developers to easily switch between Cupertino and Material Design widgets and design principles, making it possible to create apps that have a consistent look and feel across both iOS and Android platforms.
+
+---
+
+## 134. What is the difference between mainAxisSize.min and mainAxisSize.max?
+
+**📚 LEMON**
+
+### mainAxisSize.min:
+- Widget wraps its content
+- Takes only the space needed by children
+- Shrinks to fit
+
+### mainAxisSize.max:
+- Widget expands to fill available space along main axis
+- Takes all available space from parent
+
+```dart
+// min - wraps content
+Column(
+  mainAxisSize: MainAxisSize.min,
+  children: [Text('Small'), Text('Column')],
+)
+
+// max - fills available space
+Column(
+  mainAxisSize: MainAxisSize.max,
+  children: [Text('Expanded'), Text('Column')],
+)
+```
+
+---
+
+## 135. What is the difference between MaterialApp and WidgetsApp in Flutter?
+
+**📚 GEEKSFORGEEKS**
+
+| MaterialApp | WidgetsApp |
+|-------------|------------|
+| Used for creating applications that follow the Material Design guidelines | Used for creating applications that do not follow the Material Design guidelines |
+| Provides pre-built widgets like AppBar, BottomNavigationBar, FloatingActionButton, Card and SnackBar | Provides minimal widgets like Navigator, Text and GestureDetector |
+| Prefer if you want to use inbuilt themes and design specification | Prefer if you want to build custom theme and design specifications |
+
+---
+
+## 136. What is the difference between Navigator and Router in Flutter?
+
+**📚 GEEKSFORGEEKS**
+
+| Navigator | Router |
+|-----------|--------|
+| Widget used to manage the navigation stack | More flexible and powerful way of managing navigation |
+| Allows back and forth navigation using back button or gestures | Allows custom transition animations and complex navigation flows |
+| Simple and easy-to-use | Requires more code and setup |
+| Prefer for inbuilt navigation system | Prefer for custom navigation system |
+
+---
+
+## 137. What is the difference between padding and margin in Flutter?
+
+**📚 GITHUB**
+
+In Flutter, `padding` and `margin` are two properties used to adjust the spacing between widgets in the layout.
+
+- Padding is the amount of space added within a widget, between its content and its border. It affects the layout of the widget and increases the size of the widget. Padding is set using the `padding` property of a widget and can be applied to any widget.
+
+- Margin is the amount of space added outside a widget, between the widget and its parent container. It does not affect the layout of the widget but rather positions the widget within its parent. Margin is set using the `margin` property of a widget and can only be applied to widgets that are inside a container.
+
+In summary, `padding` is used to adjust the space inside a widget while `margin` is used to adjust the space outside a widget. Both `padding` and `margin` are important properties for achieving the desired layout and spacing between widgets in a Flutter application.
+
+---
+
+## 138. What is the difference between SizedBox and Container?
+
+**📚 SIMPLILEARN**
+
+### SizedBox
+
+- The SizedBox widget in Flutter has a specified size
+- In SizedBox, we cannot set the color or decoration for the widget
+- We can only use it with a child widget having a specific width or height
+
+### Container
+
+- The Container in Flutter is a parent widget containing multiple child widgets to manage them efficiently in width, height, padding, background color, etc.
+- If we have a widget that needs some background styling may be a color, shape, or size constraint that can be wrapped in a container widget
+
+---
+
+## 139. What is the difference between StatelessWidget and StatefulWidget in Flutter?
+
+**📚 GEEKSFORGEEKS**
+
+In Flutter, StatelessWidget and StatefulWidget are two different types of widgets that are used to create UI elements.
+
+| StatelessWidget | StatefulWidget |
+|-----------------|----------------|
+| StatelessWidget is a widget that does not have any mutable state | StatefulWidget is a widget that has a mutable state |
+| Once it is built, its properties cannot be changed | It can change its properties based on user interactions |
+| Good to use, while showing static content in the app | Good to use, while showing dynamic or interactive content in the app |
+| Examples include Text, Icons, and Images | Examples include TextField, Checkbox, and Slider |
+
+---
+
+## 140. What is the Flutter architecture?
+
+**📚 SIMPLILEARN**
+
+Flutter has a three-layered architecture:
+
+1. **Upper Layer**: The upper layer consists of the Dart programming language along with the widgets, animations, illustrations, customizations, etc.
+2. **The middle layer or the Flutter Engine**: This layer deals with text display, formatting, layout, etc.
+3. **Bottom Layer or the built-in service**: This layer is for managing plugins or packages.
+
+---
+
+## 141. What is the purpose of `SafeArea` widget in Flutter?
+
+**📚 GITHUB**
+
+The `SafeArea` widget insets its child by sufficient padding to avoid intrusions by the operating system. For example, this will indent the child by enough to avoid the status bar at the top of the screen. It will also indent the child by the amount necessary to avoid the Notch, or similar creative physical features of the display.
+
+---
+
+## 142. What is the purpose of a key in Flutter?
+
+**📚 GEEKSFORGEEKS**
+
+In Flutter, a **Key** is an object that identifies a widget. It is used to maintain the state of the widget and to optimize the rendering performance of the app.
+
+When a widget is built, Flutter assigns a unique identity to it based on its location in the widget tree. However, when the widget tree is modified, such as when a widget is added, removed, or moved, the identity of the widgets can change. This can cause unexpected behavior and can lead to performance issues.
+
+To solve this problem, Flutter provides the Key class, which can be used to assign a unique identity to a widget that persists even if the widget tree is modified.
+
+### Types of Keys:
+
+- **GlobalKey**: Used to identify a widget from anywhere in the app
+- **LocalKey**: Used to generate a unique key automatically
+- **UniqueKey**: Generates unique key for every rebuild
+- **ValueKey**: Identifies a widget based on specific value
+- **ObjectKey**: Identifies a widget based on its object identity
+
+---
+
+## 143. What is the purpose of animation controller class in Flutter?
+
+**📚 TURINGQUESTIONS**
+
+The **Animation Controller** class in Flutter is used to control and manage animations. It provides a way to start, stop, or pause an animation, and allows you to define the duration, speed, and direction of an animation.
+
+The primary purpose of the Animation Controller class is to define an animation that can be used in your app's user interface. The class provides methods for defining and manipulating animations, such as setting the duration and the curve used to control the animation's progress.
+
+---
+
+## 144. What is the purpose of setState() in Flutter?
+
+**📚 GEEKSFORGEEKS**
+
+`setState()` is a method that is used to update the state of a Stateful widget in Flutter. When a widget is updated, the Flutter framework calls the `build()` method of the widget to rebuild its UI based on the new state.
+
+### How setState() works:
+
+1. The `setState()` method tells the Flutter framework that the state has changed
+2. The `setState()` method takes a function as an argument, which updates the state
+3. Once the state is updated, the `build()` method is called again, and the UI is rebuilt
+
+```dart
+setState(() {
+  counter++;
+});
+```
+
+*[Continuing with questions 11-50 in the same format...]*
+
+I notice the file is getting very large. Let me create a more optimized version by splitting it or summarizing. Would you like me to:
+
+1. Continue with all 50 questions in one file (it will be very long)
+2. Split into multiple pages by topic
+3. Create a condensed version with key points
+
+For now, let me complete the file with all 50 questions concisely.
+
+---
+
+## 145. What is the purpose of the `dispose()` method in a StatefulWidget?
+
+**📚 GITHUB**
+
+The `dispose()` method is a lifecycle method in the `State` class of a `StatefulWidget` in the Flutter framework. It is called when the stateful widget is removed from the widget tree, giving us the opportunity to perform any cleanup tasks or release any resources that the widget may have used.
+
+In the `dispose()` method, we can perform tasks such as closing streams, cancelling network requests, or disposing of any controllers or listeners that the widget may have used. By doing so, we can prevent memory leaks and ensure that the widget doesn't continue to consume system resources after it is no longer needed.
+
+It is important to note that the `dispose()` method is not called during a hot reload or a rebuild, as the widget is not removed from the widget tree in these cases. However, it will be called when the widget is removed from the widget tree due to a state change or when the parent widget is removed.
+
+Overall, the `dispose()` method provides a way to clean up any resources that the widget may have used, ensuring that the application runs smoothly and efficiently.
+
+---
+
+## 146. What is the purpose of the `FittedBox` widget in Flutter?
+
+**📚 GITHUB**
+
+The `FittedBox` widget in Flutter is used to automatically scale and position its child within its own bounds. The purpose of the `FittedBox` widget is to provide an easy-to-use way to adjust the size and position of a child widget to fit within its parent widget. When using the `FittedBox`, we can specify a child widget that is larger or smaller than its parent, and the `FittedBox` will automatically scale and position the child widget to fit within the parent widget's bounds.
+
+The `FittedBox` widget has several properties that can be used to customize the scaling behavior, including the fit property which determines how the child widget should be scaled, and the alignment property which determines where the child widget should be positioned within the parent widget.
+
+Some common use cases for the `FittedBox` widget include:
+
+- Scaling and centering an image within a container widget
+- Scaling and positioning text within a layout to fit within available space
+- Scaling and positioning UI elements to fit within different screen sizes.
+
+---
+
+## 147. What is the purpose of the `initState()` method in a StatefulWidget?
+
+**📚 GITHUB**
+
+The `initState()` method is a lifecycle method in the `StatefulWidget` class of the Flutter framework. It is called once when the stateful widget is first inserted into the widget tree and it is used to initialize the state of the widget.
+
+In the `initState()` method, we can perform one-time initialization tasks, such as setting default values for your widget's state or initializing any controllers that the widget might use. It is important to note that the `initState()` method is only called once during the lifetime of a `StatefulWidget`. After the `initState()` method is called, subsequent updates to the widget's state will not cause the `initState()` method to be called again.
+
+Overall, the `initState()` method provides a way to set up the initial state of the widget and perform any necessary initialization tasks.
+
+---
+
+## 148. What is the purpose of the `Navigator` class in Flutter?
+
+**📚 GITHUB**
+
+In Flutter, the `Navigator` class is used to manage a stack of pages or routes in an app. It provides methods to push and pop routes onto and off of the stack, allowing the user to navigate between different screens or views within the app.
+
+Here are some of the key features and use cases of the `Navigator` class in Flutter:
+
+1. The `Navigator` class provides methods to push and pop routes onto and off of the stack. When a route is pushed onto the stack, it becomes the topmost route and is displayed on the screen. When a route is popped off the stack, the previous route becomes the topmost route and is displayed on the screen.
+2. The `Navigator` class provides a way to pass data between routes using the push method's arguments parameter.
+3. The `Navigator` class allows to manage the navigation history by controlling which routes are pushed onto and popped off of the stack.
+4. The `Navigator` class provides options to customize the transition animation when navigating between routes, such as sliding, fading, or scaling the new route into view.
+
+---
+
+## 149. What is the purpose of the `SingleChildScrollView` widget in Flutter?
+
+**📚 GITHUB**
+
+The `SingleChildScrollView` widget in Flutter is used to make its child widget scrollable if it overflows the parent container.
+
+The purpose of `SingleChildScrollView` is to provide a way to display content that is larger than the available space. This widget is often used when a widget contains a large amount of content that doesn't fit on the screen, such as a long list of items, a large image, or a form with many input fields.
+
+By wrapping the child widget in a `SingleChildScrollView`, the user can scroll through the content to see all of it. The `SingleChildScrollView` widget takes up as much space as its child widget requires, and allows the child to be scrolled vertically or horizontally to view all of its content.
+
+Here's an example of using `SingleChildScrollView` to create a scrollable list:
+
+```dart
+SingleChildScrollView(
+  child: Column(
+    children: <Widget>[
+      ListTile(title: Text('Item 1')),
+      ListTile(title: Text('Item 2')),
+      ListTile(title: Text('Item 3')),
+      // Add more items here...
+    ],
+  ),
+);
+```
+
+In this example, the `SingleChildScrollView` wraps a `Column` widget containing several `ListTile` widgets. If the content of the `Column` is too large to fit on the screen, the user can scroll through it to see all of the items.
+
+---
+
+## 150. What is the purpose of the `Stack` widget in Flutter?
+
+**📚 GITHUB**
+
+In Flutter, the `Stack` widget is used to place widgets on top of each other in a specific order. It allows to position widgets at specific locations within the parent widget by using offsets or alignment.
+
+The main purpose of the `Stack` widget is to provide a way to overlay widgets on top of each other. For example, if we want to display a text label over an image, we can use a `Stack` widget to place the text label on top of the image.
+
+```dart
+Stack(
+  children: [
+    Image.network('https://picsum.photos/250?image=9'),
+    Center(child: Text('Hello, World!'),
+  ],
+),
+```
+
+---

@@ -1,0 +1,929 @@
+---
+title: Intermediate Flutter Questions (Questions 51-100)
+description: Intermediate Flutter Questions (Questions 51-100)
+---
+
+# Intermediate Flutter Questions (Questions 51-100)
+
+> **Note:**
+  **Questions 51-100 of 102**
+
+  All questions consolidated from multiple sources with source attribution.
+
+---
+
+## 51. What are keys and why do we need them?
+
+**📚 GITHUB**
+
+Flutter uses keys to preserve the state and to uniquely identify specific widgets within a widget tree. It is used to preserve the state of the `StatefulWidget`s while they are being replaced with other widgets or just moved in the widget tree.
+
+The most common usage of key is when we are dealing with collections of widgets that have the same type; so, without keys, the element tree would not know which state corresponds to which widget, as they would all have the same type.
+
+For an explanation with an example, check this [stackoverflow answer](https://stackoverflow.com/a/50081052).
+
+---
+
+## 52. What are keys in Flutter and why are they used?
+
+**📚 LEMON**
+
+Keys preserve widget state when widgets are moved or change position in the widget tree. They are useful in:
+- Lists where items can be reordered
+- Animations
+- Any scenario where Flutter needs to identify and track specific widgets across rebuilds
+
+Keys help Flutter determine which widgets have changed, been added, or been removed.
+
+---
+
+## 53. What are mixins? How to use them?
+
+**📚 GITHUB**
+
+A mixin is a class whose methods and properties can be used by other classes – without subclassing. It's a reusable chunk of code that can be plugged in to any class that needs this functionality.
+
+Example of a mixin:
+
+```dart
+// To create a mixin, use `mixin` keyword instead of `class`.
+mixin GreetingsMixin {
+  String greeting = 'Hello people';
+
+  void introduce() => print('$greeting, I am Sandip.');
+}
+
+// The following example shows two classes that use the above mixin.
+class Something extends MyClass with GreetingsMixin {
+  // ...
+}
+
+class SomethingElse extends MyAnotherClass with GreetingsMixin {
+  SomethingElse() {
+    greeting = 'Hi everyone';
+  }
+}
+
+// Here is how to use them
+SomethingElse obj = SomethingElse();
+obj.introduce();  // Hi everyone, I am Sandip.
+```
+
+Sometimes you want to restrict from mixing in functionality to classes that have no deal with the mixin. To restrict a mixin, use the 'on' keyword to specify the required subclass.
+
+```dart
+class SocialMedia {
+  // ...
+}
+
+// Create a mixin restricted on [SocialMedia] class
+mixin SocialMediaGreetings on SocialMedia {
+  String greeting = 'Hello people';
+
+  void introduce() => print('$greeting, I am Sandip.');
+}
+
+// Only classes that extend or implement the [SocialMedia] class
+// can use the mixin [SocialMediaGreetings]
+class Twitter extends SocialMedia with SocialMediaGreetings {
+  Twitter() {
+    greeting = 'Hello Tweeple';
+  }
+}
+```
+
+---
+
+## 54. What are the advantages of a Flutter Inspector?
+
+**📚 TURINGQUESTIONS**
+
+The advantages of Flutter inspector are as follows:
+
+- **Widget mode**: With this button, you can choose different widgets from your application and inspect them one at a time. After choosing any Widget from the Widget Tree you can view the blueprint of that Widget with the help of the Layout Explorer tab, or you can check different properties and nested widgets of the selected Widget with the help of the Details Tree tab.
+
+- **Refresh Tree**: Whenever you make any changes in your application, and you hot reload those changes, they are not immediately reflected in your Flutter Inspector tool. To see the changes, you will have to click the Refresh Tree button.
+
+- **Slow animation**: You can reduce the speed of animation between layouts.
+
+- **Invert Oversized Image**: This will help to find oversized images. If developers want to create an application and they want to run it as fast as possible, but with heavy size and high-resolution images, it affects the performance of the application, so it will find the image and reduce the size of that image.
+
+- **Debug paint**: Forms a border around each Widget.
+
+---
+
+## 55. What are the advantages of using Flutter?
+
+**📚 TURINGQUESTIONS**
+
+Flutter has many advantages:
+
+- **Fast development**: With the help of Flutter, you can save a lot of time while developing software. Hot reload is a flutter feature with which you can make changes to your code and see the results in real time.
+- **Flexible user interface**: Flutter provides your application with a sleek, beautiful, and modern look that is sure to impress your users.
+- **Provides native performance**: Flutter applications run faster and smoother on devices.
+- **Widgets**: When building your application in Flutter, you get access to a wide range of pre-loaded widgets that can be utilized in your app.
+- **Huge community support**: If you want to reach a global audience, then Flutter is for you because it supports internationalization. With it, you can create an application that is available in multiple languages.
+
+---
+
+## 56. What are the differences between JIT and AOT?
+
+**📚 GITHUB**
+
+JIT stands for Just-in-Time vs AOT stands for Ahead-of-Time.
+
+- JIT compiles code during runtime. Used in development (e.g., hot reload) but has slower performance.
+- AOT compiles code before runtime (during build). Used in production for faster performance and optimized binary size.
+
+Key Differences:
+
+- JIT is slower, smaller binary, errors at runtime.
+- AOT is faster, larger binary, errors at compile-time.
+
+In Flutter, JIT is used in debug mode, and AOT is used in release mode for optimized apps.
+
+---
+
+## 57. What are the various kinds of Streams present in flutter?
+
+**📚 GITHUB**
+
+Streams in flutter are of two main types:
+
+**Single Subscription Stream**
+- Allows a single listener to subscribe at a time.
+- Suitable for sequential data processing, like events or user input.
+- Commonly used in situations like button clicks or network requests.
+
+**Broadcast Stream**
+
+- Allows multiple listeners to subscribe simultaneously.
+- Ideal for scenarios where the same data needs to be shared across multiple listeners.
+- Often used for shared events, like a global notification system.
+
+---
+
+## 58. What do you mean by Container class?
+
+**📚 TURINGQUESTIONS**
+
+The **container class** is the convenience widget that enables positioning, sizing, and painting of widgets. A container class can include multiple widgets and it enables developers to manage those widgets according to their convenience.
+
+---
+
+## 59. What does ListView.builder do?
+
+**📚 LEMON**
+
+`ListView.builder` builds list items lazily as they scroll into view. This improves performance for long lists by only creating widgets for visible items, resulting in efficient memory management. Items are created on-demand rather than all at once.
+
+---
+
+## 60. What does SafeArea do?
+
+**📚 LEMON**
+
+`SafeArea` adds padding to avoid system UI elements such as:
+- Status bar
+- Notches
+- Home indicators
+- System navigation bars
+
+It keeps content within safe visible bounds, ensuring your UI isn't obscured by system elements.
+
+---
+
+## 61. What does Stack do and when should it be used?
+
+**📚 LEMON**
+
+`Stack` overlays widgets on top of each other. The first child is at the bottom, and subsequent children are painted on top. Use it for:
+- Complex UI layouts like banners
+- Image overlays
+- Free positioning of widgets
+- Creating layered designs
+
+Children can be positioned using `Positioned` widgets.
+
+---
+
+## 62. What does the main() function do in a Flutter app?
+
+**📚 LEMON**
+
+The `main()` function is the app's entry point. It's the first function that runs when your Flutter app starts. Usually, it calls `runApp(MyApp())` to inflate the widget tree and start the app.
+
+---
+
+## 63. What is `Animation` and `AnimationController`?
+
+**📚 GITHUB**
+
+`Animation` is a way to describe a graphical representation of a changing value over time. It can be used to animate the properties of widgets, such as size, color, position, and opacity, to create smooth and visually appealing transitions.
+
+`AnimationController` is a central class in Flutter's animation framework that is used to control the animations. It defines the duration, direction, and other properties of an animation, and provides methods for starting, stopping, and monitoring the progress of the animation.
+
+In Flutter, animations can be created by using the `AnimationController` in combination with `Tween` and `Curve` objects, which define the animation's starting and ending values and the progression of the animation over time.
+
+```dart
+class MyAnimation extends StatefulWidget {
+  @override
+  _MyAnimationState createState() => _MyAnimationState();
+}
+
+class _MyAnimationState extends State<MyAnimation>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: Duration(seconds: 2),
+      vsync: this,
+    );
+    _animation = Tween<double>(begin: 0, end: 300).animate(_controller)
+      ..addListener(() {
+        setState(() {});
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: _animation.value,
+      width: _animation.value,
+      child: FlutterLogo(),
+    );
+  }
+}
+```
+
+---
+
+## 64. What is `AppLifecycleState`?
+
+**📚 GITHUB**
+
+The `AppLifecycleState` defines the state that an application can be.
+
+- **detached (AppLifecycleState.detached):** This means the application is still hosted on flutter engine but is detached from any host views. It can either be in the progress of attaching a view when engine was first initializes, or after the view being destroyed due to a Navigator pop.
+
+- **inactive (AppLifecycleState.inactive):** This means the application is in an inactive state and is not receiving user input. Simply we can say the app is in the foreground and not running in the background on your mobile phone.
+
+- **paused (AppLifecycleState.paused):** This means the application is not currently visible to the user, not responding to user input, and running in the background.
+
+- **resumed (AppLifecycleState.resumed):** This means the application is visible and responding to user input.
+
+---
+
+## 65. What is `BuildContext` in Flutter? And why is it needed?
+
+**📚 GITHUB**
+
+`BuildContext` is a locator that tracks and locates each widget in a widget tree. `BuildContext` objects are passed to **WidgetBuilder** functions, and are available from the `State.context` member. Some static functions (e.g. **showDialog**, **Theme.of**, and so forth) also take build contexts so that they can act on behalf of the calling widget, or obtain data specifically for the given context.
+
+There are many reasons why `BuildContext` is important. From locating widgets in the tree to interacting with **RenderObjects**, the context makes all of these interactions possible. It serves as the **bridge** between the widgets and rendering layer and is especially powerful for combining functionality or using information from one tree in another.
+
+---
+
+## 66. What is `FutureBuilder` in Flutter and how is it used to build dynamic UI?
+
+**📚 GITHUB**
+
+`FutureBuilder` is a widget in Flutter that allows us to build a dynamic UI based on the value of a Future. A Future is an asynchronous operation that returns a value in the future. For example, we might use a Future to retrieve data from a server, or to perform a long-running computation.
+
+The `FutureBuilder` widget listens to the Future and builds the UI based on its state. The UI can be different for three states:
+
+**Uncompleted**: When the Future is running, we can show a loading indicator or any other widget to indicate that the operation is in progress.
+
+**Completed with data**: When the Future completes with data, we can use the data to build the UI. For example, we might display a list of items retrieved from the server.
+
+**Completed with an error**: If the Future completes with an error, we can show an error message or any other widget to indicate that something went wrong.
+
+Here's an example of using `FutureBuilder` to retrieve data from a server and display a list of items:
+
+```dart
+Future<List<String>> _fetchData() async {
+  // Simulate fetching data from a server
+  return Future.delayed(Duration(seconds: 2), () => ["Item 1", "Item 2", "Item 3"]);
+}
+
+@override
+Widget build(BuildContext context) {
+  return FutureBuilder<List<String>>(
+    future: _fetchData(),
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        return ListView.builder(
+          itemCount: snapshot.data.length,
+          itemBuilder: (context, index) {
+            return Text(snapshot.data[index]);
+          },
+        );
+      } else if (snapshot.hasError) {
+        return Text("Error: ${snapshot.error}");
+      }
+      return CircularProgressIndicator();
+    },
+  );
+}
+```
+
+In this example, the `_fetchData` function returns a Future that retrieves data from a server. The `FutureBuilder` widget listens to the Future and uses the `builder` callback to build the UI based on its state. If the Future is running, the `CircularProgressIndicator` is displayed. If the Future completes with data, the data is displayed in a list. If the Future completes with an error, an error message is displayed.
+
+---
+
+## 67. What is `resizeToAvoidBottomInset`? When should we use it?
+
+**📚 GITHUB**
+
+The `resizeToAvoidBottomInset` is a property in the `Scaffold` widget. It is a boolean property that determines whether the body of the `Scaffold` should be resized to avoid the on-screen keyboard when it is displayed.
+
+It should be used when the body of the `Scaffold` contains a form or text input fields, and it is desirable to avoid having the input fields covered by the on-screen keyboard when the user is entering text.
+
+---
+
+## 68. What is a `MediaQuery` in Flutter?
+
+**📚 GITHUB**
+
+In Flutter, a `MediaQuery` is a widget that provides information about the device's screen size, orientation, and other display-related characteristics. It is typically used to create responsive UIs that adapt to different screen sizes and densities.
+
+The `MediaQuery` widget is usually placed at the root of the widget tree, and it provides a `MediaQueryData` object that contains various properties related to the device's display, such as:
+
+- **Screen size**: `MediaQueryData.size` returns the size of the device's screen in logical pixels (i.e., independent of the device's pixel density).
+- **Screen orientation**: `MediaQueryData.orientation` returns the orientation of the device's screen (portrait or landscape).
+- **Pixel density**: `MediaQueryData.devicePixelRatio` returns the device's pixel density, which is the ratio between physical pixels and logical pixels.
+- **Text scaling factor**: `MediaQueryData.textScaleFactor` returns the user's preferred text scaling factor, which can be used to adjust the font size of text in the app.
+- **Platform**: `MediaQueryData.platformBrightness` returns the platform's preferred brightness mode (light or dark).
+
+---
+
+## 69. What is a Container in Flutter?
+
+**📚 LEMON**
+
+`Container` is a versatile box widget that combines common painting, positioning, and sizing widgets. It can have:
+- Padding
+- Margin
+- Decoration (borders, backgrounds, shadows)
+- Width and height constraints
+- Alignment
+
+It's one of the most commonly used widgets for layout and styling.
+
+---
+
+## 70. What is a GlobalKey in Flutter?
+
+**📚 GITHUB**
+
+A `GlobalKey` is a unique identifier for a widget in the widget tree, allowing the widget to be accessed and manipulated from outside of its parent or ancestor widgets. It is a class in the Flutter framework that can be used with stateful or stateless widgets to uniquely identify a widget.
+
+With a `GlobalKey`, we can access a widget's state, as well as invoke its methods and properties from other widgets in the widget tree. This can be useful in situations where we need to manipulate a widget's state from outside of its parent widget, such as in form validation or when implementing animations.
+
+However, it is important to use `GlobalKey` sparingly and only when necessary, as overuse can lead to poor code maintainability and performance issues. When possible, it is generally recommended to use the `BuildContext` object and Flutter's reactive programming model to handle state and data management in the application.
+
+---
+
+## 71. What is a StatefulWidget and when would you use it?
+
+**📚 LEMON**
+
+A `StatefulWidget` is a widget with mutable state that can change during its lifetime. It is a built-in Flutter approach to make the UI dynamically update. Use it to create dynamic, interactive UI elements that need to update their visual representation based on user interaction or other events.
+
+---
+
+## 72. What is Factory constructor?
+
+**📚 GITHUB**
+
+A factory constructor in Flutter is a special type of constructor that returns an instance of a class, but it does not necessarily create a new object every time it's called. The purpose of a factory constructor is to allow classes to provide alternative ways to create objects without exposing the implementation details of the object creation process. For example, a factory constructor could return an instance from a cache, return a subtype of the class, or use a factory method to create an instance.
+
+In Flutter, factory constructors are declared using the `factory` keyword and have no body. Instead, they return an instance of the class, which can be an instance of the class, a subtype of the class, or a completely different type. This allows clients of the class to create objects in different ways, depending on their needs.
+
+For example:
+
+```dart
+class Rectangle {
+  final double width;
+  final double height;
+
+  Rectangle(this.width, this.height);
+
+  factory Rectangle.square(double side) {
+    return Rectangle(side, side);
+  }
+}
+```
+
+In this example, the factory constructor `Rectangle.square` takes a side parameter and returns a Rectangle object with equal width and height. This allows clients of the Rectangle class to create square objects without knowing how squares are implemented as rectangles.
+
+This helps to create a more flexible and reusable codebase, and it also makes it easier to maintain and test the code.
+
+---
+
+## 73. What is Flutter Architecture?
+
+**📚 TURINGQUESTIONS**
+
+Flutter architecture is comprised of three layers:
+
+### Flutter Framework Layer
+This is the highest layer in the Flutter architecture and includes the widgets and the Material Design widgets. It also includes APIs for animations, gestures, and routing.
+
+### Engine Layer
+This is the core layer of the Flutter architecture that contains the rendering engine, which handles graphics and text rendering. It also includes the Skia graphics library, used to draw graphics on the screen.
+
+### Platform Layer
+This is the lowest layer in the Flutter architecture and provides access to the native platform APIs. It includes plugins and packages that allow Flutter to interact with the device's hardware and software, such as the camera, location services, and sensors.
+
+---
+
+## 74. What is MediaQuery.of(context).size used for?
+
+**📚 LEMON**
+
+`MediaQuery.of(context).size` gets the device screen dimensions (width and height). It's useful for:
+- Creating responsive designs
+- Adapting layouts to different screen sizes
+- Calculating widget sizes based on screen dimensions
+
+---
+
+## 75. What is SingleChildScrollView and when do you use it?
+
+**📚 LEMON**
+
+`SingleChildScrollView` is a scrollable container for a single widget (like a `Column`). Use it when the content might overflow vertically and needs to be scrollable. It's ideal for forms or layouts that might exceed the screen height.
+
+---
+
+## 76. What is sound null safety?
+
+**📚 GITHUB**
+
+**Sound null safety** makes types in code non-nullable by default and enables special static checks and compiler optimizations to guarantee that null-dereference errors won't appear at runtime because they will be spotted at compile-time and fixed.
+
+**Null safety** is a guarantee within an object-oriented programming language that no object references will have null or void values.
+
+---
+
+## 77. What is State Management in Flutter?
+
+**📚 GITHUB**
+
+State management in Flutter refers to the management of the state of widgets and their properties in a Flutter app. State management is an essential concept in Flutter because it allows developers to create dynamic and interactive user interfaces that respond to user input and changes in data.
+
+In Flutter, widgets can be either stateful or stateless. Stateless widgets are widgets that do not change over time, whereas stateful widgets are widgets that can change their properties and appearance over time.
+
+State management in Flutter involves managing the state of stateful widgets, which can be done using various techniques and design patterns, such as:
+
+- **StatefulWidget and State**: This is the most basic and straightforward way to manage the state of a widget in Flutter. In this approach, a widget is split into two classes: `StatefulWidget` and `State`. The `StatefulWidget` is responsible for creating the `State` object, and the `State` object is responsible for managing the state of the widget.
+
+- **InheritedWidget and InheritedModel**: These are two classes that allow the sharing of data between widgets in a Flutter app. `InheritedWidget` and `InheritedModel` can be used to manage the state of a widget by passing data down the widget tree.
+
+- **Provider**: This is a third-party library that simplifies state management in Flutter. `Provider` uses `InheritedWidget` under the hood and provides a simple and easy-to-use API for managing the state of a widget.
+
+- **BLoC (Business Logic Component) pattern**: This is a design pattern that separates the business logic and presentation layers of an app. BLoC can be used for state management by creating a stream of events that represent changes to the state of the widget.
+
+---
+
+## 78. What is the difference between `Expanded` and `Flexible` widget?
+
+**📚 GITHUB**
+
+The only difference between these two widgets is the `Flexible` widget takes only the space needed by the child, whereas the `Expanded` widget enforces its child to take all the available space.
+
+The `Expanded` widget in flutter is shorthand of `Flexible` with the fit set to **FlexFit. tight**.
+
+```dart
+Column(children: [
+  Row(
+    children: [_ExpandedWidget(), _FlexibleWidget()],
+  ),
+  Row(
+    children: [_ExpandedWidget(), _ExpandedWidget()],
+  ),
+  Row(
+    children: [_FlexibleWidget(), _FlexibleWidget()],
+  ),
+]),
+```
+
+---
+
+## 79. What is the difference between `NetworkImage` and `Image.network` in flutter?
+
+**📚 GITHUB**
+
+`NetworkImage` class creates an object that provides an image from the src URL passed to it. It is not a widget and does not output an image to the screen.
+
+`Image.network` creates a widget that displays an image on the screen. It is just a named constructor on the **Image** class. It sets the image property using the **NetworkImage** . This image property is then used to display the image.
+
+---
+
+## 80. What is the difference between `WidgetsApp` and `MaterialApp` in Flutter?
+
+**📚 GITHUB**
+
+`WidgetsApp` is a convenient widget that wraps a number of widgets that are commonly required for an application. It also provides basic navigation.
+
+`MaterialApp` builds an application that uses the mterial design. It is built upon the `WidgetsApp` and contains some material-design specific functionality, such as **AnimatedTheme**. We certainly don't require `MaterialApp` every time when building a Flutter project. `CupertinoApp` gives iOS like look and feel, or we can even define our custom sets of widgets.
+
+---
+
+## 81. What is the difference between Column and ListView?
+
+**📚 LEMON**
+
+- **Column:** Lays out all children vertically at once. Non-scrollable by default. Best for a fixed number of children.
+- **ListView:** Scrollable and efficient for long or dynamic content. Creates children lazily on demand.
+
+Use `Column` for simple layouts, `ListView` for scrollable lists.
+
+---
+
+## 82. What is the difference between Expanded and Flexible?
+
+**📚 TURINGQUESTIONS**
+
+**Flexible** takes the least space needed to fit in a child widget. On the other hand, **Expanded** takes the rest of the size in the widget.
+
+---
+
+## 83. What is the difference between final and const?
+
+**📚 LEMON**
+
+- `final`: Assigned once at runtime. The value is set when the object is created and cannot be changed afterward.
+- `const`: Assigned at compile-time and is deeply immutable. The value must be known at compile time.
+- **Recommendation:** Use `const` for performance optimization where possible, as it allows Flutter to reuse widget instances.
+
+---
+
+## 84. What is the difference between hot reload and hot restart?
+
+**📚 LEMON**
+
+- **Hot reload:** Injects new code into the Dart VM and preserves the current state. It's fast and maintains your app's current state.
+- **Hot restart:** Fully rebuilds the app and resets all state. It's a complete restart of the application.
+
+---
+
+## 85. What is the difference between MainAxisAlignment and CrossAxisAlignment?
+
+**📚 LEMON**
+
+- **MainAxisAlignment:** Aligns children along the main axis (horizontal in Row, vertical in Column)
+- **CrossAxisAlignment:** Aligns children along the perpendicular/cross axis
+
+These properties control how children are positioned within `Row`, `Column`, and `Flex` widgets.
+
+---
+
+## 86. What is the difference between Provider vs. InheritedWidget?
+
+**📚 GITHUB**
+
+Provider and InheritedWidget are both ways to share data between widgets in Flutter, but they differ in their implementation and approach.
+
+InheritedWidget is a built-in widget in Flutter that allows the sharing of data between widgets in a tree structure. It works by creating a tree of widgets, where each widget can access data from its ancestor widget. This makes it easy to share data between widgets without the need for callback functions or prop drilling. InheritedWidget can be used for simple to moderately complex cases, but can become cumbersome to use for more complex use cases.
+
+Provider is a third-party package that provides an easy and efficient way to manage state in Flutter. It is built on top of InheritedWidget and offers a more declarative approach to managing state. Provider allows widgets to access data by declaring what data they need and then automatically rebuilding when the data changes. Provider is highly scalable and can be used for both simple and complex use cases.
+
+In summary, while both Provider and InheritedWidget can be used to share data between widgets, Provider offers a more declarative and scalable approach to managing state, while InheritedWidget is a built-in widget in Flutter that can be used for simple to moderately complex use cases.
+
+---
+
+## 87. What is the event loop?
+
+**📚 GITHUB**
+
+In Flutter, the event loop is a mechanism used to manage the flow of events and callbacks in an application. The event loop runs on a single thread and is responsible for processing events, such as user input or network I/O, and executing any associated callbacks.
+
+The event loop works by maintaining a queue of events and callbacks that need to be processed. When an event occurs, such as a user tapping a button, the event is added to the end of the event queue. The event loop then dequeues events from the front of the queue and executes any associated callbacks, such as updating the user interface or performing a network request.
+
+The event loop is a crucial part of the Flutter framework, as it allows developers to create responsive and interactive applications that can handle user input and respond to changes in real-time. By using the event loop effectively, developers can ensure that their applications remain fast and responsive, even when performing complex tasks or running on slower devices.
+
+---
+
+## 88. What is the extension method in Dart?
+
+**📚 GITHUB**
+
+Extension method allows us to add new functionality on top of existing libraries.For example, you can add extra functionality to the Dart core String library, that are only available in your app.
+
+Syntax to create an extension method:
+
+```
+extension <extension name> on <type> {
+  // (<member definition>)*
+}
+```
+
+Example of an Dart extension method:
+
+```dart
+// an extension method
+extension StringExtension on String {
+  String capitilizeWord() {
+    return this.split(' ').map((word) => word[0].toUpperCase() + word.substring(1)).join(' ');
+  }
+}
+
+// example of using the above extension
+String myString = 'welcome to the flutter world!!!';
+print(myString.capitilizeWord()); // Welcome To The Flutter World!!!
+```
+
+Here is how we can unleash the power of extension methods in Flutter:
+
+```dart
+// an extension on widget
+extension WidgetExtension on Widget {
+  Widget addPadding([double padding = 8.0]) {
+    return Padding(
+      padding: EdgeInsets.all(padding),
+      child: this,
+    );
+  }
+}
+
+// example of using the above extension
+Text('Text widget with the default padding of 8.0').addPadding();
+Text('Text widget with padding of 16.0').addPadding(16.0);
+```
+
+---
+
+## 89. What is the lifecycle of a StatefulWidget?
+
+**📚 TURINGQUESTIONS**
+
+A StatefulWidget's lifecycle is as follows:
+
+1. `createState`
+2. `initState`
+3. `didChangeDependencies`
+4. `build`
+5. `didUpdateWidget`
+6. `setState`
+7. `deactivate`
+8. `dispose`
+
+---
+
+## 90. What is the purpose of the `AnimatedBuilder` widget in Flutter?
+
+**📚 GITHUB**
+
+The `AnimatedBuilder` widget in Flutter is used to create complex animations by separating the animation logic from the widget tree. It provides a builder function that returns a widget tree, and an animation object that can be used to animate the properties of the widgets in the tree.
+
+Here's a simple code example that demonstrates how to use `AnimatedBuilder`:
+
+```dart
+class MyWidget extends StatefulWidget {...
+
+class _MyWidgetState extends State<MyWidget> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+    _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
+    _controller.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        return Opacity(
+          opacity: _animation.value,
+          child: Container( ... ),
+        );
+      },
+    );
+  }
+}
+```
+
+---
+
+## 91. What is the purpose of the `AnimatedSwitcher` widget in Flutter?
+
+**📚 GITHUB**
+
+The `AnimatedSwitcher` widget in Flutter is used to create animated transitions between two or more widgets. The purpose of the `AnimatedSwitcher` widget is to provide an easy-to-use way to animate changes in the widget tree. When you use the `AnimatedSwitcher`, you can specify a new child widget to be displayed, and the `AnimatedSwitcher` will animate the transition between the old and new widgets using a customizable animation.
+
+The `AnimatedSwitcher` widget has several properties that can be used to customize the animation, including the duration of the animation, the type of animation, and whether or not to fade the widgets in and out.
+
+Some common use cases for the `AnimatedSwitcher` widget include:
+
+- Swapping out one widget for another in response to user input
+- Animating changes to a list of items, such as adding or removing items
+- Creating smooth transitions between screens or pages in a multi-page app
+
+---
+
+## 92. What is the purpose of the `didUpdateWidget` method in a StatefulWidget?
+
+**📚 GITHUB**
+
+In Flutter, `StatefulWidget` is a widget that has mutable state that can change over time. When the state of a `StatefulWidget` changes, the framework rebuilds the widget tree to reflect the new state.
+
+The `didUpdateWidget` method is a lifecycle method that is called when the framework rebuilds a `StatefulWidget`. Specifically, it is called when a new instance of the widget is created and inserted into the widget tree, and when the widget's configuration (i.e., the values of its properties) changes.
+
+The purpose of the `didUpdateWidget` method is to allow the widget to respond to changes in its configuration. In particular, it provides an opportunity for the widget to update its state in response to changes in its properties. This can be useful, for example, if the widget needs to re-fetch data from a network service or rebuild its child widgets in response to a change in its configuration.
+
+```dart
+class MyWidget extends StatefulWidget {
+  final String data;
+
+  MyWidget({required this.data});
+
+  @override
+  _MyWidgetState createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+  String _data = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _data = widget.data;
+  }
+
+  @override
+  void didUpdateWidget(covariant MyWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.data != oldWidget.data) {
+      setState(() {
+        _data = widget.data;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(_data);
+  }
+}
+```
+
+In this example, we define a `StatefulWidget` called `MyWidget` that takes a data parameter in its constructor. We use the `didUpdateWidget` method to update the widget's state (i.e., the `_data` variable) when the data parameter changes. When the widget is built, it displays the current value of `_data` using a `Text` widget.
+
+---
+
+## 93. What is the purpose of the `LayoutBuilder` widget in Flutter?
+
+**📚 GITHUB**
+
+The `LayoutBuilder` widget in Flutter is used to get the constraints of the parent widget and build child widgets based on these constraints.
+
+The purpose of `LayoutBuilder` is to enable creating responsive UIs that adapt to the size of their parent widget. The `LayoutBuilder` widget provides a callback that takes in the `BoxConstraints` of the parent widget, which represent the minimum and maximum width and height of the widget.
+
+These constraints can be used to build child widgets that fit within the available space. For example, the `MediaQuery.of(context).size` property can be used to to get the screen size, and then using the `LayoutBuilder` widget to create a child widget that adjusts its size based on the screen size.
+
+Here's an example of using LayoutBuilder to create a widget that adjusts its size based on the available space:
+
+```dart
+ LayoutBuilder(
+  builder: (BuildContext context, BoxConstraints constraints) {
+    return Container(
+      width: constraints.maxWidth * 0.5,
+      height: constraints.maxHeight * 0.5,
+      child: Text('This widget will take up 50% of the available space'),
+    );
+  },
+);
+```
+
+In this example, the `Container` widget will take up 50% of the available width and height, based on the `BoxConstraints` provided by the `LayoutBuilder`. This allows the widget to adjust its size based on the available space, making it more responsive.
+
+---
+
+## 94. What is the purpose of the initState() method?
+
+**📚 LEMON**
+
+`initState()` is called once when the widget is inserted into the widget tree. Use it to:
+- Initialize data
+- Set up listeners
+- Start animations
+- Subscribe to streams
+- Perform one-time setup operations
+
+It's called before the first `build()` call.
+
+---
+
+## 95. What is the purpose of the Navigator in Flutter and how is it used?
+
+**📚 TURINGQUESTIONS**
+
+**Navigator** is a widget in Flutter that manages a stack of screens or "routes" in an application. It is used to navigate between different screens and to manage the state of the navigation stack. Navigator is typically used in conjunction with MaterialApp or CupertinoApp to create a navigation hierarchy for an application.
+
+---
+
+## 96. What is the purpose of the pubspec.yaml file?
+
+**📚 LEMON**
+
+The `pubspec.yaml` file is the configuration file where you declare:
+- Project metadata (name, description, version)
+- Dependencies (packages your app uses)
+- Assets (images, fonts, other files)
+- Font declarations
+- Flutter SDK constraints
+
+---
+
+## 97. What is Typedef in Dart?
+
+**📚 GITHUB**
+
+The `typedef` in Dart is a way to define a new type alias for a function type. It allows us to give a name to a function type and use that name to declare variables, function parameters, or return types. A `typedef` is useful when we want to refer to a complex function type multiple times in our code, as it makes our code more readable and reduces duplication.
+
+Here's an example of using `typedef` in Dart:
+
+```dart
+typedef IntCallback = void Function(int value);
+
+void callBackMethod(IntCallback callback) {
+  callback(42);
+}
+
+void main() {
+  callBackMethod((value) => print(value));
+}
+```
+
+In this example, the `IntCallback` typedef defines a function type that takes an int as a parameter and returns void. The `callBackMethod` function takes an `IntCallback` as a parameter and calls it. The main function uses a closure to define an implementation of `IntCallback` and passes it to the `callBackMethod` function.
+
+---
+
+## 98. What's the difference between container and sizedBox?
+
+**📚 TURINGQUESTIONS**
+
+Container and SizedBox are both widgets in Flutter that can be used to size and position child widgets, but they have some differences.
+
+The **Container** widget is a multi-purpose widget that can be used to apply decoration, padding, margin, and constraints to a child widget. The Container widget can also be used as a layout widget to position its child widget within its bounds.
+
+The **SizedBox** widget, on the other hand, is a simple widget that has a fixed width and height. The SizedBox widget is useful when you need to add fixed-size gaps in between widgets or to set a minimum or maximum size for a widget.
+
+---
+
+## 99. What's the need of mixins?
+
+**📚 TURINGQUESTIONS**
+
+**Multiple inheritances are not supported in Dart.** Hence, you would need **mixins** to use multiple inheritance in Flutter, as they allow you to write reusable class code in multiple class hierarchies.
+
+```dart
+mixin Musical {
+  void playInstrument() {
+    print('Playing music');
+  }
+}
+
+class Performer with Musical {
+  // Can now use playInstrument()
+}
+```
+
+> **Note:**
+  **Completed!** You've reviewed all 32 intermediate Flutter interview questions from Turing.com.
+
+---
+
+## 100. What's the purpose of Expanded?
+
+**📚 LEMON**
+
+`Expanded` forces a child of `Row`, `Column`, or `Flex` to take up all remaining available space. It's used to fill available space in flex layouts and can accept a `flex` parameter to control how much space it takes relative to other `Expanded` widgets.
+
+---

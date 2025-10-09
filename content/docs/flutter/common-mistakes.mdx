@@ -1,0 +1,362 @@
+---
+title: Common Mistakes to Avoid in Flutter Development
+description: Common Mistakes to Avoid in Flutter Development
+---
+
+# Common Mistakes to Avoid in Flutter Development
+
+> **Note:**
+  **Building a Flutter app? Avoid these common mistakes for a seamless experience.**
+
+  Effortlessly build a Flutter app by avoiding these common mistakes. A smooth experience awaits.
+
+---
+
+## Introduction
+
+Hello everyone, in this guide we will cover common mistakes to avoid when developing a Flutter application. In order to avoid issues and bugs when developing a mobile app with Flutter, you need to avoid common mistakes.
+
+It's important we follow best practices, and I'm going to share my experience of what mistakes are made while developing apps and how I came up with better solutions. In my opinion, if you don't make mistakes, you're doing nothing. I'm a firm believer that making mistakes and learning from them is important.
+
+The purpose of all this is to make sure that we provide high quality code and a high performance application. So we can come up with a learning curve for ourselves and also create a best practice for others.
+
+> **Note:**
+Please let us know if you find any other major mistakes not covered here in the comment section. Let's go over each common mistake individually.
+
+---
+
+## 1. Testing is Required for the Application
+
+### Why Testing Matters
+
+The purpose of testing an application in Flutter is to ensure that the application functions as expected and works correctly. Testing includes:
+- **Unit testing**
+- **Widget testing**
+- **Integration testing**
+
+### Examples of Testing in Flutter
+
+#### Unit Testing
+A specific function or method within a class might be tested to ensure it performs as intended. A unit test for a calculator application, for example, could confirm that when certain inputs are provided, the addition function returns the right result.
+
+#### Widget Testing
+It is possible to test the visual appearance and behaviour of a button widget in Flutter. By pressing the button and tapping it, you can see if the colour changes.
+
+#### Integration Testing
+Testing the interaction between different parts of the app is an example of integration testing in Flutter. Testing whether clicking a button triggers a specific action, such as opening a new screen or sending data.
+
+### Key Takeaway
+
+In general, testing in Flutter ensures that the app behaves as expected and that any bugs or issues are caught and fixed before it is released.
+
+---
+
+## 2. It is Important to Handle Errors Properly
+
+### Why Error Handling is Critical
+
+In order to build a reliable and stable app, you must handle errors carefully. Incorrect handling of errors can lead to crashes and unexpected behaviour in the app. Errors may cause the app to crash or malfunction if they are not handled properly.
+
+### Real-World Example
+
+Imagine you have a button in your Flutter app that sends a network request to a server. A server error, such as a 404 status code, may cause the app to crash if it is not handled properly by the app.
+
+Instead of crashing the app, display a message to the user saying **"Error: Could not connect to server"**.
+
+As well as catching errors, it is also important to validate user input and anticipate errors before they occur.
+
+### Example: Using try-catch
+
+```dart
+Future<void> _sendNetworkRequest() async {
+  try {
+    var response = await http.get('https://example.com/data');
+    if (response.statusCode != 200) {
+      throw Exception('Error: Could not connect to server');
+    }
+    // process response
+  } catch (e) {
+    print(e);
+  }
+}
+```
+
+In the above example, code inside the try block will execute the network request and check the status code. If the status code indicates an error, an exception is thrown and caught in the catch block. The error message can be printed to the console or displayed to the user.
+
+### Example: Using catchError and then
+
+It's also good practice to use `catchError` and `then` functions to handle errors instead of using try-catch blocks.
+
+```dart
+Future<void> _sendNetworkRequest() async {
+  final response = await http.get('https://example.com/data')
+      .catchError((error) {
+        print(error);
+        return null;
+      })
+      .then((response) {
+        if (response.statusCode != 200) {
+          throw Exception('Error: Could not connect to server');
+        }
+        // process response
+      });
+}
+```
+
+This way, you can handle any error that occurs during the network request, such as network connectivity issues, in a more elegant way.
+
+---
+
+## 3. Orientation of Devices Should be Properly Handled
+
+### Why Device Orientation Matters
+
+UI issues can arise when devices are not oriented properly. Providing a smooth user experience requires handling device orientations correctly. The app may not display correctly on different devices or when rotated when orientations are not handled properly.
+
+### Example Scenario
+
+Imagine a screen in your Flutter app that displays a grid of items. In portrait mode, the grid should have two columns, but in landscape mode, it should have three columns. The grid may not adjust correctly if the app does not handle the device orientation change correctly, and the items may be displayed incorrectly.
+
+### Solution: Using OrientationBuilder
+
+The OrientationBuilder widget can rebuild a part of the widget tree based on the orientation of the device.
+
+```dart
+OrientationBuilder(
+  builder: (BuildContext context, Orientation orientation) {
+    return GridView.count(
+      crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+      children: List.generate(100, (index) {
+        return Center(
+          child: Text(
+            'Item $index',
+            style: Theme.of(context).textTheme.headline,
+          ),
+        );
+      }),
+    );
+  },
+);
+```
+
+As shown in the above example, the OrientationBuilder widget updates the number of columns in the grid based on the device's orientation. When the device is rotated, the grid will automatically adjust to display the items correctly.
+
+### Alternative: Using flutter_screenutil Package
+
+You can also use a package called `flutter_screenutil` which can handle the orientation, screen size, and scale factor of the device.
+
+```dart
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    ScreenUtil.init(context, width: 1080, height: 1920, allowFontScaling: true);
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          SizedBox(
+            height: ScreenUtil().setHeight(200),
+            width: ScreenUtil().setWidth(1080),
+            child: Image.asset('assets/images/bgImage.png'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+In this way, you can handle the screen size and orientation change more effectively and easily.
+
+It's important to handle device orientations properly in order to provide a good user experience and to avoid any layout issues.
+
+---
+
+## 4. It is Recommended to Use Named Routes
+
+### Why Named Routes Matter
+
+By using named routes, you can navigate more easily through the app, and prevent errors due to incorrect navigation. Using named routes allows you to navigate between different screens and pages. Using them, you can give specific names to paths, making navigation easier and more organized.
+
+### Example: Without Named Routes
+
+Imagine you have a simple app with two screens: "Home" and "Settings". Without using named routes, you might navigate to the "Settings" screen using the following code:
+
+```dart
+Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => SettingsPage()),
+);
+```
+
+This code pushes a new screen onto the navigation stack and displays the "Settings" screen. However, without named routes, it can be difficult to know which route is being navigated to or to handle navigation in a more organized way.
+
+### Example: With Named Routes
+
+A simple way to handle this is to use named routes. You can define the routes in the MaterialApp widget and give them specific names.
+
+```dart
+MaterialApp(
+  routes: {
+    '/': (context) => HomePage(),
+    '/settings': (context) => SettingsPage(),
+  },
+);
+```
+
+With named routes, you can navigate to the "Settings" screen using the following code:
+
+```dart
+Navigator.pushNamed(context, '/settings');
+```
+
+This code pushes a new screen onto the navigation stack and displays the "Settings" screen, but now it's clear which route is being navigated to.
+
+You can also use `Navigator.of(context).pushNamed('/settings');` to navigate to the named route '/settings'.
+
+### Passing Arguments
+
+It's also possible to pass parameters or arguments to a named route by using the pushNamed method's second argument.
+
+```dart
+Navigator.pushNamed(context, '/settings', arguments: 'data');
+```
+
+This way you can use named routes to make navigation more organized, clear and easy to handle.
+
+> **Note:**
+It's always a good practice to use named routes in your flutter app, especially when you have multiple pages or screens in your app.
+
+---
+
+## 5. It is Recommended to Use Dependency Injection
+
+### What is Dependency Injection?
+
+The dependency injection pattern allows a class to receive the objects it needs instead of creating them itself. Flutter applications can benefit from dependency injection in terms of:
+- Testability
+- Maintainability
+- Flexibility
+- Reusability
+
+Dependency injection is not built-in to Flutter, so developers must use third-party libraries or write their own.
+
+### Example: Without Dependency Injection
+
+Let's say you have a class called `NetworkClient` that makes network requests, and another class called `HomePage` that displays data from the network. In the absence of dependency injection, the HomePage class would create an instance of the NetworkClient class itself.
+
+```dart
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    NetworkClient client = NetworkClient();
+    //...
+  }
+}
+```
+
+In order to control the behavior of the HomePage class, you would have to mock the NetworkClient class. Due to this, it is also difficult to change the implementation of the NetworkClient class, because all of the classes that use it would also need to be updated.
+
+### Example: With Dependency Injection
+
+By using dependency injection, the HomePage class would receive an instance of the NetworkClient class as a constructor parameter, as shown below:
+
+```dart
+class HomePage extends StatelessWidget {
+  final NetworkClient client;
+
+  HomePage({required this.client});
+
+  @override
+  Widget build(BuildContext context) {
+    //...
+  }
+}
+```
+
+Using a mocked NetworkClient class makes it easier to test the HomePage class. Additionally, only the classes that create the NetworkClient class would need to be updated, making it easier to change its implementation.
+
+### Popular DI Libraries
+
+Using `injectable` or `get_it` for Dependency Injection in Flutter is easy.
+
+---
+
+## 6. Optimising App Performance is Necessary
+
+### Why Performance Optimization Matters
+
+A poorly optimized app can cause slow performance and poor user experience. The goal of optimizing the performance of a Flutter app is to make sure the app runs smoothly and quickly, with no lags or delays. Apps can be made smaller and do less work by reducing the amount of work they do, using less memory and resources, and making use of fewer resources.
+
+### Example: Using the Dart Profiler
+
+A simple example of optimizing the performance of a Flutter app is by using the Dart profiler. With this tool, developers can monitor their app's performance in real-time and identify areas causing slowdowns or consuming too much resources. Developers can improve performance by modifying these areas of code.
+
+By optimizing the performance of a Flutter app, we ensure that the app runs smoothly and efficiently, improving the user experience.
+
+---
+
+## 7. Best Practices for App Architecture Should be Followed
+
+### Why Architecture Matters
+
+Apps that do not follow best practices for app architecture can be difficult to maintain and scale.
+
+Failure to follow best practices in app architecture in Flutter can lead to a number of issues, such as:
+- Lack of organization
+- Poor performance
+- Difficulty in maintaining and updating the app
+
+### Example: Not Separating Concerns
+
+One example of not following best practices is not separating the concerns of the different parts of the app.
+
+For example, consider a simple weather app where all the data, business logic and UI are all in the same widget. This would make the code difficult to understand, hard to test and hard to update. If you want to add a feature, you will have to go through all the code to find the right place to add it, and if you want to fix a bug, it will be hard to find where the problem is.
+
+By not separating the concerns, the app will become more complex and harder to understand, making it more difficult to update, test, and debug. This will ultimately lead to a poor user experience and a higher chance of bugs and crashes.
+
+### Best Practices to Follow
+
+It is important to follow the best practices in app architecture in Flutter, such as:
+- Using design patterns
+- Separating concerns
+- Using state management tools
+
+This creates a well-organized, maintainable, and efficient app.
+
+---
+
+## How to Avoid These Mistakes at Scale
+
+I know we have seen a lot of things not to avoid and what are the things we have to inculcate while we are developing Flutter apps, but how do we do it at a larger extent?
+
+### Key Strategies
+
+I think we can solve this problem through:
+
+1. **Talk to Experts and Developers** - Express the concerns that you have and how you can solve them. Get different views.
+
+2. **Be Part of the Community** - Whether it is to share knowledge or find out what could be the alternative solution, be a part of the community and try to get it open.
+
+3. **Get Different Perspectives** - You can get different views on your problems or solutions or a different perspective on what you're building.
+
+4. **Make Mistakes and Learn** - Unless you make mistakes, you will not know if this could be the next best practice.
+
+> **Note:**
+Try to follow these approaches and you would be able to avoid those common mistakes and use the best practices to build a better app.
+
+---
+
+## Summary of Common Mistakes
+
+Here's a quick reference of the common mistakes covered:
+
+1. ❌ **Not testing the application** - Always implement unit, widget, and integration tests
+2. ❌ **Poor error handling** - Use try-catch blocks and catchError/then functions
+3. ❌ **Not handling device orientations** - Use OrientationBuilder or screen utility packages
+4. ❌ **Not using named routes** - Define and use named routes for better navigation
+5. ❌ **Not using dependency injection** - Use DI for better testability and maintainability
+6. ❌ **Not optimizing performance** - Use profiler tools and follow performance best practices
+7. ❌ **Not following architecture best practices** - Separate concerns and use proper design patterns
+
+> **Note:**
+Share your mistakes and let us see how you overcame them. Building a community of learning helps everyone build better Flutter apps!
