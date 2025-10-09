@@ -2,7 +2,7 @@
   "title": "Flutter",
   "description": "Flutter interview questions and preparation guide",
   "root": true,
-  "icon": "Smartphone",
+  "icon": "Flutter",
   "pages": [
     "index",
     "important-topics",

@@ -2,6 +2,6 @@
   "title": "Problem Solving",
   "description": "Problem solving and coding challenges",
   "root": true,
-  "icon": "Code2",
+  "icon": "Puzzle",
   "pages": ["index"]
 }
