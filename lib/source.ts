@@ -1,6 +1,12 @@
 import { docs } from '@/.source';
 import { loader } from 'fumadocs-core/source';
-import { icons } from 'lucide-react';
+import {
+  BookOpen,
+  Star,
+  CheckCircle2,
+  AlertCircle,
+  icons
+} from 'lucide-react';
 import { createElement } from 'react';
 
 // Custom Flutter icon component (SVG)
@@ -23,6 +29,10 @@ function FlutterIcon() {
 const iconColors: Record<string, string> = {
   'Flutter': '#4FC3F7', // Flutter blue
   'Puzzle': '#10B981', // Green for problem solving
+  'BookOpen': '#FFFFFF', // Blue
+  'Star': '#FFFFFF', // Amber
+  'CheckCircle2': '#FFFFFF', // Green
+  'AlertCircle': '#FFFFFF', // Red
 };
 
 // See https://fumadocs.vercel.app/docs/headless/source-api for more info
@@ -40,10 +50,37 @@ export const source = loader({
       }, createElement(FlutterIcon));
     }
 
-    // Handle Lucide icons with custom colors
-    if (icon in icons) {
+    // Map icon names to components
+    const iconMap: Record<string, any> = {
+      'BookOpen': BookOpen,
+      'Star': Star,
+      'CheckCircle2': CheckCircle2,
+      'AlertCircle': AlertCircle,
+    };
+
+    // Get the icon component
+    const IconComponent = iconMap[icon];
+
+    if (IconComponent) {
       const iconColor = iconColors[icon];
-      const iconElement = createElement(icons[icon as keyof typeof icons]);
+      const iconElement = createElement(IconComponent);
+
+      if (iconColor) {
+        return createElement('span', {
+          style: { color: iconColor, display: 'inline-flex' }
+        }, iconElement);
+      }
+
+      return iconElement;
+    }
+
+    // Fallback to icons object for other icons
+    const iconWithSuffix = `${icon}Icon`;
+    const iconKey = (icon in icons ? icon : iconWithSuffix) as keyof typeof icons;
+
+    if (iconKey in icons) {
+      const iconColor = iconColors[icon];
+      const iconElement = createElement(icons[iconKey]);
 
       if (iconColor) {
         return createElement('span', {
