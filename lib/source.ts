@@ -5,6 +5,7 @@ import {
   Star,
   CheckCircle2,
   AlertCircle,
+  Map,
   icons
 } from 'lucide-react';
 import { createElement } from 'react';
@@ -29,10 +30,11 @@ function FlutterIcon() {
 const iconColors: Record<string, string> = {
   'Flutter': '#4FC3F7', // Flutter blue
   'Puzzle': '#10B981', // Green for problem solving
-  'BookOpen': '#FFFFFF', // Blue
-  'Star': '#FFFFFF', // Amber
-  'CheckCircle2': '#FFFFFF', // Green
-  'AlertCircle': '#FFFFFF', // Red
+  'BookOpen': '#FFFFFF', // White
+  'Star': '#FFFFFF', // White
+  'CheckCircle2': '#FFFFFF', // White
+  'AlertCircle': '#FFFFFF', // White
+  'Map': '#FFFFFF', // White
 };
 
 // See https://fumadocs.vercel.app/docs/headless/source-api for more info
@@ -56,6 +58,7 @@ export const source = loader({
       'Star': Star,
       'CheckCircle2': CheckCircle2,
       'AlertCircle': AlertCircle,
+      'Map': Map,
     };
 
     // Get the icon component

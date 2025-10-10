@@ -5,6 +5,7 @@
   "icon": "Flutter",
   "pages": [
     "index",
+    "roadmap",
     "important-topics",
     "best-practices",
     "common-mistakes",
@@ -20,5 +21,8 @@
     "github",
     "simplilearn",
     "lemon"
-  ]
+  ],
+  "roadmap": {
+    "icon": "Map"
+  }
 }
