@@ -1,27 +1,56 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
-import type { TestResult } from '@/lib/test/types';
+import type { TestResult, MCQQuestion, PlainQuestion, MCQAnswer, PlainAnswer } from '@/lib/test/types';
 import { formatDuration, formatTime } from '@/lib/test/test-engine';
 import { getTopicDisplayName } from '@/lib/test/question-service';
-import { Trophy, Target, CheckCircle, Star, Clock, RotateCcw, Home } from 'lucide-react';
+import { Trophy, Target, CheckCircle, Star, Clock, RotateCcw, Home, ChevronDown, ChevronUp, X } from 'lucide-react';
 
 interface TestResultProps {
   result: TestResult;
 }
 
 export function TestResultComponent({ result }: TestResultProps) {
+  const [showMCQReview, setShowMCQReview] = useState(false);
+  const [showPlainReview, setShowPlainReview] = useState(false);
+
   const {
     topic,
     totalQuestions,
+    answeredQuestions,
     mcqQuestions,
     plainQuestions,
     mcqCorrect,
     mcqScore,
     plainAverageRating,
     overallScore,
-    timeTaken
+    timeTaken,
+    answers,
+    questions
   } = result;
+
+  const completionPercentage = totalQuestions > 0
+    ? Math.round((answeredQuestions / totalQuestions) * 100)
+    : 0;
+
+  // Get answered MCQ questions with their answers
+  const answeredMCQs = answers
+    .filter((a): a is MCQAnswer => a.type === 'mcq')
+    .map(answer => {
+      const question = questions.find(q => q.id === answer.questionId) as MCQQuestion;
+      return { question, answer };
+    })
+    .filter(({ question }) => question !== undefined);
+
+  // Get answered plain questions with their answers
+  const answeredPlains = answers
+    .filter((a): a is PlainAnswer => a.type === 'plain')
+    .map(answer => {
+      const question = questions.find(q => q.id === answer.questionId) as PlainQuestion;
+      return { question, answer };
+    })
+    .filter(({ question }) => question !== undefined);
 
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'text-green-600 dark:text-green-400';
@@ -174,15 +203,187 @@ export function TestResultComponent({ result }: TestResultProps) {
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-600 dark:text-gray-400">
-                Completion
+                Answered
               </span>
               <span className="font-semibold text-green-600 dark:text-green-400">
-                100%
+                {answeredQuestions} ({completionPercentage}%)
               </span>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Detailed Review Sections */}
+      {answeredMCQs.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <button
+            onClick={() => setShowMCQReview(!showMCQReview)}
+            className="w-full flex items-center justify-between p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <CheckCircle className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+              <div className="text-left">
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                  Multiple Choice Answers
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Review your {answeredMCQs.length} MCQ answer{answeredMCQs.length !== 1 ? 's' : ''}
+                </p>
+              </div>
+            </div>
+            {showMCQReview ? (
+              <ChevronUp className="w-5 h-5 text-gray-400" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-gray-400" />
+            )}
+          </button>
+
+          {showMCQReview && (
+            <div className="border-t border-gray-200 dark:border-gray-700 p-6 space-y-6">
+              {answeredMCQs.map(({ question, answer }, index) => (
+                <div
+                  key={question.id}
+                  className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-6 space-y-4"
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center font-semibold text-sm">
+                      {index + 1}
+                    </span>
+                    <div className="flex-1">
+                      <p className="font-medium text-gray-900 dark:text-gray-100 mb-4">
+                        {question.question}
+                      </p>
+
+                      <div className="space-y-2">
+                        {question.options.map((option, optionIndex) => {
+                          const isCorrect = optionIndex === question.correctAnswer;
+                          const isSelected = optionIndex === answer.selectedOption;
+                          const showAsCorrect = isCorrect;
+                          const showAsWrong = isSelected && !isCorrect;
+
+                          return (
+                            <div
+                              key={optionIndex}
+                              className={`p-3 rounded-lg border-2 ${
+                                showAsCorrect
+                                  ? 'bg-green-50 dark:bg-green-900/20 border-green-500 dark:border-green-500'
+                                  : showAsWrong
+                                  ? 'bg-red-50 dark:bg-red-900/20 border-red-500 dark:border-red-500'
+                                  : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                              }`}
+                            >
+                              <div className="flex items-center justify-between">
+                                <span className={`${
+                                  showAsCorrect
+                                    ? 'text-green-900 dark:text-green-100 font-medium'
+                                    : showAsWrong
+                                    ? 'text-red-900 dark:text-red-100 font-medium'
+                                    : 'text-gray-700 dark:text-gray-300'
+                                }`}>
+                                  {option}
+                                </span>
+                                {showAsCorrect && (
+                                  <span className="flex items-center gap-1 text-sm font-semibold text-green-700 dark:text-green-300">
+                                    <CheckCircle className="w-4 h-4" />
+                                    Correct
+                                  </span>
+                                )}
+                                {showAsWrong && (
+                                  <span className="flex items-center gap-1 text-sm font-semibold text-red-700 dark:text-red-300">
+                                    <X className="w-4 h-4" />
+                                    Your Answer
+                                  </span>
+                                )}
+                                {isSelected && isCorrect && (
+                                  <span className="flex items-center gap-1 text-sm font-semibold text-green-700 dark:text-green-300">
+                                    <CheckCircle className="w-4 h-4" />
+                                    Your Answer
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {answeredPlains.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <button
+            onClick={() => setShowPlainReview(!showPlainReview)}
+            className="w-full flex items-center justify-between p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <Star className="w-6 h-6 text-green-600 dark:text-green-400" />
+              <div className="text-left">
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                  Self-Assessment Answers
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Review your {answeredPlains.length} self-rated answer{answeredPlains.length !== 1 ? 's' : ''}
+                </p>
+              </div>
+            </div>
+            {showPlainReview ? (
+              <ChevronUp className="w-5 h-5 text-gray-400" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-gray-400" />
+            )}
+          </button>
+
+          {showPlainReview && (
+            <div className="border-t border-gray-200 dark:border-gray-700 p-6 space-y-6">
+              {answeredPlains.map(({ question, answer }, index) => (
+                <div
+                  key={question.id}
+                  className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-6 space-y-4"
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 flex items-center justify-center font-semibold text-sm">
+                      {index + 1}
+                    </span>
+                    <div className="flex-1">
+                      <p className="font-medium text-gray-900 dark:text-gray-100 mb-4">
+                        {question.question}
+                      </p>
+
+                      <div className="flex items-center gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-sm text-gray-600 dark:text-gray-400">
+                              Your Rating
+                            </span>
+                            <span className="text-2xl font-bold text-green-600 dark:text-green-400">
+                              {answer.rating}/10
+                            </span>
+                          </div>
+                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                            <div
+                              className="bg-green-500 h-3 rounded-full transition-all"
+                              style={{ width: `${(answer.rating / 10) * 100}%` }}
+                            />
+                          </div>
+                          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-500 mt-1">
+                            <span>Not Familiar</span>
+                            <span>Expert</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Actions */}
       <div className="flex flex-col sm:flex-row gap-4">

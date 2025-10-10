@@ -169,6 +169,7 @@ export function calculateResults(state: TestState): TestResult {
   return {
     topic: state.topic,
     totalQuestions: questions.length,
+    answeredQuestions: answers.length,
     mcqQuestions: mcqQuestions.length,
     plainQuestions: plainQuestions.length,
     mcqCorrect,
@@ -176,7 +177,8 @@ export function calculateResults(state: TestState): TestResult {
     plainAverageRating,
     overallScore,
     timeTaken,
-    answers
+    answers,
+    questions
   };
 }
 

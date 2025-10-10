@@ -57,6 +57,7 @@ export interface TestState {
 export interface TestResult {
   topic: Topic;
   totalQuestions: number;
+  answeredQuestions: number;
   mcqQuestions: number;
   plainQuestions: number;
   mcqCorrect: number;
@@ -65,6 +66,7 @@ export interface TestResult {
   overallScore: number;  // percentage
   timeTaken: number;  // in seconds
   answers: Answer[];
+  questions: Question[];  // Include all questions for detailed review
 }
 
 export interface QuestionPool {
