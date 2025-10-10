@@ -110,10 +110,18 @@ export function TestResultComponent({ result }: TestResultProps) {
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600 dark:text-gray-400">
+                  Questions Answered
+                </span>
+                <span className="font-semibold text-gray-900 dark:text-gray-100">
+                  {answeredMCQs.length}
+                </span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600 dark:text-gray-400">
                   Correct Answers
                 </span>
                 <span className="font-semibold text-gray-900 dark:text-gray-100">
-                  {mcqCorrect} / {mcqQuestions}
+                  {mcqCorrect} / {answeredMCQs.length}
                 </span>
               </div>
               <div className="flex justify-between text-sm">
@@ -138,10 +146,10 @@ export function TestResultComponent({ result }: TestResultProps) {
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600 dark:text-gray-400">
-                  Questions
+                  Questions Answered
                 </span>
                 <span className="font-semibold text-gray-900 dark:text-gray-100">
-                  {plainQuestions}
+                  {answeredPlains.length}
                 </span>
               </div>
               <div className="flex justify-between text-sm">

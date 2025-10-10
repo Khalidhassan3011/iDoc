@@ -14,7 +14,7 @@ export function PlainQuestionComponent({
   initialRating,
   onRatingChange
 }: PlainQuestionProps) {
-  const [rating, setRating] = useState<number>(initialRating || 5);
+  const [rating, setRating] = useState<number>(initialRating ?? 5);
 
   useEffect(() => {
     if (initialRating !== undefined) {
@@ -50,13 +50,13 @@ export function PlainQuestionComponent({
       <div className="space-y-4">
         <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            Rate your understanding of this topic (1 = Not familiar, 10 = Expert)
+            Rate your understanding of this topic (0 = Not familiar at all, 10 = Expert)
           </p>
 
           <div className="flex items-center gap-4">
             <input
               type="range"
-              min="1"
+              min="0"
               max="10"
               value={rating}
               onChange={(e) => handleRatingChange(parseInt(e.target.value))}
@@ -73,8 +73,8 @@ export function PlainQuestionComponent({
           </div>
         </div>
 
-        <div className="grid grid-cols-10 gap-1">
-          {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
+        <div className="grid grid-cols-11 gap-1">
+          {Array.from({ length: 11 }, (_, i) => i).map((num) => (
             <button
               key={num}
               onClick={() => handleRatingChange(num)}
