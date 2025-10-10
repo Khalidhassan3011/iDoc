@@ -1,21 +1,14 @@
-Console Error
+- now add Test Your Skill in left sidebar
+- functionality of Test Your Skill is bellow
+  here user give a mock test
+  mock test questions will be mcq or plain question
+  exam time will be 20 minute
+  exam topic is selected tap item, ex: flutter / problem solving
+  question will be choose randomly. suppose q1 is mcq, q2 plain, q3 plain, q4 mcq,....
+  when questiion is mcq user can choose a option, for plain question user can rating temself between 1 - 10
+  after 20 min when exam finish show a result
+  show question 1 at a tome, when user complete a question user can not back to previous question.
+  in mcq user can change their option untill not go to next
+  user can finish their exam any time
 
-Each child in a list should have a unique "key" prop.
-
-Check the render method of `LinkComponent`. It was passed a child from Layout. See https://react.dev/link/warning-keys for more information.
-
-lib/source.ts (72:29) @ Object.icon [as resolveIcon]
-
-
-  70 |
-  71 |       if (iconColor) {
-> 72 |         return createElement('span', {
-     |                             ^
-  73 |           style: { color: iconColor, display: 'inline-flex' }
-  74 |         }, iconElement);
-  75 |       }
-Call Stack
-24
-
-Show 20 ignore-listed frame(s)
-span
+- make this system as shared. so that i can use it later on another. ex: problem solving

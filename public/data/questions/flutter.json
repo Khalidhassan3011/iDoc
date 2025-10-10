@@ -1,0 +1,256 @@
+{
+  "topic": "flutter",
+  "questions": [
+    {
+      "id": "flutter-basic-mcq-001",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "What is the difference between StatelessWidget and StatefulWidget?",
+      "options": [
+        "StatelessWidget can change state, StatefulWidget cannot",
+        "StatefulWidget can change state, StatelessWidget cannot",
+        "Both can change state",
+        "Neither can change state"
+      ],
+      "correctAnswer": 1,
+      "source": "GITHUB"
+    },
+    {
+      "id": "flutter-basic-mcq-002",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "Which company developed Flutter?",
+      "options": [
+        "Facebook",
+        "Google",
+        "Microsoft",
+        "Apple"
+      ],
+      "correctAnswer": 1,
+      "source": "TURINGQUESTIONS"
+    },
+    {
+      "id": "flutter-basic-mcq-003",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "In which language is Flutter written?",
+      "options": [
+        "JavaScript",
+        "Kotlin",
+        "Dart",
+        "Swift"
+      ],
+      "correctAnswer": 2,
+      "source": "TURINGQUESTIONS"
+    },
+    {
+      "id": "flutter-basic-mcq-004",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "What is the default test duration in Flutter?",
+      "options": [
+        "10 minutes",
+        "15 minutes",
+        "20 minutes",
+        "30 minutes"
+      ],
+      "correctAnswer": 2,
+      "source": "SIMPLILEARN"
+    },
+    {
+      "id": "flutter-basic-mcq-005",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "What does the main() function do in Flutter?",
+      "options": [
+        "Starts the program",
+        "Ends the program",
+        "Compiles the code",
+        "Runs tests"
+      ],
+      "correctAnswer": 0,
+      "source": "TURINGQUESTIONS"
+    },
+    {
+      "id": "flutter-basic-plain-001",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "plain",
+      "question": "How comfortable are you with Flutter widget lifecycle methods (initState, dispose, didUpdateWidget)?",
+      "source": "INTERVIEWBIT"
+    },
+    {
+      "id": "flutter-basic-mcq-006",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "Which widget is used to create a scrollable list in Flutter?",
+      "options": [
+        "Container",
+        "ListView",
+        "Column",
+        "Stack"
+      ],
+      "correctAnswer": 1,
+      "source": "GITHUB"
+    },
+    {
+      "id": "flutter-inter-mcq-001",
+      "topic": "flutter",
+      "difficulty": "intermediate",
+      "type": "mcq",
+      "question": "What is the purpose of BuildContext in Flutter?",
+      "options": [
+        "To build widgets",
+        "To identify widgets in the widget tree",
+        "To compile Dart code",
+        "To manage app state"
+      ],
+      "correctAnswer": 1,
+      "source": "INTERVIEWBIT"
+    },
+    {
+      "id": "flutter-inter-plain-001",
+      "topic": "flutter",
+      "difficulty": "intermediate",
+      "type": "plain",
+      "question": "How well do you understand Flutter state management solutions (Provider, BLoC, Riverpod)?",
+      "source": "INTERVIEWBIT"
+    },
+    {
+      "id": "flutter-inter-mcq-002",
+      "topic": "flutter",
+      "difficulty": "intermediate",
+      "type": "mcq",
+      "question": "Which method is used for hot reload in Flutter?",
+      "options": [
+        "Ctrl + R",
+        "Small r key in terminal",
+        "F5",
+        "Restart button only"
+      ],
+      "correctAnswer": 1,
+      "source": "SIMPLILEARN"
+    },
+    {
+      "id": "flutter-inter-mcq-003",
+      "topic": "flutter",
+      "difficulty": "intermediate",
+      "type": "mcq",
+      "question": "What is the difference between Hot Reload and Hot Restart?",
+      "options": [
+        "Hot Reload destroys state, Hot Restart preserves it",
+        "Hot Restart destroys state, Hot Reload preserves it",
+        "Both destroy state",
+        "Both preserve state"
+      ],
+      "correctAnswer": 1,
+      "source": "SIMPLILEARN"
+    },
+    {
+      "id": "flutter-inter-plain-002",
+      "topic": "flutter",
+      "difficulty": "intermediate",
+      "type": "plain",
+      "question": "Rate your knowledge of Flutter navigation patterns (Navigator 1.0 vs 2.0, go_router)?",
+      "source": "LEMON"
+    },
+    {
+      "id": "flutter-adv-mcq-001",
+      "topic": "flutter",
+      "difficulty": "advanced",
+      "type": "mcq",
+      "question": "What is tree shaking in Flutter?",
+      "options": [
+        "A testing method",
+        "Removing unused code during build",
+        "A state management pattern",
+        "A widget animation"
+      ],
+      "correctAnswer": 1,
+      "source": "TURINGQUESTIONS"
+    },
+    {
+      "id": "flutter-adv-plain-001",
+      "topic": "flutter",
+      "difficulty": "advanced",
+      "type": "plain",
+      "question": "How experienced are you with platform channels and native code integration in Flutter?",
+      "source": "LEMON"
+    },
+    {
+      "id": "flutter-adv-mcq-002",
+      "topic": "flutter",
+      "difficulty": "advanced",
+      "type": "mcq",
+      "question": "Which class is used for custom rendering in Flutter?",
+      "options": [
+        "CustomPaint",
+        "RenderBox",
+        "Canvas",
+        "All of the above"
+      ],
+      "correctAnswer": 3,
+      "source": "LEMON"
+    },
+    {
+      "id": "flutter-basic-mcq-007",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "What is the purpose of pubspec.yaml?",
+      "options": [
+        "To write Dart code",
+        "To manage dependencies and assets",
+        "To run tests",
+        "To build the app"
+      ],
+      "correctAnswer": 1,
+      "source": "INTERVIEWBIT"
+    },
+    {
+      "id": "flutter-basic-plain-002",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "plain",
+      "question": "How confident are you with Flutter basic layouts (Row, Column, Stack, Container)?",
+      "source": "GITHUB"
+    },
+    {
+      "id": "flutter-inter-mcq-004",
+      "topic": "flutter",
+      "difficulty": "intermediate",
+      "type": "mcq",
+      "question": "Which package is recommended for HTTP requests in Flutter?",
+      "options": [
+        "axios",
+        "fetch",
+        "http",
+        "request"
+      ],
+      "correctAnswer": 2,
+      "source": "INTERVIEWBIT"
+    },
+    {
+      "id": "flutter-inter-plain-003",
+      "topic": "flutter",
+      "difficulty": "intermediate",
+      "type": "plain",
+      "question": "Rate your understanding of Flutter animations (Implicit vs Explicit)?",
+      "source": "LEMON"
+    },
+    {
+      "id": "flutter-adv-plain-002",
+      "topic": "flutter",
+      "difficulty": "advanced",
+      "type": "plain",
+      "question": "How well do you understand Flutter performance optimization techniques (DevTools, profiling)?",
+      "source": "LEMON"
+    }
+  ]
+}

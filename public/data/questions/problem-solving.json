@@ -1,0 +1,26 @@
+{
+  "topic": "problem-solving",
+  "questions": [
+    {
+      "id": "ps-basic-mcq-001",
+      "topic": "problem-solving",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "What is the time complexity of binary search?",
+      "options": [
+        "O(n)",
+        "O(log n)",
+        "O(n^2)",
+        "O(1)"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "id": "ps-basic-plain-001",
+      "topic": "problem-solving",
+      "difficulty": "basic",
+      "type": "plain",
+      "question": "How comfortable are you with array manipulation algorithms?"
+    }
+  ]
+}
