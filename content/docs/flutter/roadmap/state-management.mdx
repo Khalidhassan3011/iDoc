@@ -1,0 +1,444 @@
+---
+title: State Management
+description: Master state management patterns in Flutter - Provider, BLoC, and Riverpod
+---
+
+# State Management
+
+> **Note:**
+  **State management is crucial for building scalable Flutter applications!**
+
+Understanding state management is essential for building complex, maintainable Flutter apps. Learn the most popular approaches and when to use each.
+
+---
+
+## 📚 Learning Timeline
+
+**Recommended Duration:** 3-4 weeks
+**Prerequisites:** Widgets, Dart fundamentals
+
+---
+
+## 🎯 State Management Concepts
+
+### 1. Understanding State
+
+**Q1: What is state in Flutter?**
+
+**Answer:**
+State is any data that can change over time and affects the UI. When state changes, the UI rebuilds to reflect those changes.
+
+**Types of State:**
+- **Ephemeral State** (Local State): Isolated to a single widget (e.g., current tab index)
+- **App State** (Shared State): Shared across multiple widgets (e.g., user authentication, shopping cart)
+
+```dart
+// Ephemeral state - stays in widget
+class _MyWidgetState extends State<MyWidget> {
+  int counter = 0;  // Only this widget cares about counter
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('$counter');
+  }
+}
+
+// App state - needs to be shared
+class CartModel {
+  List<Product> items = [];
+
+  void addItem(Product product) {
+    items.add(product);
+  }
+
+  double get totalPrice => items.fold(0, (sum, item) => sum + item.price);
+}
+```
+
+**Q2: What is setState() and when should you use it?**
+
+**Answer:**
+`setState()` tells Flutter to rebuild the widget because internal state has changed. Use it for simple, local state management.
+
+```dart
+class Counter extends StatefulWidget {
+  @override
+  State<Counter> createState() => _CounterState();
+}
+
+class _CounterState extends State<Counter> {
+  int count = 0;
+
+  void increment() {
+    setState(() {
+      count++;  // Triggers rebuild
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Count: $count'),
+        ElevatedButton(
+          onPressed: increment,
+          child: Text('Increment'),
+        ),
+      ],
+    );
+  }
+}
+```
+
+---
+
+### 2. Provider Pattern
+
+**Q3: What is Provider and why use it?**
+
+**Answer:**
+Provider is the official Flutter state management solution recommended by the Flutter team. It uses InheritedWidget under the hood to efficiently pass data down the widget tree.
+
+**Installation:**
+```yaml
+dependencies:
+  provider: ^6.0.0
+```
+
+**Basic Example:**
+```dart
+// 1. Create a model (ChangeNotifier)
+class CounterModel extends ChangeNotifier {
+  int _count = 0;
+
+  int get count => _count;
+
+  void increment() {
+    _count++;
+    notifyListeners();  // Tells Provider to rebuild listeners
+  }
+}
+
+// 2. Provide the model
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => CounterModel(),
+      child: MyApp(),
+    ),
+  );
+}
+
+// 3. Consume the model
+class CounterDisplay extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Watches for changes
+    final counter = context.watch<CounterModel>();
+
+    return Text('${counter.count}');
+  }
+}
+
+class IncrementButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Doesn't rebuild when count changes
+    final counter = context.read<CounterModel>();
+
+    return ElevatedButton(
+      onPressed: counter.increment,
+      child: Text('Increment'),
+    );
+  }
+}
+```
+
+**Q4: What's the difference between watch, read, and select in Provider?**
+
+**Answer:**
+- `context.watch<T>()` - Rebuilds when T changes
+- `context.read<T>()` - Doesn't rebuild, use for actions only
+- `context.select<T, R>()` - Rebuilds only when specific property changes
+
+```dart
+// watch - Rebuilds on any CartModel change
+final cart = context.watch<CartModel>();
+
+// read - Never rebuilds, only call methods
+final cart = context.read<CartModel>();
+cart.addItem(product);
+
+// select - Only rebuilds when itemCount changes
+final itemCount = context.select<CartModel, int>(
+  (cart) => cart.items.length,
+);
+```
+
+---
+
+### 3. BLoC Pattern
+
+**Q5: What is BLoC and when should you use it?**
+
+**Answer:**
+BLoC (Business Logic Component) separates business logic from UI using streams. Great for complex apps with strict separation of concerns.
+
+**Installation:**
+```yaml
+dependencies:
+  flutter_bloc: ^8.0.0
+```
+
+**Basic Example:**
+```dart
+// 1. Define events
+abstract class CounterEvent {}
+
+class IncrementEvent extends CounterEvent {}
+class DecrementEvent extends CounterEvent {}
+
+// 2. Create BLoC
+class CounterBloc extends Bloc<CounterEvent, int> {
+  CounterBloc() : super(0) {
+    on<IncrementEvent>((event, emit) {
+      emit(state + 1);
+    });
+
+    on<DecrementEvent>((event, emit) {
+      emit(state - 1);
+    });
+  }
+}
+
+// 3. Provide BLoC
+BlocProvider(
+  create: (context) => CounterBloc(),
+  child: MyApp(),
+)
+
+// 4. Consume BLoC
+class CounterView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CounterBloc, int>(
+      builder: (context, count) {
+        return Text('$count');
+      },
+    );
+  }
+}
+
+// 5. Dispatch events
+ElevatedButton(
+  onPressed: () {
+    context.read<CounterBloc>().add(IncrementEvent());
+  },
+  child: Text('Increment'),
+)
+```
+
+**Q6: What's the difference between BlocBuilder, BlocListener, and BlocConsumer?**
+
+**Answer:**
+- **BlocBuilder**: Rebuilds UI based on state
+- **BlocListener**: Performs side effects (navigation, dialogs)
+- **BlocConsumer**: Combines both builder and listener
+
+```dart
+// BlocBuilder - For UI rebuilding
+BlocBuilder<AuthBloc, AuthState>(
+  builder: (context, state) {
+    if (state is AuthLoading) return CircularProgressIndicator();
+    if (state is AuthSuccess) return HomeScreen();
+    return LoginScreen();
+  },
+)
+
+// BlocListener - For side effects
+BlocListener<AuthBloc, AuthState>(
+  listener: (context, state) {
+    if (state is AuthError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(state.message)),
+      );
+    }
+  },
+  child: LoginScreen(),
+)
+
+// BlocConsumer - Both
+BlocConsumer<AuthBloc, AuthState>(
+  listener: (context, state) {
+    if (state is AuthSuccess) {
+      Navigator.pushReplacementNamed(context, '/home');
+    }
+  },
+  builder: (context, state) {
+    if (state is AuthLoading) return CircularProgressIndicator();
+    return LoginForm();
+  },
+)
+```
+
+---
+
+### 4. Riverpod
+
+**Q7: What is Riverpod and how is it different from Provider?**
+
+**Answer:**
+Riverpod is the evolution of Provider with compile-time safety, no BuildContext dependency, and better testability.
+
+**Installation:**
+```yaml
+dependencies:
+  flutter_riverpod: ^2.0.0
+```
+
+**Basic Example:**
+```dart
+// 1. Create a provider
+final counterProvider = StateProvider<int>((ref) => 0);
+
+// 2. Wrap app with ProviderScope
+void main() {
+  runApp(
+    ProviderScope(
+      child: MyApp(),
+    ),
+  );
+}
+
+// 3. Consume with ConsumerWidget
+class CounterView extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(counterProvider);
+
+    return Column(
+      children: [
+        Text('$count'),
+        ElevatedButton(
+          onPressed: () {
+            ref.read(counterProvider.notifier).state++;
+          },
+          child: Text('Increment'),
+        ),
+      ],
+    );
+  }
+}
+```
+
+**Q8: What are the different types of providers in Riverpod?**
+
+**Answer:**
+
+```dart
+// Provider - For immutable values
+final nameProvider = Provider((ref) => 'John Doe');
+
+// StateProvider - For simple state
+final counterProvider = StateProvider((ref) => 0);
+
+// StateNotifierProvider - For complex state
+class TodoList extends StateNotifier<List<Todo>> {
+  TodoList() : super([]);
+
+  void addTodo(Todo todo) {
+    state = [...state, todo];
+  }
+
+  void removeTodo(String id) {
+    state = state.where((todo) => todo.id != id).toList();
+  }
+}
+
+final todoListProvider = StateNotifierProvider<TodoList, List<Todo>>(
+  (ref) => TodoList(),
+);
+
+// FutureProvider - For async data
+final userProvider = FutureProvider((ref) async {
+  final response = await http.get('https://api.example.com/user');
+  return User.fromJson(jsonDecode(response.body));
+});
+
+// StreamProvider - For streaming data
+final messagesProvider = StreamProvider((ref) {
+  return FirebaseFirestore.instance
+    .collection('messages')
+    .snapshots()
+    .map((snapshot) => snapshot.docs.map((doc) => Message.fromDoc(doc)).toList());
+});
+```
+
+---
+
+## 📊 Comparison Table
+
+| Feature | setState | Provider | BLoC | Riverpod |
+|---------|----------|----------|------|----------|
+| **Complexity** | Simple | Medium | High | Medium |
+| **Learning Curve** | Easy | Easy | Steep | Medium |
+| **Boilerplate** | Minimal | Low | High | Low |
+| **Testability** | Limited | Good | Excellent | Excellent |
+| **Scalability** | Poor | Good | Excellent | Excellent |
+| **Use Case** | Local state | Small-medium apps | Large apps | Any size |
+
+---
+
+## 💻 Practice Projects
+
+### Project 1: Todo App with Provider
+Build a todo list with add, delete, and filter functionality.
+
+**Skills practiced:**
+- ChangeNotifier
+- MultiProvider
+- Consumer widget
+
+### Project 2: Weather App with BLoC
+Fetch weather data from API using BLoC pattern.
+
+**Skills practiced:**
+- BLoC events and states
+- API integration
+- Error handling
+
+### Project 3: Shopping Cart with Riverpod
+Create a shopping cart with product catalog and checkout.
+
+**Skills practiced:**
+- StateNotifierProvider
+- FutureProvider
+- Provider composition
+
+---
+
+## ✅ Checklist
+
+Before moving forward, ensure you can:
+
+- [ ] Understand difference between ephemeral and app state
+- [ ] Use setState() for local state
+- [ ] Implement Provider with ChangeNotifier
+- [ ] Know when to use watch vs read vs select
+- [ ] Create BLoC with events and states
+- [ ] Use BlocBuilder and BlocListener
+- [ ] Set up Riverpod providers
+- [ ] Choose appropriate state management for your app
+- [ ] Test state management logic
+
+---
+
+## 🎓 Next Steps
+
+1. **Learn Navigation** → [Navigation & Routing](/docs/flutter/roadmap/navigation)
+2. **Master Networking** → [Networking & APIs](/docs/flutter/roadmap/networking)
+3. **Back to Roadmap** → [Flutter Roadmap](/docs/flutter/roadmap)
+
+---
+
+> **Tip:** Start with Provider for simple apps, move to BLoC or Riverpod as complexity grows!

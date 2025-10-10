@@ -1,0 +1,530 @@
+---
+title: Navigation & Routing
+description: Master navigation patterns, deep linking, and route management in Flutter
+---
+
+# Navigation & Routing
+
+> **Note:**
+  **Effective navigation is key to creating smooth user experiences!**
+
+Learn how to navigate between screens, pass data, handle deep links, and implement advanced routing patterns in Flutter.
+
+---
+
+## 📚 Learning Timeline
+
+**Recommended Duration:** 2-3 weeks
+**Prerequisites:** Widgets, basic state management
+
+---
+
+## 🎯 Core Navigation Concepts
+
+### 1. Basic Navigation
+
+**Q1: How does navigation work in Flutter?**
+
+**Answer:**
+Flutter uses a stack-based navigation system where screens (routes) are pushed onto and popped from a navigation stack.
+
+```dart
+// Navigate to new screen
+Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => DetailScreen()),
+);
+
+// Go back to previous screen
+Navigator.pop(context);
+
+// Pop with data
+Navigator.pop(context, 'result data');
+```
+
+**Q2: What's the difference between push and pushReplacement?**
+
+**Answer:**
+- **push**: Adds new route on top of stack (can go back)
+- **pushReplacement**: Replaces current route (can't go back)
+- **pushAndRemoveUntil**: Push new route and remove previous ones
+
+```dart
+// Push - Can go back
+Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => SecondScreen()),
+);
+
+// PushReplacement - Can't go back
+Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(builder: (context) => HomeScreen()),
+);
+
+// Remove all previous routes (e.g., after login)
+Navigator.pushAndRemoveUntil(
+  context,
+  MaterialPageRoute(builder: (context) => HomeScreen()),
+  (route) => false,  // Remove all previous routes
+);
+```
+
+---
+
+### 2. Named Routes
+
+**Q3: What are named routes and when to use them?**
+
+**Answer:**
+Named routes define navigation paths as strings, making navigation more organized and maintainable.
+
+```dart
+// Define routes in MaterialApp
+MaterialApp(
+  initialRoute: '/',
+  routes: {
+    '/': (context) => HomeScreen(),
+    '/details': (context) => DetailsScreen(),
+    '/settings': (context) => SettingsScreen(),
+  },
+)
+
+// Navigate using route names
+Navigator.pushNamed(context, '/details');
+
+// With arguments
+Navigator.pushNamed(
+  context,
+  '/details',
+  arguments: {'id': 123, 'title': 'Item'},
+);
+
+// Retrieve arguments
+class DetailsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
+    final id = args['id'];
+    final title = args['title'];
+
+    return Scaffold(
+      appBar: AppBar(title: Text(title)),
+      body: Text('Details for item $id'),
+    );
+  }
+}
+```
+
+---
+
+### 3. Passing Data Between Screens
+
+**Q4: How do you pass data between screens?**
+
+**Answer:**
+
+**Method 1: Constructor (Direct Navigation)**
+```dart
+// Send data
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => DetailScreen(
+      id: 123,
+      title: 'My Item',
+    ),
+  ),
+);
+
+// Receive data
+class DetailScreen extends StatelessWidget {
+  final int id;
+  final String title;
+
+  const DetailScreen({
+    required this.id,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(title)),
+      body: Text('ID: $id'),
+    );
+  }
+}
+```
+
+**Method 2: Return Data from Screen**
+```dart
+// Navigate and wait for result
+final result = await Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => SelectionScreen()),
+);
+
+if (result != null) {
+  print('Selected: $result');
+}
+
+// Return data when popping
+class SelectionScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ElevatedButton(
+        onPressed: () {
+          Navigator.pop(context, 'Selected Value');
+        },
+        child: Text('Select'),
+      ),
+    );
+  }
+}
+```
+
+---
+
+### 4. Navigation 2.0 (Router API)
+
+**Q5: What is Navigation 2.0 and why use it?**
+
+**Answer:**
+Navigation 2.0 provides declarative routing with full control over the navigation stack, supporting deep linking and browser URL synchronization.
+
+**Basic Example with go_router:**
+```yaml
+dependencies:
+  go_router: ^13.0.0
+```
+
+```dart
+import 'package:go_router/go_router.dart';
+
+// Define routes
+final router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => HomeScreen(),
+    ),
+    GoRoute(
+      path: '/details/:id',
+      builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        return DetailsScreen(id: id);
+      },
+    ),
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => ProfileScreen(),
+      redirect: (context, state) {
+        // Guard route - redirect if not authenticated
+        final isAuthenticated = checkAuth();
+        return isAuthenticated ? null : '/login';
+      },
+    ),
+  ],
+);
+
+// Use in MaterialApp
+MaterialApp.router(
+  routerConfig: router,
+)
+
+// Navigate
+context.go('/details/123');  // Push new route
+context.push('/profile');    // Stack navigation
+context.pop();               // Go back
+```
+
+**Q6: How do you handle nested navigation (e.g., bottom navigation bar)?**
+
+**Answer:**
+
+```dart
+final router = GoRouter(
+  routes: [
+    ShellRoute(
+      builder: (context, state, child) {
+        return ScaffoldWithNavBar(child: child);
+      },
+      routes: [
+        GoRoute(
+          path: '/home',
+          builder: (context, state) => HomeScreen(),
+        ),
+        GoRoute(
+          path: '/search',
+          builder: (context, state) => SearchScreen(),
+        ),
+        GoRoute(
+          path: '/profile',
+          builder: (context, state) => ProfileScreen(),
+        ),
+      ],
+    ),
+  ],
+);
+
+class ScaffoldWithNavBar extends StatelessWidget {
+  final Widget child;
+
+  const ScaffoldWithNavBar({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: child,
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _calculateSelectedIndex(context),
+        onTap: (index) => _onItemTapped(index, context),
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+      ),
+    );
+  }
+
+  int _calculateSelectedIndex(BuildContext context) {
+    final location = GoRouterState.of(context).uri.toString();
+    if (location.startsWith('/home')) return 0;
+    if (location.startsWith('/search')) return 1;
+    if (location.startsWith('/profile')) return 2;
+    return 0;
+  }
+
+  void _onItemTapped(int index, BuildContext context) {
+    switch (index) {
+      case 0:
+        context.go('/home');
+        break;
+      case 1:
+        context.go('/search');
+        break;
+      case 2:
+        context.go('/profile');
+        break;
+    }
+  }
+}
+```
+
+---
+
+### 5. Deep Linking
+
+**Q7: How do you implement deep linking?**
+
+**Answer:**
+
+**Step 1: Configure Android (android/app/src/main/AndroidManifest.xml)**
+```xml
+<intent-filter>
+  <action android:name="android.intent.action.VIEW" />
+  <category android:name="android.intent.category.DEFAULT" />
+  <category android:name="android.intent.category.BROWSABLE" />
+  <data
+    android:scheme="https"
+    android:host="myapp.com" />
+</intent-filter>
+```
+
+**Step 2: Configure iOS (ios/Runner/Info.plist)**
+```xml
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>myapp</string>
+    </array>
+  </dict>
+</array>
+```
+
+**Step 3: Handle deep links with go_router**
+```dart
+final router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => HomeScreen(),
+    ),
+    GoRoute(
+      path: '/product/:id',
+      builder: (context, state) {
+        final productId = state.pathParameters['id'];
+        return ProductScreen(id: productId!);
+      },
+    ),
+  ],
+  // Handles https://myapp.com/product/123
+);
+```
+
+---
+
+### 6. Route Guards & Redirects
+
+**Q8: How do you protect routes (authentication)?**
+
+**Answer:**
+
+```dart
+class AuthNotifier extends ChangeNotifier {
+  bool _isAuthenticated = false;
+
+  bool get isAuthenticated => _isAuthenticated;
+
+  void login() {
+    _isAuthenticated = true;
+    notifyListeners();
+  }
+
+  void logout() {
+    _isAuthenticated = false;
+    notifyListeners();
+  }
+}
+
+final authProvider = ChangeNotifierProvider((ref) => AuthNotifier());
+
+final router = GoRouter(
+  redirect: (context, state) {
+    final isAuthenticated = context.read<AuthNotifier>().isAuthenticated;
+    final isLoginRoute = state.uri.path == '/login';
+
+    // Redirect to login if not authenticated
+    if (!isAuthenticated && !isLoginRoute) {
+      return '/login';
+    }
+
+    // Redirect to home if authenticated and on login page
+    if (isAuthenticated && isLoginRoute) {
+      return '/';
+    }
+
+    return null;  // No redirect
+  },
+  routes: [
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => LoginScreen(),
+    ),
+    GoRoute(
+      path: '/',
+      builder: (context, state) => HomeScreen(),
+    ),
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => ProfileScreen(),
+    ),
+  ],
+);
+```
+
+---
+
+### 7. Page Transitions
+
+**Q9: How do you customize page transitions?**
+
+**Answer:**
+
+```dart
+// Custom transition
+Navigator.push(
+  context,
+  PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => DetailScreen(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      // Slide transition
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.easeInOut;
+
+      var tween = Tween(begin: begin, end: end).chain(
+        CurveTween(curve: curve),
+      );
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+    transitionDuration: Duration(milliseconds: 300),
+  ),
+);
+
+// Fade transition
+PageRouteBuilder(
+  pageBuilder: (context, animation, secondaryAnimation) => DetailScreen(),
+  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+    return FadeTransition(
+      opacity: animation,
+      child: child,
+    );
+  },
+);
+```
+
+---
+
+## 💻 Practice Projects
+
+### Project 1: Multi-Screen App
+Build an app with 3-4 screens and navigation.
+
+**Skills practiced:**
+- Basic navigation
+- Passing data
+- Named routes
+
+### Project 2: E-commerce Navigation
+Create product listing, details, and cart screens.
+
+**Skills practiced:**
+- Nested navigation
+- Deep linking
+- Route guards
+
+### Project 3: Authentication Flow
+Implement login, signup, and protected routes.
+
+**Skills practiced:**
+- Route guards
+- Redirects
+- go_router
+
+---
+
+## ✅ Checklist
+
+Before moving forward, ensure you can:
+
+- [ ] Navigate between screens with push/pop
+- [ ] Use named routes
+- [ ] Pass data between screens
+- [ ] Return data from screens
+- [ ] Implement bottom navigation
+- [ ] Use go_router for routing
+- [ ] Handle deep links
+- [ ] Implement route guards
+- [ ] Customize page transitions
+
+---
+
+## 🎓 Next Steps
+
+1. **Learn Networking** → [Networking & APIs](/docs/flutter/roadmap/networking)
+2. **Master Local Storage** → [Local Storage](/docs/flutter/roadmap/storage)
+3. **Back to Roadmap** → [Flutter Roadmap](/docs/flutter/roadmap)
+
+---
+
+> **Tip:** Start with basic navigation, then move to go_router for production apps!

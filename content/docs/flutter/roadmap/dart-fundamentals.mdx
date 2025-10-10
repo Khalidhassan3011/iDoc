@@ -1,0 +1,397 @@
+---
+title: Dart Programming Fundamentals
+description: Master Dart language basics - the foundation of Flutter development
+---
+
+# Dart Programming Fundamentals
+
+> **Note:**
+  **Master Dart before diving into Flutter - it will make everything easier!**
+
+Dart is the programming language behind Flutter. A strong understanding of Dart is essential for effective Flutter development.
+
+---
+
+## 📚 Learning Timeline
+
+**Recommended Duration:** 3-4 weeks
+**Prerequisites:** Basic programming knowledge
+
+---
+
+## 🎯 Core Concepts to Master
+
+### 1. Variables & Data Types
+
+**Topics:**
+- var, final, and const
+- Built-in types: int, double, String, bool
+- Collections: List, Set, Map
+- Type inference and type annotations
+
+**Important Questions:**
+
+**Q1: What's the difference between `var`, `final`, and `const`?**
+
+**Answer:**
+- `var`: Mutable variable, type inferred at runtime
+- `final`: Immutable variable, value set at runtime
+- `const`: Compile-time constant, value must be known at compile time
+
+```dart
+var name = 'John';  // Can be reassigned
+name = 'Jane';  // ✅ Valid
+
+final city = 'New York';  // Set once at runtime
+// city = 'Boston';  // ❌ Error
+
+const PI = 3.14159;  // Compile-time constant
+// const currentTime = DateTime.now();  // ❌ Error - not compile-time
+```
+
+**Q2: What is null safety in Dart?**
+
+**Answer:**
+Null safety prevents null reference errors by making variables non-nullable by default.
+
+```dart
+String name = 'John';  // Non-nullable
+// name = null;  // ❌ Error
+
+String? nullableName = 'Jane';  // Nullable
+nullableName = null;  // ✅ Valid
+
+// Safe navigation
+int? length = nullableName?.length;  // Returns null if nullableName is null
+
+// Null assertion
+String nonNull = nullableName!;  // Throws if null
+
+// Null coalescing
+String result = nullableName ?? 'Default';  // Uses default if null
+```
+
+---
+
+### 2. Functions
+
+**Topics:**
+- Function declaration and syntax
+- Parameters: positional, named, optional
+- Arrow functions
+- Anonymous functions and closures
+- Higher-order functions
+
+**Important Questions:**
+
+**Q3: What are named and optional parameters?**
+
+**Answer:**
+```dart
+// Positional parameters
+void greet(String name, int age) {
+  print('Hello $name, age $age');
+}
+
+// Named parameters (use curly braces)
+void greetNamed({String name = '', int age = 0}) {
+  print('Hello $name, age $age');
+}
+greetNamed(name: 'John', age: 25);
+
+// Required named parameters
+void greetRequired({required String name, required int age}) {
+  print('Hello $name, age $age');
+}
+
+// Optional positional parameters (use square brackets)
+void greetOptional(String name, [int? age]) {
+  print('Hello $name${age != null ? ", age $age" : ""}');
+}
+greetOptional('John');  // age is optional
+greetOptional('Jane', 30);
+```
+
+**Q4: What are arrow functions?**
+
+**Answer:**
+Arrow functions provide a concise syntax for single-expression functions.
+
+```dart
+// Traditional function
+int add(int a, int b) {
+  return a + b;
+}
+
+// Arrow function
+int addArrow(int a, int b) => a + b;
+
+// With lists
+List<int> numbers = [1, 2, 3, 4, 5];
+var doubled = numbers.map((n) => n * 2).toList();
+print(doubled);  // [2, 4, 6, 8, 10]
+```
+
+---
+
+### 3. Object-Oriented Programming
+
+**Topics:**
+- Classes and objects
+- Constructors (default, named, factory)
+- Inheritance and interfaces
+- Mixins
+- Abstract classes
+- Getters and setters
+
+**Important Questions:**
+
+**Q5: What are the different types of constructors in Dart?**
+
+**Answer:**
+```dart
+class Person {
+  String name;
+  int age;
+
+  // Default constructor
+  Person(this.name, this.age);
+
+  // Named constructor
+  Person.guest() : name = 'Guest', age = 0;
+
+  // Factory constructor
+  factory Person.fromJson(Map<String, dynamic> json) {
+    return Person(json['name'], json['age']);
+  }
+
+  // Redirecting constructor
+  Person.child(String name) : this(name, 0);
+}
+
+// Usage
+var person1 = Person('John', 25);
+var person2 = Person.guest();
+var person3 = Person.fromJson({'name': 'Jane', 'age': 30});
+var person4 = Person.child('Tommy');
+```
+
+**Q6: What are mixins and when to use them?**
+
+**Answer:**
+Mixins allow code reuse across multiple class hierarchies.
+
+```dart
+mixin Swimming {
+  void swim() => print('Swimming');
+}
+
+mixin Flying {
+  void fly() => print('Flying');
+}
+
+class Animal {
+  void breathe() => print('Breathing');
+}
+
+class Duck extends Animal with Swimming, Flying {
+  void quack() => print('Quack');
+}
+
+void main() {
+  var duck = Duck();
+  duck.breathe();  // From Animal
+  duck.swim();     // From Swimming mixin
+  duck.fly();      // From Flying mixin
+  duck.quack();    // Own method
+}
+```
+
+---
+
+### 4. Async Programming
+
+**Topics:**
+- Future and async/await
+- Stream and StreamController
+- Error handling in async code
+- Async generators
+
+**Important Questions:**
+
+**Q7: What's the difference between Future and Stream?**
+
+**Answer:**
+- **Future**: Represents a single value that will be available in the future
+- **Stream**: Represents a sequence of values over time
+
+```dart
+// Future - single value
+Future<String> fetchUser() async {
+  await Future.delayed(Duration(seconds: 2));
+  return 'John Doe';
+}
+
+// Stream - multiple values
+Stream<int> countStream() async* {
+  for (int i = 1; i <= 5; i++) {
+    await Future.delayed(Duration(seconds: 1));
+    yield i;
+  }
+}
+
+void main() async {
+  // Using Future
+  String user = await fetchUser();
+  print(user);  // Prints after 2 seconds
+
+  // Using Stream
+  await for (int count in countStream()) {
+    print(count);  // Prints 1, 2, 3, 4, 5 (one per second)
+  }
+}
+```
+
+**Q8: How do you handle errors in async code?**
+
+**Answer:**
+```dart
+// Try-catch with async/await
+Future<void> fetchData() async {
+  try {
+    var result = await someAsyncOperation();
+    print(result);
+  } catch (e) {
+    print('Error: $e');
+  } finally {
+    print('Cleanup');
+  }
+}
+
+// Using catchError
+someAsyncOperation()
+  .then((result) => print(result))
+  .catchError((error) => print('Error: $error'))
+  .whenComplete(() => print('Cleanup'));
+
+// Stream error handling
+stream.listen(
+  (data) => print(data),
+  onError: (error) => print('Error: $error'),
+  onDone: () => print('Stream closed'),
+);
+```
+
+---
+
+### 5. Collections
+
+**Important Questions:**
+
+**Q9: What are the different collection types in Dart?**
+
+**Answer:**
+```dart
+// List - Ordered collection
+List<int> numbers = [1, 2, 3, 4, 5];
+numbers.add(6);
+print(numbers[0]);  // Access by index
+
+// Set - Unordered collection of unique items
+Set<String> fruits = {'apple', 'banana', 'orange'};
+fruits.add('apple');  // Won't add duplicate
+print(fruits.length);  // 3
+
+// Map - Key-value pairs
+Map<String, int> ages = {
+  'John': 25,
+  'Jane': 30,
+  'Bob': 35,
+};
+print(ages['John']);  // 25
+
+// Common operations
+var doubled = numbers.map((n) => n * 2);
+var evens = numbers.where((n) => n % 2 == 0);
+var sum = numbers.reduce((a, b) => a + b);
+```
+
+---
+
+## 💻 Practice Projects
+
+### Project 1: Simple Calculator
+Build a console calculator with basic operations.
+
+```dart
+void main() {
+  Calculator calc = Calculator();
+  print(calc.add(5, 3));        // 8
+  print(calc.subtract(10, 4));  // 6
+  print(calc.multiply(3, 7));   // 21
+  print(calc.divide(20, 4));    // 5.0
+}
+```
+
+### Project 2: Todo List CLI
+Create a command-line todo list application.
+
+**Features:**
+- Add todos
+- Mark as complete
+- Delete todos
+- List all todos
+- Save/load from file
+
+### Project 3: Weather Data Parser
+Fetch and parse weather data from an API.
+
+**Skills practiced:**
+- HTTP requests
+- JSON parsing
+- Async/await
+- Error handling
+
+---
+
+## 📖 Recommended Resources
+
+### Official Documentation
+- [Dart Language Tour](https://dart.dev/guides/language/language-tour)
+- [Effective Dart](https://dart.dev/guides/language/effective-dart)
+- [DartPad](https://dartpad.dev) - Online Dart editor
+
+### Learning Platforms
+- Dart Codelabs
+- Udemy Dart courses
+- YouTube tutorials
+
+---
+
+## ✅ Checklist
+
+Before moving to Flutter, make sure you can:
+
+- [ ] Understand and use var, final, const correctly
+- [ ] Work with all collection types (List, Set, Map)
+- [ ] Write and use functions (including named parameters)
+- [ ] Create classes with different constructor types
+- [ ] Understand inheritance and mixins
+- [ ] Use async/await for asynchronous operations
+- [ ] Work with Futures and Streams
+- [ ] Handle errors properly
+- [ ] Understand null safety
+
+---
+
+## 🎓 Next Steps
+
+Once you're comfortable with Dart:
+
+1. **Set up Flutter** → [Development Setup](/docs/flutter/roadmap/setup)
+2. **Learn Widgets** → [Widgets & Layouts](/docs/flutter/roadmap/widgets-layouts)
+3. **Back to Roadmap** → [Flutter Roadmap](/docs/flutter/roadmap)
+
+---
+
+> **Tip:** Don't rush through Dart! A solid Dart foundation will make Flutter development much smoother and more enjoyable.

@@ -1,0 +1,661 @@
+---
+title: Networking & APIs
+description: Master HTTP requests, REST APIs, JSON parsing, and error handling in Flutter
+---
+
+# Networking & APIs
+
+> **Note:**
+  **Most Flutter apps need to communicate with external APIs - master networking essentials!**
+
+Learn how to fetch data from REST APIs, parse JSON, handle errors, and implement best practices for network communication.
+
+---
+
+## 📚 Learning Timeline
+
+**Recommended Duration:** 2-3 weeks
+**Prerequisites:** Dart async programming, state management
+
+---
+
+## 🎯 Core Networking Concepts
+
+### 1. HTTP Package Basics
+
+**Q1: How do you make HTTP requests in Flutter?**
+
+**Answer:**
+Use the `http` package for making REST API calls.
+
+**Installation:**
+```yaml
+dependencies:
+  http: ^1.1.0
+```
+
+**Basic GET Request:**
+```dart
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+Future<void> fetchUsers() async {
+  final url = Uri.parse('https://jsonplaceholder.typicode.com/users');
+
+  try {
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      // Success
+      final data = jsonDecode(response.body);
+      print(data);
+    } else {
+      // Error
+      print('Error: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Exception: $e');
+  }
+}
+```
+
+**Q2: What are the different HTTP methods?**
+
+**Answer:**
+
+```dart
+// GET - Fetch data
+final response = await http.get(
+  Uri.parse('https://api.example.com/users'),
+);
+
+// POST - Create new data
+final response = await http.post(
+  Uri.parse('https://api.example.com/users'),
+  headers: {'Content-Type': 'application/json'},
+  body: jsonEncode({
+    'name': 'John Doe',
+    'email': 'john@example.com',
+  }),
+);
+
+// PUT - Update existing data
+final response = await http.put(
+  Uri.parse('https://api.example.com/users/1'),
+  headers: {'Content-Type': 'application/json'},
+  body: jsonEncode({
+    'name': 'Jane Doe',
+    'email': 'jane@example.com',
+  }),
+);
+
+// PATCH - Partial update
+final response = await http.patch(
+  Uri.parse('https://api.example.com/users/1'),
+  headers: {'Content-Type': 'application/json'},
+  body: jsonEncode({'email': 'newemail@example.com'}),
+);
+
+// DELETE - Remove data
+final response = await http.delete(
+  Uri.parse('https://api.example.com/users/1'),
+);
+```
+
+---
+
+### 2. JSON Parsing
+
+**Q3: How do you parse JSON in Flutter?**
+
+**Answer:**
+
+**Method 1: Manual Parsing**
+```dart
+import 'dart:convert';
+
+class User {
+  final int id;
+  final String name;
+  final String email;
+
+  User({
+    required this.id,
+    required this.name,
+    required this.email,
+  });
+
+  // From JSON
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      name: json['name'],
+      email: json['email'],
+    );
+  }
+
+  // To JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+    };
+  }
+}
+
+// Parse single object
+final jsonString = '{"id": 1, "name": "John", "email": "john@example.com"}';
+final json = jsonDecode(jsonString);
+final user = User.fromJson(json);
+
+// Parse list
+final listJsonString = '[{"id": 1, "name": "John"}, {"id": 2, "name": "Jane"}]';
+final List<dynamic> jsonList = jsonDecode(listJsonString);
+final users = jsonList.map((json) => User.fromJson(json)).toList();
+```
+
+**Method 2: Code Generation with json_serializable**
+```yaml
+dependencies:
+  json_annotation: ^4.8.0
+
+dev_dependencies:
+  build_runner: ^2.4.0
+  json_serializable: ^6.7.0
+```
+
+```dart
+import 'package:json_annotation/json_annotation.dart';
+
+part 'user.g.dart';
+
+@JsonSerializable()
+class User {
+  final int id;
+  final String name;
+  final String email;
+
+  User({
+    required this.id,
+    required this.name,
+    required this.email,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  Map<String, dynamic> toJson() => _$UserToJson(this);
+}
+
+// Generate code: flutter pub run build_runner build
+```
+
+---
+
+### 3. API Service Class
+
+**Q4: What's the best way to organize API calls?**
+
+**Answer:**
+Create a dedicated API service class for better organization and reusability.
+
+```dart
+class ApiService {
+  static const String baseUrl = 'https://api.example.com';
+
+  // GET request
+  Future<List<User>> getUsers() async {
+    final url = Uri.parse('$baseUrl/users');
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        return data.map((json) => User.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load users: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching users: $e');
+    }
+  }
+
+  // POST request
+  Future<User> createUser(User user) async {
+    final url = Uri.parse('$baseUrl/users');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(user.toJson()),
+      );
+
+      if (response.statusCode == 201) {
+        return User.fromJson(jsonDecode(response.body));
+      } else {
+        throw Exception('Failed to create user: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error creating user: $e');
+    }
+  }
+
+  // PUT request
+  Future<User> updateUser(int id, User user) async {
+    final url = Uri.parse('$baseUrl/users/$id');
+
+    final response = await http.put(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(user.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      return User.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to update user');
+    }
+  }
+
+  // DELETE request
+  Future<void> deleteUser(int id) async {
+    final url = Uri.parse('$baseUrl/users/$id');
+
+    final response = await http.delete(url);
+
+    if (response.statusCode != 200 && response.statusCode != 204) {
+      throw Exception('Failed to delete user');
+    }
+  }
+}
+```
+
+---
+
+### 4. Error Handling
+
+**Q5: How do you handle network errors properly?**
+
+**Answer:**
+
+```dart
+class ApiException implements Exception {
+  final String message;
+  final int? statusCode;
+
+  ApiException(this.message, [this.statusCode]);
+
+  @override
+  String toString() => 'ApiException: $message (Status: $statusCode)';
+}
+
+class ApiService {
+  Future<T> _handleRequest<T>(Future<http.Response> request,
+      T Function(dynamic) parser) async {
+    try {
+      final response = await request.timeout(
+        Duration(seconds: 10),
+        onTimeout: () => throw ApiException('Request timeout'),
+      );
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return parser(jsonDecode(response.body));
+      } else if (response.statusCode == 401) {
+        throw ApiException('Unauthorized', response.statusCode);
+      } else if (response.statusCode == 404) {
+        throw ApiException('Not found', response.statusCode);
+      } else if (response.statusCode >= 500) {
+        throw ApiException('Server error', response.statusCode);
+      } else {
+        throw ApiException('Request failed', response.statusCode);
+      }
+    } on SocketException {
+      throw ApiException('No internet connection');
+    } on FormatException {
+      throw ApiException('Invalid response format');
+    } catch (e) {
+      throw ApiException('Unexpected error: $e');
+    }
+  }
+
+  Future<List<User>> getUsers() async {
+    return _handleRequest(
+      http.get(Uri.parse('$baseUrl/users')),
+      (data) => (data as List).map((json) => User.fromJson(json)).toList(),
+    );
+  }
+}
+```
+
+---
+
+### 5. Dio Package (Advanced)
+
+**Q6: What is Dio and when should you use it?**
+
+**Answer:**
+Dio is a powerful HTTP client with interceptors, request cancellation, and better error handling.
+
+**Installation:**
+```yaml
+dependencies:
+  dio: ^5.4.0
+```
+
+**Basic Usage:**
+```dart
+import 'package:dio/dio.dart';
+
+class DioService {
+  final Dio _dio = Dio(
+    BaseOptions(
+      baseUrl: 'https://api.example.com',
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ),
+  );
+
+  DioService() {
+    // Add interceptor for logging
+    _dio.interceptors.add(
+      LogInterceptor(
+        requestBody: true,
+        responseBody: true,
+      ),
+    );
+  }
+
+  // GET
+  Future<List<User>> getUsers() async {
+    try {
+      final response = await _dio.get('/users');
+      return (response.data as List)
+          .map((json) => User.fromJson(json))
+          .toList();
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  // POST
+  Future<User> createUser(User user) async {
+    try {
+      final response = await _dio.post(
+        '/users',
+        data: user.toJson(),
+      );
+      return User.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Exception _handleDioError(DioException e) {
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+        return Exception('Connection timeout');
+      case DioExceptionType.sendTimeout:
+        return Exception('Send timeout');
+      case DioExceptionType.receiveTimeout:
+        return Exception('Receive timeout');
+      case DioExceptionType.badResponse:
+        return Exception('Server error: ${e.response?.statusCode}');
+      case DioExceptionType.cancel:
+        return Exception('Request cancelled');
+      default:
+        return Exception('Network error');
+    }
+  }
+}
+```
+
+**Q7: How do you add authentication headers?**
+
+**Answer:**
+
+```dart
+class DioService {
+  final Dio _dio = Dio();
+
+  DioService() {
+    // Add auth interceptor
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          // Get token from storage
+          final token = await getAuthToken();
+
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+
+          return handler.next(options);
+        },
+        onError: (error, handler) async {
+          // Handle 401 unauthorized
+          if (error.response?.statusCode == 401) {
+            // Refresh token
+            final newToken = await refreshAuthToken();
+
+            if (newToken != null) {
+              // Retry request with new token
+              error.requestOptions.headers['Authorization'] =
+                  'Bearer $newToken';
+
+              final response = await _dio.fetch(error.requestOptions);
+              return handler.resolve(response);
+            }
+          }
+
+          return handler.next(error);
+        },
+      ),
+    );
+  }
+}
+```
+
+---
+
+### 6. Integration with State Management
+
+**Q8: How do you integrate API calls with Provider?**
+
+**Answer:**
+
+```dart
+// Model
+class UserRepository extends ChangeNotifier {
+  final ApiService _apiService = ApiService();
+
+  List<User> _users = [];
+  bool _isLoading = false;
+  String? _error;
+
+  List<User> get users => _users;
+  bool get isLoading => _isLoading;
+  String? get error => _error;
+
+  Future<void> fetchUsers() async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      _users = await _apiService.getUsers();
+    } catch (e) {
+      _error = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> addUser(User user) async {
+    try {
+      final newUser = await _apiService.createUser(user);
+      _users.add(newUser);
+      notifyListeners();
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+      rethrow;
+    }
+  }
+}
+
+// UI
+class UserListScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => UserRepository()..fetchUsers(),
+      child: Consumer<UserRepository>(
+        builder: (context, repo, child) {
+          if (repo.isLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (repo.error != null) {
+            return Center(child: Text('Error: ${repo.error}'));
+          }
+
+          return ListView.builder(
+            itemCount: repo.users.length,
+            itemBuilder: (context, index) {
+              final user = repo.users[index];
+              return ListTile(
+                title: Text(user.name),
+                subtitle: Text(user.email),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+```
+
+---
+
+### 7. Best Practices
+
+**Q9: What are networking best practices?**
+
+**Answer:**
+
+1. **Always handle errors gracefully**
+```dart
+try {
+  final data = await apiService.fetchData();
+} catch (e) {
+  // Show user-friendly error message
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text('Failed to load data')),
+  );
+}
+```
+
+2. **Use timeouts**
+```dart
+final response = await http.get(url).timeout(
+  Duration(seconds: 10),
+  onTimeout: () => throw TimeoutException('Request timeout'),
+);
+```
+
+3. **Cache responses when appropriate**
+```dart
+class CachedApiService {
+  final Map<String, dynamic> _cache = {};
+
+  Future<dynamic> getCached(String key, Future<dynamic> Function() fetcher) async {
+    if (_cache.containsKey(key)) {
+      return _cache[key];
+    }
+
+    final data = await fetcher();
+    _cache[key] = data;
+    return data;
+  }
+}
+```
+
+4. **Use environment variables for API URLs**
+```dart
+class ApiConfig {
+  static const String baseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'https://api.example.com',
+  );
+}
+```
+
+5. **Log requests in debug mode**
+```dart
+if (kDebugMode) {
+  print('Request: ${request.method} ${request.url}');
+  print('Response: ${response.statusCode}');
+}
+```
+
+---
+
+## 💻 Practice Projects
+
+### Project 1: User Directory
+Fetch and display users from JSONPlaceholder API.
+
+**Skills practiced:**
+- GET requests
+- JSON parsing
+- ListView with API data
+
+### Project 2: Todo App with API
+CRUD operations with REST API.
+
+**Skills practiced:**
+- POST, PUT, DELETE requests
+- Error handling
+- State management with API
+
+### Project 3: Weather App
+Fetch weather data with search functionality.
+
+**Skills practiced:**
+- Query parameters
+- Error handling
+- Caching responses
+
+---
+
+## ✅ Checklist
+
+Before moving forward, ensure you can:
+
+- [ ] Make GET, POST, PUT, DELETE requests
+- [ ] Parse JSON into Dart objects
+- [ ] Handle network errors properly
+- [ ] Create API service classes
+- [ ] Add authentication headers
+- [ ] Use Dio for advanced features
+- [ ] Integrate APIs with state management
+- [ ] Implement request timeouts
+- [ ] Cache API responses
+
+---
+
+## 🎓 Next Steps
+
+1. **Learn Local Storage** → [Local Storage](/docs/flutter/roadmap/storage)
+2. **Master Firebase** → [Firebase Integration](/docs/flutter/roadmap/firebase)
+3. **Back to Roadmap** → [Flutter Roadmap](/docs/flutter/roadmap)
+
+---
+
+> **Tip:** Start with the http package, move to Dio when you need advanced features like interceptors!

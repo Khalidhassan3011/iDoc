@@ -1,0 +1,444 @@
+---
+title: Widgets & Layouts
+description: Master Flutter widgets and build beautiful, responsive layouts
+---
+
+# Widgets & Layouts
+
+> **Note:**
+  **Everything in Flutter is a widget - master them to build amazing UIs!**
+
+Widgets are the building blocks of Flutter applications. Understanding widgets and layouts is crucial for creating beautiful, responsive UIs.
+
+---
+
+## 📚 Learning Timeline
+
+**Recommended Duration:** 3-4 weeks
+**Prerequisites:** Dart fundamentals
+
+---
+
+## 🎯 Core Widget Concepts
+
+### 1. Widget Types
+
+**Q1: What's the difference between StatelessWidget and StatefulWidget?**
+
+**Answer:**
+- **StatelessWidget**: Immutable widget that doesn't change over time
+- **StatefulWidget**: Mutable widget that can rebuild when state changes
+
+```dart
+// StatelessWidget - Never changes
+class WelcomeText extends StatelessWidget {
+  final String name;
+
+  const WelcomeText({required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('Welcome, $name!');
+  }
+}
+
+// StatefulWidget - Can change over time
+class Counter extends StatefulWidget {
+  @override
+  State<Counter> createState() => _CounterState();
+}
+
+class _CounterState extends State<Counter> {
+  int count = 0;
+
+  void increment() {
+    setState(() {
+      count++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Count: $count'),
+        ElevatedButton(
+          onPressed: increment,
+          child: Text('Increment'),
+        ),
+      ],
+    );
+  }
+}
+```
+
+**Q2: What is the widget tree?**
+
+**Answer:**
+The widget tree is a hierarchical structure of widgets where each widget can have zero or more children.
+
+```dart
+MaterialApp(                    // Root
+  home: Scaffold(               // Child of MaterialApp
+    appBar: AppBar(             // Child of Scaffold
+      title: Text('My App'),    // Child of AppBar
+    ),
+    body: Center(               // Child of Scaffold
+      child: Text('Hello'),     // Child of Center
+    ),
+  ),
+)
+```
+
+---
+
+### 2. Layout Widgets
+
+**Q3: How do Row and Column widgets work?**
+
+**Answer:**
+- **Row**: Arranges children horizontally (left to right)
+- **Column**: Arranges children vertically (top to bottom)
+
+```dart
+// Row example
+Row(
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  crossAxisAlignment: CrossAxisAlignment.center,
+  children: [
+    Icon(Icons.star),
+    Text('Rating'),
+    Text('4.5'),
+  ],
+)
+
+// Column example
+Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text('Title', style: TextStyle(fontSize: 24)),
+    Text('Subtitle'),
+    ElevatedButton(
+      onPressed: () {},
+      child: Text('Action'),
+    ),
+  ],
+)
+```
+
+**Q4: What's the difference between MainAxisAlignment and CrossAxisAlignment?**
+
+**Answer:**
+- **MainAxisAlignment**: Alignment along the main axis (horizontal for Row, vertical for Column)
+- **CrossAxisAlignment**: Alignment along the cross axis (vertical for Row, horizontal for Column)
+
+```dart
+Column(
+  // MainAxis = Vertical
+  mainAxisAlignment: MainAxisAlignment.center,  // Centers vertically
+
+  // CrossAxis = Horizontal
+  crossAxisAlignment: CrossAxisAlignment.start,  // Aligns to left
+
+  children: [
+    Text('Item 1'),
+    Text('Item 2'),
+  ],
+)
+```
+
+**Q5: What is a Stack widget?**
+
+**Answer:**
+Stack allows you to overlay widgets on top of each other.
+
+```dart
+Stack(
+  children: [
+    // Base image
+    Image.network('https://example.com/image.jpg'),
+
+    // Overlay at bottom
+    Positioned(
+      bottom: 10,
+      left: 10,
+      child: Text(
+        'Photo Title',
+        style: TextStyle(color: Colors.white),
+      ),
+    ),
+
+    // Overlay at top right
+    Positioned(
+      top: 10,
+      right: 10,
+      child: Icon(Icons.favorite, color: Colors.red),
+    ),
+  ],
+)
+```
+
+---
+
+### 3. Common Widgets
+
+**Q6: What are the most commonly used widgets?**
+
+**Answer:**
+
+**Layout Widgets:**
+- `Container` - Box with styling, padding, margins
+- `Padding` - Adds padding around a child
+- `Center` - Centers its child
+- `Expanded` - Fills available space
+- `SizedBox` - Fixed size box
+
+**Display Widgets:**
+- `Text` - Display text
+- `Image` - Display images
+- `Icon` - Display icons
+- `Card` - Material Design card
+
+**Interactive Widgets:**
+- `ElevatedButton` - Raised button
+- `TextButton` - Flat text button
+- `IconButton` - Button with icon
+- `TextField` - Text input field
+- `Checkbox` - Checkbox input
+- `Switch` - Toggle switch
+
+```dart
+// Container example
+Container(
+  width: 200,
+  height: 100,
+  padding: EdgeInsets.all(16),
+  margin: EdgeInsets.symmetric(vertical: 8),
+  decoration: BoxDecoration(
+    color: Colors.blue,
+    borderRadius: BorderRadius.circular(12),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black26,
+        blurRadius: 8,
+        offset: Offset(0, 4),
+      ),
+    ],
+  ),
+  child: Text('Styled Container'),
+)
+
+// TextField example
+TextField(
+  decoration: InputDecoration(
+    labelText: 'Email',
+    hintText: 'Enter your email',
+    prefixIcon: Icon(Icons.email),
+    border: OutlineInputBorder(),
+  ),
+  onChanged: (value) {
+    print('Input: $value');
+  },
+)
+```
+
+---
+
+### 4. Responsive Design
+
+**Q7: How do you make layouts responsive in Flutter?**
+
+**Answer:**
+
+```dart
+// Using MediaQuery
+class ResponsiveLayout extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    var screenWidth = screenSize.width;
+
+    return Container(
+      width: screenWidth > 600 ? 400 : screenWidth * 0.9,
+      child: Text('Responsive width'),
+    );
+  }
+}
+
+// Using LayoutBuilder
+LayoutBuilder(
+  builder: (context, constraints) {
+    if (constraints.maxWidth > 600) {
+      // Desktop layout
+      return Row(
+        children: [
+          Expanded(child: Sidebar()),
+          Expanded(flex: 3, child: Content()),
+        ],
+      );
+    } else {
+      // Mobile layout
+      return Column(
+        children: [
+          Content(),
+        ],
+      );
+    }
+  },
+)
+
+// Using Expanded and Flexible
+Row(
+  children: [
+    Expanded(
+      flex: 2,
+      child: Container(color: Colors.red),
+    ),
+    Expanded(
+      flex: 1,
+      child: Container(color: Colors.blue),
+    ),
+  ],
+)
+```
+
+**Q8: What's the difference between Expanded and Flexible?**
+
+**Answer:**
+- **Expanded**: Forces child to fill available space (flex: 1 by default)
+- **Flexible**: Allows child to be smaller than available space
+
+```dart
+Row(
+  children: [
+    Expanded(
+      child: Container(
+        color: Colors.red,
+        height: 100,
+        // Must fill all available horizontal space
+      ),
+    ),
+    Flexible(
+      child: Container(
+        color: Colors.blue,
+        height: 100,
+        width: 50,  // Can be smaller than available space
+      ),
+    ),
+  ],
+)
+```
+
+---
+
+### 5. Lists and Grids
+
+**Q9: How do you create scrollable lists?**
+
+**Answer:**
+
+```dart
+// ListView - For small lists
+ListView(
+  children: [
+    ListTile(title: Text('Item 1')),
+    ListTile(title: Text('Item 2')),
+    ListTile(title: Text('Item 3')),
+  ],
+)
+
+// ListView.builder - For large lists (lazy loading)
+ListView.builder(
+  itemCount: 1000,
+  itemBuilder: (context, index) {
+    return ListTile(
+      title: Text('Item $index'),
+    );
+  },
+)
+
+// ListView.separated - With dividers
+ListView.separated(
+  itemCount: 20,
+  separatorBuilder: (context, index) => Divider(),
+  itemBuilder: (context, index) {
+    return ListTile(
+      leading: Icon(Icons.person),
+      title: Text('User $index'),
+      subtitle: Text('user$index@email.com'),
+    );
+  },
+)
+
+// GridView
+GridView.count(
+  crossAxisCount: 2,  // 2 columns
+  children: List.generate(10, (index) {
+    return Card(
+      child: Center(
+        child: Text('Item $index'),
+      ),
+    );
+  }),
+)
+```
+
+---
+
+## 💻 Practice Projects
+
+### Project 1: Profile Card UI
+Build a user profile card with image, name, and bio.
+
+**Skills practiced:**
+- Container styling
+- Column layout
+- Image widget
+- Text styling
+
+### Project 2: Responsive Dashboard
+Create a dashboard that adapts to screen size.
+
+**Skills practiced:**
+- MediaQuery
+- LayoutBuilder
+- Row and Column
+- Expanded widgets
+
+### Project 3: Contact List
+Build a scrollable contact list with search.
+
+**Skills practiced:**
+- ListView.builder
+- ListTile
+- TextField
+- State management
+
+---
+
+## ✅ Checklist
+
+Before moving forward, ensure you can:
+
+- [ ] Create StatelessWidget and StatefulWidget
+- [ ] Use Row and Column effectively
+- [ ] Understand MainAxis vs CrossAxis alignment
+- [ ] Style containers with BoxDecoration
+- [ ] Create responsive layouts with MediaQuery
+- [ ] Build scrollable lists with ListView.builder
+- [ ] Use Stack for overlapping widgets
+- [ ] Implement forms with TextField
+- [ ] Create grids with GridView
+
+---
+
+## 🎓 Next Steps
+
+1. **Master State Management** → [State Management](/docs/flutter/roadmap/state-management)
+2. **Learn Navigation** → [Navigation & Routing](/docs/flutter/roadmap/navigation)
+3. **Back to Roadmap** → [Flutter Roadmap](/docs/flutter/roadmap)
+
+---
+
+> **Tip:** Build small UI components daily to internalize widget usage patterns!
