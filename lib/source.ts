@@ -48,8 +48,9 @@ export const source = loader({
     // Handle custom Flutter icon
     if (icon === 'Flutter') {
       return createElement('span', {
+        key: 'icon-wrapper-flutter',
         style: { color: iconColors['Flutter'], display: 'inline-flex' }
-      }, createElement(FlutterIcon));
+      }, createElement(FlutterIcon, { key: 'icon-flutter' }));
     }
 
     // Map icon names to components
@@ -66,10 +67,11 @@ export const source = loader({
 
     if (IconComponent) {
       const iconColor = iconColors[icon];
-      const iconElement = createElement(IconComponent);
+      const iconElement = createElement(IconComponent, { key: `icon-${icon}` });
 
       if (iconColor) {
         return createElement('span', {
+          key: `icon-wrapper-${icon}`,
           style: { color: iconColor, display: 'inline-flex' }
         }, iconElement);
       }
@@ -83,10 +85,11 @@ export const source = loader({
 
     if (iconKey in icons) {
       const iconColor = iconColors[icon];
-      const iconElement = createElement(icons[iconKey]);
+      const iconElement = createElement(icons[iconKey], { key: `icon-${icon}` });
 
       if (iconColor) {
         return createElement('span', {
+          key: `icon-wrapper-${icon}`,
           style: { color: iconColor, display: 'inline-flex' }
         }, iconElement);
       }
