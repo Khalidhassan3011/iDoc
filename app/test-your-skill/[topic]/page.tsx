@@ -34,23 +34,16 @@ export default function TestPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentAnswer, setCurrentAnswer] = useState<Answer | null>(null);
+  const [showReloadDialog, setShowReloadDialog] = useState(false);
 
-  // Initialize or load test
+  // Initialize or load test - always start fresh
   useEffect(() => {
     const initTest = async () => {
       try {
-        // Try to load existing test state
-        const savedState = loadTestState();
-
-        if (savedState && savedState.topic === topic && !savedState.isFinished) {
-          // Resume existing test
-          setTestState(updateTimeRemaining(savedState));
-          setLoading(false);
-          return;
-        }
-
-        // Start new test
+        // Always clear old state and start fresh
         clearTestState();
+        sessionStorage.removeItem('test-result');
+
         const questionPool = await loadQuestions(topic);
         const questions = getRandomQuestions(questionPool, 20);
 
@@ -83,6 +76,23 @@ export default function TestPage() {
 
     return () => clearInterval(interval);
   }, [testState?.isFinished]);
+
+  // Prevent page reload/navigation during active test
+  useEffect(() => {
+    if (!testState || testState.isFinished || loading) return;
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = '';
+      return '';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [testState, loading]);
 
   // Handle time expiry
   const handleTimeExpired = () => {
@@ -155,6 +165,18 @@ export default function TestPage() {
     sessionStorage.setItem('test-result', JSON.stringify(result));
     clearTestState();
     router.push(`/test-your-skill/${topic}/result`);
+  };
+
+  // Handle exit confirmation (for custom reload dialog)
+  const handleConfirmExit = () => {
+    clearTestState();
+    sessionStorage.removeItem('test-result');
+    setShowReloadDialog(false);
+    router.push(`/test-your-skill/${topic}`);
+  };
+
+  const handleCancelExit = () => {
+    setShowReloadDialog(false);
   };
 
   // Loading state
@@ -276,6 +298,37 @@ export default function TestPage() {
           </p>
         )}
       </div>
+
+      {/* Reload Warning Dialog */}
+      {showReloadDialog && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <AlertTriangle className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                Exit Test?
+              </h2>
+            </div>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              If you reload the page, all quizzes will end and you will have to start again from the beginning. Your current progress will be lost.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={handleCancelExit}
+                className="flex-1 px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 font-semibold rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmExit}
+                className="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors"
+              >
+                Confirm Exit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
