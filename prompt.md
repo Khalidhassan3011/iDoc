@@ -1,1 +1,0 @@
-- Suppose I am in question 5 then if I reload the page then it start with question 1 but time with the pending time, time will not reset. So, now I want suppose exam is start and user reload the page then show a dialogue and appear to user if you reload the page all quizzes ended and you will be start again from. So, show two buttons, confirm exit or cancel in dialogue.

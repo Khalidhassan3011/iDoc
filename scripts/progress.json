@@ -1,0 +1,611 @@
+{
+  "last_index": 28,
+  "generated_count": 22,
+  "questions": [
+    {
+      "id": "flutter-gen-mcq-0000",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "Which of the following popular apps is built using Flutter?",
+      "options": [
+        "Google Ads",
+        "Alibaba",
+        "BMW App",
+        "All of the above"
+      ],
+      "correctAnswer": 3,
+      "source": "BASICS"
+    },
+    {
+      "id": "flutter-gen-mcq-0001",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "Which of the following is a benefit of using Flutter Inspector?",
+      "options": [
+        "It allows you to visualize and debug the widget tree structure in real-time.",
+        "It helps in writing unit tests for Flutter applications.",
+        "It provides a built-in database for storing application data.",
+        "It automatically generates code for you based on UI design."
+      ],
+      "correctAnswer": 0,
+      "source": "BASICS"
+    },
+    {
+      "id": "flutter-gen-mcq-0002",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "Which of the following are popular editors for Flutter development?",
+      "options": [
+        "Android Studio",
+        "Visual Studio Code",
+        "Xcode",
+        "Sublime Text"
+      ],
+      "correctAnswer": 0,
+      "source": "BASICS"
+    },
+    {
+      "id": "flutter-gen-plain-0003",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "plain",
+      "question": "How comfortable are you with naming the command used to compile the release mode in Flutter?",
+      "source": "BASICS",
+      "followUps": {
+        "easy": {
+          "question": "What is the command to compile the release mode in Flutter?",
+          "options": [
+            "flutter run --release",
+            "flutter build apk --release",
+            "flutter compile release",
+            "flutter run --profile"
+          ],
+          "correctAnswer": 1
+        },
+        "medium": {
+          "question": "Which of the following commands will generate a release build for an Android app in Flutter?",
+          "options": [
+            "flutter run --release",
+            "flutter build apk --debug",
+            "flutter build apk --release",
+            "flutter build ios --release"
+          ],
+          "correctAnswer": 2
+        },
+        "hard": {
+          "question": "What is the correct sequence of commands to compile a release build for both Android and iOS in Flutter?",
+          "options": [
+            "flutter build apk --release, flutter build ios --release",
+            "flutter run --release, flutter build apk --release",
+            "flutter build apk --debug, flutter build ios --debug",
+            "flutter compile release, flutter build all --release"
+          ],
+          "correctAnswer": 0
+        }
+      }
+    },
+    {
+      "id": "flutter-gen-plain-0004",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "plain",
+      "question": "How comfortable are you with can you state a few examples of stateless widget?",
+      "source": "BASICS",
+      "followUps": {
+        "easy": {
+          "question": "Which of the following is an example of a stateless widget in Flutter?",
+          "options": [
+            "Text",
+            "StatefulWidget",
+            "AnimatedContainer",
+            "FutureBuilder"
+          ],
+          "correctAnswer": 0
+        },
+        "medium": {
+          "question": "What is a key characteristic of a stateless widget in Flutter?",
+          "options": [
+            "It can change its appearance based on user interaction",
+            "It cannot change its appearance once created",
+            "It must have a build method",
+            "It can be used to manage complex state"
+          ],
+          "correctAnswer": 1
+        },
+        "hard": {
+          "question": "Which of the following statements about stateless widgets is true?",
+          "options": [
+            "They can only be used for static content",
+            "They can be used to create interactive UI elements as long as the interaction does not change the widget's configuration",
+            "They are always more efficient than stateful widgets",
+            "They cannot be used with other widgets in a widget tree"
+          ],
+          "correctAnswer": 1
+        }
+      }
+    },
+    {
+      "id": "flutter-gen-mcq-0005",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "How many kinds of widgets are there in Flutter?",
+      "options": [
+        "Two (Stateless and Stateful)",
+        "Three (Stateless, Stateful, and Inherited)",
+        "Four (Stateless, Stateful, Inherited, and Custom)",
+        "Five (Stateless, Stateful, Inherited, Custom, and Animated)"
+      ],
+      "correctAnswer": 0,
+      "source": "BASICS"
+    },
+    {
+      "id": "flutter-gen-plain-0008",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "plain",
+      "question": "How comfortable are you with can you tell us what will be the default return type, if you don't specify the return type for a function?",
+      "source": "BASICS",
+      "followUps": {
+        "easy": {
+          "question": "What is the default return type in Dart if you don't specify one?",
+          "options": [
+            "void",
+            "dynamic",
+            "int",
+            "String"
+          ],
+          "correctAnswer": 1
+        },
+        "medium": {
+          "question": "In Dart, what happens when a function doesn't specify a return type?",
+          "options": [
+            "It returns null",
+            "It returns the last evaluated expression",
+            "It throws an error",
+            "It returns a default value"
+          ],
+          "correctAnswer": 1
+        },
+        "hard": {
+          "question": "Which of the following statements about Dart's default return type is true?",
+          "options": [
+            "The default return type is always null",
+            "The default return type is dynamic, meaning it can be any type",
+            "The default return type is void, but only if the function doesn't return anything",
+            "The default return type is determined at runtime based on the function's usage"
+          ],
+          "correctAnswer": 1
+        }
+      }
+    },
+    {
+      "id": "flutter-gen-plain-0009",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "plain",
+      "question": "How comfortable are you with can you tell us what you know about rune in dart??",
+      "source": "BASICS",
+      "followUps": {
+        "easy": {
+          "question": "What is a Rune in Dart?",
+          "options": [
+            "A special type of string",
+            "A Unicode code point",
+            "A type of variable",
+            "A function"
+          ],
+          "correctAnswer": 1
+        },
+        "medium": {
+          "question": "Which of the following is a valid way to represent a Rune in Dart?",
+          "options": [
+            "String.fromCharCode(97)",
+            "Rune('a')",
+            "Unicode('a')",
+            "Char('a')"
+          ],
+          "correctAnswer": 0
+        },
+        "hard": {
+          "question": "How would you iterate over the runes of a string in Dart?",
+          "options": [
+            "for (var r in string.runes) { ... }",
+            "for (var r in string.chars) { ... }",
+            "for (var r in string.unicode) { ... }",
+            "for (var r in string.iterate) { ... }"
+          ],
+          "correctAnswer": 0
+        }
+      }
+    },
+    {
+      "id": "flutter-gen-mcq-0011",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "Which function compiles and updates the app in Flutter?",
+      "options": [
+        "build()",
+        "main()",
+        "runApp()",
+        "setState()"
+      ],
+      "correctAnswer": 0,
+      "source": "BASICS"
+    },
+    {
+      "id": "flutter-gen-plain-0013",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "plain",
+      "question": "How comfortable are you with using WidgetsApp for basic navigation?",
+      "source": "BASICS",
+      "followUps": {
+        "easy": {
+          "question": "What is the primary purpose of WidgetsApp in Flutter?",
+          "options": [
+            "To handle complex animations",
+            "To provide basic navigation between screens",
+            "To manage state in the application",
+            "To connect to backend services"
+          ],
+          "correctAnswer": 1
+        },
+        "medium": {
+          "question": "Which of the following is a common use case for WidgetsApp in Flutter?",
+          "options": [
+            "Creating a custom widget from scratch",
+            "Navigating between different screens in an app",
+            "Styling text and buttons",
+            "Handling user authentication"
+          ],
+          "correctAnswer": 1
+        },
+        "hard": {
+          "question": "How does WidgetsApp typically facilitate navigation in a Flutter application?",
+          "options": [
+            "By using the Navigator widget to push and pop routes",
+            "By directly manipulating the widget tree",
+            "By calling platform-specific APIs for navigation",
+            "By using a state management solution like Provider"
+          ],
+          "correctAnswer": 0
+        }
+      }
+    },
+    {
+      "id": "flutter-gen-plain-0014",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "plain",
+      "question": "How comfortable are you with defining the spacer widget in Flutter?",
+      "source": "BASICS",
+      "followUps": {
+        "easy": {
+          "question": "What is the primary purpose of the Spacer widget in Flutter?",
+          "options": [
+            "To create fixed-size empty space between widgets",
+            "To add decorative elements to the UI",
+            "To handle user input events",
+            "To manage widget state"
+          ],
+          "correctAnswer": 0
+        },
+        "medium": {
+          "question": "Which of the following is NOT a valid way to use the Spacer widget?",
+          "options": [
+            "Spacer()",
+            "Spacer(width: 20)",
+            "Spacer(height: 20)",
+            "Spacer(flex: 2)"
+          ],
+          "correctAnswer": 0
+        },
+        "hard": {
+          "question": "In a Row widget, how does the Spacer widget distribute space when multiple Spacer widgets are present with different flex factors?",
+          "options": [
+            "It distributes space proportionally based on the flex factors",
+            "It gives equal space to all Spacer widgets regardless of flex factors",
+            "It ignores the flex factors and distributes space equally",
+            "It throws an error when multiple Spacer widgets are used"
+          ],
+          "correctAnswer": 0
+        }
+      }
+    },
+    {
+      "id": "flutter-gen-mcq-0015",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "What is the difference between runApp() and main() in Flutter?",
+      "options": [
+        "runApp() is the entry point of the application, while main() is a method that initializes the app.",
+        "runApp() is a method that initializes the app, while main() is the entry point of the application.",
+        "runApp() is used to display the app on the screen, while main() is used to define the app's structure.",
+        "runApp() is a widget, while main() is a function that calls runApp()."
+      ],
+      "correctAnswer": 1,
+      "source": "BASICS"
+    },
+    {
+      "id": "flutter-gen-mcq-0016",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "Which of the following is a type of stream in Dart?",
+      "options": [
+        "Single subscription stream",
+        "Broadcast stream",
+        "Both Single subscription and Broadcast stream",
+        "Neither"
+      ],
+      "correctAnswer": 2,
+      "source": "BASICS"
+    },
+    {
+      "id": "flutter-gen-mcq-0017",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "What is the difference between mainAxisAlignment and crossAxisAlignment in Flutter?",
+      "options": [
+        "mainAxisAlignment controls alignment along the main axis of a widget, while crossAxisAlignment controls alignment along the cross axis",
+        "mainAxisAlignment and crossAxisAlignment are the same and can be used interchangeably",
+        "mainAxisAlignment controls the size of the widget, while crossAxisAlignment controls the color",
+        "mainAxisAlignment is used for vertical alignment and crossAxisAlignment is used for horizontal alignment"
+      ],
+      "correctAnswer": 0,
+      "source": "BASICS"
+    },
+    {
+      "id": "flutter-gen-plain-0018",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "plain",
+      "question": "How comfortable are you with differentiating between `StatelessWidget` and `StatefulWidget` in Flutter?",
+      "source": "BASICS",
+      "followUps": {
+        "easy": {
+          "question": "Which widget in Flutter does not maintain any state and is immutable?",
+          "options": [
+            "StatefulWidget",
+            "StatelessWidget",
+            "StatefulWidget and StatelessWidget",
+            "None of the above"
+          ],
+          "correctAnswer": 1
+        },
+        "medium": {
+          "question": "What is the primary difference between `StatelessWidget` and `StatefulWidget` in Flutter?",
+          "options": [
+            "StatelessWidget can be modified after creation, while StatefulWidget cannot.",
+            "StatefulWidget can be modified after creation, while StatelessWidget cannot.",
+            "StatelessWidget and StatefulWidget are the same.",
+            "None of the above."
+          ],
+          "correctAnswer": 1
+        },
+        "hard": {
+          "question": "When should you use a `StatefulWidget` instead of a `StatelessWidget` in Flutter?",
+          "options": [
+            "When the widget's appearance changes in response to user interaction or other events.",
+            "When the widget's appearance never changes.",
+            "When the widget is part of a list.",
+            "When the widget is part of a form."
+          ],
+          "correctAnswer": 0
+        }
+      }
+    },
+    {
+      "id": "flutter-gen-plain-0019",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "plain",
+      "question": "How comfortable are you with differentiating between the final, const, and static keywords in Dart?",
+      "source": "BASICS",
+      "followUps": {
+        "easy": {
+          "question": "Which keyword is used to declare a variable that can only be assigned once?",
+          "options": [
+            "final",
+            "const",
+            "static",
+            "var"
+          ],
+          "correctAnswer": 0
+        },
+        "medium": {
+          "question": "What is the difference between a final and a const variable in Dart?",
+          "options": [
+            "final variables can be assigned once, while const variables are compile-time constants",
+            "const variables can be assigned once, while final variables are compile-time constants",
+            "final and const variables are the same",
+            "final variables are immutable, while const variables are mutable"
+          ],
+          "correctAnswer": 0
+        },
+        "hard": {
+          "question": "In which scenario would you use the static keyword in Dart?",
+          "options": [
+            "To declare a variable that belongs to the class rather than an instance of the class",
+            "To declare a variable that can only be assigned once",
+            "To declare a compile-time constant",
+            "To declare a variable that is immutable"
+          ],
+          "correctAnswer": 0
+        }
+      }
+    },
+    {
+      "id": "flutter-gen-mcq-0021",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "What is the key difference between named and positional parameters in Flutter?",
+      "options": [
+        "Named parameters are passed with parameter names, while positional parameters are passed by their order in the function definition.",
+        "Named parameters are always required, while positional parameters are optional.",
+        "Named parameters are used for constructors, while positional parameters are used for regular functions.",
+        "Named parameters are always optional, while positional parameters are always required."
+      ],
+      "correctAnswer": 0,
+      "source": "BASICS"
+    },
+    {
+      "id": "flutter-gen-plain-0023",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "plain",
+      "question": "How comfortable are you with explaining BuildContext in Flutter?",
+      "source": "BASICS",
+      "followUps": {
+        "easy": {
+          "question": "What is the primary purpose of BuildContext in Flutter?",
+          "options": [
+            "To provide a way to access the nearest ancestor widget in the widget tree",
+            "To store and manage application state",
+            "To handle user input events",
+            "To define the layout of a widget"
+          ],
+          "correctAnswer": 0
+        },
+        "medium": {
+          "question": "Which of the following methods can be used to find the nearest ancestor of a specific type using BuildContext?",
+          "options": [
+            "findAncestorWidgetOfExactType()",
+            "findByType()",
+            "locateAncestor()",
+            "getAncestor()"
+          ],
+          "correctAnswer": 0
+        },
+        "hard": {
+          "question": "In a Flutter application, what happens if you try to use BuildContext from a widget that has been disposed?",
+          "options": [
+            "It throws an exception because the widget tree is no longer valid",
+            "It returns null",
+            "It silently fails and returns an empty BuildContext",
+            "It creates a new BuildContext for the disposed widget"
+          ],
+          "correctAnswer": 0
+        }
+      }
+    },
+    {
+      "id": "flutter-gen-plain-0024",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "plain",
+      "question": "How comfortable are you with explaining the Container class in Flutter?",
+      "source": "BASICS",
+      "followUps": {
+        "easy": {
+          "question": "What is the primary purpose of the Container class in Flutter?",
+          "options": [
+            "To create a scrollable widget",
+            "To provide a box model for layout and styling",
+            "To manage state in a widget tree",
+            "To handle animations and transitions"
+          ],
+          "correctAnswer": 1
+        },
+        "medium": {
+          "question": "Which of the following properties can you set on a Container widget in Flutter?",
+          "options": [
+            "color, padding, margin, alignment",
+            "onTap, onLongPress, onHover",
+            "child, children, index",
+            "width, height, maxWidth, maxHeight"
+          ],
+          "correctAnswer": 0
+        },
+        "hard": {
+          "question": "How does the Container class differ from the Column and Row classes in Flutter?",
+          "options": [
+            "Container is a layout widget, while Column and Row are alignment widgets",
+            "Container is a single-child widget, while Column and Row can have multiple children",
+            "Container is used for styling, while Column and Row are used for layout",
+            "Container is a stateful widget, while Column and Row are stateless"
+          ],
+          "correctAnswer": 2
+        }
+      }
+    },
+    {
+      "id": "flutter-gen-mcq-0025",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "What is the primary purpose of the Flutter Inspector?",
+      "options": [
+        "To debug and inspect the widget tree and layout of a Flutter application",
+        "To manage state in a Flutter application",
+        "To handle animations in a Flutter application",
+        "To optimize the performance of a Flutter application"
+      ],
+      "correctAnswer": 0,
+      "source": "BASICS"
+    },
+    {
+      "id": "flutter-gen-mcq-0027",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "mcq",
+      "question": "What is the difference between packages and plugins in Flutter?",
+      "options": [
+        "Packages are reusable code libraries, while plugins are packages that interact with native code",
+        "Plugins are reusable code libraries, while packages are plugins that interact with native code",
+        "Packages and plugins are the same thing in Flutter",
+        "Packages are used for UI components, while plugins are used for state management"
+      ],
+      "correctAnswer": 0,
+      "source": "BASICS"
+    },
+    {
+      "id": "flutter-gen-plain-0028",
+      "topic": "flutter",
+      "difficulty": "basic",
+      "type": "plain",
+      "question": "How comfortable are you with explaining profile mode in Flutter?",
+      "source": "BASICS",
+      "followUps": {
+        "easy": {
+          "question": "What is the primary purpose of profile mode in Flutter?",
+          "options": [
+            "To debug and profile the performance of an app",
+            "To run the app in a production environment",
+            "To test the app on different screen sizes",
+            "To simulate network conditions"
+          ],
+          "correctAnswer": 0
+        },
+        "medium": {
+          "question": "Which of the following tools is used to analyze performance in profile mode?",
+          "options": [
+            "Flutter Inspector",
+            "Flutter DevTools",
+            "Android Profiler",
+            "Xcode Instruments"
+          ],
+          "correctAnswer": 1
+        },
+        "hard": {
+          "question": "How can you enable profile mode in a Flutter app?",
+          "options": [
+            "By running `flutter run --profile` in the terminal",
+            "By selecting 'Profile' in the run configuration in Android Studio",
+            "By adding `profile: true` in the `pubspec.yaml` file",
+            "By enabling it in the device's developer settings"
+          ],
+          "correctAnswer": 0
+        }
+      }
+    }
+  ]
+}
