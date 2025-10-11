@@ -5,6 +5,7 @@ import { HeroSection } from '@/components/ui/hero-section-1';
 import { FeatureCard } from '@/components/ui/grid-feature-cards';
 import { motion, useReducedMotion } from 'framer-motion';
 import { TextEffect } from '@/components/ui/text-effect';
+import { IconCloud } from '@/components/ui/interactive-icon-cloud';
 import { useState, useEffect } from 'react';
 
 const interviewTips = [
@@ -252,78 +253,66 @@ function RotatingTip() {
   );
 }
 
+const iconSlugs = [
+  "typescript",
+  "javascript",
+  "dart",
+  "java",
+  "react",
+  "flutter",
+  "android",
+  "html5",
+  "css3",
+  "nodedotjs",
+  "express",
+  "nextdotjs",
+  "prisma",
+  "amazonaws",
+  "postgresql",
+  "firebase",
+  "nginx",
+  "vercel",
+  "testinglibrary",
+  "jest",
+  "cypress",
+  "docker",
+  "git",
+  "jira",
+  "github",
+  "gitlab",
+  "visualstudiocode",
+  "androidstudio",
+  "sonarqube",
+  "figma",
+];
+
 export default function HomePage() {
   return (
     <main className="flex flex-col">
       {/* Hero Section */}
       <HeroSection />
 
-      {/* Available Stacks Section */}
+      {/* Tech Stack Icon Cloud Section */}
       <section className="border-b py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center mb-16">
-            <h2 className="text-base font-semibold leading-7 text-primary">
-              Currently Available
-            </h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-              Master Popular Tech Stacks
-            </p>
-            <p className="mt-4 text-lg text-muted-foreground">
-              Comprehensive interview questions and resources for the most in-demand technologies
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {/* Flutter Card */}
-            <Link
-              href="/docs/flutter"
-              className="group relative overflow-hidden rounded-2xl border bg-card p-8 transition-all hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 opacity-0 transition-opacity group-hover:opacity-100" />
-              <div className="relative">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30">
-                  <Code2 className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                </div>
-                <h3 className="mb-2 text-xl font-bold">Flutter</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  660+ interview questions covering widgets, state management, navigation, and more
-                </p>
-                <div className="flex items-center text-sm font-medium text-primary">
-                  Explore Flutter
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </div>
-              </div>
-            </Link>
-
-            {/* Laravel Card - Coming Soon */}
-            <div className="group relative overflow-hidden rounded-2xl border bg-card p-8 opacity-60">
-              <div className="relative">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-red-100 dark:bg-red-900/30">
-                  <Code2 className="h-6 w-6 text-red-600 dark:text-red-400" />
-                </div>
-                <h3 className="mb-2 text-xl font-bold">Laravel</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Backend development, eloquent ORM, authentication, and API building
-                </p>
-                <div className="inline-flex items-center rounded-full bg-muted px-3 py-1 text-xs font-medium">
-                  Coming Soon
-                </div>
-              </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Text Content */}
+            <div className="space-y-4">
+              <h2 className="text-base font-semibold leading-7 text-primary">
+                Technologies We Cover
+              </h2>
+              <p className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+                Master Popular Tech Stacks
+              </p>
+              <p className="text-lg text-muted-foreground">
+                Comprehensive interview questions for the most in-demand technologies
+              </p>
             </div>
 
-            {/* React Card - Coming Soon */}
-            <div className="group relative overflow-hidden rounded-2xl border bg-card p-8 opacity-60">
-              <div className="relative">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-cyan-100 dark:bg-cyan-900/30">
-                  <Code2 className="h-6 w-6 text-cyan-600 dark:text-cyan-400" />
-                </div>
-                <h3 className="mb-2 text-xl font-bold">React</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Hooks, state management, performance optimization, and modern patterns
-                </p>
-                <div className="inline-flex items-center rounded-full bg-muted px-3 py-1 text-xs font-medium">
-                  Coming Soon
-                </div>
+            {/* Icon Cloud */}
+            <div className="flex items-center justify-center lg:justify-end">
+              <div className="relative flex w-full max-w-lg items-center justify-center overflow-hidden rounded-lg border bg-background px-20 pb-20 pt-8">
+                <IconCloud iconSlugs={iconSlugs} />
               </div>
             </div>
           </div>

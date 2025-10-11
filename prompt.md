@@ -1,1 +1,6 @@
-text animation is not smootm. make it more realstick
+Technologies We Cover
+Master Popular Tech Stacks
+
+Comprehensive interview questions for the most in-demand technologies
+
+keep this text and icons horizontally
