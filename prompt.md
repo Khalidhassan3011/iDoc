@@ -1,6 +1,3 @@
-Technologies We Cover
-Master Popular Tech Stacks
+return <HomeLayout {...baseOptions()}>{children}</HomeLayout>;
 
-Comprehensive interview questions for the most in-demand technologies
-
-keep this text and icons horizontally
+remove header from HomeLayout
