@@ -293,7 +293,7 @@ export default function HomePage() {
       <HeroSection />
 
       {/* Tech Stack Icon Cloud Section */}
-      <section className="border-b py-16 sm:py-24">
+      <section className="py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Text Content */}
@@ -311,7 +311,7 @@ export default function HomePage() {
 
             {/* Icon Cloud */}
             <div className="flex items-center justify-center lg:justify-end">
-              <div className="relative flex w-full max-w-lg items-center justify-center overflow-hidden rounded-lg border bg-background px-20 pb-20 pt-8">
+              <div className="relative flex w-full max-w-lg items-center justify-center overflow-hidden rounded-lg bg-background px-20 pb-20 pt-8">
                 <IconCloud iconSlugs={iconSlugs} />
               </div>
             </div>
