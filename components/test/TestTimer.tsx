@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { formatTime } from '@/lib/test/test-engine';
 import { Clock } from 'lucide-react';
 
@@ -11,29 +11,41 @@ interface TestTimerProps {
 
 export function TestTimer({ timeRemaining, onTimeExpired }: TestTimerProps) {
   const [time, setTime] = useState(timeRemaining);
+  const onTimeExpiredRef = useRef(onTimeExpired);
+  const hasExpiredRef = useRef(false);
+
+  // Update the ref when callback changes
+  useEffect(() => {
+    onTimeExpiredRef.current = onTimeExpired;
+  }, [onTimeExpired]);
 
   useEffect(() => {
     setTime(timeRemaining);
   }, [timeRemaining]);
 
   useEffect(() => {
+    // Guard: Don't run if already expired
     if (time <= 0) {
-      onTimeExpired?.();
+      if (!hasExpiredRef.current && onTimeExpiredRef.current) {
+        hasExpiredRef.current = true;
+        onTimeExpiredRef.current();
+      }
       return;
     }
 
     const timer = setInterval(() => {
       setTime((prevTime) => {
         const newTime = Math.max(0, prevTime - 1);
-        if (newTime === 0) {
-          onTimeExpired?.();
+        if (newTime === 0 && !hasExpiredRef.current && onTimeExpiredRef.current) {
+          hasExpiredRef.current = true;
+          onTimeExpiredRef.current();
         }
         return newTime;
       });
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [time, onTimeExpired]);
+  }, [time]); // Removed onTimeExpired from dependencies
 
   const isLowTime = time <= 60; // Less than 1 minute
   const isCritical = time <= 30; // Less than 30 seconds

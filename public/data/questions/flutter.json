@@ -82,7 +82,39 @@
       "difficulty": "basic",
       "type": "plain",
       "question": "How comfortable are you with Flutter widget lifecycle methods (initState, dispose, didUpdateWidget)?",
-      "source": "INTERVIEWBIT"
+      "source": "INTERVIEWBIT",
+      "followUps": {
+        "easy": {
+          "question": "Which lifecycle method is called first when a StatefulWidget is created?",
+          "options": [
+            "build()",
+            "initState()",
+            "dispose()",
+            "didUpdateWidget()"
+          ],
+          "correctAnswer": 1
+        },
+        "medium": {
+          "question": "When is didUpdateWidget() called?",
+          "options": [
+            "When the widget is first created",
+            "When the parent widget rebuilds with different configuration",
+            "When the widget is removed from tree",
+            "Never, it's deprecated"
+          ],
+          "correctAnswer": 1
+        },
+        "hard": {
+          "question": "What's the correct order of lifecycle methods when a StatefulWidget is updated?",
+          "options": [
+            "didUpdateWidget() → build() → setState()",
+            "didUpdateWidget() → setState() → build()",
+            "setState() → didUpdateWidget() → build()",
+            "build() → didUpdateWidget() → setState()"
+          ],
+          "correctAnswer": 0
+        }
+      }
     },
     {
       "id": "flutter-basic-mcq-006",
@@ -120,7 +152,39 @@
       "difficulty": "intermediate",
       "type": "plain",
       "question": "How well do you understand Flutter state management solutions (Provider, BLoC, Riverpod)?",
-      "source": "INTERVIEWBIT"
+      "source": "INTERVIEWBIT",
+      "followUps": {
+        "easy": {
+          "question": "What is the main purpose of state management in Flutter?",
+          "options": [
+            "To make apps faster",
+            "To manage and share data across widgets",
+            "To style widgets",
+            "To handle network requests"
+          ],
+          "correctAnswer": 1
+        },
+        "medium": {
+          "question": "Which state management solution uses ChangeNotifier?",
+          "options": [
+            "BLoC",
+            "Riverpod",
+            "Provider",
+            "GetX"
+          ],
+          "correctAnswer": 2
+        },
+        "hard": {
+          "question": "What is the key difference between Provider and Riverpod?",
+          "options": [
+            "Riverpod is faster",
+            "Riverpod doesn't depend on BuildContext and is compile-safe",
+            "Provider is newer",
+            "There is no difference"
+          ],
+          "correctAnswer": 1
+        }
+      }
     },
     {
       "id": "flutter-inter-mcq-002",
@@ -158,7 +222,39 @@
       "difficulty": "intermediate",
       "type": "plain",
       "question": "Rate your knowledge of Flutter navigation patterns (Navigator 1.0 vs 2.0, go_router)?",
-      "source": "LEMON"
+      "source": "LEMON",
+      "followUps": {
+        "easy": {
+          "question": "Which widget is used for basic navigation in Flutter?",
+          "options": [
+            "Router",
+            "Navigator",
+            "Route",
+            "MaterialApp"
+          ],
+          "correctAnswer": 1
+        },
+        "medium": {
+          "question": "What is the main advantage of Navigator 2.0 over Navigator 1.0?",
+          "options": [
+            "Faster performance",
+            "Declarative routing and deep linking support",
+            "Smaller app size",
+            "Better animations"
+          ],
+          "correctAnswer": 1
+        },
+        "hard": {
+          "question": "In Navigator 2.0, which class is responsible for managing the app's navigation stack?",
+          "options": [
+            "Navigator",
+            "RouterDelegate",
+            "RouteInformationParser",
+            "BackButtonDispatcher"
+          ],
+          "correctAnswer": 1
+        }
+      }
     },
     {
       "id": "flutter-adv-mcq-001",
@@ -181,7 +277,39 @@
       "difficulty": "advanced",
       "type": "plain",
       "question": "How experienced are you with platform channels and native code integration in Flutter?",
-      "source": "LEMON"
+      "source": "LEMON",
+      "followUps": {
+        "easy": {
+          "question": "What is the purpose of platform channels in Flutter?",
+          "options": [
+            "To style widgets",
+            "To communicate between Dart and native code",
+            "To handle navigation",
+            "To manage state"
+          ],
+          "correctAnswer": 1
+        },
+        "medium": {
+          "question": "Which class is used to create a platform channel in Flutter?",
+          "options": [
+            "PlatformView",
+            "MethodChannel",
+            "EventChannel",
+            "Both B and C"
+          ],
+          "correctAnswer": 3
+        },
+        "hard": {
+          "question": "What is the difference between MethodChannel and EventChannel?",
+          "options": [
+            "MethodChannel is for one-way communication, EventChannel is bidirectional",
+            "MethodChannel is for bidirectional request-response, EventChannel is for streaming data",
+            "They are the same",
+            "EventChannel is deprecated"
+          ],
+          "correctAnswer": 1
+        }
+      }
     },
     {
       "id": "flutter-adv-mcq-002",
@@ -219,7 +347,39 @@
       "difficulty": "basic",
       "type": "plain",
       "question": "How confident are you with Flutter basic layouts (Row, Column, Stack, Container)?",
-      "source": "GITHUB"
+      "source": "GITHUB",
+      "followUps": {
+        "easy": {
+          "question": "Which widget arranges children horizontally?",
+          "options": [
+            "Column",
+            "Row",
+            "Stack",
+            "Container"
+          ],
+          "correctAnswer": 1
+        },
+        "medium": {
+          "question": "What property controls the alignment of children in a Row widget?",
+          "options": [
+            "alignment",
+            "mainAxisAlignment",
+            "crossAxisAlignment",
+            "Both B and C"
+          ],
+          "correctAnswer": 3
+        },
+        "hard": {
+          "question": "What's the difference between Expanded and Flexible widgets?",
+          "options": [
+            "No difference, they're the same",
+            "Expanded forces child to fill space, Flexible allows child to be smaller",
+            "Flexible is deprecated",
+            "Expanded is only for Row, Flexible for Column"
+          ],
+          "correctAnswer": 1
+        }
+      }
     },
     {
       "id": "flutter-inter-mcq-004",
@@ -242,7 +402,39 @@
       "difficulty": "intermediate",
       "type": "plain",
       "question": "Rate your understanding of Flutter animations (Implicit vs Explicit)?",
-      "source": "LEMON"
+      "source": "LEMON",
+      "followUps": {
+        "easy": {
+          "question": "Which type of animation is easier to implement in Flutter?",
+          "options": [
+            "Explicit animations",
+            "Implicit animations",
+            "Both are equally difficult",
+            "Flutter doesn't support animations"
+          ],
+          "correctAnswer": 1
+        },
+        "medium": {
+          "question": "Which widget is an example of an implicit animation?",
+          "options": [
+            "AnimatedBuilder",
+            "AnimationController",
+            "AnimatedContainer",
+            "Tween"
+          ],
+          "correctAnswer": 2
+        },
+        "hard": {
+          "question": "What is the main difference between implicit and explicit animations?",
+          "options": [
+            "Implicit animations require AnimationController, explicit don't",
+            "Implicit animations are automatic when properties change, explicit give full control",
+            "There is no difference",
+            "Explicit animations are deprecated"
+          ],
+          "correctAnswer": 1
+        }
+      }
     },
     {
       "id": "flutter-adv-plain-002",
@@ -250,7 +442,39 @@
       "difficulty": "advanced",
       "type": "plain",
       "question": "How well do you understand Flutter performance optimization techniques (DevTools, profiling)?",
-      "source": "LEMON"
+      "source": "LEMON",
+      "followUps": {
+        "easy": {
+          "question": "What tool does Flutter provide for performance debugging?",
+          "options": [
+            "Chrome DevTools",
+            "Flutter DevTools",
+            "Android Studio Profiler only",
+            "No dedicated tool"
+          ],
+          "correctAnswer": 1
+        },
+        "medium": {
+          "question": "Which widget helps prevent unnecessary rebuilds in Flutter?",
+          "options": [
+            "Container",
+            "Scaffold",
+            "const widgets",
+            "MaterialApp"
+          ],
+          "correctAnswer": 2
+        },
+        "hard": {
+          "question": "What does the 'const' constructor optimization do in Flutter?",
+          "options": [
+            "Makes widgets faster to build",
+            "Creates widgets at compile time, preventing rebuilds when parent rebuilds",
+            "Reduces app size",
+            "It's just for type safety"
+          ],
+          "correctAnswer": 1
+        }
+      }
     }
   ]
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import type { Topic, TestState, Answer, MCQQuestion, PlainQuestion } from '@/lib/test/types';
+import type { Topic, TestState, Answer, MCQQuestion, PlainQuestion, PlainAnswer } from '@/lib/test/types';
 import { loadQuestions, getRandomQuestions, getTopicDisplayName } from '@/lib/test/question-service';
 import {
   initializeTest,
@@ -123,17 +123,8 @@ export default function TestPage() {
     handleAnswerChange(answer);
   };
 
-  // Handle plain question rating
-  const handlePlainRating = (rating: number) => {
-    const currentQuestion = getCurrentQuestion(testState!);
-    if (!currentQuestion || currentQuestion.type !== 'plain') return;
-
-    const answer: Answer = {
-      questionId: currentQuestion.id,
-      type: 'plain',
-      rating
-    };
-
+  // Handle plain question answer (with follow-ups)
+  const handlePlainAnswer = (answer: PlainAnswer) => {
     handleAnswerChange(answer);
   };
 
@@ -248,8 +239,8 @@ export default function TestPage() {
           ) : (
             <PlainQuestionComponent
               question={currentQuestion as PlainQuestion}
-              initialRating={savedAnswer?.type === 'plain' ? savedAnswer.rating : undefined}
-              onRatingChange={handlePlainRating}
+              initialAnswer={savedAnswer?.type === 'plain' ? savedAnswer : undefined}
+              onAnswerChange={handlePlainAnswer}
             />
           )}
         </div>

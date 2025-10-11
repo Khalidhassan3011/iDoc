@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import type { TestResult, MCQQuestion, PlainQuestion, MCQAnswer, PlainAnswer } from '@/lib/test/types';
-import { formatDuration, formatTime } from '@/lib/test/test-engine';
+import { formatDuration, formatTime, clearTestState } from '@/lib/test/test-engine';
 import { getTopicDisplayName } from '@/lib/test/question-service';
 import { Trophy, Target, CheckCircle, Star, Clock, RotateCcw, Home, ChevronDown, ChevronUp, X } from 'lucide-react';
 
@@ -12,6 +13,7 @@ interface TestResultProps {
 }
 
 export function TestResultComponent({ result }: TestResultProps) {
+  const router = useRouter();
   const [showMCQReview, setShowMCQReview] = useState(false);
   const [showPlainReview, setShowPlainReview] = useState(false);
 
@@ -29,6 +31,14 @@ export function TestResultComponent({ result }: TestResultProps) {
     answers,
     questions
   } = result;
+
+  const handleRetake = () => {
+    // Clear all test state and result
+    clearTestState();
+    sessionStorage.removeItem('test-result');
+    // Navigate to test page
+    router.push(`/test-your-skill/${topic}`);
+  };
 
   const completionPercentage = totalQuestions > 0
     ? Math.round((answeredQuestions / totalQuestions) * 100)
@@ -348,46 +358,157 @@ export function TestResultComponent({ result }: TestResultProps) {
 
           {showPlainReview && (
             <div className="border-t border-gray-200 dark:border-gray-700 p-6 space-y-6">
-              {answeredPlains.map(({ question, answer }, index) => (
-                <div
-                  key={question.id}
-                  className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-6 space-y-4"
-                >
-                  <div className="flex items-start gap-3">
-                    <span className="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 flex items-center justify-center font-semibold text-sm">
-                      {index + 1}
-                    </span>
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-900 dark:text-gray-100 mb-4">
-                        {question.question}
-                      </p>
+              {answeredPlains.map(({ question, answer }, index) => {
+                const hasFollowUps = answer.followUpAttempts && answer.followUpAttempts.length > 0;
+                const finalScore = answer.finalScore ?? answer.rating;
 
-                      <div className="flex items-center gap-4">
-                        <div className="flex-1">
+                return (
+                  <div
+                    key={question.id}
+                    className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-6 space-y-4"
+                  >
+                    <div className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 flex items-center justify-center font-semibold text-sm">
+                        {index + 1}
+                      </span>
+                      <div className="flex-1 space-y-4">
+                        <p className="font-medium text-gray-900 dark:text-gray-100">
+                          {question.question}
+                        </p>
+
+                        {/* Initial Rating */}
+                        <div>
                           <div className="flex items-center justify-between mb-2">
                             <span className="text-sm text-gray-600 dark:text-gray-400">
-                              Your Rating
+                              Initial Self-Rating
                             </span>
-                            <span className="text-2xl font-bold text-green-600 dark:text-green-400">
+                            <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
                               {answer.rating}/10
                             </span>
                           </div>
-                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                             <div
-                              className="bg-green-500 h-3 rounded-full transition-all"
+                              className="bg-blue-500 h-2 rounded-full transition-all"
                               style={{ width: `${(answer.rating / 10) * 100}%` }}
                             />
                           </div>
-                          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-500 mt-1">
-                            <span>Not Familiar</span>
-                            <span>Expert</span>
+                        </div>
+
+                        {/* Follow-up MCQ Attempts */}
+                        {hasFollowUps && question.followUps && (
+                          <div className="space-y-3">
+                            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                              Verification Questions:
+                            </p>
+                            {answer.followUpAttempts!.map((attempt, attemptIndex) => {
+                              const followUpQ = question.followUps![attempt.difficulty];
+                              if (!followUpQ) return null;
+
+                              return (
+                                <div
+                                  key={attemptIndex}
+                                  className={`border-l-4 pl-4 py-2 ${
+                                    attempt.isCorrect
+                                      ? 'border-green-500 bg-green-50/50 dark:bg-green-900/10'
+                                      : 'border-red-500 bg-red-50/50 dark:bg-red-900/10'
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <span className="px-2 py-0.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-semibold rounded uppercase">
+                                      {attempt.difficulty}
+                                    </span>
+                                    {attempt.isCorrect ? (
+                                      <span className="flex items-center gap-1 text-green-700 dark:text-green-300 text-sm font-medium">
+                                        <CheckCircle className="w-4 h-4" />
+                                        Correct
+                                      </span>
+                                    ) : (
+                                      <span className="flex items-center gap-1 text-red-700 dark:text-red-300 text-sm font-medium">
+                                        <X className="w-4 h-4" />
+                                        Incorrect
+                                      </span>
+                                    )}
+                                  </div>
+                                  <p className="text-sm text-gray-800 dark:text-gray-200 mb-2">
+                                    {followUpQ.question}
+                                  </p>
+                                  <div className="space-y-1 text-sm">
+                                    {followUpQ.options.map((option, optIndex) => {
+                                      const isCorrect = optIndex === followUpQ.correctAnswer;
+                                      const isSelected = optIndex === attempt.selectedOption;
+
+                                      return (
+                                        <div
+                                          key={optIndex}
+                                          className={`px-3 py-1.5 rounded ${
+                                            isCorrect
+                                              ? 'bg-green-100 dark:bg-green-900/30 text-green-900 dark:text-green-100 font-medium'
+                                              : isSelected
+                                              ? 'bg-red-100 dark:bg-red-900/30 text-red-900 dark:text-red-100 font-medium'
+                                              : 'text-gray-600 dark:text-gray-400'
+                                          }`}
+                                        >
+                                          {option}
+                                          {isCorrect && ' ✓'}
+                                          {isSelected && !isCorrect && ' ✗ (Your answer)'}
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              );
+                            })}
                           </div>
+                        )}
+
+                        {/* Final Score */}
+                        <div className={`p-3 rounded-lg ${
+                          finalScore >= 7
+                            ? 'bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700'
+                            : finalScore >= 4
+                            ? 'bg-blue-100 dark:bg-blue-900/30 border border-blue-300 dark:border-blue-700'
+                            : 'bg-orange-100 dark:bg-orange-900/30 border border-orange-300 dark:border-orange-700'
+                        }`}>
+                          <div className="flex items-center justify-between">
+                            <span className={`text-sm font-semibold ${
+                              finalScore >= 7
+                                ? 'text-green-800 dark:text-green-200'
+                                : finalScore >= 4
+                                ? 'text-blue-800 dark:text-blue-200'
+                                : 'text-orange-800 dark:text-orange-200'
+                            }`}>
+                              Final Score
+                            </span>
+                            <span className={`text-2xl font-bold ${
+                              finalScore >= 7
+                                ? 'text-green-700 dark:text-green-300'
+                                : finalScore >= 4
+                                ? 'text-blue-700 dark:text-blue-300'
+                                : 'text-orange-700 dark:text-orange-300'
+                            }`}>
+                              {finalScore}/10
+                            </span>
+                          </div>
+                          {hasFollowUps && (
+                            <p className={`text-xs mt-1 ${
+                              finalScore >= 7
+                                ? 'text-green-700 dark:text-green-300'
+                                : finalScore >= 4
+                                ? 'text-blue-700 dark:text-blue-300'
+                                : 'text-orange-700 dark:text-orange-300'
+                            }`}>
+                              {finalScore === answer.rating
+                                ? 'Your self-assessment was verified as accurate!'
+                                : `Adjusted from ${answer.rating}/10 based on verification questions`
+                              }
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -395,13 +516,13 @@ export function TestResultComponent({ result }: TestResultProps) {
 
       {/* Actions */}
       <div className="flex flex-col sm:flex-row gap-4">
-        <Link
-          href={`/test-your-skill/${topic}`}
+        <button
+          onClick={handleRetake}
           className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
         >
           <RotateCcw className="w-5 h-5" />
           Retake Test
-        </Link>
+        </button>
         <Link
           href="/test-your-skill"
           className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg transition-colors"

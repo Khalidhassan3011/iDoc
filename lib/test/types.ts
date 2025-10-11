@@ -18,6 +18,18 @@ export interface MCQQuestion {
   source?: string;
 }
 
+export interface FollowUpMCQ {
+  question: string;
+  options: string[];
+  correctAnswer: number;
+}
+
+export interface PlainQuestionFollowUps {
+  easy?: FollowUpMCQ;
+  medium?: FollowUpMCQ;
+  hard?: FollowUpMCQ;
+}
+
 export interface PlainQuestion {
   id: string;
   topic: Topic;
@@ -25,6 +37,7 @@ export interface PlainQuestion {
   type: 'plain';
   question: string;
   source?: string;
+  followUps?: PlainQuestionFollowUps;
 }
 
 export type Question = MCQQuestion | PlainQuestion;
@@ -36,10 +49,20 @@ export interface MCQAnswer {
   isCorrect: boolean;
 }
 
+export type FollowUpDifficulty = 'easy' | 'medium' | 'hard';
+
+export interface FollowUpAttempt {
+  difficulty: FollowUpDifficulty;
+  selectedOption: number;
+  isCorrect: boolean;
+}
+
 export interface PlainAnswer {
   questionId: string;
   type: 'plain';
-  rating: number;  // 1-10
+  rating: number;  // 0-10
+  followUpAttempts?: FollowUpAttempt[];  // Track all follow-up attempts
+  finalScore?: number;  // Final calculated score after follow-ups
 }
 
 export type Answer = MCQAnswer | PlainAnswer;

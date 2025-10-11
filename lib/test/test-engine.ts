@@ -151,17 +151,32 @@ export function calculateResults(state: TestState): TestResult {
     : 0;
 
   // Calculate plain questions average rating
+  // Use finalScore if available (for follow-up MCQs), otherwise use rating
   const plainAverageRating = plainAnswers.length > 0
-    ? plainAnswers.reduce((sum, a) => sum + a.rating, 0) / plainAnswers.length
+    ? plainAnswers.reduce((sum, a) => sum + (a.finalScore ?? a.rating), 0) / plainAnswers.length
     : 0;
 
-  // Calculate overall score
-  // MCQ contributes 60%, plain questions contribute 40%
-  const overallScore = mcqQuestions.length > 0 && plainQuestions.length > 0
-    ? (mcqScore * 0.6) + ((plainAverageRating / 10) * 100 * 0.4)
-    : mcqQuestions.length > 0
-      ? mcqScore
-      : (plainAverageRating / 10) * 100;
+  // Calculate overall score based on actual question counts
+  const overallScore = (() => {
+    if (mcqQuestions.length === 0 && plainQuestions.length === 0) return 0;
+
+    if (mcqQuestions.length > 0 && plainQuestions.length === 0) {
+      // Only MCQ questions
+      return mcqScore;
+    }
+
+    if (plainQuestions.length > 0 && mcqQuestions.length === 0) {
+      // Only plain questions
+      return (plainAverageRating / 10) * 100;
+    }
+
+    // Both types exist - weight by actual counts
+    const totalQuestions = mcqQuestions.length + plainQuestions.length;
+    const mcqWeight = mcqQuestions.length / totalQuestions;
+    const plainWeight = plainQuestions.length / totalQuestions;
+
+    return (mcqScore * mcqWeight) + ((plainAverageRating / 10) * 100 * plainWeight);
+  })();
 
   // Calculate time taken
   const timeTaken = Math.floor((Date.now() - startTime) / 1000);
