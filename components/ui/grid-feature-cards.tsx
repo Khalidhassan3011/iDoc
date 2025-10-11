@@ -16,7 +16,12 @@ export function FeatureCard({
   className,
   ...props
 }: FeatureCardPorps) {
-  const p = genRandomPattern();
+  // Use a stable pattern based on feature title to avoid hydration issues
+  const p = React.useMemo(() => {
+    // Create a seed from the feature title for consistent patterns
+    const seed = feature.title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return genStablePattern(seed);
+  }, [feature.title]);
 
   return (
     <div className={cn("relative overflow-hidden p-6", className)} {...props}>
@@ -94,10 +99,20 @@ function GridPattern({
   );
 }
 
-function genRandomPattern(length?: number): number[][] {
+// Seeded random number generator for consistent patterns
+function seededRandom(seed: number) {
+  let value = seed;
+  return () => {
+    value = (value * 9301 + 49297) % 233280;
+    return value / 233280;
+  };
+}
+
+function genStablePattern(seed: number, length?: number): number[][] {
   length = length ?? 5;
+  const random = seededRandom(seed);
   return Array.from({ length }, () => [
-    Math.floor(Math.random() * 4) + 7, // random x between 7 and 10
-    Math.floor(Math.random() * 6) + 1, // random y between 1 and 6
+    Math.floor(random() * 4) + 7, // random x between 7 and 10
+    Math.floor(random() * 6) + 1, // random y between 1 and 6
   ]);
 }

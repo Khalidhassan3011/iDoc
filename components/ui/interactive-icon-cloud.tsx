@@ -10,6 +10,9 @@ import {
   SimpleIcon,
 } from "react-icon-cloud"
 
+// Prevent SSR hydration issues
+const isClient = typeof window !== 'undefined'
+
 export const cloudProps: Omit<ICloud, "children"> = {
   containerProps: {
     style: {
@@ -65,9 +68,11 @@ type IconData = Awaited<ReturnType<typeof fetchSimpleIcons>>
 
 export function IconCloud({ iconSlugs }: DynamicCloudProps) {
   const [data, setData] = useState<IconData | null>(null)
+  const [mounted, setMounted] = useState(false)
   const { theme } = useTheme()
 
   useEffect(() => {
+    setMounted(true)
     fetchSimpleIcons({ slugs: iconSlugs }).then(setData)
   }, [iconSlugs])
 
@@ -78,6 +83,11 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
       renderCustomIcon(icon, theme || "light"),
     )
   }, [data, theme])
+
+  // Only render on client to avoid hydration mismatch
+  if (!mounted) {
+    return <div className="w-full h-full min-h-[400px]" />
+  }
 
   return (
     // @ts-ignore
