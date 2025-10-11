@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight, BookOpen, Zap, Target, Code2, Sparkles, CheckCircle2 } from 'lucide-react';
-import { HeroSection } from '@/components/ui/hero-section';
+import { HeroSection } from '@/components/ui/hero-section-1';
 
 export default function HomePage() {
   return (
