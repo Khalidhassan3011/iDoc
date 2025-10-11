@@ -1,6 +1,68 @@
+'use client';
 import Link from 'next/link';
 import { ArrowRight, BookOpen, Zap, Target, Code2, Sparkles, CheckCircle2 } from 'lucide-react';
 import { HeroSection } from '@/components/ui/hero-section-1';
+import { FeatureCard } from '@/components/ui/grid-feature-cards';
+import { motion, useReducedMotion } from 'framer-motion';
+
+const features = [
+  {
+    title: 'Comprehensive Documentation',
+    icon: BookOpen,
+    description: 'Organized interview questions categorized by difficulty - basic, intermediate, and advanced levels',
+  },
+  {
+    title: 'AI-Powered Mock Tests',
+    icon: Target,
+    description: 'Take timed mock tests with MCQ and self-assessment questions. Get instant feedback and detailed results',
+  },
+  {
+    title: 'Smart Verification',
+    icon: Zap,
+    description: 'Self-rate your knowledge and get follow-up questions to verify your understanding with adaptive difficulty',
+  },
+  {
+    title: 'Real Interview Questions',
+    icon: CheckCircle2,
+    description: 'Questions sourced from GitHub, InterviewBit, LeetCode, and real interview experiences',
+  },
+  {
+    title: 'Dynamic Question Pool',
+    icon: Sparkles,
+    description: '1000+ AI-generated questions with randomized selection for fresh practice every time',
+  },
+  {
+    title: 'Multi-Topic Coverage',
+    icon: Code2,
+    description: 'From basics to advanced topics including widgets, state management, networking, and platform channels',
+  },
+];
+
+type ViewAnimationProps = {
+  delay?: number;
+  className?: React.ComponentProps<typeof motion.div>['className'];
+  children: React.ReactNode;
+};
+
+function AnimatedContainer({ className, delay = 0.1, children }: ViewAnimationProps) {
+  const shouldReduceMotion = useReducedMotion();
+
+  if (shouldReduceMotion) {
+    return <div className={className}>{children}</div>;
+  }
+
+  return (
+    <motion.div
+      initial={{ filter: 'blur(4px)', translateY: -8, opacity: 0 }}
+      whileInView={{ filter: 'blur(0px)', translateY: 0, opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay, duration: 0.8 }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export default function HomePage() {
   return (
@@ -81,87 +143,28 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center mb-16">
+      <section className="py-16 md:py-32">
+        <div className="mx-auto w-full max-w-5xl space-y-8 px-4">
+          <AnimatedContainer className="mx-auto max-w-3xl text-center">
             <h2 className="text-base font-semibold leading-7 text-primary">
               Everything You Need
             </h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+            <p className="mt-2 text-3xl font-bold tracking-wide text-balance md:text-4xl lg:text-5xl xl:font-extrabold">
               Features Built for Success
             </p>
-            <p className="mt-4 text-lg text-muted-foreground">
+            <p className="text-muted-foreground mt-4 text-sm tracking-wide text-balance md:text-base">
               Powerful tools and resources to help you master technical interviews
             </p>
-          </div>
+          </AnimatedContainer>
 
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {/* Feature 1 */}
-            <div className="relative rounded-2xl border bg-card p-8">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500">
-                <BookOpen className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="mb-2 text-xl font-bold">Comprehensive Documentation</h3>
-              <p className="text-muted-foreground">
-                Organized interview questions categorized by difficulty - basic, intermediate, and advanced levels
-              </p>
-            </div>
-
-            {/* Feature 2 */}
-            <div className="relative rounded-2xl border bg-card p-8">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-pink-500">
-                <Target className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="mb-2 text-xl font-bold">AI-Powered Mock Tests</h3>
-              <p className="text-muted-foreground">
-                Take timed mock tests with MCQ and self-assessment questions. Get instant feedback and detailed results
-              </p>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="relative rounded-2xl border bg-card p-8">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-red-500">
-                <Zap className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="mb-2 text-xl font-bold">Smart Verification</h3>
-              <p className="text-muted-foreground">
-                Self-rate your knowledge and get follow-up questions to verify your understanding with adaptive difficulty
-              </p>
-            </div>
-
-            {/* Feature 4 */}
-            <div className="relative rounded-2xl border bg-card p-8">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-green-500 to-emerald-500">
-                <CheckCircle2 className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="mb-2 text-xl font-bold">Real Interview Questions</h3>
-              <p className="text-muted-foreground">
-                Questions sourced from GitHub, InterviewBit, LeetCode, and real interview experiences
-              </p>
-            </div>
-
-            {/* Feature 5 */}
-            <div className="relative rounded-2xl border bg-card p-8">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-yellow-500 to-orange-500">
-                <Sparkles className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="mb-2 text-xl font-bold">Dynamic Question Pool</h3>
-              <p className="text-muted-foreground">
-                1000+ AI-generated questions with randomized selection for fresh practice every time
-              </p>
-            </div>
-
-            {/* Feature 6 */}
-            <div className="relative rounded-2xl border bg-card p-8">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500">
-                <Code2 className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="mb-2 text-xl font-bold">Multi-Topic Coverage</h3>
-              <p className="text-muted-foreground">
-                From basics to advanced topics including widgets, state management, networking, and platform channels
-              </p>
-            </div>
-          </div>
+          <AnimatedContainer
+            delay={0.4}
+            className="grid grid-cols-1 divide-x divide-y divide-dashed border border-dashed sm:grid-cols-2 md:grid-cols-3"
+          >
+            {features.map((feature, i) => (
+              <FeatureCard key={i} feature={feature} />
+            ))}
+          </AnimatedContainer>
         </div>
       </section>
 
