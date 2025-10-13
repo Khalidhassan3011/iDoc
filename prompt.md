@@ -1,0 +1,1 @@
+make different file for Swap Variables Without Third Variable, Loop Without For Statement. remove others problem

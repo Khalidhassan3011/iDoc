@@ -1,0 +1,201 @@
+---
+title: Swap Variables Without Third Variable
+description: Different techniques to swap two variables without using a third variable
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Swap Variables Without Third Variable" bn="তৃতীয় ভেরিয়েবল ছাড়া ভেরিয়েবল সোয়াপ করা" />
+
+<TranslatedText
+  en="Learn different techniques to swap two variables without using a temporary third variable. These methods are commonly asked in programming interviews."
+  bn="একটি অস্থায়ী তৃতীয় ভেরিয়েবল ব্যবহার না করে দুটি ভেরিয়েবল সোয়াপ করার বিভিন্ন কৌশল শিখুন। এই পদ্ধতিগুলি সাধারণত প্রোগ্রামিং ইন্টারভিউতে জিজ্ঞাসা করা হয়।"
+/>
+
+## <TranslatedText en="Using Arithmetic Operations" bn="গাণিতিক অপারেশন ব্যবহার করে" />
+
+<TranslatedText
+  en={<p>This method uses addition and subtraction to swap values. It works by storing the sum of both variables in one variable, then deriving the original values through subtraction.</p>}
+  bn={<p>এই পদ্ধতি মান সোয়াপ করতে যোগ এবং বিয়োগ ব্যবহার করে। এটি একটি ভেরিয়েবলে উভয় ভেরিয়েবলের সমষ্টি সংরক্ষণ করে কাজ করে, তারপর বিয়োগের মাধ্যমে মূল মানগুলি প্রাপ্ত করে।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a = 5;
+    int b = 10;
+
+    a = a + b;  // a = 15
+    b = a - b;  // b = 5
+    a = a - b;  // a = 10
+
+    cout << a << " " << b << endl; // 10 5
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+a = 5
+b = 10
+
+a = a + b  # a = 15
+b = a - b  # b = 5
+a = a - b  # a = 10
+
+print(a, b)  # 10 5
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+let a = 5;
+let b = 10;
+
+a = a + b;  // a = 15
+b = a - b;  // b = 5
+a = a - b;  // a = 10
+
+console.log(a, b); // 10, 5
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Using XOR Operator" bn="XOR অপারেটর ব্যবহার করে" />
+
+<TranslatedText
+  en={<p>The XOR bitwise operator has a unique property: <code>a ^ a = 0</code> and <code>a ^ 0 = a</code>. This property allows us to swap values without any overflow issues that arithmetic operations might have.</p>}
+  bn={<p>XOR বিটওয়াইজ অপারেটরের একটি অনন্য বৈশিষ্ট্য আছে: <code>a ^ a = 0</code> এবং <code>a ^ 0 = a</code>। এই বৈশিষ্ট্য আমাদের গাণিতিক অপারেশনের ওভারফ্লো সমস্যা ছাড়াই মান সোয়াপ করতে দেয়।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a = 5;
+    int b = 10;
+
+    a = a ^ b;
+    b = a ^ b;
+    a = a ^ b;
+
+    cout << a << " " << b << endl; // 10 5
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+a = 5
+b = 10
+
+a = a ^ b
+b = a ^ b
+a = a ^ b
+
+print(a, b)  # 10 5
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+let a = 5;
+let b = 10;
+
+a = a ^ b;
+b = a ^ b;
+a = a ^ b;
+
+console.log(a, b); // 10, 5
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Using Language-Specific Features" bn="ভাষা-নির্দিষ্ট বৈশিষ্ট্য ব্যবহার করে" />
+
+<TranslatedText
+  en={<p>Modern programming languages offer built-in features for swapping values elegantly. While these technically may use temporary variables internally, they provide clean, readable syntax.</p>}
+  bn={<p>আধুনিক প্রোগ্রামিং ভাষাগুলি মান সুন্দরভাবে সোয়াপ করার জন্য বিল্ট-ইন বৈশিষ্ট্য প্রদান করে। যদিও এগুলি প্রযুক্তিগতভাবে অভ্যন্তরীণভাবে অস্থায়ী ভেরিয়েবল ব্যবহার করতে পারে, তারা পরিষ্কার, পাঠযোগ্য সিনট্যাক্স প্রদান করে।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <utility>
+using namespace std;
+
+int main() {
+    int a = 5;
+    int b = 10;
+
+    // Using std::swap
+    swap(a, b);
+
+    cout << a << " " << b << endl; // 10 5
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+a = 5
+b = 10
+
+# Using tuple unpacking
+a, b = b, a
+
+print(a, b)  # 10 5
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+let a = 5;
+let b = 10;
+
+// Using destructuring
+[a, b] = [b, a];
+
+console.log(a, b); // 10, 5
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Comparison and Best Practices" bn="তুলনা এবং সেরা অনুশীলন" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Note:</strong> Each method has its trade-offs:</p>
+        <ul>
+          <li><strong>Arithmetic method</strong>: Simple but can cause overflow with large numbers</li>
+          <li><strong>XOR method</strong>: Works only with integers, no overflow issues</li>
+          <li><strong>Language features</strong>: Most readable and maintainable for production code</li>
+        </ul>
+      </blockquote>
+      <p><strong>Interview Tip:</strong> When asked this question in an interview, start with the arithmetic or XOR method to demonstrate your problem-solving skills, then mention the language-specific approach as the production-ready solution.</p>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>নোট:</strong> প্রতিটি পদ্ধতির নিজস্ব ট্রেড-অফ রয়েছে:</p>
+        <ul>
+          <li><strong>গাণিতিক পদ্ধতি</strong>: সহজ কিন্তু বড় সংখ্যার সাথে ওভারফ্লো হতে পারে</li>
+          <li><strong>XOR পদ্ধতি</strong>: শুধুমাত্র পূর্ণসংখ্যার সাথে কাজ করে, কোন ওভারফ্লো সমস্যা নেই</li>
+          <li><strong>ভাষার বৈশিষ্ট্য</strong>: প্রোডাকশন কোডের জন্য সবচেয়ে পাঠযোগ্য এবং রক্ষণাবেক্ষণযোগ্য</li>
+        </ul>
+      </blockquote>
+      <p><strong>ইন্টারভিউ টিপ:</strong> ইন্টারভিউতে এই প্রশ্ন জিজ্ঞাসা করা হলে, আপনার সমস্যা সমাধানের দক্ষতা প্রদর্শনের জন্য গাণিতিক বা XOR পদ্ধতি দিয়ে শুরু করুন, তারপর প্রোডাকশন-রেডি সমাধান হিসাবে ভাষা-নির্দিষ্ট পদ্ধতি উল্লেখ করুন।</p>
+    </>
+  }
+/>
