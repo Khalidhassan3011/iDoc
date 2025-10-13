@@ -1,1 +1,1 @@
-You do a good job. Now I need the code snippet in two languages C++ and Python. Use tab to switch the language in code block.
+you do a good job. in my current situation suppose i select python on a code section. another code The section will still default. For example, one I select Python, one I select JavaScript, they are still the same thing. But I want if I select any one of these, suppose Python all code blocks select the Python.
