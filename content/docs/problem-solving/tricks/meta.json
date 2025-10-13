@@ -2,6 +2,10 @@
   "title": "Tricks",
   "pages": [
     "swap-variables",
-    "loop-without-for"
+    "loop-without-for",
+    "bitwise-tricks",
+    "arithmetic-tricks",
+    "memory-pointer-tricks",
+    "recursion-tricks"
   ]
 }

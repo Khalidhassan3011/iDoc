@@ -1,0 +1,377 @@
+---
+title: Bitwise Operations Tricks
+description: Advanced bitwise manipulation techniques for problem solving
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Bitwise Operations Tricks" bn="বিটওয়াইজ অপারেশন ট্রিকস" />
+
+<TranslatedText
+  en="Master advanced bitwise manipulation techniques commonly used in competitive programming and technical interviews."
+  bn="প্রতিযোগিতামূলক প্রোগ্রামিং এবং টেকনিক্যাল ইন্টারভিউতে সাধারণত ব্যবহৃত উন্নত বিটওয়াইজ ম্যানিপুলেশন কৌশল আয়ত্ত করুন।"
+/>
+
+## <TranslatedText en="Multiply by 9 Using Bit Shift" bn="বিট শিফট ব্যবহার করে ৯ দ্বারা গুণ" />
+
+<TranslatedText
+  en={<p>Fast multiplication by 9 using bit shift: <code>n * 9 = (n &lt;&lt; 3) + n</code></p>}
+  bn={<p>বিট শিফট ব্যবহার করে ৯ দ্বারা দ্রুত গুণ: <code>n * 9 = (n &lt;&lt; 3) + n</code></p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int multiplyBy9(int n) {
+    return (n << 3) + n;  // n * 8 + n = n * 9
+}
+
+int main() {
+    int n = 5;
+    cout << n << " * 9 = " << multiplyBy9(n) << endl;  // 45
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def multiply_by_9(n):
+    return (n << 3) + n  # n * 8 + n = n * 9
+
+n = 5
+print(f"{n} * 9 = {multiply_by_9(n)}")  # 45
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function multiplyBy9(n) {
+  return (n << 3) + n;  // n * 8 + n = n * 9
+}
+
+const n = 5;
+console.log(`${n} * 9 = ${multiplyBy9(n)}`);  // 45
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Divide by 4 Using Right Shift" bn="রাইট শিফট ব্যবহার করে ৪ দ্বারা ভাগ" />
+
+<TranslatedText
+  en={<p>Efficient division by 4 using right shift: <code>x / 4 = x &gt;&gt; 2</code></p>}
+  bn={<p>রাইট শিফট ব্যবহার করে ৪ দ্বারা দক্ষ ভাগ: <code>x / 4 = x &gt;&gt; 2</code></p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int divideBy4(int x) {
+    return x >> 2;  // Right shift by 2 = divide by 4
+}
+
+int main() {
+    int x = 20;
+    cout << x << " / 4 = " << divideBy4(x) << endl;  // 5
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def divide_by_4(x):
+    return x >> 2  # Right shift by 2 = divide by 4
+
+x = 20
+print(f"{x} / 4 = {divide_by_4(x)}")  # 5
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function divideBy4(x) {
+  return x >> 2;  // Right shift by 2 = divide by 4
+}
+
+const x = 20;
+console.log(`${x} / 4 = ${divideBy4(x)}`);  // 5
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Count Set Bits (1s)" bn="সেট বিট গণনা করা (১-এর সংখ্যা)" />
+
+<TranslatedText
+  en={<p>Count the number of 1s in binary representation efficiently using Brian Kernighan's algorithm.</p>}
+  bn={<p>ব্রায়ান কার্নিগানের অ্যালগরিদম ব্যবহার করে বাইনারি প্রতিনিধিত্বে ১-এর সংখ্যা দক্ষতার সাথে গণনা করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+// Iterative approach
+int countSetBits(long n) {
+    int count = 0;
+    while (n) {
+        count++;
+        n &= (n - 1);  // Clear rightmost set bit
+    }
+    return count;
+}
+
+// Recursive approach
+int countSetBitsRecursive(long n) {
+    return (n ? 1 + countSetBitsRecursive(n & (n - 1)) : 0);
+}
+
+int main() {
+    long n = 30;  // Binary: 11110
+    cout << "Set bits in " << n << ": " << countSetBits(n) << endl;  // 4
+    cout << "Set bits (recursive): " << countSetBitsRecursive(n) << endl;  // 4
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+# Iterative approach
+def count_set_bits(n):
+    count = 0
+    while n:
+        count += 1
+        n &= (n - 1)  # Clear rightmost set bit
+    return count
+
+# Recursive approach
+def count_set_bits_recursive(n):
+    return (1 + count_set_bits_recursive(n & (n - 1))) if n else 0
+
+n = 30  # Binary: 11110
+print(f"Set bits in {n}: {count_set_bits(n)}")  # 4
+print(f"Set bits (recursive): {count_set_bits_recursive(n)}")  # 4
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+// Iterative approach
+function countSetBits(n) {
+  let count = 0;
+  while (n) {
+    count++;
+    n &= (n - 1);  // Clear rightmost set bit
+  }
+  return count;
+}
+
+// Recursive approach
+function countSetBitsRecursive(n) {
+  return n ? 1 + countSetBitsRecursive(n & (n - 1)) : 0;
+}
+
+const n = 30;  // Binary: 11110
+console.log(`Set bits in ${n}: ${countSetBits(n)}`);  // 4
+console.log(`Set bits (recursive): ${countSetBitsRecursive(n)}`);  // 4
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Check if Power of 2" bn="২ এর ঘাত কিনা পরীক্ষা করা" />
+
+<TranslatedText
+  en={<p>A number is a power of 2 if it has only one set bit: <code>n && ((n & (n-1)) == 0)</code></p>}
+  bn={<p>একটি সংখ্যা ২ এর ঘাত যদি এতে শুধুমাত্র একটি সেট বিট থাকে: <code>n && ((n & (n-1)) == 0)</code></p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+bool isPowerOf2(int n) {
+    return n && ((n & (n - 1)) == 0);
+}
+
+int main() {
+    cout << "32 is power of 2: " << isPowerOf2(32) << endl;  // 1 (true)
+    cout << "56 is power of 2: " << isPowerOf2(56) << endl;  // 0 (false)
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def is_power_of_2(n):
+    return n and ((n & (n - 1)) == 0)
+
+print(f"32 is power of 2: {is_power_of_2(32)}")  # True
+print(f"56 is power of 2: {is_power_of_2(56)}")  # False
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function isPowerOf2(n) {
+  return n && ((n & (n - 1)) === 0);
+}
+
+console.log(`32 is power of 2: ${isPowerOf2(32)}`);  // true
+console.log(`56 is power of 2: ${isPowerOf2(56)}`);  // false
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Swap Bytes of Integer" bn="ইন্টিজারের বাইট সোয়াপ করা" />
+
+<TranslatedText
+  en={<p>Swap first and second byte of an integer using bit shifting.</p>}
+  bn={<p>বিট শিফটিং ব্যবহার করে একটি ইন্টিজারের প্রথম এবং দ্বিতীয় বাইট সোয়াপ করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int swapBytes(int x) {
+    return (x << 8) | (x >> 8);
+}
+
+int main() {
+    int x = 0x1234;
+    int swapped = swapBytes(x);
+
+    cout << "Original: 0x" << hex << x << endl;          // 0x1234
+    cout << "Swapped:  0x" << hex << swapped << endl;    // 0x3412
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def swap_bytes(x):
+    # Mask to keep only 16 bits
+    return ((x << 8) | (x >> 8)) & 0xFFFF
+
+x = 0x1234
+swapped = swap_bytes(x)
+
+print(f"Original: 0x{x:04x}")        # 0x1234
+print(f"Swapped:  0x{swapped:04x}")  # 0x3412
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function swapBytes(x) {
+  return ((x << 8) | (x >> 8)) & 0xFFFF;
+}
+
+const x = 0x1234;
+const swapped = swapBytes(x);
+
+console.log(`Original: 0x${x.toString(16)}`);        // 0x1234
+console.log(`Swapped:  0x${swapped.toString(16)}`);  // 0x3412
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Modulo 8 Without Modulo Operator" bn="মডুলো অপারেটর ছাড়া ৮ দ্বারা মডুলো" />
+
+<TranslatedText
+  en={<p>Calculate <code>x % 8</code> using bitwise AND: <code>x & 7</code></p>}
+  bn={<p>বিটওয়াইজ AND ব্যবহার করে <code>x % 8</code> গণনা করুন: <code>x & 7</code></p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int modulo8(int x) {
+    return x & 7;  // Equivalent to x % 8
+}
+
+int main() {
+    int x = 21;
+    cout << x << " % 8 = " << modulo8(x) << endl;  // 5
+
+    // Verification
+    cout << "Using % operator: " << (x % 8) << endl;  // 5
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def modulo_8(x):
+    return x & 7  # Equivalent to x % 8
+
+x = 21
+print(f"{x} % 8 = {modulo_8(x)}")  # 5
+
+# Verification
+print(f"Using % operator: {x % 8}")  # 5
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function modulo8(x) {
+  return x & 7;  // Equivalent to x % 8
+}
+
+const x = 21;
+console.log(`${x} % 8 = ${modulo8(x)}`);  // 5
+
+// Verification
+console.log(`Using % operator: ${x % 8}`);  // 5
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Key Concepts" bn="মূল ধারণা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Bitwise Operations:</strong></p>
+        <ul>
+          <li><code>&lt;&lt;</code> Left shift: Multiply by 2^n</li>
+          <li><code>&gt;&gt;</code> Right shift: Divide by 2^n</li>
+          <li><code>&</code> AND: Used for masking and checking bits</li>
+          <li><code>|</code> OR: Used for setting bits</li>
+          <li><code>^</code> XOR: Used for toggling and swapping</li>
+          <li><code>~</code> NOT: Inverts all bits</li>
+        </ul>
+      </blockquote>
+      <p><strong>Performance Note:</strong> Bitwise operations are typically much faster than arithmetic operations as they operate directly on binary representations at the CPU level.</p>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>বিটওয়াইজ অপারেশন:</strong></p>
+        <ul>
+          <li><code>&lt;&lt;</code> লেফট শিফট: ২^n দ্বারা গুণ</li>
+          <li><code>&gt;&gt;</code> রাইট শিফট: ২^n দ্বারা ভাগ</li>
+          <li><code>&</code> AND: মাস্কিং এবং বিট চেক করতে ব্যবহৃত</li>
+          <li><code>|</code> OR: বিট সেট করতে ব্যবহৃত</li>
+          <li><code>^</code> XOR: টগলিং এবং সোয়াপিংয়ের জন্য ব্যবহৃত</li>
+          <li><code>~</code> NOT: সব বিট উল্টায়</li>
+        </ul>
+      </blockquote>
+      <p><strong>পারফরম্যান্স নোট:</strong> বিটওয়াইজ অপারেশনগুলি সাধারণত গাণিতিক অপারেশনের চেয়ে অনেক দ্রুত কারণ তারা CPU স্তরে সরাসরি বাইনারি প্রতিনিধিত্বের উপর কাজ করে।</p>
+    </>
+  }
+/>

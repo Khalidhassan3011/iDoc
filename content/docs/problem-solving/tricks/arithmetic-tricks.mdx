@@ -1,0 +1,324 @@
+---
+title: Arithmetic Tricks
+description: Creative arithmetic manipulation techniques without standard operators
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Arithmetic Tricks" bn="গাণিতিক ট্রিকস" />
+
+<TranslatedText
+  en="Learn creative ways to perform arithmetic operations without using standard operators."
+  bn="স্ট্যান্ডার্ড অপারেটর ব্যবহার না করে গাণিতিক অপারেশন সম্পাদনের সৃজনশীল উপায় শিখুন।"
+/>
+
+## <TranslatedText en="Addition Without Plus Operator" bn="প্লাস অপারেটর ছাড়া যোগ" />
+
+<TranslatedText
+  en={<p>Perform addition without using the + operator by using subtraction of negative.</p>}
+  bn={<p>নেগেটিভ বিয়োগ ব্যবহার করে + অপারেটর ছাড়া যোগ করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int addWithoutPlus(int a, int b) {
+    return a - (-b);  // a + b = a - (-b)
+}
+
+int main() {
+    int a = 10, b = 20;
+    cout << a << " + " << b << " = " << addWithoutPlus(a, b) << endl;  // 30
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def add_without_plus(a, b):
+    return a - (-b)  # a + b = a - (-b)
+
+a, b = 10, 20
+print(f"{a} + {b} = {add_without_plus(a, b)}")  # 30
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function addWithoutPlus(a, b) {
+  return a - (-b);  // a + b = a - (-b)
+}
+
+const a = 10, b = 20;
+console.log(`${a} + ${b} = ${addWithoutPlus(a, b)}`);  // 30
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Find Min and Max Without Conditional" bn="শর্ত ছাড়া মিন এবং ম্যাক্স খোঁজা" />
+
+<TranslatedText
+  en={<p>Find maximum and minimum using the formula: <code>max = (a+b+|a-b|)/2</code> and <code>min = (a+b-|a-b|)/2</code></p>}
+  bn={<p>সূত্র ব্যবহার করে সর্বোচ্চ এবং সর্বনিম্ন খুঁজুন: <code>max = (a+b+|a-b|)/2</code> এবং <code>min = (a+b-|a-b|)/2</code></p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int findMax(int a, int b) {
+    return ((a + b) + abs(a - b)) / 2;
+}
+
+int findMin(int a, int b) {
+    return ((a + b) - abs(a - b)) / 2;
+}
+
+int main() {
+    int a = 15, b = 10;
+    cout << "Max: " << findMax(a, b) << endl;  // 15
+    cout << "Min: " << findMin(a, b) << endl;  // 10
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def find_max(a, b):
+    return ((a + b) + abs(a - b)) // 2
+
+def find_min(a, b):
+    return ((a + b) - abs(a - b)) // 2
+
+a, b = 15, 10
+print(f"Max: {find_max(a, b)}")  # 15
+print(f"Min: {find_min(a, b)}")  # 10
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function findMax(a, b) {
+  return Math.floor(((a + b) + Math.abs(a - b)) / 2);
+}
+
+function findMin(a, b) {
+  return Math.floor(((a + b) - Math.abs(a - b)) / 2);
+}
+
+const a = 15, b = 10;
+console.log(`Max: ${findMax(a, b)}`);  // 15
+console.log(`Min: ${findMin(a, b)}`);  // 10
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Find Smallest Without Comparison Operators" bn="তুলনা অপারেটর ছাড়া সর্বনিম্ন খোঁজা" />
+
+<TranslatedText
+  en={<p>Find the smallest of three integers using bitwise operations to check sign bit.</p>}
+  bn={<p>সাইন বিট পরীক্ষা করতে বিটওয়াইজ অপারেশন ব্যবহার করে তিনটি পূর্ণসংখ্যার মধ্যে সর্বনিম্ন খুঁজুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int findSmallest(int a, int b, int c) {
+    // Check sign bit (32768 = 2^15 for 16-bit int)
+    if ((a - b) & 32768) {
+        if ((a - c) & 32768)
+            return a;
+        else
+            return c;
+    } else {
+        if ((b - c) & 32768)
+            return b;
+        else
+            return c;
+    }
+}
+
+int main() {
+    cout << "Smallest of 10, 25, 15: " << findSmallest(10, 25, 15) << endl;  // 10
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def find_smallest(a, b, c):
+    # Check sign bit
+    SIGN_BIT = 32768  # 2^15
+
+    if (a - b) & SIGN_BIT:
+        if (a - c) & SIGN_BIT:
+            return a
+        else:
+            return c
+    else:
+        if (b - c) & SIGN_BIT:
+            return b
+        else:
+            return c
+
+print(f"Smallest of 10, 25, 15: {find_smallest(10, 25, 15)}")  # 10
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function findSmallest(a, b, c) {
+  // Check sign bit
+  const SIGN_BIT = 32768;  // 2^15
+
+  if ((a - b) & SIGN_BIT) {
+    if ((a - c) & SIGN_BIT)
+      return a;
+    else
+      return c;
+  } else {
+    if ((b - c) & SIGN_BIT)
+      return b;
+    else
+      return c;
+  }
+}
+
+console.log(`Smallest of 10, 25, 15: ${findSmallest(10, 25, 15)}`);  // 10
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Print Numbers Without Conditional" bn="শর্ত ছাড়া সংখ্যা প্রিন্ট করা" />
+
+<TranslatedText
+  en={<p>Print numbers from 1 to 100 without using conditional operators by using while loop with arithmetic condition.</p>}
+  bn={<p>গাণিতিক শর্তের সাথে while লুপ ব্যবহার করে শর্তাধীন অপারেটর ছাড়া ১ থেকে ১০০ পর্যন্ত সংখ্যা প্রিন্ট করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int i = 0;
+    while (100 - i++) {
+        cout << i << " ";
+    }
+    cout << endl;
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+i = 0
+while 100 - i:
+    i += 1
+    print(i, end=" ")
+print()
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+let i = 0;
+const numbers = [];
+while (100 - i++) {
+  numbers.push(i);
+}
+console.log(numbers.join(" "));
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Print Hello World with Condition Trick" bn="শর্ত ট্রিক দিয়ে Hello World প্রিন্ট করা" />
+
+<TranslatedText
+  en={<p>Print "Hello world" using printf return value trick in the condition.</p>}
+  bn={<p>শর্তে printf রিটার্ন মান ট্রিক ব্যবহার করে "Hello world" প্রিন্ট করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    // printf returns the number of characters printed
+    if (!cout.operator<<("Hello ")) {
+        cout << "Hello ";
+    } else {
+        cout << "world!";
+    }
+    cout << endl;
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+import sys
+
+# print returns None, which is falsy
+if not sys.stdout.write("Hello "):
+    print("Hello ", end="")
+else:
+    print("world!")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+// console.log returns undefined (falsy)
+if (!console.log("Hello") && false) {
+  console.log("Hello");
+} else {
+  console.log("world!");
+}
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Key Concepts" bn="মূল ধারণা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Arithmetic Manipulation Techniques:</strong></p>
+        <ul>
+          <li><strong>Negation trick</strong>: a + b = a - (-b)</li>
+          <li><strong>Absolute value formulas</strong>: Use |a-b| to find min/max</li>
+          <li><strong>Sign bit testing</strong>: Use bit 15 (32768) to check if result is negative</li>
+          <li><strong>Return value tricks</strong>: Use function return values in conditionals</li>
+        </ul>
+      </blockquote>
+      <p><strong>Interview Tip:</strong> These techniques demonstrate deep understanding of number representation and operator behavior. Always explain the trade-offs compared to standard approaches.</p>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>গাণিতিক ম্যানিপুলেশন কৌশল:</strong></p>
+        <ul>
+          <li><strong>নেগেশন ট্রিক</strong>: a + b = a - (-b)</li>
+          <li><strong>পরম মান সূত্র</strong>: min/max খুঁজতে |a-b| ব্যবহার করুন</li>
+          <li><strong>সাইন বিট টেস্টিং</strong>: ফলাফল নেগেটিভ কিনা তা পরীক্ষা করতে বিট 15 (32768) ব্যবহার করুন</li>
+          <li><strong>রিটার্ন মান ট্রিক</strong>: শর্তে ফাংশন রিটার্ন মান ব্যবহার করুন</li>
+        </ul>
+      </blockquote>
+      <p><strong>ইন্টারভিউ টিপ:</strong> এই কৌশলগুলি সংখ্যা প্রতিনিধিত্ব এবং অপারেটর আচরণের গভীর বোঝাপড়া প্রদর্শন করে। সর্বদা স্ট্যান্ডার্ড পদ্ধতির তুলনায় ট্রেড-অফ ব্যাখ্যা করুন।</p>
+    </>
+  }
+/>

@@ -1,0 +1,317 @@
+---
+title: Memory and Pointer Tricks
+description: Advanced memory manipulation and pointer techniques
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Memory and Pointer Tricks" bn="মেমরি এবং পয়েন্টার ট্রিকস" />
+
+<TranslatedText
+  en="Master advanced memory manipulation and pointer techniques for low-level programming."
+  bn="নিম্ন-স্তরের প্রোগ্রামিংয়ের জন্য উন্নত মেমরি ম্যানিপুলেশন এবং পয়েন্টার কৌশল আয়ত্ত করুন।"
+/>
+
+## <TranslatedText en="sizeof Without sizeof Operator (Method 1)" bn="sizeof অপারেটর ছাড়া sizeof (পদ্ধতি ১)" />
+
+<TranslatedText
+  en={<p>Calculate size of a variable using pointer arithmetic.</p>}
+  bn={<p>পয়েন্টার গাণিতিক ব্যবহার করে একটি ভেরিয়েবলের আকার গণনা করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+#define SIZE_OF(x) ((char*)(&x+1) - (char*)&x)
+
+int main() {
+    short int x;
+    int y;
+    double z;
+
+    cout << "Size of short int: " << SIZE_OF(x) << " bytes" << endl;  // 2
+    cout << "Size of int: " << SIZE_OF(y) << " bytes" << endl;        // 4
+    cout << "Size of double: " << SIZE_OF(z) << " bytes" << endl;     // 8
+
+    return 0;
+}
+```
+
+**Explanation:** By taking the address of `x` and adding 1, we get the next address of that type. Converting both addresses to `char*` gives the difference in bytes, since char is always 1 byte.
+  </Tab>
+  <Tab value="Python">
+```python
+import sys
+
+# Python doesn't have low-level pointer arithmetic
+# We use sys.getsizeof instead
+x = 10  # int
+y = 10.5  # float
+z = "hello"  # str
+
+print(f"Size of int: {sys.getsizeof(x)} bytes")
+print(f"Size of float: {sys.getsizeof(y)} bytes")
+print(f"Size of str: {sys.getsizeof(z)} bytes")
+```
+
+**Note:** Python manages memory automatically, so direct pointer manipulation isn't available. Use `sys.getsizeof()` instead.
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="sizeof Without sizeof Operator (Method 2)" bn="sizeof অপারেটর ছাড়া sizeof (পদ্ধতি ২)" />
+
+<TranslatedText
+  en={<p>Calculate size of a type using NULL pointer casting.</p>}
+  bn={<p>NULL পয়েন্টার কাস্টিং ব্যবহার করে একটি টাইপের আকার গণনা করুন।</p>}
+/>
+
+<Tabs items={['C++']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+#define SIZE_OF_TYPE(T) ((size_t)((T*)0 + 1))
+
+int main() {
+    cout << "Size of char: " << SIZE_OF_TYPE(char) << " bytes" << endl;         // 1
+    cout << "Size of int: " << SIZE_OF_TYPE(int) << " bytes" << endl;           // 4
+    cout << "Size of long: " << SIZE_OF_TYPE(long) << " bytes" << endl;         // 8
+    cout << "Size of float: " << SIZE_OF_TYPE(float) << " bytes" << endl;       // 4
+    cout << "Size of double: " << SIZE_OF_TYPE(double) << " bytes" << endl;     // 8
+
+    return 0;
+}
+```
+
+**Explanation:** We cast 0 to a pointer of type T, then add 1. This gives us the address of the next element, which equals the size of T in bytes.
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Check Endianness" bn="এন্ডিয়াননেস পরীক্ষা করা" />
+
+<TranslatedText
+  en={<p>Determine whether the system is Big-Endian or Little-Endian using pointer casting or union.</p>}
+  bn={<p>পয়েন্টার কাস্টিং বা union ব্যবহার করে সিস্টেম Big-Endian নাকি Little-Endian তা নির্ধারণ করুন।</p>}
+/>
+
+### <TranslatedText en="Method 1: Using Pointer Casting" bn="পদ্ধতি ১: পয়েন্টার কাস্টিং ব্যবহার করে" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+void checkEndianness() {
+    int x = 300;  // 0x0000012C in hex = 00000001 00101100 in binary
+
+    unsigned char* ptr = (unsigned char*)&x;
+
+    if (ptr[0] == 1 && ptr[1] == 44) {
+        cout << "BIG ENDIAN" << endl;
+    } else {
+        cout << "LITTLE ENDIAN" << endl;
+    }
+}
+
+int main() {
+    checkEndianness();
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+import sys
+
+def check_endianness():
+    # Python's sys module provides endianness info
+    print(f"System byte order: {sys.byteorder}")
+
+    # Manual check using bytes
+    x = 300
+    bytes_repr = x.to_bytes(4, byteorder='little')
+    print(f"Little endian bytes: {list(bytes_repr)}")  # [44, 1, 0, 0]
+
+    bytes_repr = x.to_bytes(4, byteorder='big')
+    print(f"Big endian bytes: {list(bytes_repr)}")     # [0, 0, 1, 44]
+
+check_endianness()
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function checkEndianness() {
+  const buffer = new ArrayBuffer(4);
+  const intView = new Uint32Array(buffer);
+  const byteView = new Uint8Array(buffer);
+
+  intView[0] = 300;  // 0x0000012C
+
+  if (byteView[0] === 44 && byteView[1] === 1) {
+    console.log("LITTLE ENDIAN");
+  } else if (byteView[0] === 1 && byteView[1] === 44) {
+    console.log("BIG ENDIAN");
+  }
+}
+
+checkEndianness();
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={<p><strong>Explanation:</strong> Big-Endian stores the most significant byte first [1, 44, 0, 0], while Little-Endian stores the least significant byte first [44, 1, 0, 0].</p>}
+  bn={<p><strong>ব্যাখ্যা:</strong> বিগ-এন্ডিয়ান সবচেয়ে গুরুত্বপূর্ণ বাইট প্রথম সংরক্ষণ করে [1, 44, 0, 0], যেখানে লিটল-এন্ডিয়ান সবচেয়ে কম গুরুত্বপূর্ণ বাইট প্রথম সংরক্ষণ করে [44, 1, 0, 0]।</p>}
+/>
+
+### <TranslatedText en="Method 2: Using Union" bn="পদ্ধতি ২: Union ব্যবহার করে" />
+
+<Tabs items={['C++']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+union EndianTest {
+    unsigned int x;
+    unsigned char ch[4];
+};
+
+void checkEndianness() {
+    EndianTest test;
+    test.x = 300;  // 0x0000012C
+
+    if (test.ch[0] == 1 && test.ch[1] == 44) {
+        cout << "BIG ENDIAN" << endl;
+    } else {
+        cout << "LITTLE ENDIAN" << endl;
+    }
+}
+
+int main() {
+    checkEndianness();
+    return 0;
+}
+```
+
+**Explanation:** In a union, all members share the same memory location. We store an int and read it as a char array to check byte order.
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Memory Layout Visualization" bn="মেমরি লেআউট ভিজুয়ালাইজেশন" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>For integer 300 (0x12C):</strong></p>
+      <table>
+        <thead>
+          <tr>
+            <th>Byte Position</th>
+            <th>Big-Endian</th>
+            <th>Little-Endian</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Byte 0</td>
+            <td>0 (0x00)</td>
+            <td>44 (0x2C)</td>
+          </tr>
+          <tr>
+            <td>Byte 1</td>
+            <td>0 (0x00)</td>
+            <td>1 (0x01)</td>
+          </tr>
+          <tr>
+            <td>Byte 2</td>
+            <td>1 (0x01)</td>
+            <td>0 (0x00)</td>
+          </tr>
+          <tr>
+            <td>Byte 3</td>
+            <td>44 (0x2C)</td>
+            <td>0 (0x00)</td>
+          </tr>
+        </tbody>
+      </table>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>৩০০ পূর্ণসংখ্যার জন্য (0x12C):</strong></p>
+      <table>
+        <thead>
+          <tr>
+            <th>বাইট অবস্থান</th>
+            <th>বিগ-এন্ডিয়ান</th>
+            <th>লিটল-এন্ডিয়ান</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>বাইট ০</td>
+            <td>০ (0x00)</td>
+            <td>৪৪ (0x2C)</td>
+          </tr>
+          <tr>
+            <td>বাইট ১</td>
+            <td>০ (0x00)</td>
+            <td>১ (0x01)</td>
+          </tr>
+          <tr>
+            <td>বাইট ২</td>
+            <td>১ (0x01)</td>
+            <td>০ (0x00)</td>
+          </tr>
+          <tr>
+            <td>বাইট ৩</td>
+            <td>৪৪ (0x2C)</td>
+            <td>০ (0x00)</td>
+          </tr>
+        </tbody>
+      </table>
+    </>
+  }
+/>
+
+## <TranslatedText en="Key Concepts" bn="মূল ধারণা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Important Memory Concepts:</strong></p>
+        <ul>
+          <li><strong>Pointer Arithmetic</strong>: Adding 1 to a typed pointer advances by sizeof(type) bytes</li>
+          <li><strong>Type Casting</strong>: Converting to char* gives byte-level access</li>
+          <li><strong>Endianness</strong>: Byte order in memory (Big = MSB first, Little = LSB first)</li>
+          <li><strong>Union</strong>: Multiple members share the same memory location</li>
+        </ul>
+      </blockquote>
+      <p><strong>Safety Note:</strong> These techniques are system-specific and should be used carefully. Modern C++ provides safer alternatives like `sizeof()` and `std::endian`.</p>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>গুরুত্বপূর্ণ মেমরি ধারণা:</strong></p>
+        <ul>
+          <li><strong>পয়েন্টার গাণিতিক</strong>: একটি টাইপড পয়েন্টারে ১ যোগ করলে sizeof(type) বাইট এগিয়ে যায়</li>
+          <li><strong>টাইপ কাস্টিং</strong>: char* এ রূপান্তর করলে বাইট-স্তরের অ্যাক্সেস পাওয়া যায়</li>
+          <li><strong>এন্ডিয়াননেস</strong>: মেমরিতে বাইট অর্ডার (Big = MSB প্রথম, Little = LSB প্রথম)</li>
+          <li><strong>Union</strong>: একাধিক সদস্য একই মেমরি লোকেশন শেয়ার করে</li>
+        </ul>
+      </blockquote>
+      <p><strong>নিরাপত্তা নোট:</strong> এই কৌশলগুলি সিস্টেম-নির্দিষ্ট এবং সাবধানে ব্যবহার করা উচিত। আধুনিক C++ `sizeof()` এবং `std::endian` এর মতো নিরাপদ বিকল্প প্রদান করে।</p>
+    </>
+  }
+/>

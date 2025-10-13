@@ -1,0 +1,392 @@
+---
+title: Recursion Tricks
+description: Creative uses of recursion to solve problems without loops
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Recursion Tricks" bn="রিকার্শন ট্রিকস" />
+
+<TranslatedText
+  en="Learn creative ways to use recursion for solving problems typically done with loops."
+  bn="সাধারণত লুপ দিয়ে করা সমস্যা সমাধানের জন্য রিকার্শন ব্যবহারের সৃজনশীল উপায় শিখুন।"
+/>
+
+## <TranslatedText en="Print N Times Without Loop" bn="লুপ ছাড়া N বার প্রিন্ট করা" />
+
+<TranslatedText
+  en={<p>Print a message N times using recursion instead of loops or goto statements.</p>}
+  bn={<p>লুপ বা goto স্টেটমেন্টের পরিবর্তে রিকার্শন ব্যবহার করে একটি বার্তা N বার প্রিন্ট করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+void printNTimes(int current, int max) {
+    if (current >= max) {
+        return;  // Base case
+    }
+    cout << "Hello " << (current + 1) << endl;
+    printNTimes(current + 1, max);  // Recursive call
+}
+
+int main() {
+    printNTimes(0, 5);  // Print "Hello" 5 times
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def print_n_times(current, max_count):
+    if current >= max_count:
+        return  # Base case
+    print(f"Hello {current + 1}")
+    print_n_times(current + 1, max_count)  # Recursive call
+
+print_n_times(0, 5)  # Print "Hello" 5 times
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function printNTimes(current, max) {
+  if (current >= max) {
+    return;  // Base case
+  }
+  console.log(`Hello ${current + 1}`);
+  printNTimes(current + 1, max);  // Recursive call
+}
+
+printNTimes(0, 5);  // Print "Hello" 5 times
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Print 100 Times Without Loop or Goto" bn="লুপ বা Goto ছাড়া ১০০ বার প্রিন্ট করা" />
+
+<TranslatedText
+  en={<p>A classic interview question: print "Hello" 100 times without using any loop or goto statement.</p>}
+  bn={<p>একটি ক্লাসিক ইন্টারভিউ প্রশ্ন: কোনো লুপ বা goto স্টেটমেন্ট ব্যবহার না করে "Hello" ১০০ বার প্রিন্ট করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+void show(int x, int y) {
+    if (x >= y) {
+        return;  // Base case: stop when x reaches y
+    }
+    cout << "Hello" << endl;
+    show(x + 1, y);  // Recursive call with incremented x
+}
+
+int main() {
+    show(1, 101);  // Print from 1 to 100
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def show(x, y):
+    if x >= y:
+        return  # Base case: stop when x reaches y
+    print("Hello")
+    show(x + 1, y)  # Recursive call with incremented x
+
+show(1, 101)  # Print from 1 to 100
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function show(x, y) {
+  if (x >= y) {
+    return;  // Base case: stop when x reaches y
+  }
+  console.log("Hello");
+  show(x + 1, y);  // Recursive call with incremented x
+}
+
+show(1, 101);  // Print from 1 to 100
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Factorial Using Recursion" bn="রিকার্শন ব্যবহার করে ফ্যাক্টোরিয়াল" />
+
+<TranslatedText
+  en={<p>Calculate factorial of a number using recursion - one of the most classic recursion examples.</p>}
+  bn={<p>রিকার্শন ব্যবহার করে একটি সংখ্যার ফ্যাক্টোরিয়াল গণনা করুন - সবচেয়ে ক্লাসিক রিকার্শন উদাহরণগুলির একটি।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+long long factorial(int n) {
+    if (n <= 1) {
+        return 1;  // Base case: 0! = 1, 1! = 1
+    }
+    return n * factorial(n - 1);  // Recursive case
+}
+
+int main() {
+    cout << "5! = " << factorial(5) << endl;    // 120
+    cout << "10! = " << factorial(10) << endl;  // 3628800
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def factorial(n):
+    if n <= 1:
+        return 1  # Base case: 0! = 1, 1! = 1
+    return n * factorial(n - 1)  # Recursive case
+
+print(f"5! = {factorial(5)}")    # 120
+print(f"10! = {factorial(10)}")  # 3628800
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function factorial(n) {
+  if (n <= 1) {
+    return 1;  // Base case: 0! = 1, 1! = 1
+  }
+  return n * factorial(n - 1);  // Recursive case
+}
+
+console.log(`5! = ${factorial(5)}`);    // 120
+console.log(`10! = ${factorial(10)}`);  // 3628800
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Sum of Array Using Recursion" bn="রিকার্শন ব্যবহার করে অ্যারের যোগফল" />
+
+<TranslatedText
+  en={<p>Calculate the sum of array elements recursively without using loops.</p>}
+  bn={<p>লুপ ব্যবহার না করে রিকার্সিভভাবে অ্যারে উপাদানগুলির যোগফল গণনা করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int sumArray(const vector<int>& arr, int index) {
+    if (index >= arr.size()) {
+        return 0;  // Base case: reached end of array
+    }
+    return arr[index] + sumArray(arr, index + 1);  // Add current + rest
+}
+
+int main() {
+    vector<int> arr = {1, 2, 3, 4, 5};
+    cout << "Sum: " << sumArray(arr, 0) << endl;  // 15
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def sum_array(arr, index=0):
+    if index >= len(arr):
+        return 0  # Base case: reached end of array
+    return arr[index] + sum_array(arr, index + 1)  # Add current + rest
+
+arr = [1, 2, 3, 4, 5]
+print(f"Sum: {sum_array(arr)}")  # 15
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function sumArray(arr, index = 0) {
+  if (index >= arr.length) {
+    return 0;  // Base case: reached end of array
+  }
+  return arr[index] + sumArray(arr, index + 1);  // Add current + rest
+}
+
+const arr = [1, 2, 3, 4, 5];
+console.log(`Sum: ${sumArray(arr)}`);  // 15
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Print Array in Reverse Using Recursion" bn="রিকার্শন ব্যবহার করে উল্টো করে অ্যারে প্রিন্ট করা" />
+
+<TranslatedText
+  en={<p>Print array elements in reverse order using recursion.</p>}
+  bn={<p>রিকার্শন ব্যবহার করে বিপরীত ক্রমে অ্যারে উপাদান প্রিন্ট করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void printReverse(const vector<int>& arr, int index) {
+    if (index < 0) {
+        return;  // Base case: reached before first element
+    }
+    cout << arr[index] << " ";
+    printReverse(arr, index - 1);  // Print previous elements
+}
+
+int main() {
+    vector<int> arr = {1, 2, 3, 4, 5};
+    cout << "Reversed: ";
+    printReverse(arr, arr.size() - 1);  // 5 4 3 2 1
+    cout << endl;
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def print_reverse(arr, index):
+    if index < 0:
+        return  # Base case: reached before first element
+    print(arr[index], end=" ")
+    print_reverse(arr, index - 1)  # Print previous elements
+
+arr = [1, 2, 3, 4, 5]
+print("Reversed: ", end="")
+print_reverse(arr, len(arr) - 1)  # 5 4 3 2 1
+print()
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function printReverse(arr, index) {
+  if (index < 0) {
+    return;  // Base case: reached before first element
+  }
+  process.stdout.write(arr[index] + " ");
+  printReverse(arr, index - 1);  // Print previous elements
+}
+
+const arr = [1, 2, 3, 4, 5];
+process.stdout.write("Reversed: ");
+printReverse(arr, arr.length - 1);  // 5 4 3 2 1
+console.log();
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="GCD Using Recursion (Euclidean Algorithm)" bn="রিকার্শন ব্যবহার করে GCD (ইউক্লিডিয়ান অ্যালগরিদম)" />
+
+<TranslatedText
+  en={<p>Find Greatest Common Divisor using the elegant recursive Euclidean algorithm.</p>}
+  bn={<p>মার্জিত রিকার্সিভ ইউক্লিডিয়ান অ্যালগরিদম ব্যবহার করে সর্ববৃহৎ সাধারণ গুণনীয়ক খুঁজুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int gcd(int a, int b) {
+    if (b == 0) {
+        return a;  // Base case: GCD(a, 0) = a
+    }
+    return gcd(b, a % b);  // Euclidean algorithm
+}
+
+int main() {
+    cout << "GCD(48, 18) = " << gcd(48, 18) << endl;    // 6
+    cout << "GCD(100, 35) = " << gcd(100, 35) << endl;  // 5
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def gcd(a, b):
+    if b == 0:
+        return a  # Base case: GCD(a, 0) = a
+    return gcd(b, a % b)  # Euclidean algorithm
+
+print(f"GCD(48, 18) = {gcd(48, 18)}")    # 6
+print(f"GCD(100, 35) = {gcd(100, 35)}")  # 5
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function gcd(a, b) {
+  if (b === 0) {
+    return a;  // Base case: GCD(a, 0) = a
+  }
+  return gcd(b, a % b);  // Euclidean algorithm
+}
+
+console.log(`GCD(48, 18) = ${gcd(48, 18)}`);    // 6
+console.log(`GCD(100, 35) = ${gcd(100, 35)}`);  // 5
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Key Concepts" bn="মূল ধারণা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Recursion Fundamentals:</strong></p>
+        <ul>
+          <li><strong>Base Case</strong>: The condition that stops recursion (prevents infinite loop)</li>
+          <li><strong>Recursive Case</strong>: The function calling itself with modified parameters</li>
+          <li><strong>Stack Usage</strong>: Each recursive call uses stack memory</li>
+          <li><strong>Tail Recursion</strong>: When recursive call is the last operation (can be optimized)</li>
+        </ul>
+      </blockquote>
+      <p><strong>When to Use Recursion:</strong></p>
+      <ul>
+        <li>Problems with recursive structure (trees, graphs)</li>
+        <li>Divide and conquer algorithms</li>
+        <li>Backtracking problems</li>
+        <li>Mathematical sequences (Fibonacci, factorial)</li>
+      </ul>
+      <p><strong>Warning:</strong> Recursion can cause stack overflow for deep recursion. Consider iterative solutions for large inputs or use tail call optimization where available.</p>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>রিকার্শনের মৌলিক বিষয়:</strong></p>
+        <ul>
+          <li><strong>বেস কেস</strong>: যে শর্ত রিকার্শন বন্ধ করে (অসীম লুপ প্রতিরোধ করে)</li>
+          <li><strong>রিকার্সিভ কেস</strong>: ফাংশন পরিবর্তিত প্যারামিটার সহ নিজেকে কল করে</li>
+          <li><strong>স্ট্যাক ব্যবহার</strong>: প্রতিটি রিকার্সিভ কল স্ট্যাক মেমরি ব্যবহার করে</li>
+          <li><strong>টেইল রিকার্শন</strong>: যখন রিকার্সিভ কল শেষ অপারেশন (অপ্টিমাইজ করা যেতে পারে)</li>
+        </ul>
+      </blockquote>
+      <p><strong>কখন রিকার্শন ব্যবহার করবেন:</strong></p>
+      <ul>
+        <li>রিকার্সিভ কাঠামো সহ সমস্যা (ট্রি, গ্রাফ)</li>
+        <li>বিভাজন এবং জয় অ্যালগরিদম</li>
+        <li>ব্যাকট্র্যাকিং সমস্যা</li>
+        <li>গাণিতিক ক্রম (ফিবোনাচি, ফ্যাক্টোরিয়াল)</li>
+      </ul>
+      <p><strong>সতর্কতা:</strong> গভীর রিকার্শনের জন্য রিকার্শন স্ট্যাক ওভারফ্লো ঘটাতে পারে। বড় ইনপুটের জন্য ইটারেটিভ সমাধান বিবেচনা করুন বা যেখানে উপলব্ধ টেইল কল অপ্টিমাইজেশন ব্যবহার করুন।</p>
+    </>
+  }
+/>
