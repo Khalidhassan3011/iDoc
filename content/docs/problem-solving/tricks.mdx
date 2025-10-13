@@ -4,14 +4,20 @@ description: Common programming tricks and techniques for problem solving
 ---
 
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
 
-# Programming Tricks
+<LanguageSwitcher />
 
-A collection of useful programming tricks and techniques that are commonly asked in interviews.
+# <TranslatedText en="Programming Tricks" bn="প্রোগ্রামিং ট্রিকস" />
 
-## Swap Variables Without Third Variable
+<TranslatedText
+  en="A collection of useful programming tricks and techniques that are commonly asked in interviews."
+  bn="ইন্টারভিউতে সাধারণত জিজ্ঞাসা করা দরকারী প্রোগ্রামিং ট্রিক্স এবং কৌশলগুলির একটি সংগ্রহ।"
+/>
 
-### Using Arithmetic Operations
+## <TranslatedText en="Swap Variables Without Third Variable" bn="তৃতীয় ভেরিয়েবল ছাড়া ভেরিয়েবল সোয়াপ করা" />
+
+### <TranslatedText en="Using Arithmetic Operations" bn="গাণিতিক অপারেশন ব্যবহার করে" />
 
 <Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
   <Tab value="C++">
@@ -58,7 +64,7 @@ console.log(a, b); // 10, 5
   </Tab>
 </Tabs>
 
-### Using XOR Operator
+### <TranslatedText en="Using XOR Operator" bn="XOR অপারেটর ব্যবহার করে" />
 
 <Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
   <Tab value="C++">
@@ -105,7 +111,7 @@ console.log(a, b); // 10, 5
   </Tab>
 </Tabs>
 
-### Using Language-Specific Features
+### <TranslatedText en="Using Language-Specific Features" bn="ভাষা-নির্দিষ্ট বৈশিষ্ট্য ব্যবহার করে" />
 
 <Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
   <Tab value="C++">
@@ -150,9 +156,9 @@ console.log(a, b); // 10, 5
   </Tab>
 </Tabs>
 
-## Loop Without For Statement
+## <TranslatedText en="Loop Without For Statement" bn="For স্টেটমেন্ট ছাড়া লুপ" />
 
-### Using While Loop
+### <TranslatedText en="Using While Loop" bn="While লুপ ব্যবহার করে" />
 
 <Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
   <Tab value="C++">
@@ -189,7 +195,7 @@ while (i < 5) {
   </Tab>
 </Tabs>
 
-### Using Recursion
+### <TranslatedText en="Using Recursion" bn="রিকার্শন ব্যবহার করে" />
 
 <Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
   <Tab value="C++">
@@ -233,7 +239,7 @@ loop(0, 5);
   </Tab>
 </Tabs>
 
-## Reverse a String Without Built-in Methods
+## <TranslatedText en="Reverse a String Without Built-in Methods" bn="বিল্ট-ইন মেথড ছাড়া স্ট্রিং রিভার্স করা" />
 
 <Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
   <Tab value="C++">
@@ -294,7 +300,12 @@ console.log(reverseString("hello")); // "olleh"
   </Tab>
 </Tabs>
 
-## Check Palindrome Without Reverse
+## <TranslatedText en="Check Palindrome Without Reverse" bn="রিভার্স ছাড়া প্যালিনড্রোম চেক করা" />
+
+<TranslatedText
+  en={<p>A palindrome is a word, phrase, or sequence that reads the same backward as forward. This method checks if a string is a palindrome by comparing characters from both ends moving toward the center.</p>}
+  bn={<p>প্যালিনড্রোম হল এমন একটি শব্দ, বাক্যাংশ বা ক্রম যা সামনে এবং পিছনে একইভাবে পড়া হয়। এই পদ্ধতিটি উভয় প্রান্ত থেকে কেন্দ্রের দিকে অক্ষর তুলনা করে একটি স্ট্রিং প্যালিনড্রোম কিনা তা পরীক্ষা করে।</p>}
+/>
 
 <Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
   <Tab value="C++">
@@ -366,7 +377,12 @@ console.log(isPalindrome("hello")); // false
   </Tab>
 </Tabs>
 
-## Find Maximum Without Comparison Operators
+## <TranslatedText en="Find Maximum Without Comparison Operators" bn="তুলনা অপারেটর ছাড়া সর্বোচ্চ খুঁজে বের করা" />
+
+<TranslatedText
+  en={<p>This technique finds the maximum of two numbers using bit manipulation instead of comparison operators.</p>}
+  bn={<p>এই কৌশলটি তুলনা অপারেটরের পরিবর্তে বিট ম্যানিপুলেশন ব্যবহার করে দুটি সংখ্যার সর্বোচ্চ খুঁজে বের করে।</p>}
+/>
 
 <Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
   <Tab value="C++">
@@ -428,7 +444,12 @@ console.log(findMaxBitwise(10, 20)); // 20
   </Tab>
 </Tabs>
 
-## Generate Fibonacci Without Loop
+## <TranslatedText en="Generate Fibonacci Without Loop" bn="লুপ ছাড়া ফিবোনাচি তৈরি করা" />
+
+<TranslatedText
+  en={<p>The Fibonacci sequence is generated using recursion. Memoization is used to optimize performance by storing previously calculated values.</p>}
+  bn={<p>ফিবোনাচি সিকোয়েন্স রিকার্শন ব্যবহার করে তৈরি করা হয়। পূর্বে গণনা করা মানগুলি সংরক্ষণ করে পারফরম্যান্স অপ্টিমাইজ করতে মেমোইজেশন ব্যবহার করা হয়।</p>}
+/>
 
 <Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
   <Tab value="C++">
@@ -509,7 +530,12 @@ console.log(fibonacciMemo(7)); // 13
   </Tab>
 </Tabs>
 
-## Check Prime Without Modulo
+## <TranslatedText en="Check Prime Without Modulo" bn="মডুলো ছাড়া প্রাইম চেক করা" />
+
+<TranslatedText
+  en={<p>This method checks if a number is prime without using the modulo operator, by repeatedly subtracting the divisor.</p>}
+  bn={<p>এই পদ্ধতিটি মডুলো অপারেটর ব্যবহার না করে, বারবার ভাজক বিয়োগ করে একটি সংখ্যা প্রাইম কিনা তা পরীক্ষা করে।</p>}
+/>
 
 <Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
   <Tab value="C++">
@@ -589,7 +615,12 @@ console.log(isPrime(18)); // false
   </Tab>
 </Tabs>
 
-## Remove Duplicates Without Set
+## <TranslatedText en="Remove Duplicates Without Set" bn="Set ছাড়া ডুপ্লিকেট সরানো" />
+
+<TranslatedText
+  en={<p>This algorithm removes duplicate elements from an array without using a Set data structure, by manually checking for duplicates.</p>}
+  bn={<p>এই অ্যালগরিদম Set ডেটা স্ট্রাকচার ব্যবহার না করে, ম্যানুয়ালি ডুপ্লিকেট চেক করে একটি অ্যারে থেকে ডুপ্লিকেট উপাদান সরিয়ে দেয়।</p>}
+/>
 
 <Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
   <Tab value="C++">
@@ -679,7 +710,12 @@ console.log(removeDuplicates([1, 2, 2, 3, 4, 4, 5])); // [1, 2, 3, 4, 5]
   </Tab>
 </Tabs>
 
-## Multiply Without Multiplication Operator
+## <TranslatedText en="Multiply Without Multiplication Operator" bn="গুণ অপারেটর ছাড়া গুণ করা" />
+
+<TranslatedText
+  en={<p>This method multiplies two numbers using only addition, by adding one number repeatedly.</p>}
+  bn={<p>এই পদ্ধতি শুধুমাত্র যোগ ব্যবহার করে দুটি সংখ্যা গুণ করে, একটি সংখ্যা বারবার যোগ করে।</p>}
+/>
 
 <Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
   <Tab value="C++">
@@ -756,7 +792,12 @@ console.log(multiply(4, -3)); // -12
   </Tab>
 </Tabs>
 
-## Power Without Math.pow
+## <TranslatedText en="Power Without Math.pow" bn="Math.pow ছাড়া পাওয়ার করা" />
+
+<TranslatedText
+  en={<p>Calculate the power of a number without using built-in power functions, by multiplying the base repeatedly.</p>}
+  bn={<p>বিল্ট-ইন পাওয়ার ফাংশন ব্যবহার না করে একটি সংখ্যার পাওয়ার গণনা করুন, বেস বারবার গুণ করে।</p>}
+/>
 
 <Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
   <Tab value="C++">
@@ -830,16 +871,47 @@ console.log(power(5, 2)); // 25
   </Tab>
 </Tabs>
 
-## Tips for Using These Tricks
+## <TranslatedText en="Tips for Using These Tricks" bn="এই ট্রিক্স ব্যবহারের টিপস" />
 
-> **Note:** While these tricks are interesting and useful for interviews, always prefer:
-> - Readable and maintainable code in production
-> - Built-in methods when they're available and efficient
-> - Clear variable names and comments
-> - Performance considerations for large datasets
-
-These techniques demonstrate understanding of:
-- Language fundamentals
-- Algorithm design
-- Problem-solving creativity
-- Computational thinking
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Note:</strong> While these tricks are interesting and useful for interviews, always prefer:</p>
+        <ul>
+          <li>Readable and maintainable code in production</li>
+          <li>Built-in methods when they're available and efficient</li>
+          <li>Clear variable names and comments</li>
+          <li>Performance considerations for large datasets</li>
+        </ul>
+      </blockquote>
+      <p>These techniques demonstrate understanding of:</p>
+      <ul>
+        <li>Language fundamentals</li>
+        <li>Algorithm design</li>
+        <li>Problem-solving creativity</li>
+        <li>Computational thinking</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>নোট:</strong> যদিও এই ট্রিক্সগুলি ইন্টারভিউয়ের জন্য আকর্ষণীয় এবং দরকারী, সর্বদা পছন্দ করুন:</p>
+        <ul>
+          <li>প্রোডাকশনে পাঠযোগ্য এবং রক্ষণাবেক্ষণযোগ্য কোড</li>
+          <li>বিল্ট-ইন মেথড যখন সেগুলি উপলব্ধ এবং দক্ষ</li>
+          <li>স্পষ্ট ভেরিয়েবল নাম এবং কমেন্ট</li>
+          <li>বড় ডেটাসেটের জন্য পারফরম্যান্স বিবেচনা</li>
+        </ul>
+      </blockquote>
+      <p>এই কৌশলগুলি নিম্নলিখিত বিষয়গুলির বোঝাপড়া প্রদর্শন করে:</p>
+      <ul>
+        <li>ভাষার মৌলিক বিষয়</li>
+        <li>অ্যালগরিদম ডিজাইন</li>
+        <li>সমস্যা সমাধানের সৃজনশীলতা</li>
+        <li>কম্পিউটেশনাল চিন্তাভাবনা</li>
+      </ul>
+    </>
+  }
+/>
