@@ -6,6 +6,11 @@
     "2-sort-array-without-sort",
     "3-second-largest-number",
     "4-generate-50-primes",
-    "5-reverse-string-without-loop"
+    "5-reverse-string-without-loop",
+    "6-matrix-addition",
+    "7-count-character-occurrences",
+    "8-number-to-words",
+    "9-matching-characters",
+    "10-count-vowels-consonants"
   ]
 }

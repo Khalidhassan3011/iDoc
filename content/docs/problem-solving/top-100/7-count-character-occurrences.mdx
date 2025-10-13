@@ -1,0 +1,648 @@
+---
+title: 7. Count Character Occurrences in String
+description: Learn different approaches to count how many times each character appears in a string
+---
+
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Count Character Occurrences in String" bn="স্ট্রিংয়ে অক্ষরের উপস্থিতি গণনা করুন" />
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p>Write a program to count how many times each character appears in a string.</p>
+      <p><strong>Input:</strong> <code>"Shirsh"</code></p>
+      <p><strong>Output:</strong></p>
+      <pre>
+S: 1 time
+h: 2 times
+i: 1 time
+r: 1 time
+s: 1 time
+      </pre>
+      <p><strong>Note:</strong> The count is case-sensitive (S and s are different characters).</p>
+    </>
+  }
+  bn={
+    <>
+      <p>একটি স্ট্রিংয়ে প্রতিটি অক্ষর কতবার উপস্থিত হয় তা গণনা করার জন্য একটি প্রোগ্রাম লিখুন।</p>
+      <p><strong>ইনপুট:</strong> <code>"Shirsh"</code></p>
+      <p><strong>আউটপুট:</strong></p>
+      <pre>
+S: ১ বার
+h: ২ বার
+i: ১ বার
+r: ১ বার
+s: ১ বার
+      </pre>
+      <p><strong>দ্রষ্টব্য:</strong> গণনা কেস-সংবেদনশীল (S এবং s বিভিন্ন অক্ষর)।</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 1: Using Hash Map / Dictionary" bn="পদ্ধতি ১: হ্যাশ ম্যাপ / ডিকশনারি ব্যবহার করে" />
+
+<TranslatedText
+  en="Use a hash map (object/dictionary) to store character counts. Most efficient approach."
+  bn="অক্ষর গণনা সংরক্ষণের জন্য একটি হ্যাশ ম্যাপ (অবজেক্ট/ডিকশনারি) ব্যবহার করুন। সবচেয়ে দক্ষ পদ্ধতি।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+unordered_map<char, int> countCharacters(const string& str) {
+    unordered_map<char, int> charCount;
+
+    for (char ch : str) {
+        charCount[ch]++;
+    }
+
+    return charCount;
+}
+
+void printCharacterCounts(const string& str) {
+    unordered_map<char, int> counts = countCharacters(str);
+
+    cout << "Character counts for \"" << str << "\":" << endl;
+
+    for (const auto& pair : counts) {
+        cout << pair.first << ": " << pair.second;
+        if (pair.second == 1) {
+            cout << " time" << endl;
+        } else {
+            cout << " times" << endl;
+        }
+    }
+}
+
+int main() {
+    string name = "Shirsh";
+
+    printCharacterCounts(name);
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def count_characters(s):
+    char_count = {}
+
+    for ch in s:
+        if ch in char_count:
+            char_count[ch] += 1
+        else:
+            char_count[ch] = 1
+
+    return char_count
+
+def print_character_counts(s):
+    counts = count_characters(s)
+
+    print(f'Character counts for "{s}":')
+
+    for char, count in counts.items():
+        if count == 1:
+            print(f"{char}: {count} time")
+        else:
+            print(f"{char}: {count} times")
+
+# Test
+name = "Shirsh"
+print_character_counts(name)
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function countCharacters(str) {
+    const charCount = {};
+
+    for (let ch of str) {
+        if (charCount[ch]) {
+            charCount[ch]++;
+        } else {
+            charCount[ch] = 1;
+        }
+    }
+
+    return charCount;
+}
+
+function printCharacterCounts(str) {
+    const counts = countCharacters(str);
+
+    console.log(`Character counts for "${str}":`);
+
+    for (let char in counts) {
+        const count = counts[char];
+        if (count === 1) {
+            console.log(`${char}: ${count} time`);
+        } else {
+            console.log(`${char}: ${count} times`);
+        }
+    }
+}
+
+// Test
+const name = "Shirsh";
+printCharacterCounts(name);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - Single pass through the string</p>
+      <p><strong>Space Complexity:</strong> O(k) - Where k is the number of unique characters</p>
+      <p><strong>Advantage:</strong> Efficient and straightforward, works for any character set</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - স্ট্রিংয়ের মাধ্যমে একক পাস</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(k) - যেখানে k হল অনন্য অক্ষরের সংখ্যা</p>
+      <p><strong>সুবিধা:</strong> দক্ষ এবং সরল, যেকোনো অক্ষর সেটের জন্য কাজ করে</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 2: Using Built-in Methods (Python Counter)" bn="পদ্ধতি ২: বিল্ট-ইন মেথড ব্যবহার করে (পাইথন কাউন্টার)" />
+
+<TranslatedText
+  en="Leverage language-specific libraries for character counting."
+  bn="অক্ষর গণনার জন্য ভাষা-নির্দিষ্ট লাইব্রেরি ব্যবহার করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <map>
+#include <string>
+using namespace std;
+
+// Using map (sorted keys) instead of unordered_map
+map<char, int> countCharactersSorted(const string& str) {
+    map<char, int> charCount;
+
+    for (char ch : str) {
+        charCount[ch]++;
+    }
+
+    return charCount;
+}
+
+void printCharacterCountsSorted(const string& str) {
+    map<char, int> counts = countCharactersSorted(str);
+
+    cout << "Character counts for \"" << str << "\" (sorted):" << endl;
+
+    for (const auto& pair : counts) {
+        cout << pair.first << ": " << pair.second;
+        cout << (pair.second == 1 ? " time" : " times") << endl;
+    }
+}
+
+int main() {
+    string name = "Shirsh";
+
+    printCharacterCountsSorted(name);
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+from collections import Counter
+
+def count_characters_counter(s):
+    return Counter(s)
+
+def print_character_counts_counter(s):
+    counts = count_characters_counter(s)
+
+    print(f'Character counts for "{s}":')
+
+    for char, count in counts.items():
+        if count == 1:
+            print(f"{char}: {count} time")
+        else:
+            print(f"{char}: {count} times")
+
+# Test
+name = "Shirsh"
+print_character_counts_counter(name)
+
+# Can also get most common characters
+print("\nMost common characters:")
+counts = Counter(name)
+print(counts.most_common(2))  # Top 2 most common
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+// Using Map for better performance
+function countCharactersMap(str) {
+    const charCount = new Map();
+
+    for (let ch of str) {
+        charCount.set(ch, (charCount.get(ch) || 0) + 1);
+    }
+
+    return charCount;
+}
+
+function printCharacterCountsMap(str) {
+    const counts = countCharactersMap(str);
+
+    console.log(`Character counts for "${str}":`);
+
+    counts.forEach((count, char) => {
+        if (count === 1) {
+            console.log(`${char}: ${count} time`);
+        } else {
+            console.log(`${char}: ${count} times`);
+        }
+    });
+}
+
+// Test
+const name = "Shirsh";
+printCharacterCountsMap(name);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - Same as manual approach</p>
+      <p><strong>Space Complexity:</strong> O(k) - Number of unique characters</p>
+      <p><strong>Advantage:</strong> Cleaner code, Python Counter provides additional utility methods</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - ম্যানুয়াল পদ্ধতির মতো</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(k) - অনন্য অক্ষরের সংখ্যা</p>
+      <p><strong>সুবিধা:</strong> পরিষ্কার কোড, পাইথন কাউন্টার অতিরিক্ত ইউটিলিটি মেথড প্রদান করে</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 3: Array-based Counting (ASCII Characters)" bn="পদ্ধতি ৩: অ্যারে-ভিত্তিক গণনা (ASCII অক্ষর)" />
+
+<TranslatedText
+  en="Use an array indexed by ASCII values for faster access (works only for ASCII characters)."
+  bn="দ্রুত অ্যাক্সেসের জন্য ASCII মান দ্বারা সূচিত একটি অ্যারে ব্যবহার করুন (শুধুমাত্র ASCII অক্ষরের জন্য কাজ করে)।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+void countCharactersArray(const string& str) {
+    // Array to store count for all ASCII characters (0-127)
+    int charCount[128] = {0};
+
+    // Count each character
+    for (char ch : str) {
+        charCount[(int)ch]++;
+    }
+
+    // Print only characters that appeared
+    cout << "Character counts for \"" << str << "\":" << endl;
+
+    for (int i = 0; i < 128; i++) {
+        if (charCount[i] > 0) {
+            cout << (char)i << ": " << charCount[i];
+            cout << (charCount[i] == 1 ? " time" : " times") << endl;
+        }
+    }
+}
+
+int main() {
+    string name = "Shirsh";
+
+    countCharactersArray(name);
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def count_characters_array(s):
+    # Array for all ASCII characters (0-127)
+    char_count = [0] * 128
+
+    # Count each character
+    for ch in s:
+        char_count[ord(ch)] += 1
+
+    # Print only characters that appeared
+    print(f'Character counts for "{s}":')
+
+    for i in range(128):
+        if char_count[i] > 0:
+            if char_count[i] == 1:
+                print(f"{chr(i)}: {char_count[i]} time")
+            else:
+                print(f"{chr(i)}: {char_count[i]} times")
+
+# Test
+name = "Shirsh"
+count_characters_array(name)
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function countCharactersArray(str) {
+    // Array for all ASCII characters (0-127)
+    const charCount = new Array(128).fill(0);
+
+    // Count each character
+    for (let ch of str) {
+        charCount[ch.charCodeAt(0)]++;
+    }
+
+    // Print only characters that appeared
+    console.log(`Character counts for "${str}":`);
+
+    for (let i = 0; i < 128; i++) {
+        if (charCount[i] > 0) {
+            const char = String.fromCharCode(i);
+            if (charCount[i] === 1) {
+                console.log(`${char}: ${charCount[i]} time`);
+            } else {
+                console.log(`${char}: ${charCount[i]} times`);
+            }
+        }
+    }
+}
+
+// Test
+const name = "Shirsh";
+countCharactersArray(name);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n + k) - n for counting, k for printing (k = 128 for ASCII)</p>
+      <p><strong>Space Complexity:</strong> O(1) - Fixed size array of 128 elements</p>
+      <p><strong>Advantage:</strong> Constant space for ASCII, faster access than hash map</p>
+      <p><strong>Limitation:</strong> Only works for ASCII characters, not suitable for Unicode</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n + k) - গণনার জন্য n, প্রিন্টিংয়ের জন্য k (ASCII এর জন্য k = 128)</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(1) - 128 উপাদানের স্থির আকারের অ্যারে</p>
+      <p><strong>সুবিধা:</strong> ASCII এর জন্য ধ্রুবক স্পেস, হ্যাশ ম্যাপের চেয়ে দ্রুত অ্যাক্সেস</p>
+      <p><strong>সীমাবদ্ধতা:</strong> শুধুমাত্র ASCII অক্ষরের জন্য কাজ করে, ইউনিকোডের জন্য উপযুক্ত নয়</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 4: Case-Insensitive Counting" bn="পদ্ধতি ৪: কেস-ইনসেনসিটিভ গণনা" />
+
+<TranslatedText
+  en="Count characters ignoring case (treat 'S' and 's' as the same character)."
+  bn="কেস উপেক্ষা করে অক্ষর গণনা করুন ('S' এবং 's' কে একই অক্ষর হিসাবে বিবেচনা করুন)।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <unordered_map>
+#include <string>
+#include <cctype>
+using namespace std;
+
+unordered_map<char, int> countCharactersCaseInsensitive(const string& str) {
+    unordered_map<char, int> charCount;
+
+    for (char ch : str) {
+        // Convert to lowercase
+        char lower = tolower(ch);
+        charCount[lower]++;
+    }
+
+    return charCount;
+}
+
+void printCharacterCountsCaseInsensitive(const string& str) {
+    unordered_map<char, int> counts = countCharactersCaseInsensitive(str);
+
+    cout << "Character counts for \"" << str << "\" (case-insensitive):" << endl;
+
+    for (const auto& pair : counts) {
+        cout << pair.first << ": " << pair.second;
+        cout << (pair.second == 1 ? " time" : " times") << endl;
+    }
+}
+
+int main() {
+    string name = "Shirsh";
+
+    // Case-sensitive
+    cout << "Case-sensitive count:" << endl;
+    unordered_map<char, int> counts1 = countCharacters(name);
+    for (const auto& p : counts1) {
+        cout << p.first << ": " << p.second << endl;
+    }
+
+    cout << "\nCase-insensitive count:" << endl;
+    printCharacterCountsCaseInsensitive(name);
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def count_characters_case_insensitive(s):
+    char_count = {}
+
+    for ch in s:
+        # Convert to lowercase
+        lower = ch.lower()
+        if lower in char_count:
+            char_count[lower] += 1
+        else:
+            char_count[lower] = 1
+
+    return char_count
+
+def print_character_counts_case_insensitive(s):
+    counts = count_characters_case_insensitive(s)
+
+    print(f'Character counts for "{s}" (case-insensitive):')
+
+    for char, count in counts.items():
+        if count == 1:
+            print(f"{char}: {count} time")
+        else:
+            print(f"{char}: {count} times")
+
+# Test
+name = "Shirsh"
+
+print("Case-sensitive count:")
+print_character_counts(name)
+
+print("\nCase-insensitive count:")
+print_character_counts_case_insensitive(name)
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function countCharactersCaseInsensitive(str) {
+    const charCount = {};
+
+    for (let ch of str) {
+        // Convert to lowercase
+        const lower = ch.toLowerCase();
+        if (charCount[lower]) {
+            charCount[lower]++;
+        } else {
+            charCount[lower] = 1;
+        }
+    }
+
+    return charCount;
+}
+
+function printCharacterCountsCaseInsensitive(str) {
+    const counts = countCharactersCaseInsensitive(str);
+
+    console.log(`Character counts for "${str}" (case-insensitive):`);
+
+    for (let char in counts) {
+        const count = counts[char];
+        if (count === 1) {
+            console.log(`${char}: ${count} time`);
+        } else {
+            console.log(`${char}: ${count} times`);
+        }
+    }
+}
+
+// Test
+const name = "Shirsh";
+
+console.log("Case-sensitive count:");
+printCharacterCounts(name);
+
+console.log("\nCase-insensitive count:");
+printCharacterCountsCaseInsensitive(name);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Output for "Shirsh":</strong></p>
+      <pre>
+Case-insensitive count:
+s: 2 times  (combines 'S' and 's')
+h: 2 times
+i: 1 time
+r: 1 time
+      </pre>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>"Shirsh" এর জন্য আউটপুট:</strong></p>
+      <pre>
+কেস-ইনসেনসিটিভ গণনা:
+s: ২ বার  ('S' এবং 's' একত্রিত করে)
+h: ২ বার
+i: ১ বার
+r: ১ বার
+      </pre>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Comparison of Approaches" bn="পদ্ধতির তুলনা" />
+
+| Approach | Time | Space | Best For |
+|----------|------|-------|----------|
+| Hash Map | O(n) | O(k) | **Best for interviews - flexible and efficient** |
+| Built-in (Counter/Map) | O(n) | O(k) | Production code, cleaner syntax |
+| Array (ASCII) | O(n) | O(1) | ASCII-only, performance-critical |
+| Case-insensitive | O(n) | O(k) | When case doesn't matter |
+
+---
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ol>
+        <li><strong>Clarify case-sensitivity:</strong> Ask if 'A' and 'a' should be counted separately</li>
+        <li><strong>Handle spaces:</strong> Decide if spaces and special characters should be counted</li>
+        <li><strong>Output format:</strong> Ask if results should be sorted or in order of appearance</li>
+        <li><strong>Start simple:</strong> Begin with hash map approach, then discuss optimizations</li>
+        <li><strong>Time vs Space:</strong> Discuss trade-offs between different approaches</li>
+        <li><strong>Unicode consideration:</strong> Mention that array approach doesn't work for all characters</li>
+        <li><strong>Extensions:</strong> Be ready to find most/least frequent character, or characters appearing once</li>
+      </ol>
+    </>
+  }
+  bn={
+    <>
+      <ol>
+        <li><strong>কেস-সংবেদনশীলতা স্পষ্ট করুন:</strong> জিজ্ঞাসা করুন 'A' এবং 'a' কি আলাদাভাবে গণনা করা উচিত</li>
+        <li><strong>স্পেস পরিচালনা করুন:</strong> সিদ্ধান্ত নিন স্পেস এবং বিশেষ অক্ষর গণনা করা উচিত কিনা</li>
+        <li><strong>আউটপুট ফরম্যাট:</strong> জিজ্ঞাসা করুন ফলাফল সাজানো উচিত নাকি উপস্থিতির ক্রমে</li>
+        <li><strong>সহজ দিয়ে শুরু করুন:</strong> হ্যাশ ম্যাপ পদ্ধতি দিয়ে শুরু করুন, তারপর অপ্টিমাইজেশন আলোচনা করুন</li>
+        <li><strong>সময় বনাম স্পেস:</strong> বিভিন্ন পদ্ধতির মধ্যে ট্রেড-অফ আলোচনা করুন</li>
+        <li><strong>ইউনিকোড বিবেচনা:</strong> উল্লেখ করুন যে অ্যারে পদ্ধতি সমস্ত অক্ষরের জন্য কাজ করে না</li>
+        <li><strong>সম্প্রসারণ:</strong> সর্বাধিক/সর্বনিম্ন ঘন ঘন অক্ষর, বা একবার উপস্থিত অক্ষর খুঁজে পেতে প্রস্তুত থাকুন</li>
+      </ol>
+    </>
+  }
+/>

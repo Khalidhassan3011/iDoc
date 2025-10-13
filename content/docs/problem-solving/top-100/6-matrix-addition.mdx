@@ -1,0 +1,593 @@
+---
+title: 6. Add Two Matrices
+description: Learn how to add two matrices with implementations for 2x2 and 3x3 matrices
+---
+
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Add Two Matrices (2x2 or 3x3)" bn="দুটি ম্যাট্রিক্স যোগ করুন (2x2 বা 3x3)" />
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p>Write a program to add two matrices. Matrix addition is performed by adding corresponding elements from each matrix.</p>
+      <p><strong>Example (2x2):</strong></p>
+      <pre>
+Matrix A:          Matrix B:          Result (A + B):
+[1  2]             [5  6]             [6   8]
+[3  4]             [7  8]             [10  12]
+      </pre>
+      <p><strong>Rule:</strong> Two matrices can only be added if they have the same dimensions (same number of rows and columns).</p>
+    </>
+  }
+  bn={
+    <>
+      <p>দুটি ম্যাট্রিক্স যোগ করার জন্য একটি প্রোগ্রাম লিখুন। প্রতিটি ম্যাট্রিক্স থেকে সংশ্লিষ্ট উপাদান যোগ করে ম্যাট্রিক্স যোগ করা হয়।</p>
+      <p><strong>উদাহরণ (2x2):</strong></p>
+      <pre>
+ম্যাট্রিক্স A:      ম্যাট্রিক্স B:      ফলাফল (A + B):
+[1  2]             [5  6]             [6   8]
+[3  4]             [7  8]             [10  12]
+      </pre>
+      <p><strong>নিয়ম:</strong> দুটি ম্যাট্রিক্স শুধুমাত্র তখনই যোগ করা যায় যদি তাদের একই মাত্রা থাকে (একই সংখ্যক সারি এবং কলাম)।</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 1: 2x2 Matrix Addition" bn="পদ্ধতি ১: 2x2 ম্যাট্রিক্স যোগ" />
+
+<TranslatedText
+  en="Add two 2x2 matrices by iterating through each row and column."
+  bn="প্রতিটি সারি এবং কলামের মাধ্যমে পুনরাবৃত্তি করে দুটি 2x2 ম্যাট্রিক্স যোগ করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+void addMatrix2x2(int a[2][2], int b[2][2], int result[2][2]) {
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            result[i][j] = a[i][j] + b[i][j];
+        }
+    }
+}
+
+void printMatrix2x2(int matrix[2][2]) {
+    for (int i = 0; i < 2; i++) {
+        cout << "[";
+        for (int j = 0; j < 2; j++) {
+            cout << matrix[i][j];
+            if (j < 1) cout << "  ";
+        }
+        cout << "]" << endl;
+    }
+}
+
+int main() {
+    int matrixA[2][2] = {{1, 2}, {3, 4}};
+    int matrixB[2][2] = {{5, 6}, {7, 8}};
+    int result[2][2];
+
+    addMatrix2x2(matrixA, matrixB, result);
+
+    cout << "Matrix A:" << endl;
+    printMatrix2x2(matrixA);
+
+    cout << "\nMatrix B:" << endl;
+    printMatrix2x2(matrixB);
+
+    cout << "\nResult (A + B):" << endl;
+    printMatrix2x2(result);
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def add_matrix_2x2(a, b):
+    result = [[0, 0], [0, 0]]
+
+    for i in range(2):
+        for j in range(2):
+            result[i][j] = a[i][j] + b[i][j]
+
+    return result
+
+def print_matrix(matrix):
+    for row in matrix:
+        print("[", end="")
+        print("  ".join(map(str, row)), end="")
+        print("]")
+
+# Test with 2x2 matrices
+matrix_a = [[1, 2], [3, 4]]
+matrix_b = [[5, 6], [7, 8]]
+
+result = add_matrix_2x2(matrix_a, matrix_b)
+
+print("Matrix A:")
+print_matrix(matrix_a)
+
+print("\nMatrix B:")
+print_matrix(matrix_b)
+
+print("\nResult (A + B):")
+print_matrix(result)
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function addMatrix2x2(a, b) {
+    const result = [[0, 0], [0, 0]];
+
+    for (let i = 0; i < 2; i++) {
+        for (let j = 0; j < 2; j++) {
+            result[i][j] = a[i][j] + b[i][j];
+        }
+    }
+
+    return result;
+}
+
+function printMatrix(matrix) {
+    matrix.forEach(row => {
+        console.log("[" + row.join("  ") + "]");
+    });
+}
+
+// Test with 2x2 matrices
+const matrixA = [[1, 2], [3, 4]];
+const matrixB = [[5, 6], [7, 8]];
+
+const result = addMatrix2x2(matrixA, matrixB);
+
+console.log("Matrix A:");
+printMatrix(matrixA);
+
+console.log("\nMatrix B:");
+printMatrix(matrixB);
+
+console.log("\nResult (A + B):");
+printMatrix(result);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n²) where n = 2 (for 2x2 matrix, it's O(4) = constant)</p>
+      <p><strong>Space Complexity:</strong> O(n²) for storing the result matrix</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n²) যেখানে n = 2 (2x2 ম্যাট্রিক্সের জন্য, এটি O(4) = ধ্রুবক)</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(n²) ফলাফল ম্যাট্রিক্স সংরক্ষণের জন্য</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 2: 3x3 Matrix Addition" bn="পদ্ধতি ২: 3x3 ম্যাট্রিক্স যোগ" />
+
+<TranslatedText
+  en="Add two 3x3 matrices using the same logic with larger dimensions."
+  bn="বড় মাত্রা সহ একই যুক্তি ব্যবহার করে দুটি 3x3 ম্যাট্রিক্স যোগ করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+void addMatrix3x3(int a[3][3], int b[3][3], int result[3][3]) {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            result[i][j] = a[i][j] + b[i][j];
+        }
+    }
+}
+
+void printMatrix3x3(int matrix[3][3]) {
+    for (int i = 0; i < 3; i++) {
+        cout << "[";
+        for (int j = 0; j < 3; j++) {
+            cout << matrix[i][j];
+            if (j < 2) cout << "  ";
+        }
+        cout << "]" << endl;
+    }
+}
+
+int main() {
+    int matrixA[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    int matrixB[3][3] = {{9, 8, 7}, {6, 5, 4}, {3, 2, 1}};
+    int result[3][3];
+
+    addMatrix3x3(matrixA, matrixB, result);
+
+    cout << "Matrix A:" << endl;
+    printMatrix3x3(matrixA);
+
+    cout << "\nMatrix B:" << endl;
+    printMatrix3x3(matrixB);
+
+    cout << "\nResult (A + B):" << endl;
+    printMatrix3x3(result);
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def add_matrix_3x3(a, b):
+    result = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+
+    for i in range(3):
+        for j in range(3):
+            result[i][j] = a[i][j] + b[i][j]
+
+    return result
+
+def print_matrix(matrix):
+    for row in matrix:
+        print("[", end="")
+        print("  ".join(map(str, row)), end="")
+        print("]")
+
+# Test with 3x3 matrices
+matrix_a = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+matrix_b = [[9, 8, 7], [6, 5, 4], [3, 2, 1]]
+
+result = add_matrix_3x3(matrix_a, matrix_b)
+
+print("Matrix A:")
+print_matrix(matrix_a)
+
+print("\nMatrix B:")
+print_matrix(matrix_b)
+
+print("\nResult (A + B):")
+print_matrix(result)
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function addMatrix3x3(a, b) {
+    const result = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            result[i][j] = a[i][j] + b[i][j];
+        }
+    }
+
+    return result;
+}
+
+function printMatrix(matrix) {
+    matrix.forEach(row => {
+        console.log("[" + row.join("  ") + "]");
+    });
+}
+
+// Test with 3x3 matrices
+const matrixA = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+const matrixB = [[9, 8, 7], [6, 5, 4], [3, 2, 1]];
+
+const result = addMatrix3x3(matrixA, matrixB);
+
+console.log("Matrix A:");
+printMatrix(matrixA);
+
+console.log("\nMatrix B:");
+printMatrix(matrixB);
+
+console.log("\nResult (A + B):");
+printMatrix(result);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n²) where n = 3 (for 3x3 matrix, it's O(9) = constant)</p>
+      <p><strong>Space Complexity:</strong> O(n²) for storing the result matrix</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n²) যেখানে n = 3 (3x3 ম্যাট্রিক্সের জন্য, এটি O(9) = ধ্রুবক)</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(n²) ফলাফল ম্যাট্রিক্স সংরক্ষণের জন্য</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 3: Generic Matrix Addition (Any Size)" bn="পদ্ধতি ৩: জেনেরিক ম্যাট্রিক্স যোগ (যেকোনো আকার)" />
+
+<TranslatedText
+  en="Create a flexible function that can handle matrices of any size with dimension validation."
+  bn="মাত্রা যাচাইকরণ সহ যেকোনো আকারের ম্যাট্রিক্স পরিচালনা করতে পারে এমন একটি নমনীয় ফাংশন তৈরি করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Generic function for any matrix size
+vector<vector<int>> addMatrix(const vector<vector<int>>& a,
+                               const vector<vector<int>>& b) {
+    int rows = a.size();
+    int cols = a[0].size();
+
+    // Check if dimensions match
+    if (rows != b.size() || cols != b[0].size()) {
+        cout << "Error: Matrices must have same dimensions!" << endl;
+        return {};
+    }
+
+    vector<vector<int>> result(rows, vector<int>(cols));
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result[i][j] = a[i][j] + b[i][j];
+        }
+    }
+
+    return result;
+}
+
+void printMatrix(const vector<vector<int>>& matrix) {
+    for (const auto& row : matrix) {
+        cout << "[";
+        for (int i = 0; i < row.size(); i++) {
+            cout << row[i];
+            if (i < row.size() - 1) cout << "  ";
+        }
+        cout << "]" << endl;
+    }
+}
+
+int main() {
+    // Test with 2x2
+    vector<vector<int>> matrixA2 = {{1, 2}, {3, 4}};
+    vector<vector<int>> matrixB2 = {{5, 6}, {7, 8}};
+
+    cout << "2x2 Matrix Addition:" << endl;
+    cout << "Matrix A:" << endl;
+    printMatrix(matrixA2);
+    cout << "\nMatrix B:" << endl;
+    printMatrix(matrixB2);
+    cout << "\nResult:" << endl;
+    printMatrix(addMatrix(matrixA2, matrixB2));
+
+    // Test with 3x3
+    vector<vector<int>> matrixA3 = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    vector<vector<int>> matrixB3 = {{9, 8, 7}, {6, 5, 4}, {3, 2, 1}};
+
+    cout << "\n\n3x3 Matrix Addition:" << endl;
+    cout << "Matrix A:" << endl;
+    printMatrix(matrixA3);
+    cout << "\nMatrix B:" << endl;
+    printMatrix(matrixB3);
+    cout << "\nResult:" << endl;
+    printMatrix(addMatrix(matrixA3, matrixB3));
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def add_matrix_generic(a, b):
+    rows = len(a)
+    cols = len(a[0])
+
+    # Check if dimensions match
+    if rows != len(b) or cols != len(b[0]):
+        print("Error: Matrices must have same dimensions!")
+        return None
+
+    result = [[0] * cols for _ in range(rows)]
+
+    for i in range(rows):
+        for j in range(cols):
+            result[i][j] = a[i][j] + b[i][j]
+
+    return result
+
+def print_matrix(matrix):
+    if matrix is None:
+        return
+    for row in matrix:
+        print("[", end="")
+        print("  ".join(map(str, row)), end="")
+        print("]")
+
+# Test with 2x2
+matrix_a2 = [[1, 2], [3, 4]]
+matrix_b2 = [[5, 6], [7, 8]]
+
+print("2x2 Matrix Addition:")
+print("Matrix A:")
+print_matrix(matrix_a2)
+print("\nMatrix B:")
+print_matrix(matrix_b2)
+print("\nResult:")
+print_matrix(add_matrix_generic(matrix_a2, matrix_b2))
+
+# Test with 3x3
+matrix_a3 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+matrix_b3 = [[9, 8, 7], [6, 5, 4], [3, 2, 1]]
+
+print("\n\n3x3 Matrix Addition:")
+print("Matrix A:")
+print_matrix(matrix_a3)
+print("\nMatrix B:")
+print_matrix(matrix_b3)
+print("\nResult:")
+print_matrix(add_matrix_generic(matrix_a3, matrix_b3))
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function addMatrixGeneric(a, b) {
+    const rows = a.length;
+    const cols = a[0].length;
+
+    // Check if dimensions match
+    if (rows !== b.length || cols !== b[0].length) {
+        console.log("Error: Matrices must have same dimensions!");
+        return null;
+    }
+
+    const result = Array(rows).fill(0).map(() => Array(cols).fill(0));
+
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            result[i][j] = a[i][j] + b[i][j];
+        }
+    }
+
+    return result;
+}
+
+function printMatrix(matrix) {
+    if (!matrix) return;
+    matrix.forEach(row => {
+        console.log("[" + row.join("  ") + "]");
+    });
+}
+
+// Test with 2x2
+const matrixA2 = [[1, 2], [3, 4]];
+const matrixB2 = [[5, 6], [7, 8]];
+
+console.log("2x2 Matrix Addition:");
+console.log("Matrix A:");
+printMatrix(matrixA2);
+console.log("\nMatrix B:");
+printMatrix(matrixB2);
+console.log("\nResult:");
+printMatrix(addMatrixGeneric(matrixA2, matrixB2));
+
+// Test with 3x3
+const matrixA3 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+const matrixB3 = [[9, 8, 7], [6, 5, 4], [3, 2, 1]];
+
+console.log("\n\n3x3 Matrix Addition:");
+console.log("Matrix A:");
+printMatrix(matrixA3);
+console.log("\nMatrix B:");
+printMatrix(matrixB3);
+console.log("\nResult:");
+printMatrix(addMatrixGeneric(matrixA3, matrixB3));
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(rows × cols) - Must visit each element once</p>
+      <p><strong>Space Complexity:</strong> O(rows × cols) - Result matrix storage</p>
+      <p><strong>Advantage:</strong> Works with any matrix size and validates dimensions before adding</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(rows × cols) - প্রতিটি উপাদান একবার পরিদর্শন করতে হবে</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(rows × cols) - ফলাফল ম্যাট্রিক্স স্টোরেজ</p>
+      <p><strong>সুবিধা:</strong> যেকোনো ম্যাট্রিক্স আকারের সাথে কাজ করে এবং যোগ করার আগে মাত্রা যাচাই করে</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Key Concepts" bn="মূল ধারণা" />
+
+<TranslatedText
+  en={
+    <>
+      <ol>
+        <li><strong>Matrix Dimensions:</strong> A matrix is denoted as m×n where m is rows and n is columns</li>
+        <li><strong>Addition Rule:</strong> Only matrices with identical dimensions can be added</li>
+        <li><strong>Element-wise Operation:</strong> result[i][j] = a[i][j] + b[i][j]</li>
+        <li><strong>Commutative:</strong> A + B = B + A (order doesn't matter)</li>
+        <li><strong>Zero Matrix:</strong> Adding a zero matrix to any matrix gives the same matrix</li>
+      </ol>
+    </>
+  }
+  bn={
+    <>
+      <ol>
+        <li><strong>ম্যাট্রিক্স মাত্রা:</strong> একটি ম্যাট্রিক্স m×n হিসাবে চিহ্নিত করা হয় যেখানে m হল সারি এবং n হল কলাম</li>
+        <li><strong>যোগ নিয়ম:</strong> শুধুমাত্র অভিন্ন মাত্রা সহ ম্যাট্রিক্স যোগ করা যেতে পারে</li>
+        <li><strong>উপাদান-ভিত্তিক অপারেশন:</strong> result[i][j] = a[i][j] + b[i][j]</li>
+        <li><strong>কম্যুটেটিভ:</strong> A + B = B + A (ক্রম কোনো ব্যাপার না)</li>
+        <li><strong>শূন্য ম্যাট্রিক্স:</strong> যেকোনো ম্যাট্রিক্সে একটি শূন্য ম্যাট্রিক্স যোগ করলে একই ম্যাট্রিক্স পাওয়া যায়</li>
+      </ol>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ol>
+        <li><strong>Validate dimensions first:</strong> Always check if matrices can be added before proceeding</li>
+        <li><strong>Understand indexing:</strong> Matrix indices typically start at 0 in programming</li>
+        <li><strong>Nested loops:</strong> Outer loop for rows, inner loop for columns</li>
+        <li><strong>Edge cases:</strong> Empty matrices, 1x1 matrices, mismatched dimensions</li>
+        <li><strong>Extension questions:</strong> Be ready to discuss matrix subtraction, multiplication</li>
+        <li><strong>Optimization:</strong> For very large matrices, consider parallel processing or GPU acceleration</li>
+        <li><strong>Real-world uses:</strong> Image processing, graphics transformations, scientific computing</li>
+      </ol>
+    </>
+  }
+  bn={
+    <>
+      <ol>
+        <li><strong>প্রথমে মাত্রা যাচাই করুন:</strong> এগিয়ে যাওয়ার আগে সর্বদা পরীক্ষা করুন ম্যাট্রিক্স যোগ করা যায় কিনা</li>
+        <li><strong>ইনডেক্সিং বুঝুন:</strong> প্রোগ্রামিংয়ে ম্যাট্রিক্স সূচক সাধারণত 0 থেকে শুরু হয়</li>
+        <li><strong>নেস্টেড লুপ:</strong> সারির জন্য বাইরের লুপ, কলামের জন্য ভিতরের লুপ</li>
+        <li><strong>প্রান্তিক ক্ষেত্র:</strong> খালি ম্যাট্রিক্স, 1x1 ম্যাট্রিক্স, অমিল মাত্রা</li>
+        <li><strong>সম্প্রসারণ প্রশ্ন:</strong> ম্যাট্রিক্স বিয়োগ, গুণ আলোচনা করতে প্রস্তুত থাকুন</li>
+        <li><strong>অপ্টিমাইজেশন:</strong> খুব বড় ম্যাট্রিক্সের জন্য, সমান্তরাল প্রক্রিয়াকরণ বা GPU ত্বরণ বিবেচনা করুন</li>
+        <li><strong>বাস্তব-বিশ্ব ব্যবহার:</strong> ইমেজ প্রক্রিয়াকরণ, গ্রাফিক্স রূপান্তর, বৈজ্ঞানিক কম্পিউটিং</li>
+      </ol>
+    </>
+  }
+/>

@@ -1,0 +1,651 @@
+---
+title: 9. Count Matching Characters Between Strings
+description: Learn how to find and count matching characters between two strings
+---
+
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Count Matching Characters Between Two Strings" bn="দুটি স্ট্রিংয়ের মধ্যে মিলিত অক্ষর গণনা করুন" />
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p>Given two strings, count how many characters are common between them.</p>
+      <p><strong>Input:</strong></p>
+      <ul>
+        <li>str1 = "abcdef"</li>
+        <li>str2 = "defghia"</li>
+      </ul>
+      <p><strong>Output:</strong> <code>4</code></p>
+      <p><strong>Matching characters:</strong> a, d, e, f</p>
+      <p><strong>Note:</strong> Count each unique character only once, even if it appears multiple times.</p>
+    </>
+  }
+  bn={
+    <>
+      <p>দুটি স্ট্রিং দেওয়া হয়েছে, তাদের মধ্যে কতগুলি অক্ষর সাধারণ তা গণনা করুন।</p>
+      <p><strong>ইনপুট:</strong></p>
+      <ul>
+        <li>str1 = "abcdef"</li>
+        <li>str2 = "defghia"</li>
+      </ul>
+      <p><strong>আউটপুট:</strong> <code>4</code></p>
+      <p><strong>মিলিত অক্ষর:</strong> a, d, e, f</p>
+      <p><strong>দ্রষ্টব্য:</strong> প্রতিটি অনন্য অক্ষর শুধুমাত্র একবার গণনা করুন, এমনকি এটি একাধিকবার উপস্থিত হলেও।</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 1: Using Hash Set (Optimal)" bn="পদ্ধতি ১: হ্যাশ সেট ব্যবহার করে (সর্বোত্তম)" />
+
+<TranslatedText
+  en="Convert first string to a set, then check each character of second string for existence."
+  bn="প্রথম স্ট্রিংকে একটি সেটে রূপান্তর করুন, তারপর দ্বিতীয় স্ট্রিংয়ের প্রতিটি অক্ষরের অস্তিত্ব পরীক্ষা করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <unordered_set>
+#include <string>
+#include <vector>
+using namespace std;
+
+int countMatchingCharacters(const string& str1, const string& str2) {
+    // Store all characters from str1 in a set
+    unordered_set<char> charSet(str1.begin(), str1.end());
+
+    // Track matching characters to avoid duplicates
+    unordered_set<char> matchingChars;
+
+    // Check each character in str2
+    for (char ch : str2) {
+        if (charSet.find(ch) != charSet.end()) {
+            matchingChars.insert(ch);
+        }
+    }
+
+    return matchingChars.size();
+}
+
+vector<char> getMatchingCharacters(const string& str1, const string& str2) {
+    unordered_set<char> charSet(str1.begin(), str1.end());
+    unordered_set<char> matchingSet;
+
+    for (char ch : str2) {
+        if (charSet.find(ch) != charSet.end()) {
+            matchingSet.insert(ch);
+        }
+    }
+
+    return vector<char>(matchingSet.begin(), matchingSet.end());
+}
+
+int main() {
+    string str1 = "abcdef";
+    string str2 = "defghia";
+
+    int count = countMatchingCharacters(str1, str2);
+    vector<char> matching = getMatchingCharacters(str1, str2);
+
+    cout << "String 1: " << str1 << endl;
+    cout << "String 2: " << str2 << endl;
+    cout << "Number of matching characters: " << count << endl;
+
+    cout << "Matching characters: ";
+    for (int i = 0; i < matching.size(); i++) {
+        cout << matching[i];
+        if (i < matching.size() - 1) cout << ", ";
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def count_matching_characters(str1, str2):
+    # Convert str1 to set for O(1) lookup
+    char_set = set(str1)
+
+    # Find matching characters (automatically handles duplicates)
+    matching_chars = set(char for char in str2 if char in char_set)
+
+    return len(matching_chars)
+
+def get_matching_characters(str1, str2):
+    char_set = set(str1)
+    matching_chars = set(char for char in str2 if char in char_set)
+    return sorted(matching_chars)  # Sort for consistent output
+
+# Test
+str1 = "abcdef"
+str2 = "defghia"
+
+count = count_matching_characters(str1, str2)
+matching = get_matching_characters(str1, str2)
+
+print(f"String 1: {str1}")
+print(f"String 2: {str2}")
+print(f"Number of matching characters: {count}")
+print(f"Matching characters: {', '.join(matching)}")
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function countMatchingCharacters(str1, str2) {
+    // Convert str1 to Set for O(1) lookup
+    const charSet = new Set(str1);
+
+    // Find matching characters
+    const matchingChars = new Set();
+    for (let ch of str2) {
+        if (charSet.has(ch)) {
+            matchingChars.add(ch);
+        }
+    }
+
+    return matchingChars.size;
+}
+
+function getMatchingCharacters(str1, str2) {
+    const charSet = new Set(str1);
+    const matchingChars = new Set();
+
+    for (let ch of str2) {
+        if (charSet.has(ch)) {
+            matchingChars.add(ch);
+        }
+    }
+
+    return Array.from(matchingChars).sort();
+}
+
+// Test
+const str1 = "abcdef";
+const str2 = "defghia";
+
+const count = countMatchingCharacters(str1, str2);
+const matching = getMatchingCharacters(str1, str2);
+
+console.log(`String 1: ${str1}`);
+console.log(`String 2: ${str2}`);
+console.log(`Number of matching characters: ${count}`);
+console.log(`Matching characters: ${matching.join(", ")}`);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(m + n) where m and n are lengths of the strings</p>
+      <p><strong>Space Complexity:</strong> O(m + n) for storing characters in sets</p>
+      <p><strong>Advantage:</strong> Efficient and straightforward, handles duplicates automatically</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(m + n) যেখানে m এবং n হল স্ট্রিংগুলির দৈর্ঘ্য</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(m + n) সেটে অক্ষর সংরক্ষণের জন্য</p>
+      <p><strong>সুবিধা:</strong> দক্ষ এবং সরল, স্বয়ংক্রিয়ভাবে ডুপ্লিকেট পরিচালনা করে</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 2: Set Intersection (Python-Specific)" bn="পদ্ধতি ২: সেট ইন্টারসেকশন (পাইথন-নির্দিষ্ট)" />
+
+<TranslatedText
+  en="Use built-in set intersection operation to find common characters."
+  bn="সাধারণ অক্ষর খুঁজে পেতে বিল্ট-ইন সেট ইন্টারসেকশন অপারেশন ব্যবহার করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <set>
+#include <string>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+int countMatchingCharactersIntersection(const string& str1, const string& str2) {
+    set<char> set1(str1.begin(), str1.end());
+    set<char> set2(str2.begin(), str2.end());
+
+    vector<char> intersection;
+    set_intersection(set1.begin(), set1.end(),
+                     set2.begin(), set2.end(),
+                     back_inserter(intersection));
+
+    return intersection.size();
+}
+
+int main() {
+    string str1 = "abcdef";
+    string str2 = "defghia";
+
+    int count = countMatchingCharactersIntersection(str1, str2);
+
+    cout << "String 1: " << str1 << endl;
+    cout << "String 2: " << str2 << endl;
+    cout << "Number of matching characters: " << count << endl;
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def count_matching_characters_intersection(str1, str2):
+    # Use set intersection
+    set1 = set(str1)
+    set2 = set(str2)
+
+    matching_chars = set1 & set2  # or set1.intersection(set2)
+
+    return len(matching_chars)
+
+def get_matching_characters_intersection(str1, str2):
+    set1 = set(str1)
+    set2 = set(str2)
+
+    matching_chars = set1 & set2
+
+    return sorted(matching_chars)
+
+# Test
+str1 = "abcdef"
+str2 = "defghia"
+
+count = count_matching_characters_intersection(str1, str2)
+matching = get_matching_characters_intersection(str1, str2)
+
+print(f"String 1: {str1}")
+print(f"String 2: {str2}")
+print(f"Number of matching characters: {count}")
+print(f"Matching characters: {', '.join(matching)}")
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function countMatchingCharactersIntersection(str1, str2) {
+    const set1 = new Set(str1);
+    const set2 = new Set(str2);
+
+    // Manual intersection
+    const intersection = new Set([...set1].filter(ch => set2.has(ch)));
+
+    return intersection.size;
+}
+
+function getMatchingCharactersIntersection(str1, str2) {
+    const set1 = new Set(str1);
+    const set2 = new Set(str2);
+
+    const intersection = new Set([...set1].filter(ch => set2.has(ch)));
+
+    return Array.from(intersection).sort();
+}
+
+// Test
+const str1 = "abcdef";
+const str2 = "defghia";
+
+const count = countMatchingCharactersIntersection(str1, str2);
+const matching = getMatchingCharactersIntersection(str1, str2);
+
+console.log(`String 1: ${str1}`);
+console.log(`String 2: ${str2}`);
+console.log(`Number of matching characters: ${count}`);
+console.log(`Matching characters: ${matching.join(", ")}`);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(m + n)</p>
+      <p><strong>Space Complexity:</strong> O(m + n)</p>
+      <p><strong>Advantage:</strong> Cleaner code using built-in set operations</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(m + n)</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(m + n)</p>
+      <p><strong>সুবিধা:</strong> বিল্ট-ইন সেট অপারেশন ব্যবহার করে পরিষ্কার কোড</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 3: Array-based (ASCII)" bn="পদ্ধতি ৩: অ্যারে-ভিত্তিক (ASCII)" />
+
+<TranslatedText
+  en="Use boolean arrays to mark character presence for ASCII characters."
+  bn="ASCII অক্ষরের জন্য অক্ষরের উপস্থিতি চিহ্নিত করতে বুলিয়ান অ্যারে ব্যবহার করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+int countMatchingCharactersArray(const string& str1, const string& str2) {
+    // Boolean array for ASCII characters
+    bool present1[256] = {false};
+    bool present2[256] = {false};
+
+    // Mark characters present in str1
+    for (char ch : str1) {
+        present1[(unsigned char)ch] = true;
+    }
+
+    // Mark characters present in str2
+    for (char ch : str2) {
+        present2[(unsigned char)ch] = true;
+    }
+
+    // Count matching characters
+    int count = 0;
+    for (int i = 0; i < 256; i++) {
+        if (present1[i] && present2[i]) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+vector<char> getMatchingCharactersArray(const string& str1, const string& str2) {
+    bool present1[256] = {false};
+    bool present2[256] = {false};
+
+    for (char ch : str1) {
+        present1[(unsigned char)ch] = true;
+    }
+
+    for (char ch : str2) {
+        present2[(unsigned char)ch] = true;
+    }
+
+    vector<char> matching;
+    for (int i = 0; i < 256; i++) {
+        if (present1[i] && present2[i]) {
+            matching.push_back((char)i);
+        }
+    }
+
+    return matching;
+}
+
+int main() {
+    string str1 = "abcdef";
+    string str2 = "defghia";
+
+    int count = countMatchingCharactersArray(str1, str2);
+    vector<char> matching = getMatchingCharactersArray(str1, str2);
+
+    cout << "String 1: " << str1 << endl;
+    cout << "String 2: " << str2 << endl;
+    cout << "Number of matching characters: " << count << endl;
+
+    cout << "Matching characters: ";
+    for (int i = 0; i < matching.size(); i++) {
+        cout << matching[i];
+        if (i < matching.size() - 1) cout << ", ";
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def count_matching_characters_array(str1, str2):
+    # Boolean arrays for ASCII characters
+    present1 = [False] * 256
+    present2 = [False] * 256
+
+    # Mark characters present in str1
+    for ch in str1:
+        present1[ord(ch)] = True
+
+    # Mark characters present in str2
+    for ch in str2:
+        present2[ord(ch)] = True
+
+    # Count matching characters
+    count = sum(1 for i in range(256) if present1[i] and present2[i])
+
+    return count
+
+def get_matching_characters_array(str1, str2):
+    present1 = [False] * 256
+    present2 = [False] * 256
+
+    for ch in str1:
+        present1[ord(ch)] = True
+
+    for ch in str2:
+        present2[ord(ch)] = True
+
+    matching = [chr(i) for i in range(256) if present1[i] and present2[i]]
+
+    return matching
+
+# Test
+str1 = "abcdef"
+str2 = "defghia"
+
+count = count_matching_characters_array(str1, str2)
+matching = get_matching_characters_array(str1, str2)
+
+print(f"String 1: {str1}")
+print(f"String 2: {str2}")
+print(f"Number of matching characters: {count}")
+print(f"Matching characters: {', '.join(matching)}")
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function countMatchingCharactersArray(str1, str2) {
+    // Boolean arrays for ASCII characters
+    const present1 = new Array(256).fill(false);
+    const present2 = new Array(256).fill(false);
+
+    // Mark characters present in str1
+    for (let ch of str1) {
+        present1[ch.charCodeAt(0)] = true;
+    }
+
+    // Mark characters present in str2
+    for (let ch of str2) {
+        present2[ch.charCodeAt(0)] = true;
+    }
+
+    // Count matching characters
+    let count = 0;
+    for (let i = 0; i < 256; i++) {
+        if (present1[i] && present2[i]) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+function getMatchingCharactersArray(str1, str2) {
+    const present1 = new Array(256).fill(false);
+    const present2 = new Array(256).fill(false);
+
+    for (let ch of str1) {
+        present1[ch.charCodeAt(0)] = true;
+    }
+
+    for (let ch of str2) {
+        present2[ch.charCodeAt(0)] = true;
+    }
+
+    const matching = [];
+    for (let i = 0; i < 256; i++) {
+        if (present1[i] && present2[i]) {
+            matching.push(String.fromCharCode(i));
+        }
+    }
+
+    return matching;
+}
+
+// Test
+const str1 = "abcdef";
+const str2 = "defghia";
+
+const count = countMatchingCharactersArray(str1, str2);
+const matching = getMatchingCharactersArray(str1, str2);
+
+console.log(`String 1: ${str1}`);
+console.log(`String 2: ${str2}`);
+console.log(`Number of matching characters: ${count}`);
+console.log(`Matching characters: ${matching.join(", ")}`);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(m + n + 256) = O(m + n)</p>
+      <p><strong>Space Complexity:</strong> O(1) - Fixed size arrays (256 + 256 = 512 bytes)</p>
+      <p><strong>Advantage:</strong> Constant space for ASCII, very fast for small character sets</p>
+      <p><strong>Limitation:</strong> Only works for ASCII/extended ASCII characters</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(m + n + 256) = O(m + n)</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(1) - স্থির আকারের অ্যারে (256 + 256 = 512 বাইট)</p>
+      <p><strong>সুবিধা:</strong> ASCII এর জন্য ধ্রুবক স্পেস, ছোট অক্ষর সেটের জন্য খুব দ্রুত</p>
+      <p><strong>সীমাবদ্ধতা:</strong> শুধুমাত্র ASCII/বর্ধিত ASCII অক্ষরের জন্য কাজ করে</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Comparison of Approaches" bn="পদ্ধতির তুলনা" />
+
+| Approach | Time | Space | Best For |
+|----------|------|-------|----------|
+| Hash Set | O(m+n) | O(m+n) | **Best for interviews - flexible and clear** |
+| Set Intersection | O(m+n) | O(m+n) | Production code, cleaner syntax |
+| Array (ASCII) | O(m+n) | O(1) | Performance-critical, ASCII-only |
+
+---
+
+## <TranslatedText en="Extended Problems" bn="সম্প্রসারিত সমস্যা" />
+
+<TranslatedText
+  en={
+    <>
+      <h3>1. Find Non-Matching Characters</h3>
+      <p>Count characters that appear in str1 but NOT in str2:</p>
+      <pre>
+str1 = "abcdef"
+str2 = "defghia"
+Non-matching in str1: b, c (count = 2)
+      </pre>
+
+      <h3>2. Case-Insensitive Matching</h3>
+      <p>Treat 'A' and 'a' as the same character by converting both strings to lowercase before comparison.</p>
+
+      <h3>3. Count with Frequency</h3>
+      <p>Count total occurrences considering frequency:</p>
+      <pre>
+str1 = "aabbc"
+str2 = "abccc"
+Common characters: a(2), b(2), c(2) = 6 total
+      </pre>
+    </>
+  }
+  bn={
+    <>
+      <h3>১. অ-মিলিত অক্ষর খুঁজুন</h3>
+      <p>str1-এ উপস্থিত কিন্তু str2-তে নেই এমন অক্ষর গণনা করুন:</p>
+      <pre>
+str1 = "abcdef"
+str2 = "defghia"
+str1-এ অ-মিলিত: b, c (গণনা = 2)
+      </pre>
+
+      <h3>২. কেস-ইনসেনসিটিভ ম্যাচিং</h3>
+      <p>তুলনা করার আগে উভয় স্ট্রিংকে লোয়ারকেসে রূপান্তর করে 'A' এবং 'a' কে একই অক্ষর হিসাবে বিবেচনা করুন।</p>
+
+      <h3>৩. ফ্রিকোয়েন্সি সহ গণনা</h3>
+      <p>ফ্রিকোয়েন্সি বিবেচনা করে মোট উপস্থিতি গণনা করুন:</p>
+      <pre>
+str1 = "aabbc"
+str2 = "abccc"
+সাধারণ অক্ষর: a(2), b(2), c(2) = মোট 6
+      </pre>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ol>
+        <li><strong>Clarify uniqueness:</strong> Ask if each character should be counted once or by frequency</li>
+        <li><strong>Case sensitivity:</strong> Confirm if 'A' and 'a' are different characters</li>
+        <li><strong>Special characters:</strong> Ask if spaces and punctuation should be counted</li>
+        <li><strong>Start with hash set:</strong> Most intuitive and efficient approach</li>
+        <li><strong>Discuss trade-offs:</strong> Set operations vs array-based approaches</li>
+        <li><strong>Edge cases:</strong> Empty strings, identical strings, no common characters</li>
+        <li><strong>Extensions:</strong> Be ready to find non-matching or most frequent matching characters</li>
+      </ol>
+    </>
+  }
+  bn={
+    <>
+      <ol>
+        <li><strong>অনন্যতা স্পষ্ট করুন:</strong> জিজ্ঞাসা করুন প্রতিটি অক্ষর একবার গণনা করা উচিত নাকি ফ্রিকোয়েন্সি দ্বারা</li>
+        <li><strong>কেস সংবেদনশীলতা:</strong> নিশ্চিত করুন 'A' এবং 'a' কি ভিন্ন অক্ষর</li>
+        <li><strong>বিশেষ অক্ষর:</strong> জিজ্ঞাসা করুন স্পেস এবং বিরাম চিহ্ন গণনা করা উচিত কিনা</li>
+        <li><strong>হ্যাশ সেট দিয়ে শুরু করুন:</strong> সবচেয়ে স্বজ্ঞাত এবং দক্ষ পদ্ধতি</li>
+        <li><strong>ট্রেড-অফ আলোচনা করুন:</strong> সেট অপারেশন বনাম অ্যারে-ভিত্তিক পদ্ধতি</li>
+        <li><strong>প্রান্তিক ক্ষেত্র:</strong> খালি স্ট্রিং, অভিন্ন স্ট্রিং, কোনো সাধারণ অক্ষর নেই</li>
+        <li><strong>সম্প্রসারণ:</strong> অ-মিলিত বা সবচেয়ে ঘন ঘন মিলিত অক্ষর খুঁজে পেতে প্রস্তুত থাকুন</li>
+      </ol>
+    </>
+  }
+/>

@@ -1,0 +1,645 @@
+---
+title: 10. Count Vowels and Consonants in String
+description: Learn different approaches to count the number of vowels and consonants in a string
+---
+
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Count Vowels and Consonants in String" bn="স্ট্রিংয়ে স্বরবর্ণ এবং ব্যঞ্জনবর্ণ গণনা করুন" />
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p>Write a program to count the total number of vowels and consonants in a string.</p>
+      <p><strong>Input:</strong> <code>"Hello World"</code></p>
+      <p><strong>Output:</strong></p>
+      <pre>
+Vowels: 3 (e, o, o)
+Consonants: 7 (H, l, l, W, r, l, d)
+      </pre>
+      <p><strong>Vowels:</strong> a, e, i, o, u (and their uppercase versions A, E, I, O, U)</p>
+      <p><strong>Consonants:</strong> All other alphabetic characters</p>
+      <p><strong>Note:</strong> Spaces, numbers, and special characters are typically ignored.</p>
+    </>
+  }
+  bn={
+    <>
+      <p>একটি স্ট্রিংয়ে মোট স্বরবর্ণ এবং ব্যঞ্জনবর্ণের সংখ্যা গণনা করার জন্য একটি প্রোগ্রাম লিখুন।</p>
+      <p><strong>ইনপুট:</strong> <code>"Hello World"</code></p>
+      <p><strong>আউটপুট:</strong></p>
+      <pre>
+স্বরবর্ণ: 3 (e, o, o)
+ব্যঞ্জনবর্ণ: 7 (H, l, l, W, r, l, d)
+      </pre>
+      <p><strong>স্বরবর্ণ:</strong> a, e, i, o, u (এবং তাদের বড় হাতের সংস্করণ A, E, I, O, U)</p>
+      <p><strong>ব্যঞ্জনবর্ণ:</strong> অন্য সমস্ত বর্ণমালা অক্ষর</p>
+      <p><strong>দ্রষ্টব্য:</strong> স্পেস, সংখ্যা এবং বিশেষ অক্ষর সাধারণত উপেক্ষা করা হয়।</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 1: Simple Loop with Character Check" bn="পদ্ধতি ১: অক্ষর পরীক্ষা সহ সাধারণ লুপ" />
+
+<TranslatedText
+  en="Iterate through each character and check if it's a vowel, consonant, or other."
+  bn="প্রতিটি অক্ষরের মধ্য দিয়ে পুনরাবৃত্তি করুন এবং পরীক্ষা করুন এটি স্বরবর্ণ, ব্যঞ্জনবর্ণ বা অন্য কিছু কিনা।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+bool isVowel(char ch) {
+    ch = tolower(ch);
+    return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+}
+
+void countVowelsConsonants(const string& str) {
+    int vowels = 0;
+    int consonants = 0;
+
+    for (char ch : str) {
+        if (isalpha(ch)) {  // Check if it's an alphabet character
+            if (isVowel(ch)) {
+                vowels++;
+            } else {
+                consonants++;
+            }
+        }
+    }
+
+    cout << "String: \"" << str << "\"" << endl;
+    cout << "Vowels: " << vowels << endl;
+    cout << "Consonants: " << consonants << endl;
+}
+
+int main() {
+    string text = "Hello World";
+
+    countVowelsConsonants(text);
+
+    // Test with more examples
+    cout << "\nOther examples:" << endl;
+    countVowelsConsonants("Programming123");
+    countVowelsConsonants("AEIOUaeiou");
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def is_vowel(ch):
+    return ch.lower() in 'aeiou'
+
+def count_vowels_consonants(s):
+    vowels = 0
+    consonants = 0
+
+    for ch in s:
+        if ch.isalpha():  # Check if it's an alphabet character
+            if is_vowel(ch):
+                vowels += 1
+            else:
+                consonants += 1
+
+    return vowels, consonants
+
+# Test
+text = "Hello World"
+vowels, consonants = count_vowels_consonants(text)
+
+print(f'String: "{text}"')
+print(f'Vowels: {vowels}')
+print(f'Consonants: {consonants}')
+
+# Test with more examples
+print("\nOther examples:")
+for test_str in ["Programming123", "AEIOUaeiou", "xyz"]:
+    v, c = count_vowels_consonants(test_str)
+    print(f'"{test_str}" -> Vowels: {v}, Consonants: {c}')
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function isVowel(ch) {
+    return 'aeiouAEIOU'.includes(ch);
+}
+
+function countVowelsConsonants(str) {
+    let vowels = 0;
+    let consonants = 0;
+
+    for (let ch of str) {
+        if (/[a-zA-Z]/.test(ch)) {  // Check if it's an alphabet character
+            if (isVowel(ch)) {
+                vowels++;
+            } else {
+                consonants++;
+            }
+        }
+    }
+
+    return { vowels, consonants };
+}
+
+// Test
+const text = "Hello World";
+const result = countVowelsConsonants(text);
+
+console.log(`String: "${text}"`);
+console.log(`Vowels: ${result.vowels}`);
+console.log(`Consonants: ${result.consonants}`);
+
+// Test with more examples
+console.log("\nOther examples:");
+["Programming123", "AEIOUaeiou", "xyz"].forEach(testStr => {
+    const res = countVowelsConsonants(testStr);
+    console.log(`"${testStr}" -> Vowels: ${res.vowels}, Consonants: ${res.consonants}`);
+});
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - Single pass through the string</p>
+      <p><strong>Space Complexity:</strong> O(1) - Only two counter variables</p>
+      <p><strong>Advantage:</strong> Simple, clear, and efficient</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - স্ট্রিংয়ের মাধ্যমে একক পাস</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(1) - শুধুমাত্র দুটি কাউন্টার ভেরিয়েবল</p>
+      <p><strong>সুবিধা:</strong> সহজ, স্পষ্ট এবং দক্ষ</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 2: Using Set for Vowel Lookup" bn="পদ্ধতি ২: স্বরবর্ণ খোঁজার জন্য সেট ব্যবহার করে" />
+
+<TranslatedText
+  en="Use a set for O(1) vowel lookup instead of multiple comparisons."
+  bn="একাধিক তুলনার পরিবর্তে O(1) স্বরবর্ণ লুকআপের জন্য একটি সেট ব্যবহার করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+#include <unordered_set>
+#include <cctype>
+using namespace std;
+
+void countVowelsConsonantsSet(const string& str) {
+    unordered_set<char> vowels = {'a', 'e', 'i', 'o', 'u',
+                                   'A', 'E', 'I', 'O', 'U'};
+
+    int vowelCount = 0;
+    int consonantCount = 0;
+
+    for (char ch : str) {
+        if (isalpha(ch)) {
+            if (vowels.find(ch) != vowels.end()) {
+                vowelCount++;
+            } else {
+                consonantCount++;
+            }
+        }
+    }
+
+    cout << "String: \"" << str << "\"" << endl;
+    cout << "Vowels: " << vowelCount << endl;
+    cout << "Consonants: " << consonantCount << endl;
+}
+
+int main() {
+    string text = "Hello World";
+
+    countVowelsConsonantsSet(text);
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def count_vowels_consonants_set(s):
+    vowels_set = set('aeiouAEIOU')
+
+    vowel_count = 0
+    consonant_count = 0
+
+    for ch in s:
+        if ch.isalpha():
+            if ch in vowels_set:
+                vowel_count += 1
+            else:
+                consonant_count += 1
+
+    return vowel_count, consonant_count
+
+# Test
+text = "Hello World"
+vowels, consonants = count_vowels_consonants_set(text)
+
+print(f'String: "{text}"')
+print(f'Vowels: {vowels}')
+print(f'Consonants: {consonants}')
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function countVowelsConsonantsSet(str) {
+    const vowelsSet = new Set(['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']);
+
+    let vowelCount = 0;
+    let consonantCount = 0;
+
+    for (let ch of str) {
+        if (/[a-zA-Z]/.test(ch)) {
+            if (vowelsSet.has(ch)) {
+                vowelCount++;
+            } else {
+                consonantCount++;
+            }
+        }
+    }
+
+    return { vowels: vowelCount, consonants: consonantCount };
+}
+
+// Test
+const text = "Hello World";
+const result = countVowelsConsonantsSet(text);
+
+console.log(`String: "${text}"`);
+console.log(`Vowels: ${result.vowels}`);
+console.log(`Consonants: ${result.consonants}`);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - O(1) lookup in set</p>
+      <p><strong>Space Complexity:</strong> O(1) - Fixed size set (10 vowels)</p>
+      <p><strong>Advantage:</strong> Cleaner vowel check, easier to extend</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - সেটে O(1) লুকআপ</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(1) - স্থির আকারের সেট (10 স্বরবর্ণ)</p>
+      <p><strong>সুবিধা:</strong> পরিষ্কার স্বরবর্ণ পরীক্ষা, সম্প্রসারিত করা সহজ</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 3: Detailed Count with Characters" bn="পদ্ধতি ৩: অক্ষর সহ বিস্তারিত গণনা" />
+
+<TranslatedText
+  en="Return detailed information including which vowels and consonants were found."
+  bn="কোন স্বরবর্ণ এবং ব্যঞ্জনবর্ণ পাওয়া গেছে তা সহ বিস্তারিত তথ্য ফেরত দিন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+#include <vector>
+#include <cctype>
+using namespace std;
+
+struct CharacterCount {
+    int vowelCount;
+    int consonantCount;
+    vector<char> vowels;
+    vector<char> consonants;
+};
+
+bool isVowel(char ch) {
+    ch = tolower(ch);
+    return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+}
+
+CharacterCount countVowelsConsonantsDetailed(const string& str) {
+    CharacterCount result = {0, 0, {}, {}};
+
+    for (char ch : str) {
+        if (isalpha(ch)) {
+            if (isVowel(ch)) {
+                result.vowelCount++;
+                result.vowels.push_back(ch);
+            } else {
+                result.consonantCount++;
+                result.consonants.push_back(ch);
+            }
+        }
+    }
+
+    return result;
+}
+
+void printCharacterCount(const string& str) {
+    CharacterCount result = countVowelsConsonantsDetailed(str);
+
+    cout << "String: \"" << str << "\"" << endl;
+    cout << "Vowels: " << result.vowelCount << " (";
+    for (int i = 0; i < result.vowels.size(); i++) {
+        cout << result.vowels[i];
+        if (i < result.vowels.size() - 1) cout << ", ";
+    }
+    cout << ")" << endl;
+
+    cout << "Consonants: " << result.consonantCount << " (";
+    for (int i = 0; i < result.consonants.size(); i++) {
+        cout << result.consonants[i];
+        if (i < result.consonants.size() - 1) cout << ", ";
+    }
+    cout << ")" << endl;
+}
+
+int main() {
+    string text = "Hello World";
+
+    printCharacterCount(text);
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def count_vowels_consonants_detailed(s):
+    vowels_list = []
+    consonants_list = []
+
+    for ch in s:
+        if ch.isalpha():
+            if ch.lower() in 'aeiou':
+                vowels_list.append(ch)
+            else:
+                consonants_list.append(ch)
+
+    return {
+        'vowel_count': len(vowels_list),
+        'consonant_count': len(consonants_list),
+        'vowels': vowels_list,
+        'consonants': consonants_list
+    }
+
+# Test
+text = "Hello World"
+result = count_vowels_consonants_detailed(text)
+
+print(f'String: "{text}"')
+print(f'Vowels: {result["vowel_count"]} ({", ".join(result["vowels"])})')
+print(f'Consonants: {result["consonant_count"]} ({", ".join(result["consonants"])})')
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function countVowelsConsonantsDetailed(str) {
+    const vowelsList = [];
+    const consonantsList = [];
+
+    for (let ch of str) {
+        if (/[a-zA-Z]/.test(ch)) {
+            if ('aeiouAEIOU'.includes(ch)) {
+                vowelsList.push(ch);
+            } else {
+                consonantsList.push(ch);
+            }
+        }
+    }
+
+    return {
+        vowelCount: vowelsList.length,
+        consonantCount: consonantsList.length,
+        vowels: vowelsList,
+        consonants: consonantsList
+    };
+}
+
+// Test
+const text = "Hello World";
+const result = countVowelsConsonantsDetailed(text);
+
+console.log(`String: "${text}"`);
+console.log(`Vowels: ${result.vowelCount} (${result.vowels.join(", ")})`);
+console.log(`Consonants: ${result.consonantCount} (${result.consonants.join(", ")})`);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Output for "Hello World":</strong></p>
+      <pre>
+String: "Hello World"
+Vowels: 3 (e, o, o)
+Consonants: 7 (H, l, l, W, r, l, d)
+      </pre>
+      <p><strong>Time Complexity:</strong> O(n)</p>
+      <p><strong>Space Complexity:</strong> O(n) - Storing all vowels and consonants</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>"Hello World" এর জন্য আউটপুট:</strong></p>
+      <pre>
+String: "Hello World"
+স্বরবর্ণ: 3 (e, o, o)
+ব্যঞ্জনবর্ণ: 7 (H, l, l, W, r, l, d)
+      </pre>
+      <p><strong>সময় জটিলতা:</strong> O(n)</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(n) - সমস্ত স্বরবর্ণ এবং ব্যঞ্জনবর্ণ সংরক্ষণ</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 4: Using Regular Expressions" bn="পদ্ধতি ৪: রেগুলার এক্সপ্রেশন ব্যবহার করে" />
+
+<TranslatedText
+  en="Use regex pattern matching to count vowels and consonants."
+  bn="স্বরবর্ণ এবং ব্যঞ্জনবর্ণ গণনা করতে রেজেক্স প্যাটার্ন ম্যাচিং ব্যবহার করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+#include <regex>
+using namespace std;
+
+void countVowelsConsonantsRegex(const string& str) {
+    // Count vowels using regex
+    regex vowelPattern("[aeiouAEIOU]");
+    auto vowelsBegin = sregex_iterator(str.begin(), str.end(), vowelPattern);
+    auto vowelsEnd = sregex_iterator();
+    int vowelCount = distance(vowelsBegin, vowelsEnd);
+
+    // Count consonants using regex
+    regex consonantPattern("[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]");
+    auto consonantsBegin = sregex_iterator(str.begin(), str.end(), consonantPattern);
+    auto consonantsEnd = sregex_iterator();
+    int consonantCount = distance(consonantsBegin, consonantsEnd);
+
+    cout << "String: \"" << str << "\"" << endl;
+    cout << "Vowels: " << vowelCount << endl;
+    cout << "Consonants: " << consonantCount << endl;
+}
+
+int main() {
+    string text = "Hello World";
+
+    countVowelsConsonantsRegex(text);
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+import re
+
+def count_vowels_consonants_regex(s):
+    # Count vowels
+    vowels = re.findall(r'[aeiouAEIOU]', s)
+    vowel_count = len(vowels)
+
+    # Count consonants
+    consonants = re.findall(r'[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]', s)
+    consonant_count = len(consonants)
+
+    return vowel_count, consonant_count
+
+# Test
+text = "Hello World"
+vowels, consonants = count_vowels_consonants_regex(text)
+
+print(f'String: "{text}"')
+print(f'Vowels: {vowels}')
+print(f'Consonants: {consonants}')
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function countVowelsConsonantsRegex(str) {
+    // Count vowels
+    const vowelMatches = str.match(/[aeiouAEIOU]/g);
+    const vowelCount = vowelMatches ? vowelMatches.length : 0;
+
+    // Count consonants
+    const consonantMatches = str.match(/[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]/g);
+    const consonantCount = consonantMatches ? consonantMatches.length : 0;
+
+    return { vowels: vowelCount, consonants: consonantCount };
+}
+
+// Test
+const text = "Hello World";
+const result = countVowelsConsonantsRegex(text);
+
+console.log(`String: "${text}"`);
+console.log(`Vowels: ${result.vowels}`);
+console.log(`Consonants: ${result.consonants}`);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - Regex scans the string</p>
+      <p><strong>Space Complexity:</strong> O(1) - Only counters (or O(n) if storing matches)</p>
+      <p><strong>Advantage:</strong> Concise code, good for complex patterns</p>
+      <p><strong>Note:</strong> May be slower than direct iteration for simple cases</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - রেজেক্স স্ট্রিং স্ক্যান করে</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(1) - শুধুমাত্র কাউন্টার (বা O(n) যদি ম্যাচ সংরক্ষণ করা হয়)</p>
+      <p><strong>সুবিধা:</strong> সংক্ষিপ্ত কোড, জটিল প্যাটার্নের জন্য ভাল</p>
+      <p><strong>দ্রষ্টব্য:</strong> সাধারণ ক্ষেত্রে সরাসরি পুনরাবৃত্তির চেয়ে ধীর হতে পারে</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Comparison of Approaches" bn="পদ্ধতির তুলনা" />
+
+| Approach | Time | Space | Best For |
+|----------|------|-------|----------|
+| Simple Loop | O(n) | O(1) | **Best for interviews - clear and efficient** |
+| Set Lookup | O(n) | O(1) | Cleaner vowel checking |
+| Detailed Count | O(n) | O(n) | When you need actual characters |
+| Regular Expressions | O(n) | O(1) | Complex patterns, production code |
+
+---
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ol>
+        <li><strong>Clarify requirements:</strong> Ask if case matters (A vs a), and what to do with non-alphabetic characters</li>
+        <li><strong>Define vowels clearly:</strong> In English: a, e, i, o, u (sometimes y)</li>
+        <li><strong>Edge cases:</strong> Empty string, only vowels, only consonants, no alphabetic characters</li>
+        <li><strong>Start simple:</strong> Basic loop approach is most straightforward</li>
+        <li><strong>Character checking:</strong> Use language built-ins (isalpha, isalnum) when available</li>
+        <li><strong>Extensions:</strong> Be ready to count specific vowels or find the most frequent vowel</li>
+        <li><strong>Unicode consideration:</strong> Mention that non-English languages have different vowels</li>
+      </ol>
+    </>
+  }
+  bn={
+    <>
+      <ol>
+        <li><strong>প্রয়োজনীয়তা স্পষ্ট করুন:</strong> জিজ্ঞাসা করুন কেস গুরুত্বপূর্ণ কিনা (A বনাম a), এবং অ-বর্ণমালা অক্ষর নিয়ে কী করতে হবে</li>
+        <li><strong>স্বরবর্ণ স্পষ্টভাবে সংজ্ঞায়িত করুন:</strong> ইংরেজিতে: a, e, i, o, u (কখনও কখনও y)</li>
+        <li><strong>প্রান্তিক ক্ষেত্র:</strong> খালি স্ট্রিং, শুধুমাত্র স্বরবর্ণ, শুধুমাত্র ব্যঞ্জনবর্ণ, কোনো বর্ণমালা অক্ষর নেই</li>
+        <li><strong>সহজ দিয়ে শুরু করুন:</strong> মৌলিক লুপ পদ্ধতি সবচেয়ে সরল</li>
+        <li><strong>অক্ষর পরীক্ষা:</strong> উপলব্ধ থাকলে ভাষা বিল্ট-ইন ব্যবহার করুন (isalpha, isalnum)</li>
+        <li><strong>সম্প্রসারণ:</strong> নির্দিষ্ট স্বরবর্ণ গণনা বা সবচেয়ে ঘন ঘন স্বরবর্ণ খুঁজে পেতে প্রস্তুত থাকুন</li>
+        <li><strong>ইউনিকোড বিবেচনা:</strong> উল্লেখ করুন যে অ-ইংরেজি ভাষায় ভিন্ন স্বরবর্ণ রয়েছে</li>
+      </ol>
+    </>
+  }
+/>
