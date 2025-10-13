@@ -182,10 +182,11 @@ export default function TestPage() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-blue-600 dark:text-blue-400 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-gray-400">Loading questions...</p>
+          <Loader2 className="w-16 h-16 text-primary animate-spin mx-auto mb-6" />
+          <h2 className="text-2xl font-bold text-foreground mb-2">Preparing Your Test</h2>
+          <p className="text-muted-foreground">Loading questions...</p>
         </div>
       </div>
     );
@@ -194,18 +195,20 @@ export default function TestPage() {
   // Error state
   if (error || !testState) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="text-center max-w-md">
-          <AlertTriangle className="w-12 h-12 text-red-600 dark:text-red-400 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-destructive/10 mb-6">
+            <AlertTriangle className="w-8 h-8 text-destructive" />
+          </div>
+          <h2 className="text-2xl font-bold text-foreground mb-3">
             Error Loading Test
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
+          <p className="text-muted-foreground mb-8">
             {error || 'Failed to load test. Please try again.'}
           </p>
           <button
             onClick={() => router.push('/test-your-skill')}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
+            className="px-8 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             Back to Tests
           </button>
@@ -224,14 +227,19 @@ export default function TestPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-      <div className="container max-w-4xl mx-auto px-4">
-        {/* Header */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-              {getTopicDisplayName(topic)} Test
-            </h1>
+    <div className="min-h-screen bg-background">
+      <div className="container max-w-5xl mx-auto px-4 py-8">
+        {/* Header Card */}
+        <div className="bg-card border rounded-2xl shadow-sm p-6 mb-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-1">
+                {getTopicDisplayName(topic)} Test
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                Question {testState.currentQuestionIndex + 1} of {testState.questions.length}
+              </p>
+            </div>
             <TestTimer
               timeRemaining={testState.timeRemaining}
               onTimeExpired={handleTimeExpired}
@@ -244,14 +252,22 @@ export default function TestPage() {
           />
         </div>
 
-        {/* Question */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-8 mb-6">
+        {/* Question Card */}
+        <div className="bg-card border rounded-2xl shadow-sm p-8 md:p-10 mb-6">
+          {/* Difficulty Badge */}
           <div className="mb-6">
-            <span className="inline-block px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-semibold rounded-full">
+            <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium ${
+              currentQuestion.difficulty === 'easy'
+                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                : currentQuestion.difficulty === 'medium'
+                ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
+                : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+            }`}>
               {currentQuestion.difficulty.charAt(0).toUpperCase() + currentQuestion.difficulty.slice(1)}
             </span>
           </div>
 
+          {/* Question Content */}
           {currentQuestion.type === 'mcq' ? (
             <MCQQuestionComponent
               question={currentQuestion as MCQQuestion}
@@ -267,11 +283,11 @@ export default function TestPage() {
           )}
         </div>
 
-        {/* Actions */}
+        {/* Action Buttons */}
         <div className="flex items-center justify-between gap-4">
           <button
             onClick={handleFinish}
-            className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg transition-colors"
+            className="px-6 py-3 bg-muted hover:bg-muted/80 text-foreground font-semibold rounded-xl transition-all duration-300 border border-border"
           >
             Finish Test
           </button>
@@ -279,10 +295,10 @@ export default function TestPage() {
           <button
             onClick={handleNext}
             disabled={!isAnswered}
-            className={`px-8 py-3 font-semibold rounded-lg transition-colors ${
+            className={`px-8 py-3 font-semibold rounded-xl transition-all duration-300 ${
               isAnswered
-                ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                : 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-500 cursor-not-allowed'
+                ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl'
+                : 'bg-muted text-muted-foreground cursor-not-allowed'
             }`}
           >
             {testState.currentQuestionIndex === testState.questions.length - 1
@@ -291,37 +307,40 @@ export default function TestPage() {
           </button>
         </div>
 
-        {/* Warning */}
+        {/* Warning Message */}
         {!isAnswered && (
-          <p className="text-center text-sm text-orange-600 dark:text-orange-400 mt-4">
-            Please answer the current question before proceeding
-          </p>
+          <div className="mt-4 flex items-center justify-center gap-2 text-sm text-orange-600 dark:text-orange-400">
+            <AlertTriangle className="w-4 h-4" />
+            <p>Please answer the current question before proceeding</p>
+          </div>
         )}
       </div>
 
       {/* Reload Warning Dialog */}
       {showReloadDialog && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-card border rounded-2xl shadow-2xl max-w-md w-full p-8">
             <div className="flex items-center gap-3 mb-4">
-              <AlertTriangle className="w-6 h-6 text-orange-600 dark:text-orange-400" />
-              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-orange-100 dark:bg-orange-900/30">
+                <AlertTriangle className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+              </div>
+              <h2 className="text-2xl font-bold text-foreground">
                 Exit Test?
               </h2>
             </div>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
+            <p className="text-muted-foreground mb-8 leading-relaxed">
               If you reload the page, all quizzes will end and you will have to start again from the beginning. Your current progress will be lost.
             </p>
             <div className="flex gap-3">
               <button
                 onClick={handleCancelExit}
-                className="flex-1 px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 font-semibold rounded-lg transition-colors"
+                className="flex-1 px-6 py-3 bg-muted hover:bg-muted/80 text-foreground font-semibold rounded-xl transition-all duration-300 border border-border"
               >
                 Cancel
               </button>
               <button
                 onClick={handleConfirmExit}
-                className="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors"
+                className="flex-1 px-6 py-3 bg-destructive hover:bg-destructive/90 text-destructive-foreground font-semibold rounded-xl transition-all duration-300 shadow-lg"
               >
                 Confirm Exit
               </button>

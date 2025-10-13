@@ -1,0 +1,845 @@
+---
+title: Programming Tricks
+description: Common programming tricks and techniques for problem solving
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+# Programming Tricks
+
+A collection of useful programming tricks and techniques that are commonly asked in interviews.
+
+## Swap Variables Without Third Variable
+
+### Using Arithmetic Operations
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a = 5;
+    int b = 10;
+
+    a = a + b;  // a = 15
+    b = a - b;  // b = 5
+    a = a - b;  // a = 10
+
+    cout << a << " " << b << endl; // 10 5
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+a = 5
+b = 10
+
+a = a + b  # a = 15
+b = a - b  # b = 5
+a = a - b  # a = 10
+
+print(a, b)  # 10 5
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+let a = 5;
+let b = 10;
+
+a = a + b;  // a = 15
+b = a - b;  // b = 5
+a = a - b;  // a = 10
+
+console.log(a, b); // 10, 5
+```
+  </Tab>
+</Tabs>
+
+### Using XOR Operator
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a = 5;
+    int b = 10;
+
+    a = a ^ b;
+    b = a ^ b;
+    a = a ^ b;
+
+    cout << a << " " << b << endl; // 10 5
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+a = 5
+b = 10
+
+a = a ^ b
+b = a ^ b
+a = a ^ b
+
+print(a, b)  # 10 5
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+let a = 5;
+let b = 10;
+
+a = a ^ b;
+b = a ^ b;
+a = a ^ b;
+
+console.log(a, b); // 10, 5
+```
+  </Tab>
+</Tabs>
+
+### Using Language-Specific Features
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <utility>
+using namespace std;
+
+int main() {
+    int a = 5;
+    int b = 10;
+
+    // Using std::swap
+    swap(a, b);
+
+    cout << a << " " << b << endl; // 10 5
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+a = 5
+b = 10
+
+# Using tuple unpacking
+a, b = b, a
+
+print(a, b)  # 10 5
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+let a = 5;
+let b = 10;
+
+// Using destructuring
+[a, b] = [b, a];
+
+console.log(a, b); // 10, 5
+```
+  </Tab>
+</Tabs>
+
+## Loop Without For Statement
+
+### Using While Loop
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int i = 0;
+    while (i < 5) {
+        cout << i << endl;
+        i++;
+    }
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+i = 0
+while i < 5:
+    print(i)
+    i += 1
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+let i = 0;
+while (i < 5) {
+  console.log(i);
+  i++;
+}
+```
+  </Tab>
+</Tabs>
+
+### Using Recursion
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+void loop(int i, int max) {
+    if (i >= max) return;
+    cout << i << endl;
+    loop(i + 1, max);
+}
+
+int main() {
+    loop(0, 5);
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def loop(i, max_val):
+    if i >= max_val:
+        return
+    print(i)
+    loop(i + 1, max_val)
+
+loop(0, 5)
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function loop(i, max) {
+  if (i >= max) return;
+  console.log(i);
+  loop(i + 1, max);
+}
+
+loop(0, 5);
+```
+  </Tab>
+</Tabs>
+
+## Reverse a String Without Built-in Methods
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+string reverseString(string str) {
+    string reversed = "";
+    int i = str.length() - 1;
+
+    while (i >= 0) {
+        reversed = reversed + str[i];
+        i--;
+    }
+
+    return reversed;
+}
+
+int main() {
+    cout << reverseString("hello") << endl; // "olleh"
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def reverse_string(s):
+    reversed_str = ''
+    i = len(s) - 1
+
+    while i >= 0:
+        reversed_str = reversed_str + s[i]
+        i -= 1
+
+    return reversed_str
+
+print(reverse_string("hello"))  # "olleh"
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function reverseString(str) {
+  let reversed = '';
+  let i = str.length - 1;
+
+  while (i >= 0) {
+    reversed = reversed + str[i];
+    i--;
+  }
+
+  return reversed;
+}
+
+console.log(reverseString("hello")); // "olleh"
+```
+  </Tab>
+</Tabs>
+
+## Check Palindrome Without Reverse
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+bool isPalindrome(string str) {
+    int left = 0;
+    int right = str.length() - 1;
+
+    while (left < right) {
+        if (str[left] != str[right]) {
+            return false;
+        }
+        left++;
+        right--;
+    }
+
+    return true;
+}
+
+int main() {
+    cout << isPalindrome("racecar") << endl; // 1 (true)
+    cout << isPalindrome("hello") << endl;   // 0 (false)
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def is_palindrome(s):
+    left = 0
+    right = len(s) - 1
+
+    while left < right:
+        if s[left] != s[right]:
+            return False
+        left += 1
+        right -= 1
+
+    return True
+
+print(is_palindrome("racecar"))  # True
+print(is_palindrome("hello"))    # False
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function isPalindrome(str) {
+  let left = 0;
+  let right = str.length - 1;
+
+  while (left < right) {
+    if (str[left] !== str[right]) {
+      return false;
+    }
+    left++;
+    right--;
+  }
+
+  return true;
+}
+
+console.log(isPalindrome("racecar")); // true
+console.log(isPalindrome("hello")); // false
+```
+  </Tab>
+</Tabs>
+
+## Find Maximum Without Comparison Operators
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int findMax(int a, int b) {
+    return max(a, b);
+}
+
+// Using bit manipulation
+int findMaxBitwise(int a, int b) {
+    int diff = a - b;
+    int sign = (diff >> 31) & 1; // 1 if negative, 0 if positive
+    return a - (sign * diff);
+}
+
+int main() {
+    cout << findMax(10, 20) << endl;        // 20
+    cout << findMaxBitwise(10, 20) << endl; // 20
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def find_max(a, b):
+    return max(a, b)
+
+# Using bit manipulation
+def find_max_bitwise(a, b):
+    diff = a - b
+    # In Python, need to handle differently due to arbitrary precision
+    sign = 1 if diff < 0 else 0
+    return a - (sign * diff)
+
+print(find_max(10, 20))         # 20
+print(find_max_bitwise(10, 20)) # 20
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function findMax(a, b) {
+  return Math.max(a, b);
+}
+
+// Using bit manipulation
+function findMaxBitwise(a, b) {
+  const diff = a - b;
+  const sign = (diff >> 31) & 1; // 1 if negative, 0 if positive
+  return a - (sign * diff);
+}
+
+console.log(findMax(10, 20)); // 20
+console.log(findMaxBitwise(10, 20)); // 20
+```
+  </Tab>
+</Tabs>
+
+## Generate Fibonacci Without Loop
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <map>
+using namespace std;
+
+// Simple recursion
+int fibonacci(int n) {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+// With memoization
+map<int, int> memo;
+
+int fibonacciMemo(int n) {
+    if (memo.find(n) != memo.end())
+        return memo[n];
+    if (n <= 1) return n;
+
+    memo[n] = fibonacciMemo(n - 1) + fibonacciMemo(n - 2);
+    return memo[n];
+}
+
+int main() {
+    cout << fibonacci(7) << endl;     // 13
+    cout << fibonacciMemo(7) << endl; // 13
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+# Simple recursion
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# With memoization
+def fibonacci_memo(n, memo=None):
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n <= 1:
+        return n
+
+    memo[n] = fibonacci_memo(n - 1, memo) + fibonacci_memo(n - 2, memo)
+    return memo[n]
+
+print(fibonacci(7))       # 13
+print(fibonacci_memo(7))  # 13
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+// Simple recursion
+function fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+// With memoization
+function fibonacciMemo(n, memo = {}) {
+  if (n in memo) return memo[n];
+  if (n <= 1) return n;
+
+  memo[n] = fibonacciMemo(n - 1, memo) + fibonacciMemo(n - 2, memo);
+  return memo[n];
+}
+
+console.log(fibonacci(7)); // 13
+console.log(fibonacciMemo(7)); // 13
+```
+  </Tab>
+</Tabs>
+
+## Check Prime Without Modulo
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+bool isPrime(int num) {
+    if (num <= 1) return false;
+    if (num <= 3) return true;
+
+    int i = 2;
+    while (i * i <= num) {
+        int temp = num;
+        while (temp >= i) {
+            temp = temp - i;
+        }
+        if (temp == 0) return false;
+        i++;
+    }
+
+    return true;
+}
+
+int main() {
+    cout << isPrime(17) << endl; // 1 (true)
+    cout << isPrime(18) << endl; // 0 (false)
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def is_prime(num):
+    if num <= 1:
+        return False
+    if num <= 3:
+        return True
+
+    i = 2
+    while i * i <= num:
+        temp = num
+        while temp >= i:
+            temp = temp - i
+        if temp == 0:
+            return False
+        i += 1
+
+    return True
+
+print(is_prime(17))  # True
+print(is_prime(18))  # False
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function isPrime(num) {
+  if (num <= 1) return false;
+  if (num <= 3) return true;
+
+  let i = 2;
+  while (i * i <= num) {
+    let temp = num;
+    while (temp >= i) {
+      temp = temp - i;
+    }
+    if (temp === 0) return false;
+    i++;
+  }
+
+  return true;
+}
+
+console.log(isPrime(17)); // true
+console.log(isPrime(18)); // false
+```
+  </Tab>
+</Tabs>
+
+## Remove Duplicates Without Set
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> removeDuplicates(vector<int> arr) {
+    vector<int> result;
+
+    for (int i = 0; i < arr.size(); i++) {
+        bool isDuplicate = false;
+
+        for (int j = 0; j < result.size(); j++) {
+            if (arr[i] == result[j]) {
+                isDuplicate = true;
+                break;
+            }
+        }
+
+        if (!isDuplicate) {
+            result.push_back(arr[i]);
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 2, 3, 4, 4, 5};
+    vector<int> result = removeDuplicates(arr);
+
+    for (int num : result) {
+        cout << num << " "; // 1 2 3 4 5
+    }
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def remove_duplicates(arr):
+    result = []
+
+    for num in arr:
+        is_duplicate = False
+
+        for r in result:
+            if num == r:
+                is_duplicate = True
+                break
+
+        if not is_duplicate:
+            result.append(num)
+
+    return result
+
+print(remove_duplicates([1, 2, 2, 3, 4, 4, 5]))  # [1, 2, 3, 4, 5]
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function removeDuplicates(arr) {
+  const result = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    let isDuplicate = false;
+
+    for (let j = 0; j < result.length; j++) {
+      if (arr[i] === result[j]) {
+        isDuplicate = true;
+        break;
+      }
+    }
+
+    if (!isDuplicate) {
+      result.push(arr[i]);
+    }
+  }
+
+  return result;
+}
+
+console.log(removeDuplicates([1, 2, 2, 3, 4, 4, 5])); // [1, 2, 3, 4, 5]
+```
+  </Tab>
+</Tabs>
+
+## Multiply Without Multiplication Operator
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int multiply(int a, int b) {
+    int result = 0;
+    bool isNegative = false;
+
+    if (b < 0) {
+        b = -b;
+        isNegative = true;
+    }
+
+    while (b > 0) {
+        result = result + a;
+        b--;
+    }
+
+    return isNegative ? -result : result;
+}
+
+int main() {
+    cout << multiply(5, 3) << endl;   // 15
+    cout << multiply(4, -3) << endl;  // -12
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def multiply(a, b):
+    result = 0
+    is_negative = False
+
+    if b < 0:
+        b = -b
+        is_negative = True
+
+    while b > 0:
+        result = result + a
+        b -= 1
+
+    return -result if is_negative else result
+
+print(multiply(5, 3))   # 15
+print(multiply(4, -3))  # -12
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function multiply(a, b) {
+  let result = 0;
+  let isNegative = false;
+
+  if (b < 0) {
+    b = -b;
+    isNegative = true;
+  }
+
+  while (b > 0) {
+    result = result + a;
+    b--;
+  }
+
+  return isNegative ? -result : result;
+}
+
+console.log(multiply(5, 3)); // 15
+console.log(multiply(4, -3)); // -12
+```
+  </Tab>
+</Tabs>
+
+## Power Without Math.pow
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int power(int base, int exponent) {
+    if (exponent == 0) return 1;
+    if (exponent == 1) return base;
+
+    int result = base;
+    int count = 1;
+
+    while (count < exponent) {
+        result = result * base;
+        count++;
+    }
+
+    return result;
+}
+
+int main() {
+    cout << power(2, 3) << endl; // 8
+    cout << power(5, 2) << endl; // 25
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def power(base, exponent):
+    if exponent == 0:
+        return 1
+    if exponent == 1:
+        return base
+
+    result = base
+    count = 1
+
+    while count < exponent:
+        result = result * base
+        count += 1
+
+    return result
+
+print(power(2, 3))  # 8
+print(power(5, 2))  # 25
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function power(base, exponent) {
+  if (exponent === 0) return 1;
+  if (exponent === 1) return base;
+
+  let result = base;
+  let count = 1;
+
+  while (count < exponent) {
+    result = result * base;
+    count++;
+  }
+
+  return result;
+}
+
+console.log(power(2, 3)); // 8
+console.log(power(5, 2)); // 25
+```
+  </Tab>
+</Tabs>
+
+## Tips for Using These Tricks
+
+> **Note:** While these tricks are interesting and useful for interviews, always prefer:
+> - Readable and maintainable code in production
+> - Built-in methods when they're available and efficient
+> - Clear variable names and comments
+> - Performance considerations for large datasets
+
+These techniques demonstrate understanding of:
+- Language fundamentals
+- Algorithm design
+- Problem-solving creativity
+- Computational thinking
