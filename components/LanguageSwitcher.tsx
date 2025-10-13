@@ -31,14 +31,15 @@ export function LanguageSwitcher() {
   const { language, setLanguage } = useLanguageState();
 
   return (
-    <div className="fixed top-20 right-4 z-50">
+    <div className="flex justify-start mb-4">
       <select
         value={language}
         onChange={(e) => setLanguage(e.target.value as Language)}
         className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium shadow-sm hover:shadow-md transition-shadow cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
+        aria-label="Select language"
       >
-        <option value="en">English</option>
-        <option value="bn">বাংলা (Bangla)</option>
+        <option value="en">🇬🇧 English</option>
+        <option value="bn">🇧🇩 বাংলা</option>
       </select>
     </div>
   );
