@@ -1,1 +1,1 @@
-make different file for Swap Variables Without Third Variable, Loop Without For Statement. remove others problem
+first swap variabe then loop here. but in site its show first loop then swap why?
