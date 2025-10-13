@@ -1,0 +1,502 @@
+---
+title: 1. Swap Two Numbers
+description: Learn how to swap two numbers using different approaches
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Swap Two Numbers" bn="দুটি সংখ্যা সোয়াপ করা" />
+
+<TranslatedText
+  en="Given two variables a=50 and b=10, swap their values so that a=10 and b=50."
+  bn="দুটি ভেরিয়েবল a=50 এবং b=10 দেওয়া আছে, তাদের মান সোয়াপ করুন যাতে a=10 এবং b=50 হয়।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong></p>
+      <ul>
+        <li>a = 50</li>
+        <li>b = 10</li>
+      </ul>
+      <p><strong>Output:</strong></p>
+      <ul>
+        <li>a = 10</li>
+        <li>b = 50</li>
+      </ul>
+      <p><strong>Task:</strong> Swap the values of a and b</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong></p>
+      <ul>
+        <li>a = 50</li>
+        <li>b = 10</li>
+      </ul>
+      <p><strong>আউটপুট:</strong></p>
+      <ul>
+        <li>a = 10</li>
+        <li>b = 50</li>
+      </ul>
+      <p><strong>কাজ:</strong> a এবং b এর মান সোয়াপ করুন</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Using Temporary Variable" bn="পদ্ধতি ১: অস্থায়ী ভেরিয়েবল ব্যবহার করে" />
+
+<TranslatedText
+  en={<p>The most straightforward approach is to use a third temporary variable to hold one value during the swap.</p>}
+  bn={<p>সবচেয়ে সহজ পদ্ধতি হল সোয়াপের সময় একটি মান ধরে রাখতে একটি তৃতীয় অস্থায়ী ভেরিয়েবল ব্যবহার করা।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a = 50;
+    int b = 10;
+
+    cout << "Before swap: a = " << a << ", b = " << b << endl;
+
+    // Swap using temporary variable
+    int temp = a;  // Store a in temp
+    a = b;         // Assign b to a
+    b = temp;      // Assign temp (original a) to b
+
+    cout << "After swap: a = " << a << ", b = " << b << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Before swap: a = 50, b = 10
+After swap: a = 10, b = 50
+```
+  </Tab>
+  <Tab value="Python">
+```python
+a = 50
+b = 10
+
+print(f"Before swap: a = {a}, b = {b}")
+
+# Swap using temporary variable
+temp = a  # Store a in temp
+a = b     # Assign b to a
+b = temp  # Assign temp (original a) to b
+
+print(f"After swap: a = {a}, b = {b}")
+```
+
+**Output:**
+```
+Before swap: a = 50, b = 10
+After swap: a = 10, b = 50
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+let a = 50;
+let b = 10;
+
+console.log(`Before swap: a = ${a}, b = ${b}`);
+
+// Swap using temporary variable
+let temp = a;  // Store a in temp
+a = b;         // Assign b to a
+b = temp;      // Assign temp (original a) to b
+
+console.log(`After swap: a = ${a}, b = ${b}`);
+```
+
+**Output:**
+```
+Before swap: a = 50, b = 10
+After swap: a = 10, b = 50
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(1)</p>
+      <p><strong>Space Complexity:</strong> O(1) - uses one extra variable</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(1)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1) - একটি অতিরিক্ত ভেরিয়েবল ব্যবহার করে</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: Using Arithmetic Operations (Without Temp)" bn="পদ্ধতি ২: গাণিতিক অপারেশন ব্যবহার করে (Temp ছাড়া)" />
+
+<TranslatedText
+  en={<p>We can swap without using a temporary variable by using addition and subtraction.</p>}
+  bn={<p>যোগ এবং বিয়োগ ব্যবহার করে আমরা অস্থায়ী ভেরিয়েবল ছাড়াই সোয়াপ করতে পারি।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a = 50;
+    int b = 10;
+
+    cout << "Before swap: a = " << a << ", b = " << b << endl;
+
+    // Swap without temporary variable
+    a = a + b;  // a = 50 + 10 = 60
+    b = a - b;  // b = 60 - 10 = 50
+    a = a - b;  // a = 60 - 50 = 10
+
+    cout << "After swap: a = " << a << ", b = " << b << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+a = 50
+b = 10
+
+print(f"Before swap: a = {a}, b = {b}")
+
+# Swap without temporary variable
+a = a + b  # a = 50 + 10 = 60
+b = a - b  # b = 60 - 10 = 50
+a = a - b  # a = 60 - 50 = 10
+
+print(f"After swap: a = {a}, b = {b}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+let a = 50;
+let b = 10;
+
+console.log(`Before swap: a = ${a}, b = ${b}`);
+
+// Swap without temporary variable
+a = a + b;  // a = 50 + 10 = 60
+b = a - b;  // b = 60 - 10 = 50
+a = a - b;  // a = 60 - 50 = 10
+
+console.log(`After swap: a = ${a}, b = ${b}`);
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(1)</p>
+      <p><strong>Space Complexity:</strong> O(1) - no extra variable needed</p>
+      <p><strong>Note:</strong> This approach may cause overflow for very large numbers.</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(1)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1) - কোন অতিরিক্ত ভেরিয়েবল প্রয়োজন নেই</p>
+      <p><strong>নোট:</strong> এই পদ্ধতি খুব বড় সংখ্যার জন্য ওভারফ্লো হতে পারে।</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 3: Using XOR (Bitwise Operation)" bn="পদ্ধতি ৩: XOR ব্যবহার করে (বিটওয়াইজ অপারেশন)" />
+
+<TranslatedText
+  en={<p>XOR operation has a unique property: a ^ a = 0 and a ^ 0 = a. We can use this to swap without temporary variable or overflow issues.</p>}
+  bn={<p>XOR অপারেশনের একটি অনন্য বৈশিষ্ট্য রয়েছে: a ^ a = 0 এবং a ^ 0 = a। আমরা এটি ব্যবহার করে অস্থায়ী ভেরিয়েবল বা ওভারফ্লো সমস্যা ছাড়াই সোয়াপ করতে পারি।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a = 50;
+    int b = 10;
+
+    cout << "Before swap: a = " << a << ", b = " << b << endl;
+
+    // Swap using XOR
+    a = a ^ b;  // a = 50 ^ 10
+    b = a ^ b;  // b = (50 ^ 10) ^ 10 = 50
+    a = a ^ b;  // a = (50 ^ 10) ^ 50 = 10
+
+    cout << "After swap: a = " << a << ", b = " << b << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+a = 50
+b = 10
+
+print(f"Before swap: a = {a}, b = {b}")
+
+# Swap using XOR
+a = a ^ b  # a = 50 ^ 10
+b = a ^ b  # b = (50 ^ 10) ^ 10 = 50
+a = a ^ b  # a = (50 ^ 10) ^ 50 = 10
+
+print(f"After swap: a = {a}, b = {b}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+let a = 50;
+let b = 10;
+
+console.log(`Before swap: a = ${a}, b = ${b}`);
+
+// Swap using XOR
+a = a ^ b;  // a = 50 ^ 10
+b = a ^ b;  // b = (50 ^ 10) ^ 10 = 50
+a = a ^ b;  // a = (50 ^ 10) ^ 50 = 10
+
+console.log(`After swap: a = ${a}, b = ${b}`);
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(1)</p>
+      <p><strong>Space Complexity:</strong> O(1)</p>
+      <p><strong>Advantages:</strong> No overflow issues, no extra space</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(1)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1)</p>
+      <p><strong>সুবিধা:</strong> কোন ওভারফ্লো সমস্যা নেই, কোন অতিরিক্ত স্থান নেই</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 4: Using Language-Specific Features" bn="পদ্ধতি ৪: ভাষা-নির্দিষ্ট বৈশিষ্ট্য ব্যবহার করে" />
+
+<TranslatedText
+  en={<p>Modern programming languages provide elegant built-in ways to swap variables.</p>}
+  bn={<p>আধুনিক প্রোগ্রামিং ভাষাগুলি ভেরিয়েবল সোয়াপ করার জন্য মার্জিত বিল্ট-ইন উপায় প্রদান করে।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <utility>  // for std::swap
+using namespace std;
+
+int main() {
+    int a = 50;
+    int b = 10;
+
+    cout << "Before swap: a = " << a << ", b = " << b << endl;
+
+    // Swap using std::swap
+    swap(a, b);
+
+    cout << "After swap: a = " << a << ", b = " << b << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+a = 50
+b = 10
+
+print(f"Before swap: a = {a}, b = {b}")
+
+# Pythonic way - tuple unpacking
+a, b = b, a
+
+print(f"After swap: a = {a}, b = {b}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+let a = 50;
+let b = 10;
+
+console.log(`Before swap: a = ${a}, b = ${b}`);
+
+// ES6 destructuring
+[a, b] = [b, a];
+
+console.log(`After swap: a = ${a}, b = ${b}`);
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Best for Production:</strong> Most readable and maintainable</p>
+      <p><strong>Recommended:</strong> Use this approach in real-world code</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>প্রোডাকশনের জন্য সেরা:</strong> সবচেয়ে পাঠযোগ্য এবং রক্ষণাবেক্ষণযোগ্য</p>
+      <p><strong>প্রস্তাবিত:</strong> বাস্তব-বিশ্বের কোডে এই পদ্ধতি ব্যবহার করুন</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণী" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Approach</th>
+          <th>Extra Space</th>
+          <th>Overflow Risk</th>
+          <th>Readability</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Temporary Variable</td>
+          <td>Yes (1 var)</td>
+          <td>No</td>
+          <td>High</td>
+          <td>Beginners, clear code</td>
+        </tr>
+        <tr>
+          <td>Arithmetic</td>
+          <td>No</td>
+          <td>Yes</td>
+          <td>Medium</td>
+          <td>Interviews, space-constrained</td>
+        </tr>
+        <tr>
+          <td>XOR</td>
+          <td>No</td>
+          <td>No</td>
+          <td>Low</td>
+          <td>Interviews, integers only</td>
+        </tr>
+        <tr>
+          <td>Built-in</td>
+          <td>Depends</td>
+          <td>No</td>
+          <td>Very High</td>
+          <td>Production code</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>পদ্ধতি</th>
+          <th>অতিরিক্ত স্থান</th>
+          <th>ওভারফ্লো ঝুঁকি</th>
+          <th>পাঠযোগ্যতা</th>
+          <th>সেরা কখন</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>অস্থায়ী ভেরিয়েবল</td>
+          <td>হ্যাঁ (১টি)</td>
+          <td>না</td>
+          <td>উচ্চ</td>
+          <td>শিক্ষানবিস, স্পষ্ট কোড</td>
+        </tr>
+        <tr>
+          <td>গাণিতিক</td>
+          <td>না</td>
+          <td>হ্যাঁ</td>
+          <td>মাঝারি</td>
+          <td>ইন্টারভিউ, স্থান-সীমিত</td>
+        </tr>
+        <tr>
+          <td>XOR</td>
+          <td>না</td>
+          <td>না</td>
+          <td>নিম্ন</td>
+          <td>ইন্টারভিউ, শুধুমাত্র পূর্ণসংখ্যা</td>
+        </tr>
+        <tr>
+          <td>বিল্ট-ইন</td>
+          <td>নির্ভর করে</td>
+          <td>না</td>
+          <td>অতি উচ্চ</td>
+          <td>প্রোডাকশন কোড</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Always start with the temporary variable approach if unsure</li>
+          <li>Mention multiple approaches to show problem-solving skills</li>
+          <li>Discuss trade-offs (space vs readability vs overflow)</li>
+          <li>For production: use language built-in features</li>
+          <li>For interviews: show knowledge of arithmetic or XOR method</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>অনিশ্চিত থাকলে সর্বদা অস্থায়ী ভেরিয়েবল পদ্ধতি দিয়ে শুরু করুন</li>
+          <li>সমস্যা সমাধানের দক্ষতা দেখাতে একাধিক পদ্ধতি উল্লেখ করুন</li>
+          <li>ট্রেড-অফ নিয়ে আলোচনা করুন (স্থান বনাম পাঠযোগ্যতা বনাম ওভারফ্লো)</li>
+          <li>প্রোডাকশনের জন্য: ভাষা বিল্ট-ইন বৈশিষ্ট্য ব্যবহার করুন</li>
+          <li>ইন্টারভিউয়ের জন্য: গাণিতিক বা XOR পদ্ধতির জ্ঞান দেখান</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

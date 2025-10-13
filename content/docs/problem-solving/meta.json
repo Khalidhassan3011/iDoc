@@ -3,5 +3,5 @@
   "description": "Problem solving and coding challenges",
   "root": true,
   "icon": "Puzzle",
-  "pages": ["index", "tricks"]
+  "pages": ["index", "tricks", "top-100"]
 }

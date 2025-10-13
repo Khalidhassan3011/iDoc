@@ -1,8 +1,8 @@
-./content/docs/problem-solving/tricks/memory-pointer-tricks.mdx
-Error evaluating Node.js code
-129:3-129:9: memory-pointer-tricks.mdx:129:3-129:9: Expected the closing tag `</Tab>` either after the end of `listItem` (130:23) or another opening tag after the start of `listItem` (128:1)
+swiping Program
+like a=50;
+b=10;
+output:- b=50, and a =10
 
+create a file inside top-100. then explain and solve this problem. add it on meta.json
 
-Call Stack
-5
-
+for structure follow content/docs/problem-solving/tricks/swap-variables.mdx
