@@ -1,0 +1,576 @@
+---
+title: 5. Reverse String Without Loop
+description: Learn creative approaches to reverse a string without using loops or built-in reverse functions
+---
+
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Reverse String Without Loop or Built-in Function" bn="লুপ বা বিল্ট-ইন ফাংশন ছাড়া স্ট্রিং রিভার্স করুন" />
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p>Write a program that reverses a string without using any loops (for, while, do-while) or built-in reverse functions.</p>
+      <p><strong>Input:</strong> <code>"shirsh"</code></p>
+      <p><strong>Output:</strong> <code>"hsrihs"</code></p>
+      <p><strong>Constraint:</strong> No loops (for/while/do-while) and no built-in reverse functions allowed</p>
+    </>
+  }
+  bn={
+    <>
+      <p>কোনো লুপ (for, while, do-while) বা বিল্ট-ইন রিভার্স ফাংশন ব্যবহার না করে একটি স্ট্রিং রিভার্স করার একটি প্রোগ্রাম লিখুন।</p>
+      <p><strong>ইনপুট:</strong> <code>"shirsh"</code></p>
+      <p><strong>আউটপুট:</strong> <code>"hsrihs"</code></p>
+      <p><strong>সীমাবদ্ধতা:</strong> কোনো লুপ (for/while/do-while) এবং কোনো বিল্ট-ইন রিভার্স ফাংশন অনুমোদিত নয়</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 1: Recursion (Most Common)" bn="পদ্ধতি ১: রিকার্শন (সবচেয়ে সাধারণ)" />
+
+<TranslatedText
+  en="Use recursion to process one character at a time and build the reversed string from the end."
+  bn="একবারে একটি অক্ষর প্রসেস করতে এবং শেষ থেকে বিপরীত স্ট্রিং তৈরি করতে রিকার্শন ব্যবহার করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+string reverseRecursive(string str) {
+    // Base case: empty or single character
+    if (str.length() <= 1) {
+        return str;
+    }
+
+    // Recursive case: last character + reverse of remaining string
+    return str[str.length() - 1] + reverseRecursive(str.substr(0, str.length() - 1));
+}
+
+// Alternative approach using index
+string reverseRecursiveIndex(string str, int index = 0) {
+    // Base case: reached end of string
+    if (index >= str.length()) {
+        return "";
+    }
+
+    // Recursive case: reverse rest + current character
+    return reverseRecursiveIndex(str, index + 1) + str[index];
+}
+
+int main() {
+    string name = "shirsh";
+
+    cout << "Original: " << name << endl;
+    cout << "Reversed (method 1): " << reverseRecursive(name) << endl;
+    cout << "Reversed (method 2): " << reverseRecursiveIndex(name) << endl;
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def reverse_recursive(s):
+    # Base case: empty or single character
+    if len(s) <= 1:
+        return s
+
+    # Recursive case: last character + reverse of remaining string
+    return s[-1] + reverse_recursive(s[:-1])
+
+# Alternative approach using index
+def reverse_recursive_index(s, index=0):
+    # Base case: reached end of string
+    if index >= len(s):
+        return ""
+
+    # Recursive case: reverse rest + current character
+    return reverse_recursive_index(s, index + 1) + s[index]
+
+# Test
+name = "shirsh"
+print(f"Original: {name}")
+print(f"Reversed (method 1): {reverse_recursive(name)}")
+print(f"Reversed (method 2): {reverse_recursive_index(name)}")
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function reverseRecursive(str) {
+    // Base case: empty or single character
+    if (str.length <= 1) {
+        return str;
+    }
+
+    // Recursive case: last character + reverse of remaining string
+    return str[str.length - 1] + reverseRecursive(str.substring(0, str.length - 1));
+}
+
+// Alternative approach using index
+function reverseRecursiveIndex(str, index = 0) {
+    // Base case: reached end of string
+    if (index >= str.length) {
+        return "";
+    }
+
+    // Recursive case: reverse rest + current character
+    return reverseRecursiveIndex(str, index + 1) + str[index];
+}
+
+// Test
+const name = "shirsh";
+console.log(`Original: ${name}`);
+console.log(`Reversed (method 1): ${reverseRecursive(name)}`);
+console.log(`Reversed (method 2): ${reverseRecursiveIndex(name)}`);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n²) - String concatenation in each recursive call</p>
+      <p><strong>Space Complexity:</strong> O(n) - Recursion stack depth</p>
+      <p><strong>How it works:</strong></p>
+      <ul>
+        <li>Method 1: Takes last character and appends reverse of remaining string</li>
+        <li>Method 2: Processes from start, builds reversed string on return from recursion</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n²) - প্রতিটি রিকার্সিভ কলে স্ট্রিং সংযোজন</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(n) - রিকার্শন স্ট্যাক গভীরতা</p>
+      <p><strong>এটি কীভাবে কাজ করে:</strong></p>
+      <ul>
+        <li>পদ্ধতি ১: শেষ অক্ষর নেয় এবং অবশিষ্ট স্ট্রিংয়ের বিপরীত যুক্ত করে</li>
+        <li>পদ্ধতি ২: শুরু থেকে প্রসেস করে, রিকার্শন থেকে ফেরার সময় বিপরীত স্ট্রিং তৈরি করে</li>
+      </ul>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 2: Array Methods / Functional Programming" bn="পদ্ধতি ২: অ্যারে মেথড / ফাংশনাল প্রোগ্রামিং" />
+
+<TranslatedText
+  en="Use built-in array methods like reduce, map, or slice with recursion-like behavior."
+  bn="রিকার্শনের মতো আচরণ সহ বিল্ট-ইন অ্যারে মেথড যেমন reduce, map, বা slice ব্যবহার করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <numeric>
+using namespace std;
+
+string reverseUsingAccumulate(string str) {
+    // Use accumulate with custom function
+    return accumulate(str.begin(), str.end(), string(),
+        [](string acc, char c) {
+            return c + acc; // Prepend each character
+        });
+}
+
+int main() {
+    string name = "shirsh";
+
+    cout << "Original: " << name << endl;
+    cout << "Reversed: " << reverseUsingAccumulate(name) << endl;
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+from functools import reduce
+
+def reverse_using_reduce(s):
+    # Use reduce to build reversed string
+    return reduce(lambda acc, char: char + acc, s, "")
+
+# Using list comprehension and join (no explicit loop)
+def reverse_using_join(s):
+    # Convert to list, reverse using slice, join back
+    return "".join([s[i] for i in range(len(s) - 1, -1, -1)])
+
+# Test
+name = "shirsh"
+print(f"Original: {name}")
+print(f"Reversed (reduce): {reverse_using_reduce(name)}")
+print(f"Reversed (join): {reverse_using_join(name)}")
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function reverseUsingReduce(str) {
+    // Use reduce to build reversed string
+    return str.split('').reduce((acc, char) => char + acc, '');
+}
+
+// Using map and join
+function reverseUsingMap(str) {
+    // Split to array, map with indices, join back
+    const arr = str.split('');
+    return arr.map((_, i) => str[str.length - 1 - i]).join('');
+}
+
+// Using spread operator and reduceRight
+function reverseUsingReduceRight(str) {
+    return [...str].reduceRight((acc, char) => acc + char, '');
+}
+
+// Test
+const name = "shirsh";
+console.log(`Original: ${name}`);
+console.log(`Reversed (reduce): ${reverseUsingReduce(name)}`);
+console.log(`Reversed (map): ${reverseUsingMap(name)}`);
+console.log(`Reversed (reduceRight): ${reverseUsingReduceRight(name)}`);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - Each character processed once</p>
+      <p><strong>Space Complexity:</strong> O(n) - New string created</p>
+      <p><strong>Note:</strong> These methods use internal iteration but no explicit loops in your code</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - প্রতিটি অক্ষর একবার প্রসেস করা হয়</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(n) - নতুন স্ট্রিং তৈরি</p>
+      <p><strong>দ্রষ্টব্য:</strong> এই পদ্ধতিগুলি অভ্যন্তরীণ পুনরাবৃত্তি ব্যবহার করে কিন্তু আপনার কোডে কোনো স্পষ্ট লুপ নেই</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 3: String Slicing (Language-Specific)" bn="পদ্ধতি ৩: স্ট্রিং স্লাইসিং (ভাষা-নির্দিষ্ট)" />
+
+<TranslatedText
+  en="Use language features like negative indexing or string slicing operations."
+  bn="নেগেটিভ ইনডেক্সিং বা স্ট্রিং স্লাইসিং অপারেশনের মতো ভাষার বৈশিষ্ট্য ব্যবহার করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+// Using reverse iterators
+string reverseUsingIterators(string str) {
+    return string(str.rbegin(), str.rend());
+}
+
+// Using constructor with reverse iterators
+string reverseUsingConstructor(const string& str) {
+    string result;
+    result.assign(str.rbegin(), str.rend());
+    return result;
+}
+
+int main() {
+    string name = "shirsh";
+
+    cout << "Original: " << name << endl;
+    cout << "Reversed (iterators): " << reverseUsingIterators(name) << endl;
+    cout << "Reversed (constructor): " << reverseUsingConstructor(name) << endl;
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def reverse_using_slice(s):
+    # Python's slice notation with step -1
+    return s[::-1]
+
+def reverse_using_reversed(s):
+    # Using reversed() function and join
+    return ''.join(reversed(s))
+
+# Test
+name = "shirsh"
+print(f"Original: {name}")
+print(f"Reversed (slice): {reverse_using_slice(name)}")
+print(f"Reversed (reversed): {reverse_using_reversed(name)}")
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function reverseUsingSpreadAndReverse(str) {
+    // Convert to array, reverse (built-in), join
+    return [...str].reverse().join('');
+}
+
+function reverseUsingSplitReverse(str) {
+    // Traditional split-reverse-join
+    return str.split('').reverse().join('');
+}
+
+// Test
+const name = "shirsh";
+console.log(`Original: ${name}`);
+console.log(`Reversed (spread): ${reverseUsingSpreadAndReverse(name)}`);
+console.log(`Reversed (split): ${reverseUsingSplitReverse(name)}`);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - Linear time</p>
+      <p><strong>Space Complexity:</strong> O(n) - New string created</p>
+      <p><strong>Important:</strong> Some of these methods use built-in reverse functionality, which may not be allowed depending on interview constraints</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - রৈখিক সময়</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(n) - নতুন স্ট্রিং তৈরি</p>
+      <p><strong>গুরুত্বপূর্ণ:</strong> এই পদ্ধতিগুলির মধ্যে কিছু বিল্ট-ইন রিভার্স কার্যকারিতা ব্যবহার করে, যা ইন্টারভিউ সীমাবদ্ধতার উপর নির্ভর করে অনুমোদিত নাও হতে পারে</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 4: Tail Recursion (Optimized)" bn="পদ্ধতি ৪: টেইল রিকার্শন (অপ্টিমাইজড)" />
+
+<TranslatedText
+  en="Use tail recursion with accumulator to avoid stack overflow for large strings."
+  bn="বড় স্ট্রিংগুলির জন্য স্ট্যাক ওভারফ্লো এড়াতে অ্যাকিউমুলেটর সহ টেইল রিকার্শন ব্যবহার করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+string reverseTailRecursive(string str, string acc = "") {
+    // Base case: original string is empty
+    if (str.empty()) {
+        return acc;
+    }
+
+    // Tail recursive call: move first character to accumulator
+    return reverseTailRecursive(str.substr(1), str[0] + acc);
+}
+
+// Alternative: using indices
+string reverseTailRecursiveIndex(string str, int index, string acc) {
+    // Base case: processed all characters
+    if (index >= str.length()) {
+        return acc;
+    }
+
+    // Tail recursive call
+    return reverseTailRecursiveIndex(str, index + 1, str[index] + acc);
+}
+
+int main() {
+    string name = "shirsh";
+
+    cout << "Original: " << name << endl;
+    cout << "Reversed (tail recursion): " << reverseTailRecursive(name) << endl;
+    cout << "Reversed (index): " << reverseTailRecursiveIndex(name, 0, "") << endl;
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def reverse_tail_recursive(s, acc=""):
+    # Base case: original string is empty
+    if not s:
+        return acc
+
+    # Tail recursive call: move first character to accumulator
+    return reverse_tail_recursive(s[1:], s[0] + acc)
+
+# Alternative: using indices
+def reverse_tail_recursive_index(s, index=0, acc=""):
+    # Base case: processed all characters
+    if index >= len(s):
+        return acc
+
+    # Tail recursive call
+    return reverse_tail_recursive_index(s, index + 1, s[index] + acc)
+
+# Test
+name = "shirsh"
+print(f"Original: {name}")
+print(f"Reversed (tail recursion): {reverse_tail_recursive(name)}")
+print(f"Reversed (index): {reverse_tail_recursive_index(name)}")
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function reverseTailRecursive(str, acc = "") {
+    // Base case: original string is empty
+    if (str.length === 0) {
+        return acc;
+    }
+
+    // Tail recursive call: move first character to accumulator
+    return reverseTailRecursive(str.substring(1), str[0] + acc);
+}
+
+// Alternative: using indices
+function reverseTailRecursiveIndex(str, index = 0, acc = "") {
+    // Base case: processed all characters
+    if (index >= str.length) {
+        return acc;
+    }
+
+    // Tail recursive call
+    return reverseTailRecursiveIndex(str, index + 1, str[index] + acc);
+}
+
+// Test
+const name = "shirsh";
+console.log(`Original: ${name}`);
+console.log(`Reversed (tail recursion): ${reverseTailRecursive(name)}`);
+console.log(`Reversed (index): ${reverseTailRecursiveIndex(name)}`);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n²) for string operations, O(n) if language optimizes tail calls</p>
+      <p><strong>Space Complexity:</strong> O(n) - But can be O(1) if compiler optimizes tail recursion</p>
+      <p><strong>Advantage:</strong> More efficient use of call stack; some compilers optimize tail recursion to iteration</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> স্ট্রিং অপারেশনের জন্য O(n²), ভাষা টেইল কল অপ্টিমাইজ করলে O(n)</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(n) - তবে কম্পাইলার টেইল রিকার্শন অপ্টিমাইজ করলে O(1) হতে পারে</p>
+      <p><strong>সুবিধা:</strong> কল স্ট্যাকের আরও দক্ষ ব্যবহার; কিছু কম্পাইলার টেইল রিকার্শনকে পুনরাবৃত্তিতে অপ্টিমাইজ করে</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Comparison of Approaches" bn="পদ্ধতির তুলনা" />
+
+| Approach | Time Complexity | Space Complexity | Interview Suitability |
+|----------|----------------|------------------|----------------------|
+| Basic Recursion | O(n²) | O(n) | **Best for interviews - shows understanding** |
+| Array Methods | O(n) | O(n) | Good if allowed by constraints |
+| String Slicing | O(n) | O(n) | May violate "no built-in" rule |
+| Tail Recursion | O(n²) | O(n) | Shows advanced knowledge |
+
+---
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ol>
+        <li><strong>Clarify constraints:</strong> Ask if built-in array methods (map, reduce) are allowed</li>
+        <li><strong>Start with recursion:</strong> Basic recursive solution is most common and acceptable</li>
+        <li><strong>Explain your approach:</strong> Walk through base case and recursive case clearly</li>
+        <li><strong>Discuss optimization:</strong> Mention tail recursion if interviewer wants optimization</li>
+        <li><strong>Handle edge cases:</strong> Empty string, single character, very long strings</li>
+        <li><strong>Space complexity:</strong> Be aware that string concatenation creates new strings each time</li>
+        <li><strong>Alternative solutions:</strong> Be ready to discuss multiple approaches</li>
+      </ol>
+    </>
+  }
+  bn={
+    <>
+      <ol>
+        <li><strong>সীমাবদ্ধতা স্পষ্ট করুন:</strong> জিজ্ঞাসা করুন বিল্ট-ইন অ্যারে মেথড (map, reduce) অনুমোদিত কিনা</li>
+        <li><strong>রিকার্শন দিয়ে শুরু করুন:</strong> মৌলিক রিকার্সিভ সমাধান সবচেয়ে সাধারণ এবং গ্রহণযোগ্য</li>
+        <li><strong>আপনার পদ্ধতি ব্যাখ্যা করুন:</strong> বেস কেস এবং রিকার্সিভ কেস স্পষ্টভাবে বর্ণনা করুন</li>
+        <li><strong>অপ্টিমাইজেশন আলোচনা করুন:</strong> ইন্টারভিউয়ার অপ্টিমাইজেশন চাইলে টেইল রিকার্শন উল্লেখ করুন</li>
+        <li><strong>প্রান্তিক ক্ষেত্র পরিচালনা করুন:</strong> খালি স্ট্রিং, একক অক্ষর, খুব দীর্ঘ স্ট্রিং</li>
+        <li><strong>স্পেস জটিলতা:</strong> সচেতন থাকুন যে স্ট্রিং সংযোজন প্রতিবার নতুন স্ট্রিং তৈরি করে</li>
+        <li><strong>বিকল্প সমাধান:</strong> একাধিক পদ্ধতি আলোচনা করতে প্রস্তুত থাকুন</li>
+      </ol>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Example Walkthrough" bn="উদাহরণ ওয়াকথ্রু" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> "shirsh"</p>
+      <p><strong>Recursive Process:</strong></p>
+      <pre>
+reverseRecursive("shirsh")
+  → "h" + reverseRecursive("shirs")
+    → "h" + "s" + reverseRecursive("shir")
+      → "h" + "s" + "r" + reverseRecursive("shi")
+        → "h" + "s" + "r" + "i" + reverseRecursive("sh")
+          → "h" + "s" + "r" + "i" + "h" + reverseRecursive("s")
+            → "h" + "s" + "r" + "i" + "h" + "s" + reverseRecursive("")
+              → "h" + "s" + "r" + "i" + "h" + "s" + ""
+Result: "hsrihs"
+      </pre>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> "shirsh"</p>
+      <p><strong>রিকার্সিভ প্রক্রিয়া:</strong></p>
+      <pre>
+reverseRecursive("shirsh")
+  → "h" + reverseRecursive("shirs")
+    → "h" + "s" + reverseRecursive("shir")
+      → "h" + "s" + "r" + reverseRecursive("shi")
+        → "h" + "s" + "r" + "i" + reverseRecursive("sh")
+          → "h" + "s" + "r" + "i" + "h" + reverseRecursive("s")
+            → "h" + "s" + "r" + "i" + "h" + "s" + reverseRecursive("")
+              → "h" + "s" + "r" + "i" + "h" + "s" + ""
+ফলাফল: "hsrihs"
+      </pre>
+    </>
+  }
+/>

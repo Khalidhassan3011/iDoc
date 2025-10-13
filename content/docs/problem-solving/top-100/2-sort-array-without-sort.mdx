@@ -1,0 +1,536 @@
+---
+title: 2. Sort Array Without Sort Function
+description: Learn how to sort an array without using built-in sort methods
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Sort Array Without Sort Function" bn="সর্ট ফাংশন ছাড়া অ্যারে সাজানো" />
+
+<TranslatedText
+  en="Given an unsorted array [1,2,5,3,4,6,7,8], sort it in ascending order without using any built-in sort function."
+  bn="একটি অসাজানো অ্যারে [1,2,5,3,4,6,7,8] দেওয়া আছে, কোনো বিল্ট-ইন সর্ট ফাংশন ব্যবহার না করে এটিকে আরোহী ক্রমে সাজান।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> arr = [1, 2, 5, 3, 4, 6, 7, 8]</p>
+      <p><strong>Output:</strong> arr = [1, 2, 3, 4, 5, 6, 7, 8]</p>
+      <p><strong>Constraint:</strong> Do not use built-in sort() or similar functions</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> arr = [1, 2, 5, 3, 4, 6, 7, 8]</p>
+      <p><strong>আউটপুট:</strong> arr = [1, 2, 3, 4, 5, 6, 7, 8]</p>
+      <p><strong>বাধা:</strong> বিল্ট-ইন sort() বা অনুরূপ ফাংশন ব্যবহার করবেন না</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Bubble Sort" bn="পদ্ধতি ১: বাবল সর্ট" />
+
+<TranslatedText
+  en={<p>Bubble Sort repeatedly steps through the array, compares adjacent elements and swaps them if they are in the wrong order. The pass through the array is repeated until the array is sorted.</p>}
+  bn={<p>বাবল সর্ট বারবার অ্যারের মধ্য দিয়ে যায়, পাশাপাশি উপাদান তুলনা করে এবং তারা ভুল ক্রমে থাকলে তাদের সোয়াপ করে। অ্যারে সাজানো না হওয়া পর্যন্ত পাস পুনরাবৃত্তি করা হয়।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void bubbleSort(vector<int>& arr) {
+    int n = arr.size();
+
+    // Outer loop for each pass
+    for (int i = 0; i < n - 1; i++) {
+        // Inner loop for comparing adjacent elements
+        for (int j = 0; j < n - i - 1; j++) {
+            // Swap if current element is greater than next
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+int main() {
+    vector<int> arr = {1, 2, 5, 3, 4, 6, 7, 8};
+
+    cout << "Before sorting: ";
+    for (int num : arr) cout << num << " ";
+    cout << endl;
+
+    bubbleSort(arr);
+
+    cout << "After sorting: ";
+    for (int num : arr) cout << num << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def bubble_sort(arr):
+    n = len(arr)
+
+    # Outer loop for each pass
+    for i in range(n - 1):
+        # Inner loop for comparing adjacent elements
+        for j in range(n - i - 1):
+            # Swap if current element is greater than next
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+
+    return arr
+
+# Test
+arr = [1, 2, 5, 3, 4, 6, 7, 8]
+print(f"Before sorting: {arr}")
+
+bubble_sort(arr)
+print(f"After sorting: {arr}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function bubbleSort(arr) {
+    const n = arr.length;
+
+    // Outer loop for each pass
+    for (let i = 0; i < n - 1; i++) {
+        // Inner loop for comparing adjacent elements
+        for (let j = 0; j < n - i - 1; j++) {
+            // Swap if current element is greater than next
+            if (arr[j] > arr[j + 1]) {
+                [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+            }
+        }
+    }
+
+    return arr;
+}
+
+// Test
+const arr = [1, 2, 5, 3, 4, 6, 7, 8];
+console.log("Before sorting:", arr);
+
+bubbleSort(arr);
+console.log("After sorting:", arr);
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n²) - worst and average case</p>
+      <p><strong>Space Complexity:</strong> O(1) - in-place sorting</p>
+      <p><strong>Best for:</strong> Small arrays, nearly sorted data</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n²) - সবচেয়ে খারাপ এবং গড় ক্ষেত্রে</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1) - ইন-প্লেস সর্টিং</p>
+      <p><strong>সেরা কখন:</strong> ছোট অ্যারে, প্রায় সাজানো ডেটা</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: Selection Sort" bn="পদ্ধতি ২: সিলেকশন সর্ট" />
+
+<TranslatedText
+  en={<p>Selection Sort divides the array into sorted and unsorted regions. It repeatedly selects the smallest element from the unsorted region and moves it to the sorted region.</p>}
+  bn={<p>সিলেকশন সর্ট অ্যারেকে সাজানো এবং অসাজানো অঞ্চলে ভাগ করে। এটি বারবার অসাজানো অঞ্চল থেকে ক্ষুদ্রতম উপাদান নির্বাচন করে এবং এটিকে সাজানো অঞ্চলে সরিয়ে নেয়।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void selectionSort(vector<int>& arr) {
+    int n = arr.size();
+
+    for (int i = 0; i < n - 1; i++) {
+        // Find minimum element in unsorted array
+        int minIdx = i;
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIdx]) {
+                minIdx = j;
+            }
+        }
+
+        // Swap minimum element with first unsorted element
+        if (minIdx != i) {
+            int temp = arr[i];
+            arr[i] = arr[minIdx];
+            arr[minIdx] = temp;
+        }
+    }
+}
+
+int main() {
+    vector<int> arr = {1, 2, 5, 3, 4, 6, 7, 8};
+
+    cout << "Before sorting: ";
+    for (int num : arr) cout << num << " ";
+    cout << endl;
+
+    selectionSort(arr);
+
+    cout << "After sorting: ";
+    for (int num : arr) cout << num << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def selection_sort(arr):
+    n = len(arr)
+
+    for i in range(n - 1):
+        # Find minimum element in unsorted array
+        min_idx = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+
+        # Swap minimum element with first unsorted element
+        if min_idx != i:
+            arr[i], arr[min_idx] = arr[min_idx], arr[i]
+
+    return arr
+
+# Test
+arr = [1, 2, 5, 3, 4, 6, 7, 8]
+print(f"Before sorting: {arr}")
+
+selection_sort(arr)
+print(f"After sorting: {arr}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function selectionSort(arr) {
+    const n = arr.length;
+
+    for (let i = 0; i < n - 1; i++) {
+        // Find minimum element in unsorted array
+        let minIdx = i;
+        for (let j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIdx]) {
+                minIdx = j;
+            }
+        }
+
+        // Swap minimum element with first unsorted element
+        if (minIdx !== i) {
+            [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
+        }
+    }
+
+    return arr;
+}
+
+// Test
+const arr = [1, 2, 5, 3, 4, 6, 7, 8];
+console.log("Before sorting:", arr);
+
+selectionSort(arr);
+console.log("After sorting:", arr);
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n²) in all cases</p>
+      <p><strong>Space Complexity:</strong> O(1)</p>
+      <p><strong>Best for:</strong> Small arrays, when write operations are expensive</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> সব ক্ষেত্রে O(n²)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1)</p>
+      <p><strong>সেরা কখন:</strong> ছোট অ্যারে, যখন লেখার অপারেশন ব্যয়বহুল</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 3: Quick Sort (Recommended)" bn="পদ্ধতি ৩: কুইক সর্ট (প্রস্তাবিত)" />
+
+<TranslatedText
+  en={<p>Quick Sort is a divide-and-conquer algorithm. It picks a pivot element and partitions the array around it, then recursively sorts the subarrays.</p>}
+  bn={<p>কুইক সর্ট একটি ডিভাইড-এন্ড-কনকার অ্যালগরিদম। এটি একটি পিভট উপাদান বেছে নেয় এবং এর চারপাশে অ্যারে পার্টিশন করে, তারপর সাবঅ্যারেগুলিকে রিকার্সিভভাবে সাজায়।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int partition(vector<int>& arr, int low, int high) {
+    int pivot = arr[high];  // Choose last element as pivot
+    int i = low - 1;  // Index of smaller element
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+void quickSort(vector<int>& arr, int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+
+        quickSort(arr, low, pi - 1);   // Sort left part
+        quickSort(arr, pi + 1, high);  // Sort right part
+    }
+}
+
+int main() {
+    vector<int> arr = {1, 2, 5, 3, 4, 6, 7, 8};
+
+    cout << "Before sorting: ";
+    for (int num : arr) cout << num << " ";
+    cout << endl;
+
+    quickSort(arr, 0, arr.size() - 1);
+
+    cout << "After sorting: ";
+    for (int num : arr) cout << num << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def partition(arr, low, high):
+    pivot = arr[high]  # Choose last element as pivot
+    i = low - 1  # Index of smaller element
+
+    for j in range(low, high):
+        if arr[j] < pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
+
+def quick_sort(arr, low, high):
+    if low < high:
+        pi = partition(arr, low, high)
+
+        quick_sort(arr, low, pi - 1)   # Sort left part
+        quick_sort(arr, pi + 1, high)  # Sort right part
+
+# Test
+arr = [1, 2, 5, 3, 4, 6, 7, 8]
+print(f"Before sorting: {arr}")
+
+quick_sort(arr, 0, len(arr) - 1)
+print(f"After sorting: {arr}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function partition(arr, low, high) {
+    const pivot = arr[high];  // Choose last element as pivot
+    let i = low - 1;  // Index of smaller element
+
+    for (let j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+    }
+    [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+    return i + 1;
+}
+
+function quickSort(arr, low, high) {
+    if (low < high) {
+        const pi = partition(arr, low, high);
+
+        quickSort(arr, low, pi - 1);   // Sort left part
+        quickSort(arr, pi + 1, high);  // Sort right part
+    }
+    return arr;
+}
+
+// Test
+const arr = [1, 2, 5, 3, 4, 6, 7, 8];
+console.log("Before sorting:", arr);
+
+quickSort(arr, 0, arr.length - 1);
+console.log("After sorting:", arr);
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n log n) average, O(n²) worst case</p>
+      <p><strong>Space Complexity:</strong> O(log n) due to recursion</p>
+      <p><strong>Best for:</strong> Large datasets, general purpose sorting</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> গড়ে O(n log n), সবচেয়ে খারাপ O(n²)</p>
+      <p><strong>স্থান জটিলতা:</strong> রিকার্শনের কারণে O(log n)</p>
+      <p><strong>সেরা কখন:</strong> বড় ডেটাসেট, সাধারণ উদ্দেশ্য সর্টিং</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Algorithm Comparison" bn="অ্যালগরিদম তুলনা" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Algorithm</th>
+          <th>Time (Best)</th>
+          <th>Time (Average)</th>
+          <th>Time (Worst)</th>
+          <th>Space</th>
+          <th>Stable</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bubble Sort</td>
+          <td>O(n)</td>
+          <td>O(n²)</td>
+          <td>O(n²)</td>
+          <td>O(1)</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Selection Sort</td>
+          <td>O(n²)</td>
+          <td>O(n²)</td>
+          <td>O(n²)</td>
+          <td>O(1)</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Quick Sort</td>
+          <td>O(n log n)</td>
+          <td>O(n log n)</td>
+          <td>O(n²)</td>
+          <td>O(log n)</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>অ্যালগরিদম</th>
+          <th>সময় (সেরা)</th>
+          <th>সময় (গড়)</th>
+          <th>সময় (সবচেয়ে খারাপ)</th>
+          <th>স্থান</th>
+          <th>স্থিতিশীল</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>বাবল সর্ট</td>
+          <td>O(n)</td>
+          <td>O(n²)</td>
+          <td>O(n²)</td>
+          <td>O(1)</td>
+          <td>হ্যাঁ</td>
+        </tr>
+        <tr>
+          <td>সিলেকশন সর্ট</td>
+          <td>O(n²)</td>
+          <td>O(n²)</td>
+          <td>O(n²)</td>
+          <td>O(1)</td>
+          <td>না</td>
+        </tr>
+        <tr>
+          <td>কুইক সর্ট</td>
+          <td>O(n log n)</td>
+          <td>O(n log n)</td>
+          <td>O(n²)</td>
+          <td>O(log n)</td>
+          <td>না</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li><strong>Know multiple algorithms</strong>: Be able to explain at least 2-3 sorting algorithms</li>
+          <li><strong>Discuss trade-offs</strong>: Time vs space complexity, stable vs unstable</li>
+          <li><strong>For interviews</strong>: Bubble Sort or Selection Sort are easiest to code quickly</li>
+          <li><strong>For efficiency</strong>: Quick Sort or Merge Sort for large datasets</li>
+          <li><strong>Edge cases</strong>: Handle empty arrays, single element, already sorted</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li><strong>একাধিক অ্যালগরিদম জানুন</strong>: অন্তত ২-৩টি সর্টিং অ্যালগরিদম ব্যাখ্যা করতে সক্ষম হন</li>
+          <li><strong>ট্রেড-অফ আলোচনা করুন</strong>: সময় বনাম স্থান জটিলতা, স্থিতিশীল বনাম অস্থিতিশীল</li>
+          <li><strong>ইন্টারভিউয়ের জন্য</strong>: বাবল সর্ট বা সিলেকশন সর্ট দ্রুত কোড করা সহজ</li>
+          <li><strong>দক্ষতার জন্য</strong>: বড় ডেটাসেটের জন্য কুইক সর্ট বা মার্জ সর্ট</li>
+          <li><strong>এজ কেস</strong>: খালি অ্যারে, একক উপাদান, ইতিমধ্যে সাজানো পরিচালনা করুন</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

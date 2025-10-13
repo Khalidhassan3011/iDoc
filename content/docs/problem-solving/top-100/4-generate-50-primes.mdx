@@ -1,0 +1,597 @@
+---
+title: 4. Generate First 50 Prime Numbers
+description: Learn multiple approaches to generate prime numbers efficiently with detailed implementations
+---
+
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Generate First 50 Prime Numbers" bn="প্রথম ৫০টি মৌলিক সংখ্যা তৈরি করুন" />
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p>Write a program that generates the first 50 prime numbers.</p>
+      <p><strong>Expected Output:</strong></p>
+      <p><code>2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71...</code></p>
+      <p><strong>Note:</strong> A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself.</p>
+    </>
+  }
+  bn={
+    <>
+      <p>একটি প্রোগ্রাম লিখুন যা প্রথম ৫০টি মৌলিক সংখ্যা তৈরি করে।</p>
+      <p><strong>প্রত্যাশিত আউটপুট:</strong></p>
+      <p><code>2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71...</code></p>
+      <p><strong>দ্রষ্টব্য:</strong> একটি মৌলিক সংখ্যা হল ১-এর চেয়ে বড় একটি প্রাকৃতিক সংখ্যা যার ১ এবং নিজে ছাড়া কোনো ধনাত্মক ভাজক নেই।</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 1: Trial Division (Simple)" bn="পদ্ধতি ১: ট্রায়াল ডিভিশন (সহজ)" />
+
+<TranslatedText
+  en="Check each number by dividing it with all numbers from 2 to n-1. If no number divides evenly, it's prime."
+  bn="প্রতিটি সংখ্যা ২ থেকে n-1 পর্যন্ত সমস্ত সংখ্যা দিয়ে ভাগ করে পরীক্ষা করুন। যদি কোনো সংখ্যা সমানভাবে ভাগ না করে, তবে এটি মৌলিক।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+bool isPrime(int n) {
+    if (n <= 1) return false;
+    if (n <= 3) return true;
+
+    // Check from 2 to n-1
+    for (int i = 2; i < n; i++) {
+        if (n % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+vector<int> generatePrimes(int count) {
+    vector<int> primes;
+    int num = 2;
+
+    while (primes.size() < count) {
+        if (isPrime(num)) {
+            primes.push_back(num);
+        }
+        num++;
+    }
+
+    return primes;
+}
+
+int main() {
+    vector<int> primes = generatePrimes(50);
+
+    cout << "First 50 prime numbers:" << endl;
+    for (int i = 0; i < primes.size(); i++) {
+        cout << primes[i];
+        if (i < primes.size() - 1) cout << ", ";
+        if ((i + 1) % 10 == 0) cout << endl; // New line every 10 numbers
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def is_prime(n):
+    if n <= 1:
+        return False
+    if n <= 3:
+        return True
+
+    # Check from 2 to n-1
+    for i in range(2, n):
+        if n % i == 0:
+            return False
+    return True
+
+def generate_primes(count):
+    primes = []
+    num = 2
+
+    while len(primes) < count:
+        if is_prime(num):
+            primes.append(num)
+        num += 1
+
+    return primes
+
+# Generate first 50 primes
+primes = generate_primes(50)
+
+print("First 50 prime numbers:")
+for i, prime in enumerate(primes):
+    print(prime, end=", " if i < len(primes) - 1 else "\n")
+    if (i + 1) % 10 == 0:
+        print()  # New line every 10 numbers
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function isPrime(n) {
+    if (n <= 1) return false;
+    if (n <= 3) return true;
+
+    // Check from 2 to n-1
+    for (let i = 2; i < n; i++) {
+        if (n % i === 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function generatePrimes(count) {
+    const primes = [];
+    let num = 2;
+
+    while (primes.length < count) {
+        if (isPrime(num)) {
+            primes.push(num);
+        }
+        num++;
+    }
+
+    return primes;
+}
+
+// Generate first 50 primes
+const primes = generatePrimes(50);
+
+console.log("First 50 prime numbers:");
+let output = "";
+primes.forEach((prime, index) => {
+    output += prime;
+    if (index < primes.length - 1) output += ", ";
+    if ((index + 1) % 10 === 0) output += "\n";
+});
+console.log(output);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n² × k) where k is the count of primes needed</p>
+      <p><strong>Space Complexity:</strong> O(k) for storing k prime numbers</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n² × k) যেখানে k হল প্রয়োজনীয় মৌলিক সংখ্যার সংখ্যা</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(k) k সংখ্যক মৌলিক সংখ্যা সংরক্ষণের জন্য</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 2: Optimized Trial Division (√n)" bn="পদ্ধতি ২: অপ্টিমাইজড ট্রায়াল ডিভিশন (√n)" />
+
+<TranslatedText
+  en="Only check divisors up to the square root of n. If a number has a divisor greater than √n, it must also have one smaller than √n."
+  bn="শুধুমাত্র n এর বর্গমূল পর্যন্ত ভাজক পরীক্ষা করুন। যদি একটি সংখ্যার √n এর চেয়ে বড় ভাজক থাকে, তবে তার অবশ্যই √n এর চেয়ে ছোট একটিও থাকবে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+bool isPrimeOptimized(int n) {
+    if (n <= 1) return false;
+    if (n <= 3) return true;
+    if (n % 2 == 0 || n % 3 == 0) return false;
+
+    // Check only up to sqrt(n)
+    for (int i = 5; i * i <= n; i += 6) {
+        if (n % i == 0 || n % (i + 2) == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+vector<int> generatePrimesOptimized(int count) {
+    vector<int> primes;
+    int num = 2;
+
+    while (primes.size() < count) {
+        if (isPrimeOptimized(num)) {
+            primes.push_back(num);
+        }
+        num++;
+    }
+
+    return primes;
+}
+
+int main() {
+    vector<int> primes = generatePrimesOptimized(50);
+
+    cout << "First 50 prime numbers:" << endl;
+    for (int i = 0; i < primes.size(); i++) {
+        cout << primes[i];
+        if (i < primes.size() - 1) cout << ", ";
+        if ((i + 1) % 10 == 0) cout << endl;
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+import math
+
+def is_prime_optimized(n):
+    if n <= 1:
+        return False
+    if n <= 3:
+        return True
+    if n % 2 == 0 or n % 3 == 0:
+        return False
+
+    # Check only up to sqrt(n)
+    i = 5
+    while i * i <= n:
+        if n % i == 0 or n % (i + 2) == 0:
+            return False
+        i += 6
+
+    return True
+
+def generate_primes_optimized(count):
+    primes = []
+    num = 2
+
+    while len(primes) < count:
+        if is_prime_optimized(num):
+            primes.append(num)
+        num += 1
+
+    return primes
+
+# Generate first 50 primes
+primes = generate_primes_optimized(50)
+
+print("First 50 prime numbers:")
+for i, prime in enumerate(primes):
+    print(prime, end=", " if i < len(primes) - 1 else "\n")
+    if (i + 1) % 10 == 0:
+        print()
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function isPrimeOptimized(n) {
+    if (n <= 1) return false;
+    if (n <= 3) return true;
+    if (n % 2 === 0 || n % 3 === 0) return false;
+
+    // Check only up to sqrt(n)
+    for (let i = 5; i * i <= n; i += 6) {
+        if (n % i === 0 || n % (i + 2) === 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function generatePrimesOptimized(count) {
+    const primes = [];
+    let num = 2;
+
+    while (primes.length < count) {
+        if (isPrimeOptimized(num)) {
+            primes.push(num);
+        }
+        num++;
+    }
+
+    return primes;
+}
+
+// Generate first 50 primes
+const primes = generatePrimesOptimized(50);
+
+console.log("First 50 prime numbers:");
+let output = "";
+primes.forEach((prime, index) => {
+    output += prime;
+    if (index < primes.length - 1) output += ", ";
+    if ((index + 1) % 10 === 0) output += "\n";
+});
+console.log(output);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n√n × k) - Much faster than checking all divisors</p>
+      <p><strong>Space Complexity:</strong> O(k) for storing k prime numbers</p>
+      <p><strong>Optimization:</strong> Checks divisibility by 2 and 3 first, then checks numbers of form 6k±1</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n√n × k) - সমস্ত ভাজক পরীক্ষা করার চেয়ে অনেক দ্রুত</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(k) k সংখ্যক মৌলিক সংখ্যা সংরক্ষণের জন্য</p>
+      <p><strong>অপ্টিমাইজেশন:</strong> প্রথমে ২ এবং ৩ দ্বারা বিভাজ্যতা পরীক্ষা করে, তারপর 6k±1 ফর্মের সংখ্যা পরীক্ষা করে</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 3: Sieve of Eratosthenes (Fastest)" bn="পদ্ধতি ৩: এরাটোস্থিনিসের চালনি (দ্রুততম)" />
+
+<TranslatedText
+  en="Generate all primes up to a limit by marking multiples of each prime as composite. Most efficient for generating many primes."
+  bn="প্রতিটি মৌলিক সংখ্যার গুণিতকগুলিকে যৌগিক হিসাবে চিহ্নিত করে একটি সীমা পর্যন্ত সমস্ত মৌলিক সংখ্যা তৈরি করুন। অনেক মৌলিক সংখ্যা তৈরির জন্য সবচেয়ে দক্ষ।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> sieveOfEratosthenes(int limit) {
+    vector<bool> isPrime(limit + 1, true);
+    vector<int> primes;
+
+    isPrime[0] = isPrime[1] = false;
+
+    for (int p = 2; p * p <= limit; p++) {
+        if (isPrime[p]) {
+            // Mark all multiples of p as not prime
+            for (int i = p * p; i <= limit; i += p) {
+                isPrime[i] = false;
+            }
+        }
+    }
+
+    // Collect all prime numbers
+    for (int p = 2; p <= limit; p++) {
+        if (isPrime[p]) {
+            primes.push_back(p);
+        }
+    }
+
+    return primes;
+}
+
+vector<int> generatePrimesSieve(int count) {
+    // Estimate upper bound for nth prime
+    int limit = count * 15; // Good approximation for first 50 primes
+    vector<int> allPrimes = sieveOfEratosthenes(limit);
+
+    // Return first 'count' primes
+    vector<int> result(allPrimes.begin(), allPrimes.begin() + count);
+    return result;
+}
+
+int main() {
+    vector<int> primes = generatePrimesSieve(50);
+
+    cout << "First 50 prime numbers:" << endl;
+    for (int i = 0; i < primes.size(); i++) {
+        cout << primes[i];
+        if (i < primes.size() - 1) cout << ", ";
+        if ((i + 1) % 10 == 0) cout << endl;
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def sieve_of_eratosthenes(limit):
+    is_prime = [True] * (limit + 1)
+    is_prime[0] = is_prime[1] = False
+
+    p = 2
+    while p * p <= limit:
+        if is_prime[p]:
+            # Mark all multiples of p as not prime
+            for i in range(p * p, limit + 1, p):
+                is_prime[i] = False
+        p += 1
+
+    # Collect all prime numbers
+    primes = [p for p in range(2, limit + 1) if is_prime[p]]
+    return primes
+
+def generate_primes_sieve(count):
+    # Estimate upper bound for nth prime
+    limit = count * 15  # Good approximation for first 50 primes
+    all_primes = sieve_of_eratosthenes(limit)
+
+    # Return first 'count' primes
+    return all_primes[:count]
+
+# Generate first 50 primes
+primes = generate_primes_sieve(50)
+
+print("First 50 prime numbers:")
+for i, prime in enumerate(primes):
+    print(prime, end=", " if i < len(primes) - 1 else "\n")
+    if (i + 1) % 10 == 0:
+        print()
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function sieveOfEratosthenes(limit) {
+    const isPrime = new Array(limit + 1).fill(true);
+    isPrime[0] = isPrime[1] = false;
+
+    for (let p = 2; p * p <= limit; p++) {
+        if (isPrime[p]) {
+            // Mark all multiples of p as not prime
+            for (let i = p * p; i <= limit; i += p) {
+                isPrime[i] = false;
+            }
+        }
+    }
+
+    // Collect all prime numbers
+    const primes = [];
+    for (let p = 2; p <= limit; p++) {
+        if (isPrime[p]) {
+            primes.push(p);
+        }
+    }
+
+    return primes;
+}
+
+function generatePrimesSieve(count) {
+    // Estimate upper bound for nth prime
+    const limit = count * 15; // Good approximation for first 50 primes
+    const allPrimes = sieveOfEratosthenes(limit);
+
+    // Return first 'count' primes
+    return allPrimes.slice(0, count);
+}
+
+// Generate first 50 primes
+const primes = generatePrimesSieve(50);
+
+console.log("First 50 prime numbers:");
+let output = "";
+primes.forEach((prime, index) => {
+    output += prime;
+    if (index < primes.length - 1) output += ", ";
+    if ((index + 1) % 10 === 0) output += "\n";
+});
+console.log(output);
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n log log n) - Most efficient for generating multiple primes</p>
+      <p><strong>Space Complexity:</strong> O(n) - Requires array to track prime status</p>
+      <p><strong>Best Use:</strong> When generating many primes or all primes up to a limit</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n log log n) - একাধিক মৌলিক সংখ্যা তৈরির জন্য সবচেয়ে দক্ষ</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(n) - মৌলিক সংখ্যার অবস্থা ট্র্যাক করতে অ্যারে প্রয়োজন</p>
+      <p><strong>সেরা ব্যবহার:</strong> যখন অনেক মৌলিক সংখ্যা বা একটি সীমা পর্যন্ত সমস্ত মৌলিক সংখ্যা তৈরি করা হয়</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Comparison of Approaches" bn="পদ্ধতির তুলনা" />
+
+| Approach | Time Complexity | Space Complexity | Best For |
+|----------|----------------|------------------|----------|
+| Trial Division | O(n² × k) | O(k) | Understanding basics |
+| Optimized (√n) | O(n√n × k) | O(k) | **Best for interviews - good balance** |
+| Sieve of Eratosthenes | O(n log log n) | O(n) | Generating many primes efficiently |
+
+---
+
+## <TranslatedText en="Output Format" bn="আউটপুট ফরম্যাট" />
+
+<TranslatedText
+  en={
+    <>
+      <p>All approaches will generate:</p>
+      <pre>
+2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
+31, 37, 41, 43, 47, 53, 59, 61, 67, 71,
+73, 79, 83, 89, 97, 101, 103, 107, 109, 113,
+127, 131, 137, 139, 149, 151, 157, 163, 167, 173,
+179, 181, 191, 193, 197, 199, 211, 223, 227, 229
+      </pre>
+    </>
+  }
+  bn={
+    <>
+      <p>সমস্ত পদ্ধতি তৈরি করবে:</p>
+      <pre>
+2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
+31, 37, 41, 43, 47, 53, 59, 61, 67, 71,
+73, 79, 83, 89, 97, 101, 103, 107, 109, 113,
+127, 131, 137, 139, 149, 151, 157, 163, 167, 173,
+179, 181, 191, 193, 197, 199, 211, 223, 227, 229
+      </pre>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ol>
+        <li><strong>Start simple:</strong> Begin with basic trial division to show understanding</li>
+        <li><strong>Optimize gradually:</strong> Mention √n optimization if time permits</li>
+        <li><strong>Know the Sieve:</strong> Be ready to explain Sieve of Eratosthenes for follow-up questions</li>
+        <li><strong>Handle edge cases:</strong> 1 is not prime, 2 is the only even prime</li>
+        <li><strong>Discuss trade-offs:</strong> Sieve uses more memory but faster for many primes</li>
+        <li><strong>Time estimates:</strong> For n=50, optimized trial division is sufficient</li>
+        <li><strong>Prime number theorem:</strong> The nth prime is approximately n × ln(n) for large n</li>
+      </ol>
+    </>
+  }
+  bn={
+    <>
+      <ol>
+        <li><strong>সহজ দিয়ে শুরু করুন:</strong> বোঝাপড়া দেখানোর জন্য মৌলিক ট্রায়াল ডিভিশন দিয়ে শুরু করুন</li>
+        <li><strong>ধীরে ধীরে অপ্টিমাইজ করুন:</strong> সময় থাকলে √n অপ্টিমাইজেশন উল্লেখ করুন</li>
+        <li><strong>চালনি জানুন:</strong> ফলো-আপ প্রশ্নের জন্য এরাটোস্থিনিসের চালনি ব্যাখ্যা করতে প্রস্তুত থাকুন</li>
+        <li><strong>প্রান্তিক ক্ষেত্র পরিচালনা করুন:</strong> ১ মৌলিক নয়, ২ হল একমাত্র জোড় মৌলিক সংখ্যা</li>
+        <li><strong>ট্রেড-অফ আলোচনা করুন:</strong> চালনি বেশি মেমরি ব্যবহার করে কিন্তু অনেক মৌলিক সংখ্যার জন্য দ্রুততর</li>
+        <li><strong>সময় অনুমান:</strong> n=50 এর জন্য, অপ্টিমাইজড ট্রায়াল ডিভিশন যথেষ্ট</li>
+        <li><strong>মৌলিক সংখ্যা উপপাদ্য:</strong> nতম মৌলিক সংখ্যা বড় n এর জন্য প্রায় n × ln(n)</li>
+      </ol>
+    </>
+  }
+/>

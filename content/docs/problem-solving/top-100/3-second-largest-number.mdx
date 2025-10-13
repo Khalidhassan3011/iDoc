@@ -1,0 +1,498 @@
+---
+title: 3. Find Second Largest Number in Array
+description: Learn multiple approaches to find the second largest number in an array with detailed explanations and implementations
+---
+
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Find Second Largest Number in Array" bn="অ্যারেতে দ্বিতীয় বৃহত্তম সংখ্যা খুঁজুন" />
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p>Given an array of numbers, find the second largest number without using any sorting function.</p>
+      <p><strong>Input:</strong> <code>[1, 2, 5, 3, 4, 6, 7, 8]</code></p>
+      <p><strong>Output:</strong> <code>7</code></p>
+    </>
+  }
+  bn={
+    <>
+      <p>একটি সংখ্যার অ্যারে দেওয়া হয়েছে, কোনো সর্টিং ফাংশন ব্যবহার না করে দ্বিতীয় বৃহত্তম সংখ্যা খুঁজুন।</p>
+      <p><strong>ইনপুট:</strong> <code>[1, 2, 5, 3, 4, 6, 7, 8]</code></p>
+      <p><strong>আউটপুট:</strong> <code>7</code></p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 1: Single Pass (Optimal)" bn="পদ্ধতি ১: একক পাস (সর্বোত্তম)" />
+
+<TranslatedText
+  en="Track both the largest and second largest numbers in a single pass through the array."
+  bn="অ্যারের একক পাসে বৃহত্তম এবং দ্বিতীয় বৃহত্তম উভয় সংখ্যা ট্র্যাক করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+int findSecondLargest(vector<int>& arr) {
+    if (arr.size() < 2) {
+        return -1; // Not enough elements
+    }
+
+    int largest = INT_MIN;
+    int secondLargest = INT_MIN;
+
+    for (int num : arr) {
+        if (num > largest) {
+            secondLargest = largest;
+            largest = num;
+        } else if (num > secondLargest && num != largest) {
+            secondLargest = num;
+        }
+    }
+
+    return (secondLargest == INT_MIN) ? -1 : secondLargest;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 5, 3, 4, 6, 7, 8};
+    int result = findSecondLargest(arr);
+
+    if (result != -1) {
+        cout << "Second largest: " << result << endl;
+    } else {
+        cout << "No second largest element found" << endl;
+    }
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def find_second_largest(arr):
+    if len(arr) < 2:
+        return None  # Not enough elements
+
+    largest = float('-inf')
+    second_largest = float('-inf')
+
+    for num in arr:
+        if num > largest:
+            second_largest = largest
+            largest = num
+        elif num > second_largest and num != largest:
+            second_largest = num
+
+    return second_largest if second_largest != float('-inf') else None
+
+# Test
+arr = [1, 2, 5, 3, 4, 6, 7, 8]
+result = find_second_largest(arr)
+
+if result is not None:
+    print(f"Second largest: {result}")
+else:
+    print("No second largest element found")
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function findSecondLargest(arr) {
+    if (arr.length < 2) {
+        return null; // Not enough elements
+    }
+
+    let largest = -Infinity;
+    let secondLargest = -Infinity;
+
+    for (let num of arr) {
+        if (num > largest) {
+            secondLargest = largest;
+            largest = num;
+        } else if (num > secondLargest && num !== largest) {
+            secondLargest = num;
+        }
+    }
+
+    return secondLargest !== -Infinity ? secondLargest : null;
+}
+
+// Test
+const arr = [1, 2, 5, 3, 4, 6, 7, 8];
+const result = findSecondLargest(arr);
+
+if (result !== null) {
+    console.log(`Second largest: ${result}`);
+} else {
+    console.log("No second largest element found");
+}
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - Single pass through the array</p>
+      <p><strong>Space Complexity:</strong> O(1) - Only two variables used</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - অ্যারের মাধ্যমে একক পাস</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(1) - শুধুমাত্র দুটি ভেরিয়েবল ব্যবহৃত</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 2: Two Passes" bn="পদ্ধতি ২: দুটি পাস" />
+
+<TranslatedText
+  en="First find the largest number, then find the largest number that is smaller than the maximum."
+  bn="প্রথমে বৃহত্তম সংখ্যা খুঁজুন, তারপর সর্বোচ্চের চেয়ে ছোট বৃহত্তম সংখ্যা খুঁজুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+int findSecondLargestTwoPass(vector<int>& arr) {
+    if (arr.size() < 2) {
+        return -1;
+    }
+
+    // First pass: find the largest
+    int largest = INT_MIN;
+    for (int num : arr) {
+        if (num > largest) {
+            largest = num;
+        }
+    }
+
+    // Second pass: find largest smaller than maximum
+    int secondLargest = INT_MIN;
+    for (int num : arr) {
+        if (num > secondLargest && num < largest) {
+            secondLargest = num;
+        }
+    }
+
+    return (secondLargest == INT_MIN) ? -1 : secondLargest;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 5, 3, 4, 6, 7, 8};
+    int result = findSecondLargestTwoPass(arr);
+
+    if (result != -1) {
+        cout << "Second largest: " << result << endl;
+    } else {
+        cout << "No second largest element found" << endl;
+    }
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def find_second_largest_two_pass(arr):
+    if len(arr) < 2:
+        return None
+
+    # First pass: find the largest
+    largest = max(arr)
+
+    # Second pass: find largest smaller than maximum
+    second_largest = float('-inf')
+    for num in arr:
+        if num > second_largest and num < largest:
+            second_largest = num
+
+    return second_largest if second_largest != float('-inf') else None
+
+# Test
+arr = [1, 2, 5, 3, 4, 6, 7, 8]
+result = find_second_largest_two_pass(arr)
+
+if result is not None:
+    print(f"Second largest: {result}")
+else:
+    print("No second largest element found")
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function findSecondLargestTwoPass(arr) {
+    if (arr.length < 2) {
+        return null;
+    }
+
+    // First pass: find the largest
+    let largest = Math.max(...arr);
+
+    // Second pass: find largest smaller than maximum
+    let secondLargest = -Infinity;
+    for (let num of arr) {
+        if (num > secondLargest && num < largest) {
+            secondLargest = num;
+        }
+    }
+
+    return secondLargest !== -Infinity ? secondLargest : null;
+}
+
+// Test
+const arr = [1, 2, 5, 3, 4, 6, 7, 8];
+const result = findSecondLargestTwoPass(arr);
+
+if (result !== null) {
+    console.log(`Second largest: ${result}`);
+} else {
+    console.log("No second largest element found");
+}
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - Two passes through the array</p>
+      <p><strong>Space Complexity:</strong> O(1) - Only two variables used</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - অ্যারের মাধ্যমে দুটি পাস</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(1) - শুধুমাত্র দুটি ভেরিয়েবল ব্যবহৃত</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Approach 3: Using Set (Removes Duplicates)" bn="পদ্ধতি ৩: সেট ব্যবহার করে (ডুপ্লিকেট সরায়)" />
+
+<TranslatedText
+  en="Convert array to set to remove duplicates, then find second largest from unique values."
+  bn="ডুপ্লিকেট সরাতে অ্যারেকে সেটে রূপান্তর করুন, তারপর অনন্য মান থেকে দ্বিতীয় বৃহত্তম খুঁজুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+<Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <set>
+using namespace std;
+
+int findSecondLargestUsingSet(vector<int>& arr) {
+    if (arr.size() < 2) {
+        return -1;
+    }
+
+    // Convert to set to remove duplicates and get sorted order
+    set<int, greater<int>> uniqueNums(arr.begin(), arr.end());
+
+    if (uniqueNums.size() < 2) {
+        return -1; // All elements are same
+    }
+
+    // Second element in descending order set
+    auto it = uniqueNums.begin();
+    ++it; // Move to second element
+    return *it;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 5, 3, 4, 6, 7, 8};
+    int result = findSecondLargestUsingSet(arr);
+
+    if (result != -1) {
+        cout << "Second largest: " << result << endl;
+    } else {
+        cout << "No second largest element found" << endl;
+    }
+
+    return 0;
+}
+```
+</Tab>
+
+<Tab value="Python">
+```python
+def find_second_largest_using_set(arr):
+    if len(arr) < 2:
+        return None
+
+    # Convert to set to remove duplicates
+    unique_nums = set(arr)
+
+    if len(unique_nums) < 2:
+        return None  # All elements are same
+
+    # Sort in descending order and get second element
+    sorted_nums = sorted(unique_nums, reverse=True)
+    return sorted_nums[1]
+
+# Test
+arr = [1, 2, 5, 3, 4, 6, 7, 8]
+result = find_second_largest_using_set(arr)
+
+if result is not None:
+    print(f"Second largest: {result}")
+else:
+    print("No second largest element found")
+```
+</Tab>
+
+<Tab value="JavaScript">
+```javascript
+function findSecondLargestUsingSet(arr) {
+    if (arr.length < 2) {
+        return null;
+    }
+
+    // Convert to Set to remove duplicates
+    const uniqueNums = [...new Set(arr)];
+
+    if (uniqueNums.length < 2) {
+        return null; // All elements are same
+    }
+
+    // Sort in descending order and get second element
+    uniqueNums.sort((a, b) => b - a);
+    return uniqueNums[1];
+}
+
+// Test
+const arr = [1, 2, 5, 3, 4, 6, 7, 8];
+const result = findSecondLargestUsingSet(arr);
+
+if (result !== null) {
+    console.log(`Second largest: ${result}`);
+} else {
+    console.log("No second largest element found");
+}
+```
+</Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n log n) - Due to sorting unique elements</p>
+      <p><strong>Space Complexity:</strong> O(n) - Set stores unique elements</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n log n) - অনন্য উপাদান সাজানোর কারণে</p>
+      <p><strong>স্পেস জটিলতা:</strong> O(n) - সেট অনন্য উপাদান সংরক্ষণ করে</p>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Comparison of Approaches" bn="পদ্ধতির তুলনা" />
+
+| Approach | Time Complexity | Space Complexity | Best For |
+|----------|----------------|------------------|----------|
+| Single Pass | O(n) | O(1) | **Optimal solution - best for interviews** |
+| Two Passes | O(n) | O(1) | Simpler logic, slightly slower |
+| Using Set | O(n log n) | O(n) | When duplicates need to be handled differently |
+
+---
+
+## <TranslatedText en="Edge Cases to Handle" bn="প্রান্তিক ক্ষেত্রগুলি পরিচালনা করতে হবে" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Array with less than 2 elements:</strong> Return -1 or null</li>
+        <li><strong>All elements are same:</strong> No second largest exists</li>
+        <li><strong>Duplicate largest values:</strong> Find second unique value</li>
+        <li><strong>Negative numbers:</strong> Algorithm works correctly</li>
+      </ul>
+
+      <p><strong>Example with duplicates:</strong></p>
+      <ul>
+        <li>Input: <code>[8, 8, 7, 6, 5]</code></li>
+        <li>Output: <code>7</code> (not 8)</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>২টির কম উপাদান সহ অ্যারে:</strong> -1 বা null ফেরত দিন</li>
+        <li><strong>সমস্ত উপাদান একই:</strong> কোনো দ্বিতীয় বৃহত্তম বিদ্যমান নেই</li>
+        <li><strong>ডুপ্লিকেট বৃহত্তম মান:</strong> দ্বিতীয় অনন্য মান খুঁজুন</li>
+        <li><strong>ঋণাত্মক সংখ্যা:</strong> অ্যালগরিদম সঠিকভাবে কাজ করে</li>
+      </ul>
+
+      <p><strong>ডুপ্লিকেট সহ উদাহরণ:</strong></p>
+      <ul>
+        <li>ইনপুট: <code>[8, 8, 7, 6, 5]</code></li>
+        <li>আউটপুট: <code>7</code> (8 নয়)</li>
+      </ul>
+    </>
+  }
+/>
+
+---
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ol>
+        <li><strong>Clarify requirements:</strong> Ask if duplicates should be treated as distinct values or ignored</li>
+        <li><strong>Discuss edge cases:</strong> Mention what happens with arrays smaller than 2 elements</li>
+        <li><strong>Start simple:</strong> Begin with two-pass approach if easier, then optimize to single pass</li>
+        <li><strong>Handle initialization:</strong> Use appropriate minimum values (INT_MIN, -Infinity) for your language</li>
+        <li><strong>Optimize if needed:</strong> Single pass approach is optimal with O(n) time and O(1) space</li>
+        <li><strong>Test thoroughly:</strong> Try arrays with duplicates, negatives, and edge cases</li>
+      </ol>
+    </>
+  }
+  bn={
+    <>
+      <ol>
+        <li><strong>প্রয়োজনীয়তা স্পষ্ট করুন:</strong> জিজ্ঞাসা করুন ডুপ্লিকেটগুলি আলাদা মান হিসাবে বিবেচনা করা উচিত নাকি উপেক্ষা করা উচিত</li>
+        <li><strong>প্রান্তিক ক্ষেত্র আলোচনা করুন:</strong> ২টির কম উপাদান সহ অ্যারের সাথে কী ঘটে তা উল্লেখ করুন</li>
+        <li><strong>সহজ দিয়ে শুরু করুন:</strong> সহজ হলে দুই-পাস পদ্ধতি দিয়ে শুরু করুন, তারপর একক পাসে অপ্টিমাইজ করুন</li>
+        <li><strong>ইনিশিয়ালাইজেশন পরিচালনা করুন:</strong> আপনার ভাষার জন্য উপযুক্ত সর্বনিম্ন মান ব্যবহার করুন (INT_MIN, -Infinity)</li>
+        <li><strong>প্রয়োজনে অপ্টিমাইজ করুন:</strong> একক পাস পদ্ধতি O(n) সময় এবং O(1) স্পেস সহ সর্বোত্তম</li>
+        <li><strong>পুঙ্খানুপুঙ্খভাবে পরীক্ষা করুন:</strong> ডুপ্লিকেট, ঋণাত্মক এবং প্রান্তিক ক্ষেত্র সহ অ্যারে চেষ্টা করুন</li>
+      </ol>
+    </>
+  }
+/>

@@ -1,6 +1,11 @@
 {
   "title": "Top 100 Problems",
   "pages": [
-    "1-swap-two-numbers"
+    "---Random Problems---",
+    "1-swap-two-numbers",
+    "2-sort-array-without-sort",
+    "3-second-largest-number",
+    "4-generate-50-primes",
+    "5-reverse-string-without-loop"
   ]
 }
