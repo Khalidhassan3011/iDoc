@@ -1,0 +1,547 @@
+---
+title: 19. Calculate Average of Array Numbers
+description: Learn how to calculate the average of all numbers in a given array
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Calculate the Average of All Numbers in an Array" bn="একটি অ্যারের সমস্ত সংখ্যার গড় গণনা করুন" />
+
+<TranslatedText
+  en="Given an array of numbers, calculate and return the average (mean) of all elements."
+  bn="সংখ্যার একটি অ্যারে দেওয়া আছে, সমস্ত উপাদানের গড় (মিন) গণনা এবং ফেরত দিন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> [10, 20, 30, 40, 50]</p>
+      <p><strong>Output:</strong> 30.0</p>
+      <p><strong>Formula:</strong> Average = Sum of all elements / Number of elements</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> [10, 20, 30, 40, 50]</p>
+      <p><strong>আউটপুট:</strong> 30.0</p>
+      <p><strong>সূত্র:</strong> গড় = সমস্ত উপাদানের যোগফল / উপাদানের সংখ্যা</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Iterative Sum" bn="পদ্ধতি ১: পুনরাবৃত্তিমূলক যোগফল" />
+
+<TranslatedText
+  en={<p>Calculate the sum of all elements using a loop, then divide by the count.</p>}
+  bn={<p>একটি লুপ ব্যবহার করে সমস্ত উপাদানের যোগফল গণনা করুন, তারপর গণনা দ্বারা ভাগ করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+double calculateAverage(vector<int>& arr) {
+    if (arr.empty()) {
+        return 0.0;
+    }
+
+    double sum = 0;
+    for (int num : arr) {
+        sum += num;
+    }
+
+    return sum / arr.size();
+}
+
+int main() {
+    vector<int> arr = {10, 20, 30, 40, 50};
+
+    double average = calculateAverage(arr);
+    cout << "Average: " << average << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Average: 30
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def calculate_average(arr):
+    if not arr:
+        return 0.0
+
+    total = sum(arr)
+    return total / len(arr)
+
+arr = [10, 20, 30, 40, 50]
+
+average = calculate_average(arr)
+print(f"Average: {average}")
+```
+
+**Output:**
+```
+Average: 30.0
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function calculateAverage(arr) {
+    if (arr.length === 0) {
+        return 0.0;
+    }
+
+    let sum = 0;
+    for (let num of arr) {
+        sum += num;
+    }
+
+    return sum / arr.length;
+}
+
+let arr = [10, 20, 30, 40, 50];
+
+let average = calculateAverage(arr);
+console.log(`Average: ${average}`);
+```
+
+**Output:**
+```
+Average: 30
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - single pass through array</p>
+      <p><strong>Space Complexity:</strong> O(1) - constant extra space</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - অ্যারের মধ্য দিয়ে একক পাস</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1) - স্থির অতিরিক্ত স্থান</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: Using Built-in Functions" bn="পদ্ধতি ২: বিল্ট-ইন ফাংশন ব্যবহার করে" />
+
+<TranslatedText
+  en={<p>Use language-provided functions for cleaner, more concise code.</p>}
+  bn={<p>পরিষ্কার, আরও সংক্ষিপ্ত কোডের জন্য ভাষা-প্রদত্ত ফাংশন ব্যবহার করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <numeric>
+using namespace std;
+
+double calculateAverageBuiltin(vector<int>& arr) {
+    if (arr.empty()) {
+        return 0.0;
+    }
+
+    // Use accumulate to calculate sum
+    double sum = accumulate(arr.begin(), arr.end(), 0.0);
+
+    return sum / arr.size();
+}
+
+int main() {
+    vector<int> arr = {10, 20, 30, 40, 50};
+
+    double average = calculateAverageBuiltin(arr);
+    cout << "Average: " << average << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Average: 30
+```
+  </Tab>
+  <Tab value="Python">
+```python
+# Python has a built-in statistics module
+import statistics
+
+def calculate_average_builtin(arr):
+    if not arr:
+        return 0.0
+
+    return statistics.mean(arr)
+
+# Alternative using sum()
+def calculate_average_simple(arr):
+    if not arr:
+        return 0.0
+
+    return sum(arr) / len(arr)
+
+arr = [10, 20, 30, 40, 50]
+
+print(f"Average (statistics): {calculate_average_builtin(arr)}")
+print(f"Average (sum): {calculate_average_simple(arr)}")
+```
+
+**Output:**
+```
+Average (statistics): 30
+Average (sum): 30.0
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function calculateAverageBuiltin(arr) {
+    if (arr.length === 0) {
+        return 0.0;
+    }
+
+    // Use reduce to calculate sum
+    const sum = arr.reduce((acc, num) => acc + num, 0);
+
+    return sum / arr.length;
+}
+
+let arr = [10, 20, 30, 40, 50];
+
+let average = calculateAverageBuiltin(arr);
+console.log(`Average: ${average}`);
+```
+
+**Output:**
+```
+Average: 30
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n)</p>
+      <p><strong>Space Complexity:</strong> O(1)</p>
+      <p><strong>Advantage:</strong> More concise and readable</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1)</p>
+      <p><strong>সুবিধা:</strong> আরও সংক্ষিপ্ত এবং পাঠযোগ্য</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 3: Recursive Solution" bn="পদ্ধতি ৩: রিকার্সিভ সমাধান" />
+
+<TranslatedText
+  en={<p>Calculate sum recursively for educational purposes (not recommended for production).</p>}
+  bn={<p>শিক্ষাগত উদ্দেশ্যে রিকার্সিভভাবে যোগফল গণনা করুন (প্রোডাকশনের জন্য সুপারিশ করা হয় না)।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+double sumRecursive(vector<int>& arr, int index) {
+    // Base case: reached end of array
+    if (index >= arr.size()) {
+        return 0;
+    }
+
+    // Recursive case: current element + sum of rest
+    return arr[index] + sumRecursive(arr, index + 1);
+}
+
+double calculateAverageRecursive(vector<int>& arr) {
+    if (arr.empty()) {
+        return 0.0;
+    }
+
+    double sum = sumRecursive(arr, 0);
+    return sum / arr.size();
+}
+
+int main() {
+    vector<int> arr = {10, 20, 30, 40, 50};
+
+    double average = calculateAverageRecursive(arr);
+    cout << "Average (recursive): " << average << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Average (recursive): 30
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def sum_recursive(arr, index=0):
+    # Base case: reached end of array
+    if index >= len(arr):
+        return 0
+
+    # Recursive case: current element + sum of rest
+    return arr[index] + sum_recursive(arr, index + 1)
+
+def calculate_average_recursive(arr):
+    if not arr:
+        return 0.0
+
+    total = sum_recursive(arr)
+    return total / len(arr)
+
+arr = [10, 20, 30, 40, 50]
+
+average = calculate_average_recursive(arr)
+print(f"Average (recursive): {average}")
+```
+
+**Output:**
+```
+Average (recursive): 30.0
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function sumRecursive(arr, index = 0) {
+    // Base case: reached end of array
+    if (index >= arr.length) {
+        return 0;
+    }
+
+    // Recursive case: current element + sum of rest
+    return arr[index] + sumRecursive(arr, index + 1);
+}
+
+function calculateAverageRecursive(arr) {
+    if (arr.length === 0) {
+        return 0.0;
+    }
+
+    const sum = sumRecursive(arr);
+    return sum / arr.length;
+}
+
+let arr = [10, 20, 30, 40, 50];
+
+let average = calculateAverageRecursive(arr);
+console.log(`Average (recursive): ${average}`);
+```
+
+**Output:**
+```
+Average (recursive): 30
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n)</p>
+      <p><strong>Space Complexity:</strong> O(n) - recursion call stack</p>
+      <p><strong>Note:</strong> Educational but not practical for large arrays</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(n) - রিকার্শন কল স্ট্যাক</p>
+      <p><strong>নোট:</strong> শিক্ষামূলক কিন্তু বড় অ্যারের জন্য ব্যবহারিক নয়</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Edge Cases to Handle" bn="প্রান্তিক ক্ষেত্রে পরিচালনা করতে হবে" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Empty array:</strong> Return 0 or throw error</li>
+        <li><strong>Single element:</strong> Average equals that element</li>
+        <li><strong>Negative numbers:</strong> Handle normally in sum</li>
+        <li><strong>Floating point numbers:</strong> Use appropriate precision</li>
+        <li><strong>Integer overflow:</strong> Use long/double for large sums</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>খালি অ্যারে:</strong> 0 ফেরত দিন বা ত্রুটি নিক্ষেপ করুন</li>
+        <li><strong>একক উপাদান:</strong> গড় সেই উপাদানের সমান</li>
+        <li><strong>ঋণাত্মক সংখ্যা:</strong> যোগফলে সাধারণভাবে পরিচালনা করুন</li>
+        <li><strong>ফ্লোটিং পয়েন্ট সংখ্যা:</strong> উপযুক্ত নির্ভুলতা ব্যবহার করুন</li>
+        <li><strong>পূর্ণসংখ্যা ওভারফ্লো:</strong> বড় যোগফলের জন্য long/double ব্যবহার করুন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Concepts" bn="সম্পর্কিত ধারণা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Median:</strong> Middle value when sorted</li>
+        <li><strong>Mode:</strong> Most frequently occurring value</li>
+        <li><strong>Weighted Average:</strong> Each element has a weight/importance</li>
+        <li><strong>Moving Average:</strong> Average of a sliding window</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>মধ্যমা:</strong> সাজানো হলে মধ্যবর্তী মান</li>
+        <li><strong>মোড:</strong> সবচেয়ে ঘন ঘন ঘটতে থাকা মান</li>
+        <li><strong>ওজনযুক্ত গড়:</strong> প্রতিটি উপাদানের একটি ওজন/গুরুত্ব আছে</li>
+        <li><strong>মুভিং এভারেজ:</strong> একটি স্লাইডিং উইন্ডোর গড়</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণী" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Approach</th>
+          <th>Time</th>
+          <th>Space</th>
+          <th>Code Simplicity</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Iterative</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>Medium</td>
+          <td>General use, learning</td>
+        </tr>
+        <tr>
+          <td>Built-in Functions</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>High</td>
+          <td>Production, readability</td>
+        </tr>
+        <tr>
+          <td>Recursive</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>Medium</td>
+          <td>Educational purposes</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>পদ্ধতি</th>
+          <th>সময়</th>
+          <th>স্থান</th>
+          <th>কোড সরলতা</th>
+          <th>সেরা কখন</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>পুনরাবৃত্তিমূলক</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>মাঝারি</td>
+          <td>সাধারণ ব্যবহার, শেখা</td>
+        </tr>
+        <tr>
+          <td>বিল্ট-ইন ফাংশন</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>উচ্চ</td>
+          <td>প্রোডাকশন, পাঠযোগ্যতা</td>
+        </tr>
+        <tr>
+          <td>রিকার্সিভ</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>মাঝারি</td>
+          <td>শিক্ষাগত উদ্দেশ্য</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Start with simple iterative approach</li>
+          <li>Always handle the empty array case</li>
+          <li>For production: use built-in functions (sum(), mean(), reduce())</li>
+          <li>Discuss potential overflow with large numbers</li>
+          <li>Mention related statistics: median, mode, standard deviation</li>
+          <li>This is a fundamental problem that tests basic programming skills</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>সহজ পুনরাবৃত্তিমূলক পদ্ধতি দিয়ে শুরু করুন</li>
+          <li>সর্বদা খালি অ্যারে ক্ষেত্রে পরিচালনা করুন</li>
+          <li>প্রোডাকশনের জন্য: বিল্ট-ইন ফাংশন ব্যবহার করুন (sum(), mean(), reduce())</li>
+          <li>বড় সংখ্যার সাথে সম্ভাব্য ওভারফ্লো নিয়ে আলোচনা করুন</li>
+          <li>সম্পর্কিত পরিসংখ্যান উল্লেখ করুন: মধ্যমা, মোড, স্ট্যান্ডার্ড ডেভিয়েশন</li>
+          <li>এটি একটি মৌলিক সমস্যা যা প্রাথমিক প্রোগ্রামিং দক্ষতা পরীক্ষা করে</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

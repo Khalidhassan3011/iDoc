@@ -1,0 +1,391 @@
+---
+title: 11. Determine the Factors of a Number
+description: Learn how to find all factors of a given number
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Determine the Factors of a Number" bn="একটি সংখ্যার উৎপাদক নির্ণয়" />
+
+<TranslatedText
+  en="Given a positive integer n, find all the factors (divisors) of the number."
+  bn="একটি ধনাত্মক পূর্ণসংখ্যা n দেওয়া আছে, সংখ্যাটির সকল উৎপাদক (ভাজক) খুঁজুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> n = 36</p>
+      <p><strong>Output:</strong> 1, 2, 3, 4, 6, 9, 12, 18, 36</p>
+      <p><strong>Task:</strong> Find all numbers that divide n evenly (with remainder 0)</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> n = 36</p>
+      <p><strong>আউটপুট:</strong> 1, 2, 3, 4, 6, 9, 12, 18, 36</p>
+      <p><strong>কাজ:</strong> সব সংখ্যা খুঁজুন যা n কে সমানভাবে ভাগ করে (ভাগশেষ 0)</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Brute Force - Check All Numbers" bn="পদ্ধতি ১: ব্রুট ফোর্স - সব সংখ্যা পরীক্ষা করুন" />
+
+<TranslatedText
+  en={<p>The simplest approach is to check every number from 1 to n and see if it divides n evenly.</p>}
+  bn={<p>সবচেয়ে সহজ পদ্ধতি হল 1 থেকে n পর্যন্ত প্রতিটি সংখ্যা পরীক্ষা করা এবং দেখা যে এটি n কে সমানভাবে ভাগ করে কিনা।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+void findFactors(int n) {
+    cout << "Factors of " << n << " are: ";
+
+    for (int i = 1; i <= n; i++) {
+        if (n % i == 0) {
+            cout << i << " ";
+        }
+    }
+    cout << endl;
+}
+
+int main() {
+    int n = 36;
+    findFactors(n);
+    return 0;
+}
+```
+
+**Output:**
+```
+Factors of 36 are: 1 2 3 4 6 9 12 18 36
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def find_factors(n):
+    print(f"Factors of {n} are: ", end="")
+
+    for i in range(1, n + 1):
+        if n % i == 0:
+            print(i, end=" ")
+    print()
+
+n = 36
+find_factors(n)
+```
+
+**Output:**
+```
+Factors of 36 are: 1 2 3 4 6 9 12 18 36
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function findFactors(n) {
+    let factors = [];
+
+    for (let i = 1; i <= n; i++) {
+        if (n % i === 0) {
+            factors.push(i);
+        }
+    }
+
+    console.log(`Factors of ${n} are: ${factors.join(' ')}`);
+}
+
+let n = 36;
+findFactors(n);
+```
+
+**Output:**
+```
+Factors of 36 are: 1 2 3 4 6 9 12 18 36
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - checks all numbers from 1 to n</p>
+      <p><strong>Space Complexity:</strong> O(1) - only uses constant extra space</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - 1 থেকে n পর্যন্ত সব সংখ্যা পরীক্ষা করে</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1) - শুধুমাত্র স্থির অতিরিক্ত স্থান ব্যবহার করে</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: Optimized - Check Until Square Root" bn="পদ্ধতি ২: অপ্টিমাইজড - বর্গমূল পর্যন্ত পরীক্ষা করুন" />
+
+<TranslatedText
+  en={<p>A key insight: factors come in pairs. If i is a factor, then n/i is also a factor. We only need to check up to √n.</p>}
+  bn={<p>মূল ধারণা: উৎপাদক জোড়ায় আসে। যদি i একটি উৎপাদক হয়, তাহলে n/i ও একটি উৎপাদক। আমাদের শুধু √n পর্যন্ত পরীক্ষা করতে হবে।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+void findFactorsOptimized(int n) {
+    vector<int> factors;
+
+    // Find factors up to sqrt(n)
+    for (int i = 1; i <= sqrt(n); i++) {
+        if (n % i == 0) {
+            factors.push_back(i);
+
+            // Add the paired factor if it's different
+            if (i != n / i) {
+                factors.push_back(n / i);
+            }
+        }
+    }
+
+    // Sort factors in ascending order
+    sort(factors.begin(), factors.end());
+
+    cout << "Factors of " << n << " are: ";
+    for (int factor : factors) {
+        cout << factor << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    int n = 36;
+    findFactorsOptimized(n);
+    return 0;
+}
+```
+
+**Output:**
+```
+Factors of 36 are: 1 2 3 4 6 9 12 18 36
+```
+  </Tab>
+  <Tab value="Python">
+```python
+import math
+
+def find_factors_optimized(n):
+    factors = []
+
+    # Find factors up to sqrt(n)
+    for i in range(1, int(math.sqrt(n)) + 1):
+        if n % i == 0:
+            factors.append(i)
+
+            # Add the paired factor if it's different
+            if i != n // i:
+                factors.append(n // i)
+
+    # Sort factors in ascending order
+    factors.sort()
+
+    print(f"Factors of {n} are: {' '.join(map(str, factors))}")
+
+n = 36
+find_factors_optimized(n)
+```
+
+**Output:**
+```
+Factors of 36 are: 1 2 3 4 6 9 12 18 36
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function findFactorsOptimized(n) {
+    let factors = [];
+
+    // Find factors up to sqrt(n)
+    for (let i = 1; i <= Math.sqrt(n); i++) {
+        if (n % i === 0) {
+            factors.push(i);
+
+            // Add the paired factor if it's different
+            if (i !== n / i) {
+                factors.push(n / i);
+            }
+        }
+    }
+
+    // Sort factors in ascending order
+    factors.sort((a, b) => a - b);
+
+    console.log(`Factors of ${n} are: ${factors.join(' ')}`);
+}
+
+let n = 36;
+findFactorsOptimized(n);
+```
+
+**Output:**
+```
+Factors of 36 are: 1 2 3 4 6 9 12 18 36
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(√n) - only checks up to square root</p>
+      <p><strong>Space Complexity:</strong> O(k) - where k is the number of factors</p>
+      <p><strong>Optimization:</strong> This is significantly faster for large numbers</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(√n) - শুধু বর্গমূল পর্যন্ত পরীক্ষা করে</p>
+      <p><strong>স্থান জটিলতা:</strong> O(k) - যেখানে k হল উৎপাদকের সংখ্যা</p>
+      <p><strong>অপ্টিমাইজেশন:</strong> বড় সংখ্যার জন্য এটি অনেক দ্রুত</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Example Walkthrough" bn="উদাহরণ ব্যাখ্যা" />
+
+<TranslatedText
+  en={
+    <>
+      <p>For n = 36:</p>
+      <ul>
+        <li>√36 = 6, so we check i = 1 to 6</li>
+        <li>i = 1: 36 % 1 = 0 → factors: 1, 36</li>
+        <li>i = 2: 36 % 2 = 0 → factors: 2, 18</li>
+        <li>i = 3: 36 % 3 = 0 → factors: 3, 12</li>
+        <li>i = 4: 36 % 4 = 0 → factors: 4, 9</li>
+        <li>i = 5: 36 % 5 ≠ 0 → skip</li>
+        <li>i = 6: 36 % 6 = 0 → factor: 6 (don't add 36/6=6 again)</li>
+        <li>After sorting: 1, 2, 3, 4, 6, 9, 12, 18, 36</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <p>n = 36 এর জন্য:</p>
+      <ul>
+        <li>√36 = 6, তাই আমরা i = 1 থেকে 6 পরীক্ষা করি</li>
+        <li>i = 1: 36 % 1 = 0 → উৎপাদক: 1, 36</li>
+        <li>i = 2: 36 % 2 = 0 → উৎপাদক: 2, 18</li>
+        <li>i = 3: 36 % 3 = 0 → উৎপাদক: 3, 12</li>
+        <li>i = 4: 36 % 4 = 0 → উৎপাদক: 4, 9</li>
+        <li>i = 5: 36 % 5 ≠ 0 → বাদ</li>
+        <li>i = 6: 36 % 6 = 0 → উৎপাদক: 6 (36/6=6 আবার যোগ করবেন না)</li>
+        <li>সাজানোর পর: 1, 2, 3, 4, 6, 9, 12, 18, 36</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণী" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Approach</th>
+          <th>Time Complexity</th>
+          <th>Space Complexity</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Brute Force</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>Small numbers, simple implementation</td>
+        </tr>
+        <tr>
+          <td>Optimized (√n)</td>
+          <td>O(√n)</td>
+          <td>O(k)</td>
+          <td>Large numbers, efficiency needed</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>পদ্ধতি</th>
+          <th>সময় জটিলতা</th>
+          <th>স্থান জটিলতা</th>
+          <th>সেরা কখন</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ব্রুট ফোর্স</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>ছোট সংখ্যা, সহজ বাস্তবায়ন</td>
+        </tr>
+        <tr>
+          <td>অপ্টিমাইজড (√n)</td>
+          <td>O(√n)</td>
+          <td>O(k)</td>
+          <td>বড় সংখ্যা, দক্ষতা প্রয়োজন</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Start with brute force, then optimize to √n approach</li>
+          <li>Remember: factors come in pairs (i, n/i)</li>
+          <li>Handle perfect squares carefully to avoid duplicates</li>
+          <li>For sorted output, store factors in array and sort</li>
+          <li>Discuss time complexity improvement from O(n) to O(√n)</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>ব্রুট ফোর্স দিয়ে শুরু করুন, তারপর √n পদ্ধতিতে অপ্টিমাইজ করুন</li>
+          <li>মনে রাখবেন: উৎপাদক জোড়ায় আসে (i, n/i)</li>
+          <li>ডুপ্লিকেট এড়াতে পারফেক্ট স্কোয়ার সাবধানে পরিচালনা করুন</li>
+          <li>সাজানো আউটপুটের জন্য, অ্যারেতে উৎপাদক সংরক্ষণ করুন এবং সাজান</li>
+          <li>O(n) থেকে O(√n) সময় জটিলতা উন্নতি নিয়ে আলোচনা করুন</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

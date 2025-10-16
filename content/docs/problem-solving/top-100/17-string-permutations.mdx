@@ -1,0 +1,618 @@
+---
+title: 17. Find All Permutations of a String
+description: Learn how to generate all permutations of a given string using different approaches
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Find All Permutations of a String" bn="একটি স্ট্রিংয়ের সমস্ত পারমিউটেশন খুঁজুন" />
+
+<TranslatedText
+  en="Given a string, generate and print all possible permutations (arrangements) of its characters."
+  bn="একটি স্ট্রিং দেওয়া আছে, এর অক্ষরের সমস্ত সম্ভাব্য পারমিউটেশন (বিন্যাস) তৈরি এবং প্রিন্ট করুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> "ABC"</p>
+      <p><strong>Output:</strong> ABC, ACB, BAC, BCA, CAB, CBA</p>
+      <p><strong>Task:</strong> Generate all possible arrangements of the string's characters</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> "ABC"</p>
+      <p><strong>আউটপুট:</strong> ABC, ACB, BAC, BCA, CAB, CBA</p>
+      <p><strong>কাজ:</strong> স্ট্রিংয়ের অক্ষরের সমস্ত সম্ভাব্য বিন্যাস তৈরি করুন</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Backtracking (Recursive)" bn="পদ্ধতি ১: ব্যাকট্র্যাকিং (রিকার্সিভ)" />
+
+<TranslatedText
+  en={<p>Use recursion to generate permutations by swapping characters and backtracking.</p>}
+  bn={<p>অক্ষর অদলবদল এবং ব্যাকট্র্যাকিং করে পারমিউটেশন তৈরি করতে রিকার্শন ব্যবহার করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+void permuteHelper(string& str, int left, int right) {
+    if (left == right) {
+        cout << str << " ";
+        return;
+    }
+
+    for (int i = left; i <= right; i++) {
+        // Swap current index with left
+        swap(str[left], str[i]);
+
+        // Recurse for remaining string
+        permuteHelper(str, left + 1, right);
+
+        // Backtrack: restore original order
+        swap(str[left], str[i]);
+    }
+}
+
+void printPermutations(string str) {
+    int n = str.length();
+    cout << "Permutations of " << str << ": ";
+    permuteHelper(str, 0, n - 1);
+    cout << endl;
+}
+
+int main() {
+    string str = "ABC";
+    printPermutations(str);
+    return 0;
+}
+```
+
+**Output:**
+```
+Permutations of ABC: ABC ACB BAC BCA CBA CAB
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def permute_helper(s, left, right, result):
+    if left == right:
+        result.append(''.join(s))
+        return
+
+    for i in range(left, right + 1):
+        # Swap current index with left
+        s[left], s[i] = s[i], s[left]
+
+        # Recurse for remaining string
+        permute_helper(s, left + 1, right, result)
+
+        # Backtrack: restore original order
+        s[left], s[i] = s[i], s[left]
+
+def print_permutations(string):
+    n = len(string)
+    s = list(string)  # Convert to list for swapping
+    result = []
+
+    permute_helper(s, 0, n - 1, result)
+
+    print(f"Permutations of {string}: {', '.join(result)}")
+
+string = "ABC"
+print_permutations(string)
+```
+
+**Output:**
+```
+Permutations of ABC: ABC, ACB, BAC, BCA, CBA, CAB
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function permuteHelper(arr, left, right, result) {
+    if (left === right) {
+        result.push(arr.join(''));
+        return;
+    }
+
+    for (let i = left; i <= right; i++) {
+        // Swap current index with left
+        [arr[left], arr[i]] = [arr[i], arr[left]];
+
+        // Recurse for remaining string
+        permuteHelper(arr, left + 1, right, result);
+
+        // Backtrack: restore original order
+        [arr[left], arr[i]] = [arr[i], arr[left]];
+    }
+}
+
+function printPermutations(str) {
+    const n = str.length;
+    const arr = str.split('');
+    const result = [];
+
+    permuteHelper(arr, 0, n - 1, result);
+
+    console.log(`Permutations of ${str}: ${result.join(', ')}`);
+}
+
+let str = "ABC";
+printPermutations(str);
+```
+
+**Output:**
+```
+Permutations of ABC: ABC, ACB, BAC, BCA, CBA, CAB
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n! × n) - n! permutations, each taking O(n) to build</p>
+      <p><strong>Space Complexity:</strong> O(n) - recursion depth</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n! × n) - n! পারমিউটেশন, প্রতিটি তৈরি করতে O(n)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(n) - রিকার্শন গভীরতা</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: Using Built-in Library Functions" bn="পদ্ধতি ২: বিল্ট-ইন লাইব্রেরি ফাংশন ব্যবহার করে" />
+
+<TranslatedText
+  en={<p>Many languages provide built-in functions to generate permutations efficiently.</p>}
+  bn={<p>অনেক ভাষা দক্ষতার সাথে পারমিউটেশন তৈরি করতে বিল্ট-ইন ফাংশন প্রদান করে।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+void printPermutationsSTL(string str) {
+    // Sort string to get permutations in lexicographic order
+    sort(str.begin(), str.end());
+
+    cout << "Permutations of " << str << ": ";
+
+    // Generate all permutations using next_permutation
+    do {
+        cout << str << " ";
+    } while (next_permutation(str.begin(), str.end()));
+
+    cout << endl;
+}
+
+int main() {
+    string str = "ABC";
+    printPermutationsSTL(str);
+    return 0;
+}
+```
+
+**Output:**
+```
+Permutations of ABC: ABC ACB BAC BCA CAB CBA
+```
+  </Tab>
+  <Tab value="Python">
+```python
+from itertools import permutations
+
+def print_permutations_builtin(string):
+    # Generate all permutations
+    perms = permutations(string)
+
+    # Convert tuples to strings
+    perm_list = [''.join(p) for p in perms]
+
+    print(f"Permutations of {string}: {', '.join(perm_list)}")
+
+string = "ABC"
+print_permutations_builtin(string)
+```
+
+**Output:**
+```
+Permutations of ABC: ABC, ACB, BAC, BCA, CAB, CBA
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+// JavaScript doesn't have built-in permutation function
+// Using a library-style implementation
+function getPermutations(str) {
+    if (str.length <= 1) return [str];
+
+    const perms = [];
+    for (let i = 0; i < str.length; i++) {
+        const char = str[i];
+        const remainingChars = str.slice(0, i) + str.slice(i + 1);
+        const remainingPerms = getPermutations(remainingChars);
+
+        for (let perm of remainingPerms) {
+            perms.push(char + perm);
+        }
+    }
+
+    return perms;
+}
+
+function printPermutationsBuiltin(str) {
+    const perms = getPermutations(str);
+    console.log(`Permutations of ${str}: ${perms.join(', ')}`);
+}
+
+let str = "ABC";
+printPermutationsBuiltin(str);
+```
+
+**Output:**
+```
+Permutations of ABC: ABC, ACB, BAC, BCA, CAB, CBA
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n! × n)</p>
+      <p><strong>Space Complexity:</strong> O(n!) - storing all permutations</p>
+      <p><strong>Advantage:</strong> Clean, concise, less error-prone</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n! × n)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(n!) - সমস্ত পারমিউটেশন সংরক্ষণ করা</p>
+      <p><strong>সুবিধা:</strong> পরিষ্কার, সংক্ষিপ্ত, কম ত্রুটি-প্রবণ</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 3: Iterative Using Next Permutation" bn="পদ্ধতি ৩: নেক্সট পারমিউটেশন ব্যবহার করে পুনরাবৃত্তিমূলক" />
+
+<TranslatedText
+  en={<p>Implement next permutation algorithm manually for languages without built-in support.</p>}
+  bn={<p>বিল্ট-ইন সাপোর্ট ছাড়া ভাষার জন্য ম্যানুয়ালি নেক্সট পারমিউটেশন অ্যালগরিদম বাস্তবায়ন করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+bool nextPermutationManual(string& str) {
+    int n = str.length();
+
+    // Find the largest index i such that str[i] < str[i + 1]
+    int i = n - 2;
+    while (i >= 0 && str[i] >= str[i + 1]) {
+        i--;
+    }
+
+    // If no such index exists, this is the last permutation
+    if (i < 0) {
+        return false;
+    }
+
+    // Find the largest index j greater than i such that str[i] < str[j]
+    int j = n - 1;
+    while (str[j] <= str[i]) {
+        j--;
+    }
+
+    // Swap str[i] and str[j]
+    swap(str[i], str[j]);
+
+    // Reverse the suffix starting at str[i + 1]
+    reverse(str.begin() + i + 1, str.end());
+
+    return true;
+}
+
+void printPermutationsIterative(string str) {
+    // Sort to start from the first permutation
+    sort(str.begin(), str.end());
+
+    cout << "Permutations of " << str << ": ";
+    cout << str << " ";
+
+    while (nextPermutationManual(str)) {
+        cout << str << " ";
+    }
+
+    cout << endl;
+}
+
+int main() {
+    string str = "ABC";
+    printPermutationsIterative(str);
+    return 0;
+}
+```
+
+**Output:**
+```
+Permutations of ABC: ABC ACB BAC BCA CAB CBA
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def next_permutation_manual(s):
+    n = len(s)
+    s = list(s)
+
+    # Find the largest index i such that s[i] < s[i + 1]
+    i = n - 2
+    while i >= 0 and s[i] >= s[i + 1]:
+        i -= 1
+
+    # If no such index exists, this is the last permutation
+    if i < 0:
+        return None
+
+    # Find the largest index j > i such that s[i] < s[j]
+    j = n - 1
+    while s[j] <= s[i]:
+        j -= 1
+
+    # Swap s[i] and s[j]
+    s[i], s[j] = s[j], s[i]
+
+    # Reverse the suffix starting at s[i + 1]
+    s[i + 1:] = reversed(s[i + 1:])
+
+    return ''.join(s)
+
+def print_permutations_iterative(string):
+    # Sort to start from the first permutation
+    current = ''.join(sorted(string))
+    result = [current]
+
+    while True:
+        current = next_permutation_manual(current)
+        if current is None:
+            break
+        result.append(current)
+
+    print(f"Permutations of {string}: {', '.join(result)}")
+
+string = "ABC"
+print_permutations_iterative(string)
+```
+
+**Output:**
+```
+Permutations of ABC: ABC, ACB, BAC, BCA, CAB, CBA
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function nextPermutationManual(arr) {
+    const n = arr.length;
+
+    // Find the largest index i such that arr[i] < arr[i + 1]
+    let i = n - 2;
+    while (i >= 0 && arr[i] >= arr[i + 1]) {
+        i--;
+    }
+
+    // If no such index exists, this is the last permutation
+    if (i < 0) {
+        return false;
+    }
+
+    // Find the largest index j > i such that arr[i] < arr[j]
+    let j = n - 1;
+    while (arr[j] <= arr[i]) {
+        j--;
+    }
+
+    // Swap arr[i] and arr[j]
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+
+    // Reverse the suffix starting at arr[i + 1]
+    const suffix = arr.slice(i + 1).reverse();
+    arr.splice(i + 1, n - i - 1, ...suffix);
+
+    return true;
+}
+
+function printPermutationsIterative(str) {
+    // Sort to start from the first permutation
+    let arr = str.split('').sort();
+    const result = [arr.join('')];
+
+    while (nextPermutationManual(arr)) {
+        result.push(arr.join(''));
+    }
+
+    console.log(`Permutations of ${str}: ${result.join(', ')}`);
+}
+
+let str = "ABC";
+printPermutationsIterative(str);
+```
+
+**Output:**
+```
+Permutations of ABC: ABC, ACB, BAC, BCA, CAB, CBA
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n! × n)</p>
+      <p><strong>Space Complexity:</strong> O(1) - in-place modifications (excluding output)</p>
+      <p><strong>Advantage:</strong> Space-efficient, demonstrates algorithmic understanding</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n! × n)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1) - ইন-প্লেস পরিবর্তন (আউটপুট বাদে)</p>
+      <p><strong>সুবিধা:</strong> স্থান-দক্ষ, অ্যালগরিদমিক বোঝাপড়া প্রদর্শন করে</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Handling Duplicates" bn="ডুপ্লিকেট হ্যান্ডলিং" />
+
+<TranslatedText
+  en={
+    <>
+      <p>For strings with duplicate characters (e.g., "AAB"), you may want unique permutations only:</p>
+      <ul>
+        <li>Use a set to store unique permutations</li>
+        <li>Skip duplicate swaps in backtracking</li>
+        <li>Sort and use next_permutation (automatically handles duplicates)</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <p>ডুপ্লিকেট ক্যারেক্টার সহ স্ট্রিংয়ের জন্য (যেমন, "AAB"), আপনি শুধুমাত্র অনন্য পারমিউটেশন চাইতে পারেন:</p>
+      <ul>
+        <li>অনন্য পারমিউটেশন সংরক্ষণ করতে একটি সেট ব্যবহার করুন</li>
+        <li>ব্যাকট্র্যাকিংয়ে ডুপ্লিকেট সোয়াপ এড়িয়ে যান</li>
+        <li>সাজান এবং next_permutation ব্যবহার করুন (স্বয়ংক্রিয়ভাবে ডুপ্লিকেট হ্যান্ডেল করে)</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণী" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Approach</th>
+          <th>Space Complexity</th>
+          <th>Difficulty</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Backtracking</td>
+          <td>O(n)</td>
+          <td>Medium</td>
+          <td>Learning recursion</td>
+        </tr>
+        <tr>
+          <td>Built-in Functions</td>
+          <td>O(n!)</td>
+          <td>Easy</td>
+          <td>Production, quick solutions</td>
+        </tr>
+        <tr>
+          <td>Next Permutation</td>
+          <td>O(1)</td>
+          <td>Hard</td>
+          <td>Space efficiency, interviews</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>পদ্ধতি</th>
+          <th>স্থান জটিলতা</th>
+          <th>কঠিনতা</th>
+          <th>সেরা কখন</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ব্যাকট্র্যাকিং</td>
+          <td>O(n)</td>
+          <td>মাঝারি</td>
+          <td>রিকার্শন শেখা</td>
+        </tr>
+        <tr>
+          <td>বিল্ট-ইন ফাংশন</td>
+          <td>O(n!)</td>
+          <td>সহজ</td>
+          <td>প্রোডাকশন, দ্রুত সমাধান</td>
+        </tr>
+        <tr>
+          <td>নেক্সট পারমিউটেশন</td>
+          <td>O(1)</td>
+          <td>কঠিন</td>
+          <td>স্থান দক্ষতা, ইন্টারভিউ</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Start with backtracking approach to show recursion skills</li>
+          <li>Mention that there are n! permutations for n unique characters</li>
+          <li>Discuss handling duplicates for unique permutations</li>
+          <li>Know the next_permutation algorithm (commonly asked)</li>
+          <li>Time complexity is factorial - clarify this upfront</li>
+          <li>For production: use built-in library functions when available</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>রিকার্শন দক্ষতা দেখাতে ব্যাকট্র্যাকিং পদ্ধতি দিয়ে শুরু করুন</li>
+          <li>উল্লেখ করুন যে n অনন্য অক্ষরের জন্য n! পারমিউটেশন আছে</li>
+          <li>অনন্য পারমিউটেশনের জন্য ডুপ্লিকেট হ্যান্ডলিং নিয়ে আলোচনা করুন</li>
+          <li>next_permutation অ্যালগরিদম জানুন (সাধারণত জিজ্ঞাসা করা হয়)</li>
+          <li>সময় জটিলতা ফ্যাক্টোরিয়াল - এটি আগে থেকে স্পষ্ট করুন</li>
+          <li>প্রোডাকশনের জন্য: উপলব্ধ থাকলে বিল্ট-ইন লাইব্রেরি ফাংশন ব্যবহার করুন</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

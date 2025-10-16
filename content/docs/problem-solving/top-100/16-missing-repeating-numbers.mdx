@@ -1,0 +1,697 @@
+---
+title: 16. Find Missing and Repeating Numbers
+description: Learn how to find missing and repeating numbers in an array with duplicates
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Find Missing and Repeating Numbers in Array" bn="অ্যারেতে অনুপস্থিত এবং পুনরাবৃত্ত সংখ্যা খুঁজুন" />
+
+<TranslatedText
+  en="Given an array of n integers where numbers range from 1 to n, one number is missing and one number occurs twice. Find both numbers."
+  bn="n পূর্ণসংখ্যার একটি অ্যারে দেওয়া আছে যেখানে সংখ্যাগুলি 1 থেকে n পর্যন্ত, একটি সংখ্যা অনুপস্থিত এবং একটি সংখ্যা দুইবার ঘটে। উভয় সংখ্যা খুঁজুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> arr = [3, 1, 2, 5, 3]</p>
+      <p><strong>Output:</strong> Repeating = 3, Missing = 4</p>
+      <p><strong>Task:</strong> Find which number repeats and which is missing from range [1, n]</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> arr = [3, 1, 2, 5, 3]</p>
+      <p><strong>আউটপুট:</strong> পুনরাবৃত্ত = 3, অনুপস্থিত = 4</p>
+      <p><strong>কাজ:</strong> কোন সংখ্যা পুনরাবৃত্তি হয় এবং কোনটি [1, n] রেঞ্জ থেকে অনুপস্থিত তা খুঁজুন</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Using Hash Set" bn="পদ্ধতি ১: হ্যাশ সেট ব্যবহার করে" />
+
+<TranslatedText
+  en={<p>Use a hash set to track seen numbers and find the duplicate. Then find missing number.</p>}
+  bn={<p>দেখা সংখ্যা ট্র্যাক করতে এবং ডুপ্লিকেট খুঁজতে হ্যাশ সেট ব্যবহার করুন। তারপর অনুপস্থিত সংখ্যা খুঁজুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+using namespace std;
+
+pair<int, int> findMissingRepeating(vector<int>& arr) {
+    int n = arr.size();
+    unordered_set<int> seen;
+    int repeating = -1;
+
+    // Find repeating number
+    for (int num : arr) {
+        if (seen.count(num)) {
+            repeating = num;
+        }
+        seen.insert(num);
+    }
+
+    // Find missing number
+    int missing = -1;
+    for (int i = 1; i <= n; i++) {
+        if (!seen.count(i)) {
+            missing = i;
+            break;
+        }
+    }
+
+    return {repeating, missing};
+}
+
+int main() {
+    vector<int> arr = {3, 1, 2, 5, 3};
+
+    auto result = findMissingRepeating(arr);
+    cout << "Repeating: " << result.first << endl;
+    cout << "Missing: " << result.second << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Repeating: 3
+Missing: 4
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def find_missing_repeating(arr):
+    n = len(arr)
+    seen = set()
+    repeating = -1
+
+    # Find repeating number
+    for num in arr:
+        if num in seen:
+            repeating = num
+        seen.add(num)
+
+    # Find missing number
+    missing = -1
+    for i in range(1, n + 1):
+        if i not in seen:
+            missing = i
+            break
+
+    return repeating, missing
+
+arr = [3, 1, 2, 5, 3]
+
+repeating, missing = find_missing_repeating(arr)
+print(f"Repeating: {repeating}")
+print(f"Missing: {missing}")
+```
+
+**Output:**
+```
+Repeating: 3
+Missing: 4
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function findMissingRepeating(arr) {
+    const n = arr.length;
+    const seen = new Set();
+    let repeating = -1;
+
+    // Find repeating number
+    for (let num of arr) {
+        if (seen.has(num)) {
+            repeating = num;
+        }
+        seen.add(num);
+    }
+
+    // Find missing number
+    let missing = -1;
+    for (let i = 1; i <= n; i++) {
+        if (!seen.has(i)) {
+            missing = i;
+            break;
+        }
+    }
+
+    return { repeating, missing };
+}
+
+let arr = [3, 1, 2, 5, 3];
+
+let result = findMissingRepeating(arr);
+console.log(`Repeating: ${result.repeating}`);
+console.log(`Missing: ${result.missing}`);
+```
+
+**Output:**
+```
+Repeating: 3
+Missing: 4
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - two passes through array</p>
+      <p><strong>Space Complexity:</strong> O(n) - hash set storage</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - অ্যারের মধ্য দিয়ে দুটি পাস</p>
+      <p><strong>স্থান জটিলতা:</strong> O(n) - হ্যাশ সেট স্টোরেজ</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: Using Sum Formula" bn="পদ্ধতি ২: যোগফল সূত্র ব্যবহার করে" />
+
+<TranslatedText
+  en={<p>Use mathematical formulas: sum of 1 to n and sum of squares to find both numbers.</p>}
+  bn={<p>গাণিতিক সূত্র ব্যবহার করুন: উভয় সংখ্যা খুঁজতে 1 থেকে n পর্যন্ত যোগফল এবং বর্গের যোগফল।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+pair<int, int> findMissingRepeatingMath(vector<int>& arr) {
+    long long n = arr.size();
+
+    // Calculate sum and sum of squares
+    long long actualSum = 0, actualSumSq = 0;
+    for (int num : arr) {
+        actualSum += num;
+        actualSumSq += (long long)num * num;
+    }
+
+    // Expected sum: n * (n + 1) / 2
+    long long expectedSum = n * (n + 1) / 2;
+
+    // Expected sum of squares: n * (n + 1) * (2n + 1) / 6
+    long long expectedSumSq = n * (n + 1) * (2 * n + 1) / 6;
+
+    // Let repeating = x, missing = y
+    // x - y = actualSum - expectedSum
+    long long diff = actualSum - expectedSum;
+
+    // x^2 - y^2 = actualSumSq - expectedSumSq
+    // (x + y)(x - y) = actualSumSq - expectedSumSq
+    long long sumSqDiff = actualSumSq - expectedSumSq;
+
+    // x + y = sumSqDiff / diff
+    long long sum = sumSqDiff / diff;
+
+    // Solve: x - y = diff, x + y = sum
+    int repeating = (diff + sum) / 2;
+    int missing = (sum - diff) / 2;
+
+    return {repeating, missing};
+}
+
+int main() {
+    vector<int> arr = {3, 1, 2, 5, 3};
+
+    auto result = findMissingRepeatingMath(arr);
+    cout << "Repeating: " << result.first << endl;
+    cout << "Missing: " << result.second << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Repeating: 3
+Missing: 4
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def find_missing_repeating_math(arr):
+    n = len(arr)
+
+    # Calculate sum and sum of squares
+    actual_sum = sum(arr)
+    actual_sum_sq = sum(x * x for x in arr)
+
+    # Expected sum: n * (n + 1) // 2
+    expected_sum = n * (n + 1) // 2
+
+    # Expected sum of squares: n * (n + 1) * (2n + 1) // 6
+    expected_sum_sq = n * (n + 1) * (2 * n + 1) // 6
+
+    # Let repeating = x, missing = y
+    # x - y = actual_sum - expected_sum
+    diff = actual_sum - expected_sum
+
+    # x^2 - y^2 = actual_sum_sq - expected_sum_sq
+    # (x + y)(x - y) = actual_sum_sq - expected_sum_sq
+    sum_sq_diff = actual_sum_sq - expected_sum_sq
+
+    # x + y = sum_sq_diff // diff
+    total = sum_sq_diff // diff
+
+    # Solve: x - y = diff, x + y = total
+    repeating = (diff + total) // 2
+    missing = (total - diff) // 2
+
+    return repeating, missing
+
+arr = [3, 1, 2, 5, 3]
+
+repeating, missing = find_missing_repeating_math(arr)
+print(f"Repeating: {repeating}")
+print(f"Missing: {missing}")
+```
+
+**Output:**
+```
+Repeating: 3
+Missing: 4
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function findMissingRepeatingMath(arr) {
+    const n = arr.length;
+
+    // Calculate sum and sum of squares
+    let actualSum = arr.reduce((a, b) => a + b, 0);
+    let actualSumSq = arr.reduce((a, b) => a + b * b, 0);
+
+    // Expected sum: n * (n + 1) / 2
+    let expectedSum = n * (n + 1) / 2;
+
+    // Expected sum of squares: n * (n + 1) * (2n + 1) / 6
+    let expectedSumSq = n * (n + 1) * (2 * n + 1) / 6;
+
+    // Let repeating = x, missing = y
+    // x - y = actualSum - expectedSum
+    let diff = actualSum - expectedSum;
+
+    // x^2 - y^2 = actualSumSq - expectedSumSq
+    // (x + y)(x - y) = actualSumSq - expectedSumSq
+    let sumSqDiff = actualSumSq - expectedSumSq;
+
+    // x + y = sumSqDiff / diff
+    let sum = sumSqDiff / diff;
+
+    // Solve: x - y = diff, x + y = sum
+    let repeating = (diff + sum) / 2;
+    let missing = (sum - diff) / 2;
+
+    return { repeating, missing };
+}
+
+let arr = [3, 1, 2, 5, 3];
+
+let result = findMissingRepeatingMath(arr);
+console.log(`Repeating: ${result.repeating}`);
+console.log(`Missing: ${result.missing}`);
+```
+
+**Output:**
+```
+Repeating: 3
+Missing: 4
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - single pass through array</p>
+      <p><strong>Space Complexity:</strong> O(1) - constant space</p>
+      <p><strong>Advantage:</strong> Space-efficient, elegant mathematical solution</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - অ্যারের মধ্য দিয়ে একক পাস</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1) - স্থির স্থান</p>
+      <p><strong>সুবিধা:</strong> স্থান-দক্ষ, মার্জিত গাণিতিক সমাধান</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 3: Using XOR (Bit Manipulation)" bn="পদ্ধতি ৩: XOR ব্যবহার করে (বিট ম্যানিপুলেশন)" />
+
+<TranslatedText
+  en={<p>Use XOR properties to find both numbers without extra space.</p>}
+  bn={<p>অতিরিক্ত স্থান ছাড়াই উভয় সংখ্যা খুঁজতে XOR বৈশিষ্ট্য ব্যবহার করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+pair<int, int> findMissingRepeatingXOR(vector<int>& arr) {
+    int n = arr.size();
+
+    // XOR all array elements and numbers 1 to n
+    // This gives us: repeating XOR missing
+    int xorAll = 0;
+    for (int num : arr) {
+        xorAll ^= num;
+    }
+    for (int i = 1; i <= n; i++) {
+        xorAll ^= i;
+    }
+
+    // Find rightmost set bit
+    int setBit = xorAll & ~(xorAll - 1);
+
+    // Divide numbers into two groups based on set bit
+    int x = 0, y = 0;
+
+    for (int num : arr) {
+        if (num & setBit) {
+            x ^= num;
+        } else {
+            y ^= num;
+        }
+    }
+
+    for (int i = 1; i <= n; i++) {
+        if (i & setBit) {
+            x ^= i;
+        } else {
+            y ^= i;
+        }
+    }
+
+    // Determine which is repeating and which is missing
+    int repeating = -1, missing = -1;
+    for (int num : arr) {
+        if (num == x) {
+            repeating = x;
+            missing = y;
+            break;
+        } else if (num == y) {
+            repeating = y;
+            missing = x;
+            break;
+        }
+    }
+
+    return {repeating, missing};
+}
+
+int main() {
+    vector<int> arr = {3, 1, 2, 5, 3};
+
+    auto result = findMissingRepeatingXOR(arr);
+    cout << "Repeating: " << result.first << endl;
+    cout << "Missing: " << result.second << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Repeating: 3
+Missing: 4
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def find_missing_repeating_xor(arr):
+    n = len(arr)
+
+    # XOR all array elements and numbers 1 to n
+    xor_all = 0
+    for num in arr:
+        xor_all ^= num
+    for i in range(1, n + 1):
+        xor_all ^= i
+
+    # Find rightmost set bit
+    set_bit = xor_all & ~(xor_all - 1)
+
+    # Divide numbers into two groups
+    x, y = 0, 0
+
+    for num in arr:
+        if num & set_bit:
+            x ^= num
+        else:
+            y ^= num
+
+    for i in range(1, n + 1):
+        if i & set_bit:
+            x ^= i
+        else:
+            y ^= i
+
+    # Determine which is repeating
+    repeating, missing = -1, -1
+    for num in arr:
+        if num == x:
+            repeating, missing = x, y
+            break
+        elif num == y:
+            repeating, missing = y, x
+            break
+
+    return repeating, missing
+
+arr = [3, 1, 2, 5, 3]
+
+repeating, missing = find_missing_repeating_xor(arr)
+print(f"Repeating: {repeating}")
+print(f"Missing: {missing}")
+```
+
+**Output:**
+```
+Repeating: 3
+Missing: 4
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function findMissingRepeatingXOR(arr) {
+    const n = arr.length;
+
+    // XOR all array elements and numbers 1 to n
+    let xorAll = 0;
+    for (let num of arr) {
+        xorAll ^= num;
+    }
+    for (let i = 1; i <= n; i++) {
+        xorAll ^= i;
+    }
+
+    // Find rightmost set bit
+    let setBit = xorAll & ~(xorAll - 1);
+
+    // Divide numbers into two groups
+    let x = 0, y = 0;
+
+    for (let num of arr) {
+        if (num & setBit) {
+            x ^= num;
+        } else {
+            y ^= num;
+        }
+    }
+
+    for (let i = 1; i <= n; i++) {
+        if (i & setBit) {
+            x ^= i;
+        } else {
+            y ^= i;
+        }
+    }
+
+    // Determine which is repeating
+    let repeating = -1, missing = -1;
+    for (let num of arr) {
+        if (num === x) {
+            repeating = x;
+            missing = y;
+            break;
+        } else if (num === y) {
+            repeating = y;
+            missing = x;
+            break;
+        }
+    }
+
+    return { repeating, missing };
+}
+
+let arr = [3, 1, 2, 5, 3];
+
+let result = findMissingRepeatingXOR(arr);
+console.log(`Repeating: ${result.repeating}`);
+console.log(`Missing: ${result.missing}`);
+```
+
+**Output:**
+```
+Repeating: 3
+Missing: 4
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n)</p>
+      <p><strong>Space Complexity:</strong> O(1)</p>
+      <p><strong>Advantage:</strong> Space-efficient, demonstrates bit manipulation skills</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1)</p>
+      <p><strong>সুবিধা:</strong> স্থান-দক্ষ, বিট ম্যানিপুলেশন দক্ষতা প্রদর্শন করে</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণী" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Approach</th>
+          <th>Time</th>
+          <th>Space</th>
+          <th>Difficulty</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Hash Set</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>Easy</td>
+          <td>Quick implementation</td>
+        </tr>
+        <tr>
+          <td>Math Formula</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>Medium</td>
+          <td>Space efficiency, elegance</td>
+        </tr>
+        <tr>
+          <td>XOR</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>Hard</td>
+          <td>Interviews, bit manipulation</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>পদ্ধতি</th>
+          <th>সময়</th>
+          <th>স্থান</th>
+          <th>কঠিনতা</th>
+          <th>সেরা কখন</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>হ্যাশ সেট</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>সহজ</td>
+          <td>দ্রুত বাস্তবায়ন</td>
+        </tr>
+        <tr>
+          <td>গাণিতিক সূত্র</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>মাঝারি</td>
+          <td>স্থান দক্ষতা, কমনীয়তা</td>
+        </tr>
+        <tr>
+          <td>XOR</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>কঠিন</td>
+          <td>ইন্টারভিউ, বিট ম্যানিপুলেশন</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Start with hash set approach, then optimize to O(1) space</li>
+          <li>Math formula approach shows problem-solving with equations</li>
+          <li>XOR approach demonstrates advanced bit manipulation knowledge</li>
+          <li>Be careful with integer overflow in math approach (use long long)</li>
+          <li>This is a classic array problem asked in many interviews</li>
+          <li>Extension: Find k missing or k repeating numbers</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>হ্যাশ সেট পদ্ধতি দিয়ে শুরু করুন, তারপর O(1) স্থানে অপ্টিমাইজ করুন</li>
+          <li>গাণিতিক সূত্র পদ্ধতি সমীকরণ দিয়ে সমস্যা সমাধান দেখায়</li>
+          <li>XOR পদ্ধতি উন্নত বিট ম্যানিপুলেশন জ্ঞান প্রদর্শন করে</li>
+          <li>গাণিতিক পদ্ধতিতে পূর্ণসংখ্যা ওভারফ্লো নিয়ে সতর্ক থাকুন (long long ব্যবহার করুন)</li>
+          <li>এটি একটি ক্লাসিক অ্যারে সমস্যা যা অনেক ইন্টারভিউতে জিজ্ঞাসা করা হয়</li>
+          <li>সম্প্রসারণ: k অনুপস্থিত বা k পুনরাবৃত্ত সংখ্যা খুঁজুন</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

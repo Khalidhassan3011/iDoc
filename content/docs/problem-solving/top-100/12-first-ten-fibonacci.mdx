@@ -1,0 +1,506 @@
+---
+title: 12. First Ten Fibonacci Numbers
+description: Learn how to compute the first Ten Fibonacci numbers using different approaches
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Compute the First Ten Fibonacci Numbers" bn="প্রথম দশটি ফিবোনাচ্চি সংখ্যা গণনা করুন" />
+
+<TranslatedText
+  en="Generate and display the first 10 numbers in the Fibonacci sequence, where each number is the sum of the two preceding ones."
+  bn="ফিবোনাচ্চি সিকোয়েন্সের প্রথম 10টি সংখ্যা তৈরি করুন এবং প্রদর্শন করুন, যেখানে প্রতিটি সংখ্যা আগের দুটির যোগফল।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> n = 10</p>
+      <p><strong>Output:</strong> 0, 1, 1, 2, 3, 5, 8, 13, 21, 34</p>
+      <p><strong>Formula:</strong> F(n) = F(n-1) + F(n-2), where F(0) = 0, F(1) = 1</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> n = 10</p>
+      <p><strong>আউটপুট:</strong> 0, 1, 1, 2, 3, 5, 8, 13, 21, 34</p>
+      <p><strong>সূত্র:</strong> F(n) = F(n-1) + F(n-2), যেখানে F(0) = 0, F(1) = 1</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Iterative Solution" bn="পদ্ধতি ১: পুনরাবৃত্তিমূলক সমাধান" />
+
+<TranslatedText
+  en={<p>The most efficient approach uses iteration with two variables to track the previous two numbers.</p>}
+  bn={<p>সবচেয়ে কার্যকর পদ্ধতি দুটি ভেরিয়েবল সহ পুনরাবৃত্তি ব্যবহার করে আগের দুটি সংখ্যা ট্র্যাক করে।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+void printFibonacci(int n) {
+    int a = 0, b = 1;
+
+    cout << "First " << n << " Fibonacci numbers: ";
+
+    for (int i = 0; i < n; i++) {
+        cout << a << " ";
+
+        // Calculate next Fibonacci number
+        int next = a + b;
+        a = b;
+        b = next;
+    }
+    cout << endl;
+}
+
+int main() {
+    int n = 10;
+    printFibonacci(n);
+    return 0;
+}
+```
+
+**Output:**
+```
+First 10 Fibonacci numbers: 0 1 1 2 3 5 8 13 21 34
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def print_fibonacci(n):
+    a, b = 0, 1
+
+    print(f"First {n} Fibonacci numbers: ", end="")
+
+    for i in range(n):
+        print(a, end=" ")
+
+        # Calculate next Fibonacci number
+        a, b = b, a + b
+
+    print()
+
+n = 10
+print_fibonacci(n)
+```
+
+**Output:**
+```
+First 10 Fibonacci numbers: 0 1 1 2 3 5 8 13 21 34
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function printFibonacci(n) {
+    let a = 0, b = 1;
+    let result = [];
+
+    for (let i = 0; i < n; i++) {
+        result.push(a);
+
+        // Calculate next Fibonacci number
+        let next = a + b;
+        a = b;
+        b = next;
+    }
+
+    console.log(`First ${n} Fibonacci numbers: ${result.join(' ')}`);
+}
+
+let n = 10;
+printFibonacci(n);
+```
+
+**Output:**
+```
+First 10 Fibonacci numbers: 0 1 1 2 3 5 8 13 21 34
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - single loop through n numbers</p>
+      <p><strong>Space Complexity:</strong> O(1) - only uses constant extra space</p>
+      <p><strong>Best for:</strong> Production code, most efficient</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - n সংখ্যার মধ্য দিয়ে একক লুপ</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1) - শুধুমাত্র স্থির অতিরিক্ত স্থান ব্যবহার করে</p>
+      <p><strong>সেরা:</strong> প্রোডাকশন কোড, সবচেয়ে কার্যকর</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: Recursive Solution" bn="পদ্ধতি ২: রিকার্সিভ সমাধান" />
+
+<TranslatedText
+  en={<p>This approach directly implements the mathematical definition using recursion.</p>}
+  bn={<p>এই পদ্ধতি রিকার্শন ব্যবহার করে সরাসরি গাণিতিক সংজ্ঞা বাস্তবায়ন করে।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+int fibonacci(int n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+void printFibonacciRecursive(int count) {
+    cout << "First " << count << " Fibonacci numbers: ";
+
+    for (int i = 0; i < count; i++) {
+        cout << fibonacci(i) << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    int n = 10;
+    printFibonacciRecursive(n);
+    return 0;
+}
+```
+
+**Output:**
+```
+First 10 Fibonacci numbers: 0 1 1 2 3 5 8 13 21 34
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+def print_fibonacci_recursive(count):
+    print(f"First {count} Fibonacci numbers: ", end="")
+
+    for i in range(count):
+        print(fibonacci(i), end=" ")
+
+    print()
+
+n = 10
+print_fibonacci_recursive(n)
+```
+
+**Output:**
+```
+First 10 Fibonacci numbers: 0 1 1 2 3 5 8 13 21 34
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function fibonacci(n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+function printFibonacciRecursive(count) {
+    let result = [];
+
+    for (let i = 0; i < count; i++) {
+        result.push(fibonacci(i));
+    }
+
+    console.log(`First ${count} Fibonacci numbers: ${result.join(' ')}`);
+}
+
+let n = 10;
+printFibonacciRecursive(n);
+```
+
+**Output:**
+```
+First 10 Fibonacci numbers: 0 1 1 2 3 5 8 13 21 34
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(2^n) - exponential due to repeated calculations</p>
+      <p><strong>Space Complexity:</strong> O(n) - recursion call stack depth</p>
+      <p><strong>Warning:</strong> Very slow for large n, not recommended for production</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(2^n) - পুনরাবৃত্ত গণনার কারণে সূচকীয়</p>
+      <p><strong>স্থান জটিলতা:</strong> O(n) - রিকার্শন কল স্ট্যাক গভীরতা</p>
+      <p><strong>সতর্কতা:</strong> বড় n এর জন্য খুব ধীর, প্রোডাকশনের জন্য সুপারিশ করা হয় না</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 3: Recursive with Memoization (Dynamic Programming)" bn="পদ্ধতি ৩: মেমোইজেশন সহ রিকার্সিভ (ডাইনামিক প্রোগ্রামিং)" />
+
+<TranslatedText
+  en={<p>Optimize recursion by storing previously calculated values to avoid redundant computations.</p>}
+  bn={<p>অপ্রয়োজনীয় গণনা এড়াতে পূর্বে গণনা করা মান সংরক্ষণ করে রিকার্শন অপ্টিমাইজ করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+
+unordered_map<int, int> memo;
+
+int fibonacciMemo(int n) {
+    if (n <= 1) {
+        return n;
+    }
+
+    // Check if already calculated
+    if (memo.find(n) != memo.end()) {
+        return memo[n];
+    }
+
+    // Calculate and store result
+    memo[n] = fibonacciMemo(n - 1) + fibonacciMemo(n - 2);
+    return memo[n];
+}
+
+void printFibonacciMemo(int count) {
+    cout << "First " << count << " Fibonacci numbers: ";
+
+    for (int i = 0; i < count; i++) {
+        cout << fibonacciMemo(i) << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    int n = 10;
+    printFibonacciMemo(n);
+    return 0;
+}
+```
+
+**Output:**
+```
+First 10 Fibonacci numbers: 0 1 1 2 3 5 8 13 21 34
+```
+  </Tab>
+  <Tab value="Python">
+```python
+memo = {}
+
+def fibonacci_memo(n):
+    if n <= 1:
+        return n
+
+    # Check if already calculated
+    if n in memo:
+        return memo[n]
+
+    # Calculate and store result
+    memo[n] = fibonacci_memo(n - 1) + fibonacci_memo(n - 2)
+    return memo[n]
+
+def print_fibonacci_memo(count):
+    print(f"First {count} Fibonacci numbers: ", end="")
+
+    for i in range(count):
+        print(fibonacci_memo(i), end=" ")
+
+    print()
+
+n = 10
+print_fibonacci_memo(n)
+```
+
+**Output:**
+```
+First 10 Fibonacci numbers: 0 1 1 2 3 5 8 13 21 34
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+let memo = {};
+
+function fibonacciMemo(n) {
+    if (n <= 1) {
+        return n;
+    }
+
+    // Check if already calculated
+    if (memo[n] !== undefined) {
+        return memo[n];
+    }
+
+    // Calculate and store result
+    memo[n] = fibonacciMemo(n - 1) + fibonacciMemo(n - 2);
+    return memo[n];
+}
+
+function printFibonacciMemo(count) {
+    let result = [];
+
+    for (let i = 0; i < count; i++) {
+        result.push(fibonacciMemo(i));
+    }
+
+    console.log(`First ${count} Fibonacci numbers: ${result.join(' ')}`);
+}
+
+let n = 10;
+printFibonacciMemo(n);
+```
+
+**Output:**
+```
+First 10 Fibonacci numbers: 0 1 1 2 3 5 8 13 21 34
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - each number calculated once</p>
+      <p><strong>Space Complexity:</strong> O(n) - storing n values in memo</p>
+      <p><strong>Good for:</strong> When you need to calculate specific Fibonacci numbers multiple times</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - প্রতিটি সংখ্যা একবার গণনা করা হয়</p>
+      <p><strong>স্থান জটিলতা:</strong> O(n) - মেমোতে n মান সংরক্ষণ করা হয়</p>
+      <p><strong>ভাল যখন:</strong> আপনার একাধিকবার নির্দিষ্ট ফিবোনাচ্চি সংখ্যা গণনা করতে হবে</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণী" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Approach</th>
+          <th>Time Complexity</th>
+          <th>Space Complexity</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Iterative</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>Production, most efficient</td>
+        </tr>
+        <tr>
+          <td>Recursive</td>
+          <td>O(2^n)</td>
+          <td>O(n)</td>
+          <td>Learning, small n only</td>
+        </tr>
+        <tr>
+          <td>Memoization</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>Multiple queries, DP learning</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>পদ্ধতি</th>
+          <th>সময় জটিলতা</th>
+          <th>স্থান জটিলতা</th>
+          <th>সেরা কখন</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>পুনরাবৃত্তিমূলক</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>প্রোডাকশন, সবচেয়ে কার্যকর</td>
+        </tr>
+        <tr>
+          <td>রিকার্সিভ</td>
+          <td>O(2^n)</td>
+          <td>O(n)</td>
+          <td>শেখা, শুধু ছোট n</td>
+        </tr>
+        <tr>
+          <td>মেমোইজেশন</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>একাধিক কোয়েরি, DP শেখা</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Start with iterative solution - it's the best for this problem</li>
+          <li>Mention recursive approach to show understanding of recursion</li>
+          <li>Discuss memoization to demonstrate DP knowledge</li>
+          <li>Compare time complexities: O(2^n) vs O(n) improvement</li>
+          <li>Fibonacci is a classic DP example - remember it well</li>
+          <li>For large n, iterative is always preferred</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>পুনরাবৃত্তিমূলক সমাধান দিয়ে শুরু করুন - এই সমস্যার জন্য এটি সেরা</li>
+          <li>রিকার্শন বোঝার জন্য রিকার্সিভ পদ্ধতি উল্লেখ করুন</li>
+          <li>DP জ্ঞান প্রদর্শন করতে মেমোইজেশন নিয়ে আলোচনা করুন</li>
+          <li>সময় জটিলতা তুলনা করুন: O(2^n) বনাম O(n) উন্নতি</li>
+          <li>ফিবোনাচ্চি একটি ক্লাসিক DP উদাহরণ - ভালভাবে মনে রাখবেন</li>
+          <li>বড় n এর জন্য, পুনরাবৃত্তিমূলক সর্বদা পছন্দনীয়</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

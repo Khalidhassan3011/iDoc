@@ -1,0 +1,499 @@
+---
+title: 15. Remove Special Characters from Lowercase String
+description: Learn how to remove special characters from a string while keeping only lowercase letters
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Remove Special Characters from Lowercase String" bn="লোয়ারকেস স্ট্রিং থেকে বিশেষ অক্ষর সরান" />
+
+<TranslatedText
+  en="Given a string that is already in lowercase, remove all special characters (non-alphabetic) and return only the lowercase letters."
+  bn="একটি স্ট্রিং দেওয়া আছে যা ইতিমধ্যে লোয়ারকেসে আছে, সব বিশেষ অক্ষর (অ-বর্ণমালা) সরান এবং শুধুমাত্র লোয়ারকেস অক্ষর ফেরত দিন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> "hello@world!2024#code"</p>
+      <p><strong>Output:</strong> "helloworldcode"</p>
+      <p><strong>Task:</strong> Remove all non-lowercase-letter characters</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> "hello@world!2024#code"</p>
+      <p><strong>আউটপুট:</strong> "helloworldcode"</p>
+      <p><strong>কাজ:</strong> সব নন-লোয়ারকেস-লেটার অক্ষর সরান</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Character-by-Character Check" bn="পদ্ধতি ১: অক্ষর-বাই-অক্ষর পরীক্ষা" />
+
+<TranslatedText
+  en={<p>Iterate through each character and keep only those that are lowercase letters (a-z).</p>}
+  bn={<p>প্রতিটি অক্ষরের মধ্য দিয়ে পুনরাবৃত্তি করুন এবং শুধুমাত্র যেগুলি লোয়ারকেস অক্ষর (a-z) তা রাখুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+string removeSpecialCharacters(string str) {
+    string result = "";
+
+    for (char ch : str) {
+        // Check if character is lowercase letter (a-z)
+        if (ch >= 'a' && ch <= 'z') {
+            result += ch;
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    string input = "hello@world!2024#code";
+
+    cout << "Original: " << input << endl;
+    cout << "Cleaned: " << removeSpecialCharacters(input) << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Original: hello@world!2024#code
+Cleaned: helloworldcode
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def remove_special_characters(s):
+    result = ""
+
+    for ch in s:
+        # Check if character is lowercase letter (a-z)
+        if 'a' <= ch <= 'z':
+            result += ch
+
+    return result
+
+input_str = "hello@world!2024#code"
+
+print(f"Original: {input_str}")
+print(f"Cleaned: {remove_special_characters(input_str)}")
+```
+
+**Output:**
+```
+Original: hello@world!2024#code
+Cleaned: helloworldcode
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function removeSpecialCharacters(str) {
+    let result = "";
+
+    for (let ch of str) {
+        // Check if character is lowercase letter (a-z)
+        if (ch >= 'a' && ch <= 'z') {
+            result += ch;
+        }
+    }
+
+    return result;
+}
+
+let input = "hello@world!2024#code";
+
+console.log(`Original: ${input}`);
+console.log(`Cleaned: ${removeSpecialCharacters(input)}`);
+```
+
+**Output:**
+```
+Original: hello@world!2024#code
+Cleaned: helloworldcode
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - single pass through string</p>
+      <p><strong>Space Complexity:</strong> O(n) - new string for result</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - স্ট্রিংয়ের মধ্য দিয়ে একক পাস</p>
+      <p><strong>স্থান জটিলতা:</strong> O(n) - ফলাফলের জন্য নতুন স্ট্রিং</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: Using Built-in Character Functions" bn="পদ্ধতি ২: বিল্ট-ইন ক্যারেক্টার ফাংশন ব্যবহার করে" />
+
+<TranslatedText
+  en={<p>Use language-specific character checking functions for cleaner, more readable code.</p>}
+  bn={<p>পরিষ্কার, আরও পাঠযোগ্য কোডের জন্য ভাষা-নির্দিষ্ট ক্যারেক্টার চেকিং ফাংশন ব্যবহার করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+string removeSpecialCharactersBuiltin(string str) {
+    string result = "";
+
+    for (char ch : str) {
+        // Use islower() to check for lowercase letters
+        if (islower(ch)) {
+            result += ch;
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    string input = "hello@world!2024#code";
+
+    cout << "Original: " << input << endl;
+    cout << "Cleaned: " << removeSpecialCharactersBuiltin(input) << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Original: hello@world!2024#code
+Cleaned: helloworldcode
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def remove_special_characters_builtin(s):
+    result = ""
+
+    for ch in s:
+        # Use islower() to check for lowercase letters
+        if ch.islower():
+            result += ch
+
+    return result
+
+# Alternative: using join with generator expression
+def remove_special_characters_pythonic(s):
+    return ''.join(ch for ch in s if ch.islower())
+
+input_str = "hello@world!2024#code"
+
+print(f"Original: {input_str}")
+print(f"Cleaned (method 1): {remove_special_characters_builtin(input_str)}")
+print(f"Cleaned (Pythonic): {remove_special_characters_pythonic(input_str)}")
+```
+
+**Output:**
+```
+Original: hello@world!2024#code
+Cleaned (method 1): helloworldcode
+Cleaned (Pythonic): helloworldcode
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function removeSpecialCharactersBuiltin(str) {
+    let result = "";
+
+    for (let ch of str) {
+        // Check if it's a lowercase letter using regex
+        if (/[a-z]/.test(ch)) {
+            result += ch;
+        }
+    }
+
+    return result;
+}
+
+// Alternative: using filter and join
+function removeSpecialCharactersModern(str) {
+    return str.split('').filter(ch => /[a-z]/.test(ch)).join('');
+}
+
+let input = "hello@world!2024#code";
+
+console.log(`Original: ${input}`);
+console.log(`Cleaned (method 1): ${removeSpecialCharactersBuiltin(input)}`);
+console.log(`Cleaned (modern): ${removeSpecialCharactersModern(input)}`);
+```
+
+**Output:**
+```
+Original: hello@world!2024#code
+Cleaned (method 1): helloworldcode
+Cleaned (modern): helloworldcode
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - single pass through string</p>
+      <p><strong>Space Complexity:</strong> O(n) - new string for result</p>
+      <p><strong>Advantage:</strong> More readable and maintainable</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - স্ট্রিংয়ের মধ্য দিয়ে একক পাস</p>
+      <p><strong>স্থান জটিলতা:</strong> O(n) - ফলাফলের জন্য নতুন স্ট্রিং</p>
+      <p><strong>সুবিধা:</strong> আরও পাঠযোগ্য এবং রক্ষণাবেক্ষণযোগ্য</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 3: Using Regular Expressions" bn="পদ্ধতি ৩: রেগুলার এক্সপ্রেশন ব্যবহার করে" />
+
+<TranslatedText
+  en={<p>Use regex to replace all non-lowercase characters in a single operation.</p>}
+  bn={<p>একক অপারেশনে সব নন-লোয়ারকেস অক্ষর প্রতিস্থাপন করতে রেজেক্স ব্যবহার করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+#include <regex>
+using namespace std;
+
+string removeSpecialCharactersRegex(string str) {
+    // Remove all characters that are NOT lowercase letters
+    regex pattern("[^a-z]");
+    return regex_replace(str, pattern, "");
+}
+
+int main() {
+    string input = "hello@world!2024#code";
+
+    cout << "Original: " << input << endl;
+    cout << "Cleaned: " << removeSpecialCharactersRegex(input) << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Original: hello@world!2024#code
+Cleaned: helloworldcode
+```
+  </Tab>
+  <Tab value="Python">
+```python
+import re
+
+def remove_special_characters_regex(s):
+    # Remove all characters that are NOT lowercase letters
+    return re.sub(r'[^a-z]', '', s)
+
+input_str = "hello@world!2024#code"
+
+print(f"Original: {input_str}")
+print(f"Cleaned: {remove_special_characters_regex(input_str)}")
+```
+
+**Output:**
+```
+Original: hello@world!2024#code
+Cleaned: helloworldcode
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function removeSpecialCharactersRegex(str) {
+    // Remove all characters that are NOT lowercase letters
+    return str.replace(/[^a-z]/g, '');
+}
+
+let input = "hello@world!2024#code";
+
+console.log(`Original: ${input}`);
+console.log(`Cleaned: ${removeSpecialCharactersRegex(input)}`);
+```
+
+**Output:**
+```
+Original: hello@world!2024#code
+Cleaned: helloworldcode
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - regex engine processes entire string</p>
+      <p><strong>Space Complexity:</strong> O(n) - new string for result</p>
+      <p><strong>Advantage:</strong> Most concise, powerful for complex patterns</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - রেজেক্স ইঞ্জিন সম্পূর্ণ স্ট্রিং প্রক্রিয়া করে</p>
+      <p><strong>স্থান জটিলতা:</strong> O(n) - ফলাফলের জন্য নতুন স্ট্রিং</p>
+      <p><strong>সুবিধা:</strong> সবচেয়ে সংক্ষিপ্ত, জটিল প্যাটার্নের জন্য শক্তিশালী</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণী" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Approach</th>
+          <th>Time Complexity</th>
+          <th>Code Simplicity</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Manual Check</td>
+          <td>O(n)</td>
+          <td>Medium</td>
+          <td>Learning, no dependencies</td>
+        </tr>
+        <tr>
+          <td>Built-in Functions</td>
+          <td>O(n)</td>
+          <td>High</td>
+          <td>Production, readable code</td>
+        </tr>
+        <tr>
+          <td>Regular Expression</td>
+          <td>O(n)</td>
+          <td>Very High</td>
+          <td>Complex patterns, concise code</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>পদ্ধতি</th>
+          <th>সময় জটিলতা</th>
+          <th>কোড সরলতা</th>
+          <th>সেরা কখন</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ম্যানুয়াল চেক</td>
+          <td>O(n)</td>
+          <td>মাঝারি</td>
+          <td>শেখা, কোন নির্ভরতা নেই</td>
+        </tr>
+        <tr>
+          <td>বিল্ট-ইন ফাংশন</td>
+          <td>O(n)</td>
+          <td>উচ্চ</td>
+          <td>প্রোডাকশন, পাঠযোগ্য কোড</td>
+        </tr>
+        <tr>
+          <td>রেগুলার এক্সপ্রেশন</td>
+          <td>O(n)</td>
+          <td>অতি উচ্চ</td>
+          <td>জটিল প্যাটার্ন, সংক্ষিপ্ত কোড</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Extended Variations" bn="বর্ধিত বৈচিত্র" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Keep only letters (upper + lower):</strong> Check for (a-z) or (A-Z)</li>
+        <li><strong>Keep alphanumeric:</strong> Check for (a-z, A-Z, 0-9)</li>
+        <li><strong>Remove specific characters:</strong> Use a set/list of characters to exclude</li>
+        <li><strong>Keep spaces:</strong> Modify check to include space character</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>শুধু অক্ষর রাখুন (আপার + লোয়ার):</strong> (a-z) বা (A-Z) পরীক্ষা করুন</li>
+        <li><strong>আলফানিউমেরিক রাখুন:</strong> (a-z, A-Z, 0-9) পরীক্ষা করুন</li>
+        <li><strong>নির্দিষ্ট অক্ষর সরান:</strong> বাদ দেওয়ার জন্য অক্ষরের একটি সেট/তালিকা ব্যবহার করুন</li>
+        <li><strong>স্পেস রাখুন:</strong> স্পেস ক্যারেক্টার অন্তর্ভুক্ত করতে চেক পরিবর্তন করুন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Clarify what needs to be kept vs removed (lowercase only, or all letters?)</li>
+          <li>Discuss space vs time tradeoffs (in-place not possible for strings in most languages)</li>
+          <li>Show multiple approaches: manual, built-in functions, regex</li>
+          <li>For production, regex is often cleanest for simple patterns</li>
+          <li>Be aware of Unicode and internationalization concerns</li>
+          <li>Know character checking methods: islower(), isalpha(), isalnum()</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>স্পষ্ট করুন কী রাখতে হবে বনাম সরাতে হবে (শুধু লোয়ারকেস, না সব অক্ষর?)</li>
+          <li>স্থান বনাম সময় ট্রেডঅফ নিয়ে আলোচনা করুন (বেশিরভাগ ভাষায় স্ট্রিংয়ের জন্য ইন-প্লেস সম্ভব নয়)</li>
+          <li>একাধিক পদ্ধতি দেখান: ম্যানুয়াল, বিল্ট-ইন ফাংশন, রেজেক্স</li>
+          <li>প্রোডাকশনের জন্য, সাধারণ প্যাটার্নের জন্য রেজেক্স প্রায়শই পরিষ্কার</li>
+          <li>ইউনিকোড এবং আন্তর্জাতিকীকরণ উদ্বেগ সম্পর্কে সচেতন থাকুন</li>
+          <li>ক্যারেক্টার চেকিং মেথড জানুন: islower(), isalpha(), isalnum()</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

@@ -1,0 +1,560 @@
+---
+title: 18. Check if a Number is Palindrome
+description: Learn how to check if a given number is a palindrome
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Check if a Given Number is a Palindrome" bn="একটি সংখ্যা প্যালিনড্রোম কিনা পরীক্ষা করুন" />
+
+<TranslatedText
+  en="A palindrome number reads the same forwards and backwards. For example, 121 is a palindrome, but 123 is not."
+  bn="একটি প্যালিনড্রোম সংখ্যা সামনে এবং পিছনে একই পড়া যায়। উদাহরণস্বরূপ, 121 একটি প্যালিনড্রোম, কিন্তু 123 নয়।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> 12321</p>
+      <p><strong>Output:</strong> true (is palindrome)</p>
+      <p><strong>Input:</strong> 12345</p>
+      <p><strong>Output:</strong> false (not palindrome)</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> 12321</p>
+      <p><strong>আউটপুট:</strong> true (প্যালিনড্রোম)</p>
+      <p><strong>ইনপুট:</strong> 12345</p>
+      <p><strong>আউটপুট:</strong> false (প্যালিনড্রোম নয়)</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Reverse the Number" bn="পদ্ধতি ১: সংখ্যা উল্টান" />
+
+<TranslatedText
+  en={<p>Reverse the entire number and compare it with the original.</p>}
+  bn={<p>সম্পূর্ণ সংখ্যা উল্টান এবং মূলের সাথে তুলনা করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+bool isPalindrome(int n) {
+    // Negative numbers are not palindromes
+    if (n < 0) {
+        return false;
+    }
+
+    int original = n;
+    long long reversed = 0;
+
+    while (n > 0) {
+        int digit = n % 10;
+        reversed = reversed * 10 + digit;
+        n /= 10;
+    }
+
+    return original == reversed;
+}
+
+int main() {
+    int num1 = 12321;
+    int num2 = 12345;
+
+    cout << num1 << " is " << (isPalindrome(num1) ? "a palindrome" : "not a palindrome") << endl;
+    cout << num2 << " is " << (isPalindrome(num2) ? "a palindrome" : "not a palindrome") << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+12321 is a palindrome
+12345 is not a palindrome
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def is_palindrome(n):
+    # Negative numbers are not palindromes
+    if n < 0:
+        return False
+
+    original = n
+    reversed_num = 0
+
+    while n > 0:
+        digit = n % 10
+        reversed_num = reversed_num * 10 + digit
+        n //= 10
+
+    return original == reversed_num
+
+num1 = 12321
+num2 = 12345
+
+print(f"{num1} is {'a palindrome' if is_palindrome(num1) else 'not a palindrome'}")
+print(f"{num2} is {'a palindrome' if is_palindrome(num2) else 'not a palindrome'}")
+```
+
+**Output:**
+```
+12321 is a palindrome
+12345 is not a palindrome
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function isPalindrome(n) {
+    // Negative numbers are not palindromes
+    if (n < 0) {
+        return false;
+    }
+
+    let original = n;
+    let reversed = 0;
+
+    while (n > 0) {
+        let digit = n % 10;
+        reversed = reversed * 10 + digit;
+        n = Math.floor(n / 10);
+    }
+
+    return original === reversed;
+}
+
+let num1 = 12321;
+let num2 = 12345;
+
+console.log(`${num1} is ${isPalindrome(num1) ? 'a palindrome' : 'not a palindrome'}`);
+console.log(`${num2} is ${isPalindrome(num2) ? 'a palindrome' : 'not a palindrome'}`);
+```
+
+**Output:**
+```
+12321 is a palindrome
+12345 is not a palindrome
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(log n) - number of digits in n</p>
+      <p><strong>Space Complexity:</strong> O(1) - constant space</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(log n) - n এ সংখ্যার সংখ্যা</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1) - স্থির স্থান</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: String Conversion" bn="পদ্ধতি ২: স্ট্রিং রূপান্তর" />
+
+<TranslatedText
+  en={<p>Convert the number to a string and compare it with its reverse.</p>}
+  bn={<p>সংখ্যাকে স্ট্রিংয়ে রূপান্তর করুন এবং এর বিপরীতের সাথে তুলনা করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+bool isPalindromeString(int n) {
+    // Negative numbers are not palindromes
+    if (n < 0) {
+        return false;
+    }
+
+    string str = to_string(n);
+    string reversed = str;
+    reverse(reversed.begin(), reversed.end());
+
+    return str == reversed;
+}
+
+int main() {
+    int num1 = 12321;
+    int num2 = 12345;
+
+    cout << num1 << " is " << (isPalindromeString(num1) ? "a palindrome" : "not a palindrome") << endl;
+    cout << num2 << " is " << (isPalindromeString(num2) ? "a palindrome" : "not a palindrome") << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+12321 is a palindrome
+12345 is not a palindrome
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def is_palindrome_string(n):
+    # Negative numbers are not palindromes
+    if n < 0:
+        return False
+
+    str_n = str(n)
+    return str_n == str_n[::-1]
+
+num1 = 12321
+num2 = 12345
+
+print(f"{num1} is {'a palindrome' if is_palindrome_string(num1) else 'not a palindrome'}")
+print(f"{num2} is {'a palindrome' if is_palindrome_string(num2) else 'not a palindrome'}")
+```
+
+**Output:**
+```
+12321 is a palindrome
+12345 is not a palindrome
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function isPalindromeString(n) {
+    // Negative numbers are not palindromes
+    if (n < 0) {
+        return false;
+    }
+
+    const str = n.toString();
+    const reversed = str.split('').reverse().join('');
+
+    return str === reversed;
+}
+
+let num1 = 12321;
+let num2 = 12345;
+
+console.log(`${num1} is ${isPalindromeString(num1) ? 'a palindrome' : 'not a palindrome'}`);
+console.log(`${num2} is ${isPalindromeString(num2) ? 'a palindrome' : 'not a palindrome'}`);
+```
+
+**Output:**
+```
+12321 is a palindrome
+12345 is not a palindrome
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(log n) - converting and comparing digits</p>
+      <p><strong>Space Complexity:</strong> O(log n) - string storage</p>
+      <p><strong>Advantage:</strong> Simpler, more readable code</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(log n) - ডিজিট রূপান্তর এবং তুলনা</p>
+      <p><strong>স্থান জটিলতা:</strong> O(log n) - স্ট্রিং স্টোরেজ</p>
+      <p><strong>সুবিধা:</strong> সহজ, আরও পাঠযোগ্য কোড</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 3: Half Reverse (Optimized)" bn="পদ্ধতি ৩: হাফ রিভার্স (অপ্টিমাইজড)" />
+
+<TranslatedText
+  en={<p>Only reverse half the number to save operations. Compare first half with reversed second half.</p>}
+  bn={<p>অপারেশন সংরক্ষণ করতে শুধুমাত্র অর্ধেক সংখ্যা উল্টান। প্রথম অর্ধেককে উল্টানো দ্বিতীয় অর্ধেকের সাথে তুলনা করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+bool isPalindromeOptimized(int n) {
+    // Negative numbers and numbers ending in 0 (except 0 itself)
+    if (n < 0 || (n % 10 == 0 && n != 0)) {
+        return false;
+    }
+
+    int reversedHalf = 0;
+
+    // Reverse only half the number
+    while (n > reversedHalf) {
+        reversedHalf = reversedHalf * 10 + n % 10;
+        n /= 10;
+    }
+
+    // For even length: n == reversedHalf
+    // For odd length: n == reversedHalf / 10 (middle digit doesn't matter)
+    return n == reversedHalf || n == reversedHalf / 10;
+}
+
+int main() {
+    int num1 = 12321;
+    int num2 = 12345;
+    int num3 = 1221;
+
+    cout << num1 << " is " << (isPalindromeOptimized(num1) ? "a palindrome" : "not a palindrome") << endl;
+    cout << num2 << " is " << (isPalindromeOptimized(num2) ? "a palindrome" : "not a palindrome") << endl;
+    cout << num3 << " is " << (isPalindromeOptimized(num3) ? "a palindrome" : "not a palindrome") << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+12321 is a palindrome
+12345 is not a palindrome
+1221 is a palindrome
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def is_palindrome_optimized(n):
+    # Negative numbers and numbers ending in 0 (except 0 itself)
+    if n < 0 or (n % 10 == 0 and n != 0):
+        return False
+
+    reversed_half = 0
+
+    # Reverse only half the number
+    while n > reversed_half:
+        reversed_half = reversed_half * 10 + n % 10
+        n //= 10
+
+    # For even length: n == reversed_half
+    # For odd length: n == reversed_half // 10
+    return n == reversed_half or n == reversed_half // 10
+
+num1 = 12321
+num2 = 12345
+num3 = 1221
+
+print(f"{num1} is {'a palindrome' if is_palindrome_optimized(num1) else 'not a palindrome'}")
+print(f"{num2} is {'a palindrome' if is_palindrome_optimized(num2) else 'not a palindrome'}")
+print(f"{num3} is {'a palindrome' if is_palindrome_optimized(num3) else 'not a palindrome'}")
+```
+
+**Output:**
+```
+12321 is a palindrome
+12345 is not a palindrome
+1221 is a palindrome
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function isPalindromeOptimized(n) {
+    // Negative numbers and numbers ending in 0 (except 0 itself)
+    if (n < 0 || (n % 10 === 0 && n !== 0)) {
+        return false;
+    }
+
+    let reversedHalf = 0;
+
+    // Reverse only half the number
+    while (n > reversedHalf) {
+        reversedHalf = reversedHalf * 10 + n % 10;
+        n = Math.floor(n / 10);
+    }
+
+    // For even length: n === reversedHalf
+    // For odd length: n === Math.floor(reversedHalf / 10)
+    return n === reversedHalf || n === Math.floor(reversedHalf / 10);
+}
+
+let num1 = 12321;
+let num2 = 12345;
+let num3 = 1221;
+
+console.log(`${num1} is ${isPalindromeOptimized(num1) ? 'a palindrome' : 'not a palindrome'}`);
+console.log(`${num2} is ${isPalindromeOptimized(num2) ? 'a palindrome' : 'not a palindrome'}`);
+console.log(`${num3} is ${isPalindromeOptimized(num3) ? 'a palindrome' : 'not a palindrome'}`);
+```
+
+**Output:**
+```
+12321 is a palindrome
+12345 is not a palindrome
+1221 is a palindrome
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(log n / 2) - only half the digits</p>
+      <p><strong>Space Complexity:</strong> O(1) - constant space</p>
+      <p><strong>Advantage:</strong> Most efficient, fewer operations</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(log n / 2) - শুধুমাত্র অর্ধেক ডিজিট</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1) - স্থির স্থান</p>
+      <p><strong>সুবিধা:</strong> সবচেয়ে কার্যকর, কম অপারেশন</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Edge Cases" bn="প্রান্তিক ক্ষেত্রে" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Negative numbers:</strong> Not considered palindromes (e.g., -121)</li>
+        <li><strong>Numbers ending in 0:</strong> Not palindromes (except 0 itself) because leading zeros don't exist</li>
+        <li><strong>Single digit:</strong> All single-digit numbers are palindromes</li>
+        <li><strong>Zero:</strong> 0 is a palindrome</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>ঋণাত্মক সংখ্যা:</strong> প্যালিনড্রোম হিসাবে বিবেচিত নয় (যেমন, -121)</li>
+        <li><strong>0 দিয়ে শেষ হওয়া সংখ্যা:</strong> প্যালিনড্রোম নয় (0 নিজেই ছাড়া) কারণ লিডিং জিরো থাকে না</li>
+        <li><strong>একক ডিজিট:</strong> সমস্ত একক-ডিজিট সংখ্যা প্যালিনড্রোম</li>
+        <li><strong>শূন্য:</strong> 0 একটি প্যালিনড্রোম</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণী" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Approach</th>
+          <th>Time</th>
+          <th>Space</th>
+          <th>Operations</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Full Reverse</td>
+          <td>O(log n)</td>
+          <td>O(1)</td>
+          <td>All digits</td>
+          <td>Simple implementation</td>
+        </tr>
+        <tr>
+          <td>String Conversion</td>
+          <td>O(log n)</td>
+          <td>O(log n)</td>
+          <td>All digits</td>
+          <td>Readability</td>
+        </tr>
+        <tr>
+          <td>Half Reverse</td>
+          <td>O(log n / 2)</td>
+          <td>O(1)</td>
+          <td>Half digits</td>
+          <td>Optimal performance</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>পদ্ধতি</th>
+          <th>সময়</th>
+          <th>স্থান</th>
+          <th>অপারেশন</th>
+          <th>সেরা কখন</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>সম্পূর্ণ রিভার্স</td>
+          <td>O(log n)</td>
+          <td>O(1)</td>
+          <td>সব ডিজিট</td>
+          <td>সহজ বাস্তবায়ন</td>
+        </tr>
+        <tr>
+          <td>স্ট্রিং রূপান্তর</td>
+          <td>O(log n)</td>
+          <td>O(log n)</td>
+          <td>সব ডিজিট</td>
+          <td>পাঠযোগ্যতা</td>
+        </tr>
+        <tr>
+          <td>হাফ রিভার্স</td>
+          <td>O(log n / 2)</td>
+          <td>O(1)</td>
+          <td>অর্ধেক ডিজিট</td>
+          <td>সর্বোত্তম পারফরম্যান্স</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Start with full reverse approach, then optimize to half reverse</li>
+          <li>Handle edge cases: negatives, trailing zeros, single digits</li>
+          <li>String approach is valid but uses more space</li>
+          <li>Half reverse shows optimization skills (most impressive)</li>
+          <li>Discuss overflow concerns for very large numbers</li>
+          <li>This is a common LeetCode Easy problem</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>সম্পূর্ণ রিভার্স পদ্ধতি দিয়ে শুরু করুন, তারপর হাফ রিভার্সে অপ্টিমাইজ করুন</li>
+          <li>প্রান্তিক ক্ষেত্রে পরিচালনা করুন: ঋণাত্মক, ট্রেইলিং জিরো, একক ডিজিট</li>
+          <li>স্ট্রিং পদ্ধতি বৈধ কিন্তু বেশি স্থান ব্যবহার করে</li>
+          <li>হাফ রিভার্স অপ্টিমাইজেশন দক্ষতা দেখায় (সবচেয়ে চিত্তাকর্ষক)</li>
+          <li>খুব বড় সংখ্যার জন্য ওভারফ্লো উদ্বেগ নিয়ে আলোচনা করুন</li>
+          <li>এটি একটি সাধারণ LeetCode Easy সমস্যা</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

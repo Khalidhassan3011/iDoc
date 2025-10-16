@@ -1,0 +1,574 @@
+---
+title: 20. Sudoku Solver
+description: Learn how to solve a Sudoku puzzle using backtracking algorithm
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Sudoku Solver Program" bn="সুডোকু সলভার প্রোগ্রাম" />
+
+<TranslatedText
+  en="Solve a 9×9 Sudoku puzzle by filling empty cells (represented by 0) such that each row, column, and 3×3 subgrid contains digits 1-9 exactly once."
+  bn="খালি ঘর (0 দ্বারা প্রতিনিধিত্ব) পূরণ করে একটি 9×9 সুডোকু ধাঁধা সমাধান করুন যাতে প্রতিটি সারি, কলাম এবং 3×3 সাবগ্রিডে 1-9 সংখ্যাগুলি ঠিক একবার থাকে।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Sudoku Rules:</strong></p>
+      <ul>
+        <li>Each row must contain digits 1-9 without repetition</li>
+        <li>Each column must contain digits 1-9 without repetition</li>
+        <li>Each 3×3 subgrid must contain digits 1-9 without repetition</li>
+      </ul>
+      <p><strong>Input:</strong> Partially filled 9×9 grid (0 represents empty cells)</p>
+      <p><strong>Output:</strong> Solved Sudoku grid or indication if no solution exists</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সুডোকু নিয়ম:</strong></p>
+      <ul>
+        <li>প্রতিটি সারিতে পুনরাবৃত্তি ছাড়াই 1-9 সংখ্যা থাকতে হবে</li>
+        <li>প্রতিটি কলামে পুনরাবৃত্তি ছাড়াই 1-9 সংখ্যা থাকতে হবে</li>
+        <li>প্রতিটি 3×3 সাবগ্রিডে পুনরাবৃত্তি ছাড়াই 1-9 সংখ্যা থাকতে হবে</li>
+      </ul>
+      <p><strong>ইনপুট:</strong> আংশিকভাবে ভরা 9×9 গ্রিড (0 খালি ঘর প্রতিনিধিত্ব করে)</p>
+      <p><strong>আউটপুট:</strong> সমাধান করা সুডোকু গ্রিড বা কোনো সমাধান না থাকলে ইঙ্গিত</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approach: Backtracking" bn="সমাধান পদ্ধতি: ব্যাকট্র্যাকিং" />
+
+<TranslatedText
+  en={<p>Use backtracking to try placing digits 1-9 in empty cells, validating Sudoku rules at each step. Backtrack when a contradiction is found.</p>}
+  bn={<p>প্রতিটি ধাপে সুডোকু নিয়ম যাচাই করে খালি ঘরে 1-9 সংখ্যা রাখার চেষ্টা করতে ব্যাকট্র্যাকিং ব্যবহার করুন। একটি দ্বন্দ্ব পাওয়া গেলে ব্যাকট্র্যাক করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+const int N = 9;
+
+// Check if placing num at board[row][col] is valid
+bool isSafe(vector<vector<int>>& board, int row, int col, int num) {
+    // Check row
+    for (int x = 0; x < N; x++) {
+        if (board[row][x] == num) {
+            return false;
+        }
+    }
+
+    // Check column
+    for (int x = 0; x < N; x++) {
+        if (board[x][col] == num) {
+            return false;
+        }
+    }
+
+    // Check 3x3 subgrid
+    int startRow = row - row % 3;
+    int startCol = col - col % 3;
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (board[i + startRow][j + startCol] == num) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+// Solve Sudoku using backtracking
+bool solveSudoku(vector<vector<int>>& board) {
+    for (int row = 0; row < N; row++) {
+        for (int col = 0; col < N; col++) {
+            // Find an empty cell
+            if (board[row][col] == 0) {
+                // Try digits 1-9
+                for (int num = 1; num <= 9; num++) {
+                    if (isSafe(board, row, col, num)) {
+                        // Place the number
+                        board[row][col] = num;
+
+                        // Recursively try to fill rest
+                        if (solveSudoku(board)) {
+                            return true;
+                        }
+
+                        // Backtrack: remove the number
+                        board[row][col] = 0;
+                    }
+                }
+
+                // No valid number found, trigger backtracking
+                return false;
+            }
+        }
+    }
+
+    // All cells filled successfully
+    return true;
+}
+
+// Print the Sudoku board
+void printBoard(vector<vector<int>>& board) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            cout << board[i][j] << " ";
+            if ((j + 1) % 3 == 0 && j < N - 1) cout << "| ";
+        }
+        cout << endl;
+        if ((i + 1) % 3 == 0 && i < N - 1) {
+            cout << "------+-------+------" << endl;
+        }
+    }
+}
+
+int main() {
+    vector<vector<int>> board = {
+        {5, 3, 0, 0, 7, 0, 0, 0, 0},
+        {6, 0, 0, 1, 9, 5, 0, 0, 0},
+        {0, 9, 8, 0, 0, 0, 0, 6, 0},
+        {8, 0, 0, 0, 6, 0, 0, 0, 3},
+        {4, 0, 0, 8, 0, 3, 0, 0, 1},
+        {7, 0, 0, 0, 2, 0, 0, 0, 6},
+        {0, 6, 0, 0, 0, 0, 2, 8, 0},
+        {0, 0, 0, 4, 1, 9, 0, 0, 5},
+        {0, 0, 0, 0, 8, 0, 0, 7, 9}
+    };
+
+    cout << "Original Sudoku:" << endl;
+    printBoard(board);
+
+    if (solveSudoku(board)) {
+        cout << "\nSolved Sudoku:" << endl;
+        printBoard(board);
+    } else {
+        cout << "\nNo solution exists!" << endl;
+    }
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Original Sudoku:
+5 3 0 | 0 7 0 | 0 0 0
+6 0 0 | 1 9 5 | 0 0 0
+0 9 8 | 0 0 0 | 0 6 0
+------+-------+------
+8 0 0 | 0 6 0 | 0 0 3
+4 0 0 | 8 0 3 | 0 0 1
+7 0 0 | 0 2 0 | 0 0 6
+------+-------+------
+0 6 0 | 0 0 0 | 2 8 0
+0 0 0 | 4 1 9 | 0 0 5
+0 0 0 | 0 8 0 | 0 7 9
+
+Solved Sudoku:
+5 3 4 | 6 7 8 | 9 1 2
+6 7 2 | 1 9 5 | 3 4 8
+1 9 8 | 3 4 2 | 5 6 7
+------+-------+------
+8 5 9 | 7 6 1 | 4 2 3
+4 2 6 | 8 5 3 | 7 9 1
+7 1 3 | 9 2 4 | 8 5 6
+------+-------+------
+9 6 1 | 5 3 7 | 2 8 4
+2 8 7 | 4 1 9 | 6 3 5
+3 4 5 | 2 8 6 | 1 7 9
+```
+  </Tab>
+  <Tab value="Python">
+```python
+N = 9
+
+def is_safe(board, row, col, num):
+    """Check if placing num at board[row][col] is valid"""
+
+    # Check row
+    for x in range(N):
+        if board[row][x] == num:
+            return False
+
+    # Check column
+    for x in range(N):
+        if board[x][col] == num:
+            return False
+
+    # Check 3x3 subgrid
+    start_row = row - row % 3
+    start_col = col - col % 3
+    for i in range(3):
+        for j in range(3):
+            if board[i + start_row][j + start_col] == num:
+                return False
+
+    return True
+
+def solve_sudoku(board):
+    """Solve Sudoku using backtracking"""
+
+    for row in range(N):
+        for col in range(N):
+            # Find an empty cell
+            if board[row][col] == 0:
+                # Try digits 1-9
+                for num in range(1, 10):
+                    if is_safe(board, row, col, num):
+                        # Place the number
+                        board[row][col] = num
+
+                        # Recursively try to fill rest
+                        if solve_sudoku(board):
+                            return True
+
+                        # Backtrack: remove the number
+                        board[row][col] = 0
+
+                # No valid number found, trigger backtracking
+                return False
+
+    # All cells filled successfully
+    return True
+
+def print_board(board):
+    """Print the Sudoku board"""
+    for i in range(N):
+        for j in range(N):
+            print(board[i][j], end=" ")
+            if (j + 1) % 3 == 0 and j < N - 1:
+                print("|", end=" ")
+        print()
+        if (i + 1) % 3 == 0 and i < N - 1:
+            print("------+-------+------")
+
+# Example puzzle
+board = [
+    [5, 3, 0, 0, 7, 0, 0, 0, 0],
+    [6, 0, 0, 1, 9, 5, 0, 0, 0],
+    [0, 9, 8, 0, 0, 0, 0, 6, 0],
+    [8, 0, 0, 0, 6, 0, 0, 0, 3],
+    [4, 0, 0, 8, 0, 3, 0, 0, 1],
+    [7, 0, 0, 0, 2, 0, 0, 0, 6],
+    [0, 6, 0, 0, 0, 0, 2, 8, 0],
+    [0, 0, 0, 4, 1, 9, 0, 0, 5],
+    [0, 0, 0, 0, 8, 0, 0, 7, 9]
+]
+
+print("Original Sudoku:")
+print_board(board)
+
+if solve_sudoku(board):
+    print("\nSolved Sudoku:")
+    print_board(board)
+else:
+    print("\nNo solution exists!")
+```
+
+**Output:**
+```
+Original Sudoku:
+5 3 0 | 0 7 0 | 0 0 0
+6 0 0 | 1 9 5 | 0 0 0
+0 9 8 | 0 0 0 | 0 6 0
+------+-------+------
+8 0 0 | 0 6 0 | 0 0 3
+4 0 0 | 8 0 3 | 0 0 1
+7 0 0 | 0 2 0 | 0 0 6
+------+-------+------
+0 6 0 | 0 0 0 | 2 8 0
+0 0 0 | 4 1 9 | 0 0 5
+0 0 0 | 0 8 0 | 0 7 9
+
+Solved Sudoku:
+5 3 4 | 6 7 8 | 9 1 2
+6 7 2 | 1 9 5 | 3 4 8
+1 9 8 | 3 4 2 | 5 6 7
+------+-------+------
+8 5 9 | 7 6 1 | 4 2 3
+4 2 6 | 8 5 3 | 7 9 1
+7 1 3 | 9 2 4 | 8 5 6
+------+-------+------
+9 6 1 | 5 3 7 | 2 8 4
+2 8 7 | 4 1 9 | 6 3 5
+3 4 5 | 2 8 6 | 1 7 9
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+const N = 9;
+
+function isSafe(board, row, col, num) {
+    // Check row
+    for (let x = 0; x < N; x++) {
+        if (board[row][x] === num) {
+            return false;
+        }
+    }
+
+    // Check column
+    for (let x = 0; x < N; x++) {
+        if (board[x][col] === num) {
+            return false;
+        }
+    }
+
+    // Check 3x3 subgrid
+    const startRow = row - (row % 3);
+    const startCol = col - (col % 3);
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            if (board[i + startRow][j + startCol] === num) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+function solveSudoku(board) {
+    for (let row = 0; row < N; row++) {
+        for (let col = 0; col < N; col++) {
+            // Find an empty cell
+            if (board[row][col] === 0) {
+                // Try digits 1-9
+                for (let num = 1; num <= 9; num++) {
+                    if (isSafe(board, row, col, num)) {
+                        // Place the number
+                        board[row][col] = num;
+
+                        // Recursively try to fill rest
+                        if (solveSudoku(board)) {
+                            return true;
+                        }
+
+                        // Backtrack: remove the number
+                        board[row][col] = 0;
+                    }
+                }
+
+                // No valid number found, trigger backtracking
+                return false;
+            }
+        }
+    }
+
+    // All cells filled successfully
+    return true;
+}
+
+function printBoard(board) {
+    for (let i = 0; i < N; i++) {
+        let row = "";
+        for (let j = 0; j < N; j++) {
+            row += board[i][j] + " ";
+            if ((j + 1) % 3 === 0 && j < N - 1) row += "| ";
+        }
+        console.log(row);
+        if ((i + 1) % 3 === 0 && i < N - 1) {
+            console.log("------+-------+------");
+        }
+    }
+}
+
+// Example puzzle
+let board = [
+    [5, 3, 0, 0, 7, 0, 0, 0, 0],
+    [6, 0, 0, 1, 9, 5, 0, 0, 0],
+    [0, 9, 8, 0, 0, 0, 0, 6, 0],
+    [8, 0, 0, 0, 6, 0, 0, 0, 3],
+    [4, 0, 0, 8, 0, 3, 0, 0, 1],
+    [7, 0, 0, 0, 2, 0, 0, 0, 6],
+    [0, 6, 0, 0, 0, 0, 2, 8, 0],
+    [0, 0, 0, 4, 1, 9, 0, 0, 5],
+    [0, 0, 0, 0, 8, 0, 0, 7, 9]
+];
+
+console.log("Original Sudoku:");
+printBoard(board);
+
+if (solveSudoku(board)) {
+    console.log("\nSolved Sudoku:");
+    printBoard(board);
+} else {
+    console.log("\nNo solution exists!");
+}
+```
+
+**Output:**
+```
+Original Sudoku:
+5 3 0 | 0 7 0 | 0 0 0
+6 0 0 | 1 9 5 | 0 0 0
+0 9 8 | 0 0 0 | 0 6 0
+------+-------+------
+8 0 0 | 0 6 0 | 0 0 3
+4 0 0 | 8 0 3 | 0 0 1
+7 0 0 | 0 2 0 | 0 0 6
+------+-------+------
+0 6 0 | 0 0 0 | 2 8 0
+0 0 0 | 4 1 9 | 0 0 5
+0 0 0 | 0 8 0 | 0 7 9
+
+Solved Sudoku:
+5 3 4 | 6 7 8 | 9 1 2
+6 7 2 | 1 9 5 | 3 4 8
+1 9 8 | 3 4 2 | 5 6 7
+------+-------+------
+8 5 9 | 7 6 1 | 4 2 3
+4 2 6 | 8 5 3 | 7 9 1
+7 1 3 | 9 2 4 | 8 5 6
+------+-------+------
+9 6 1 | 5 3 7 | 2 8 4
+2 8 7 | 4 1 9 | 6 3 5
+3 4 5 | 2 8 6 | 1 7 9
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Algorithm Explanation" bn="অ্যালগরিদম ব্যাখ্যা" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Step-by-Step Process:</strong></p>
+      <ol>
+        <li><strong>Find Empty Cell:</strong> Scan the board to find a cell with value 0</li>
+        <li><strong>Try Numbers 1-9:</strong> For each number, check if it's valid</li>
+        <li><strong>Validate Placement:</strong>
+          <ul>
+            <li>Check if number exists in same row</li>
+            <li>Check if number exists in same column</li>
+            <li>Check if number exists in same 3×3 subgrid</li>
+          </ul>
+        </li>
+        <li><strong>Place & Recurse:</strong> If valid, place the number and recursively solve</li>
+        <li><strong>Backtrack:</strong> If recursion fails, remove the number and try next</li>
+        <li><strong>Solution Found:</strong> When no empty cells remain, puzzle is solved</li>
+      </ol>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ধাপে ধাপে প্রক্রিয়া:</strong></p>
+      <ol>
+        <li><strong>খালি ঘর খুঁজুন:</strong> মান 0 সহ একটি ঘর খুঁজতে বোর্ড স্ক্যান করুন</li>
+        <li><strong>1-9 সংখ্যা চেষ্টা করুন:</strong> প্রতিটি সংখ্যার জন্য, এটি বৈধ কিনা পরীক্ষা করুন</li>
+        <li><strong>প্লেসমেন্ট যাচাই করুন:</strong>
+          <ul>
+            <li>একই সারিতে সংখ্যা আছে কিনা পরীক্ষা করুন</li>
+            <li>একই কলামে সংখ্যা আছে কিনা পরীক্ষা করুন</li>
+            <li>একই 3×3 সাবগ্রিডে সংখ্যা আছে কিনা পরীক্ষা করুন</li>
+          </ul>
+        </li>
+        <li><strong>স্থাপন এবং রিকার্স:</strong> যদি বৈধ হয়, সংখ্যা স্থাপন করুন এবং রিকার্সিভভাবে সমাধান করুন</li>
+        <li><strong>ব্যাকট্র্যাক:</strong> যদি রিকার্শন ব্যর্থ হয়, সংখ্যা সরান এবং পরবর্তী চেষ্টা করুন</li>
+        <li><strong>সমাধান পাওয়া গেছে:</strong> যখন কোন খালি ঘর অবশিষ্ট থাকে না, ধাঁধা সমাধান হয়</li>
+      </ol>
+    </>
+  }
+/>
+
+## <TranslatedText en="Complexity Analysis" bn="জটিলতা বিশ্লেষণ" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(9^m) where m is the number of empty cells</p>
+      <ul>
+        <li>Worst case: try 9 possibilities for each empty cell</li>
+        <li>Backtracking prunes many invalid paths</li>
+        <li>Actual runtime depends on puzzle difficulty</li>
+      </ul>
+      <p><strong>Space Complexity:</strong> O(n²) for recursion stack depth (up to 81 levels)</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(9^m) যেখানে m হল খালি ঘরের সংখ্যা</p>
+      <ul>
+        <li>সবচেয়ে খারাপ ক্ষেত্রে: প্রতিটি খালি ঘরের জন্য 9টি সম্ভাবনা চেষ্টা করুন</li>
+        <li>ব্যাকট্র্যাকিং অনেক অবৈধ পথ ছাঁটাই করে</li>
+        <li>প্রকৃত রানটাইম ধাঁধার কঠিনতার উপর নির্ভর করে</li>
+      </ul>
+      <p><strong>স্থান জটিলতা:</strong> O(n²) রিকার্শন স্ট্যাক গভীরতার জন্য (81 স্তর পর্যন্ত)</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Optimization Techniques" bn="অপ্টিমাইজেশন কৌশল" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>MRV Heuristic:</strong> Choose cell with minimum remaining values first</li>
+        <li><strong>Constraint Propagation:</strong> Eliminate impossible values early</li>
+        <li><strong>Pre-computation:</strong> Cache valid numbers for each cell</li>
+        <li><strong>Bit Manipulation:</strong> Use bit masks for faster validation</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>MRV হিউরিস্টিক:</strong> প্রথমে ন্যূনতম অবশিষ্ট মান সহ ঘর চয়ন করুন</li>
+        <li><strong>কনস্ট্রেইন্ট প্রপাগেশন:</strong> তাড়াতাড়ি অসম্ভব মান বাদ দিন</li>
+        <li><strong>প্রি-কম্পিউটেশন:</strong> প্রতিটি ঘরের জন্য বৈধ সংখ্যা ক্যাশে করুন</li>
+        <li><strong>বিট ম্যানিপুলেশন:</strong> দ্রুত যাচাইয়ের জন্য বিট মাস্ক ব্যবহার করুন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Sudoku solver is a classic backtracking problem</li>
+          <li>Explain the three validation checks clearly (row, column, subgrid)</li>
+          <li>Understand when and why to backtrack</li>
+          <li>Discuss time complexity honestly - exponential worst case</li>
+          <li>Mention optimization techniques like MRV and constraint propagation</li>
+          <li>This problem tests recursion, backtracking, and problem-solving skills</li>
+          <li>LeetCode Hard level problem</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>সুডোকু সলভার একটি ক্লাসিক ব্যাকট্র্যাকিং সমস্যা</li>
+          <li>তিনটি যাচাইকরণ চেক স্পষ্টভাবে ব্যাখ্যা করুন (সারি, কলাম, সাবগ্রিড)</li>
+          <li>কখন এবং কেন ব্যাকট্র্যাক করতে হবে তা বুঝুন</li>
+          <li>সময় জটিলতা সততার সাথে আলোচনা করুন - সূচকীয় সবচেয়ে খারাপ ক্ষেত্রে</li>
+          <li>MRV এবং কনস্ট্রেইন্ট প্রপাগেশনের মতো অপ্টিমাইজেশন কৌশল উল্লেখ করুন</li>
+          <li>এই সমস্যা রিকার্শন, ব্যাকট্র্যাকিং এবং সমস্যা সমাধানের দক্ষতা পরীক্ষা করে</li>
+          <li>LeetCode Hard স্তরের সমস্যা</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

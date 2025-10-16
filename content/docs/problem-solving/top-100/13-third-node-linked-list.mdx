@@ -1,0 +1,499 @@
+---
+title: 13. Get the Third Node of a Linked List
+description: Learn how to access the nth node in a singly linked list
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Get the Third Node of a Linked List" bn="লিংকড লিস্টের তৃতীয় নোড পান" />
+
+<TranslatedText
+  en="Given a singly linked list, access and retrieve the data from the nth node (specifically the 3rd node in this example)."
+  bn="একটি সিঙ্গলি লিংকড লিস্ট দেওয়া আছে, nth নোড থেকে ডেটা অ্যাক্সেস এবং পুনরুদ্ধার করুন (এই উদাহরণে বিশেষভাবে 3য় নোড)।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> Linked List: 10 → 20 → 30 → 40 → 50, n = 3</p>
+      <p><strong>Output:</strong> 30</p>
+      <p><strong>Task:</strong> Return the data at the 3rd position (1-indexed)</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> লিংকড লিস্ট: 10 → 20 → 30 → 40 → 50, n = 3</p>
+      <p><strong>আউটপুট:</strong> 30</p>
+      <p><strong>কাজ:</strong> 3য় অবস্থানে ডেটা ফেরত দিন (1-ইনডেক্সড)</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Iterative Traversal" bn="পদ্ধতি ১: পুনরাবৃত্তিমূলক ট্রাভার্সাল" />
+
+<TranslatedText
+  en={<p>Traverse the linked list node by node until reaching the nth position.</p>}
+  bn={<p>nth অবস্থানে পৌঁছানো পর্যন্ত নোড থেকে নোডে লিংকড লিস্ট ট্রাভার্স করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+// Node structure
+struct Node {
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+// Function to get nth node (1-indexed)
+int getNthNode(Node* head, int n) {
+    Node* current = head;
+    int count = 1;
+
+    // Traverse to the nth node
+    while (current != nullptr) {
+        if (count == n) {
+            return current->data;
+        }
+        count++;
+        current = current->next;
+    }
+
+    // If n is out of bounds
+    return -1;
+}
+
+int main() {
+    // Create linked list: 10 -> 20 -> 30 -> 40 -> 50
+    Node* head = new Node(10);
+    head->next = new Node(20);
+    head->next->next = new Node(30);
+    head->next->next->next = new Node(40);
+    head->next->next->next->next = new Node(50);
+
+    int n = 3;
+    int result = getNthNode(head, n);
+
+    if (result != -1) {
+        cout << "The " << n << "rd node is: " << result << endl;
+    } else {
+        cout << "Node not found!" << endl;
+    }
+
+    return 0;
+}
+```
+
+**Output:**
+```
+The 3rd node is: 30
+```
+  </Tab>
+  <Tab value="Python">
+```python
+# Node class
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+# Function to get nth node (1-indexed)
+def get_nth_node(head, n):
+    current = head
+    count = 1
+
+    # Traverse to the nth node
+    while current is not None:
+        if count == n:
+            return current.data
+        count += 1
+        current = current.next
+
+    # If n is out of bounds
+    return -1
+
+# Create linked list: 10 -> 20 -> 30 -> 40 -> 50
+head = Node(10)
+head.next = Node(20)
+head.next.next = Node(30)
+head.next.next.next = Node(40)
+head.next.next.next.next = Node(50)
+
+n = 3
+result = get_nth_node(head, n)
+
+if result != -1:
+    print(f"The {n}rd node is: {result}")
+else:
+    print("Node not found!")
+```
+
+**Output:**
+```
+The 3rd node is: 30
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+// Node class
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+// Function to get nth node (1-indexed)
+function getNthNode(head, n) {
+    let current = head;
+    let count = 1;
+
+    // Traverse to the nth node
+    while (current !== null) {
+        if (count === n) {
+            return current.data;
+        }
+        count++;
+        current = current.next;
+    }
+
+    // If n is out of bounds
+    return -1;
+}
+
+// Create linked list: 10 -> 20 -> 30 -> 40 -> 50
+let head = new Node(10);
+head.next = new Node(20);
+head.next.next = new Node(30);
+head.next.next.next = new Node(40);
+head.next.next.next.next = new Node(50);
+
+let n = 3;
+let result = getNthNode(head, n);
+
+if (result !== -1) {
+    console.log(`The ${n}rd node is: ${result}`);
+} else {
+    console.log("Node not found!");
+}
+```
+
+**Output:**
+```
+The 3rd node is: 30
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - worst case traverse all nodes</p>
+      <p><strong>Space Complexity:</strong> O(1) - constant extra space</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - সবচেয়ে খারাপ ক্ষেত্রে সব নোড ট্রাভার্স করে</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1) - স্থির অতিরিক্ত স্থান</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: Recursive Solution" bn="পদ্ধতি ২: রিকার্সিভ সমাধান" />
+
+<TranslatedText
+  en={<p>Use recursion to reach the nth node by reducing the problem at each step.</p>}
+  bn={<p>প্রতিটি ধাপে সমস্যা কমিয়ে nth নোডে পৌঁছাতে রিকার্শন ব্যবহার করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+// Recursive function to get nth node
+int getNthNodeRecursive(Node* head, int n) {
+    // Base case: empty list
+    if (head == nullptr) {
+        return -1;
+    }
+
+    // Base case: found the node
+    if (n == 1) {
+        return head->data;
+    }
+
+    // Recursive case: move to next node
+    return getNthNodeRecursive(head->next, n - 1);
+}
+
+int main() {
+    // Create linked list: 10 -> 20 -> 30 -> 40 -> 50
+    Node* head = new Node(10);
+    head->next = new Node(20);
+    head->next->next = new Node(30);
+    head->next->next->next = new Node(40);
+    head->next->next->next->next = new Node(50);
+
+    int n = 3;
+    int result = getNthNodeRecursive(head, n);
+
+    if (result != -1) {
+        cout << "The " << n << "rd node is: " << result << endl;
+    } else {
+        cout << "Node not found!" << endl;
+    }
+
+    return 0;
+}
+```
+
+**Output:**
+```
+The 3rd node is: 30
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+# Recursive function to get nth node
+def get_nth_node_recursive(head, n):
+    # Base case: empty list
+    if head is None:
+        return -1
+
+    # Base case: found the node
+    if n == 1:
+        return head.data
+
+    # Recursive case: move to next node
+    return get_nth_node_recursive(head.next, n - 1)
+
+# Create linked list: 10 -> 20 -> 30 -> 40 -> 50
+head = Node(10)
+head.next = Node(20)
+head.next.next = Node(30)
+head.next.next.next = Node(40)
+head.next.next.next.next = Node(50)
+
+n = 3
+result = get_nth_node_recursive(head, n)
+
+if result != -1:
+    print(f"The {n}rd node is: {result}")
+else:
+    print("Node not found!")
+```
+
+**Output:**
+```
+The 3rd node is: 30
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+// Recursive function to get nth node
+function getNthNodeRecursive(head, n) {
+    // Base case: empty list
+    if (head === null) {
+        return -1;
+    }
+
+    // Base case: found the node
+    if (n === 1) {
+        return head.data;
+    }
+
+    // Recursive case: move to next node
+    return getNthNodeRecursive(head.next, n - 1);
+}
+
+// Create linked list: 10 -> 20 -> 30 -> 40 -> 50
+let head = new Node(10);
+head.next = new Node(20);
+head.next.next = new Node(30);
+head.next.next.next = new Node(40);
+head.next.next.next.next = new Node(50);
+
+let n = 3;
+let result = getNthNodeRecursive(head, n);
+
+if (result !== -1) {
+    console.log(`The ${n}rd node is: ${result}`);
+} else {
+    console.log("Node not found!");
+}
+```
+
+**Output:**
+```
+The 3rd node is: 30
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - recursive calls until nth node</p>
+      <p><strong>Space Complexity:</strong> O(n) - recursion call stack</p>
+      <p><strong>Note:</strong> Cleaner code but uses more stack space</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - nth নোড পর্যন্ত রিকার্সিভ কল</p>
+      <p><strong>স্থান জটিলতা:</strong> O(n) - রিকার্শন কল স্ট্যাক</p>
+      <p><strong>নোট:</strong> পরিষ্কার কোড কিন্তু বেশি স্ট্যাক স্পেস ব্যবহার করে</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Edge Cases to Handle" bn="প্রান্তিক ক্ষেত্রে পরিচালনা করতে হবে" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Empty list:</strong> head is null, return -1 or error</li>
+        <li><strong>n is 0 or negative:</strong> invalid input</li>
+        <li><strong>n greater than list length:</strong> return -1 or error</li>
+        <li><strong>Single node list:</strong> n must be 1</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>খালি লিস্ট:</strong> head null, -1 বা ত্রুটি ফেরত দিন</li>
+        <li><strong>n 0 বা ঋণাত্মক:</strong> অবৈধ ইনপুট</li>
+        <li><strong>n লিস্ট দৈর্ঘ্যের চেয়ে বড়:</strong> -1 বা ত্রুটি ফেরত দিন</li>
+        <li><strong>একক নোড লিস্ট:</strong> n অবশ্যই 1 হতে হবে</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণী" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Approach</th>
+          <th>Time Complexity</th>
+          <th>Space Complexity</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Iterative</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>Production, more efficient</td>
+        </tr>
+        <tr>
+          <td>Recursive</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>Cleaner code, educational</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>পদ্ধতি</th>
+          <th>সময় জটিলতা</th>
+          <th>স্থান জটিলতা</th>
+          <th>সেরা কখন</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>পুনরাবৃত্তিমূলক</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>প্রোডাকশন, বেশি কার্যকর</td>
+        </tr>
+        <tr>
+          <td>রিকার্সিভ</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>পরিষ্কার কোড, শিক্ষামূলক</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Always check for null/empty list before accessing nodes</li>
+          <li>Clarify if indexing is 0-based or 1-based</li>
+          <li>Handle edge cases: n out of bounds, empty list</li>
+          <li>Iterative approach is preferred for production (less space)</li>
+          <li>This problem demonstrates basic linked list traversal</li>
+          <li>Extension: Get nth node from the end (use two pointers)</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>নোড অ্যাক্সেস করার আগে সর্বদা null/খালি লিস্ট পরীক্ষা করুন</li>
+          <li>স্পষ্ট করুন ইনডেক্সিং 0-ভিত্তিক না 1-ভিত্তিক</li>
+          <li>প্রান্তিক ক্ষেত্রে পরিচালনা করুন: n সীমার বাইরে, খালি লিস্ট</li>
+          <li>প্রোডাকশনের জন্য পুনরাবৃত্তিমূলক পদ্ধতি পছন্দনীয় (কম স্থান)</li>
+          <li>এই সমস্যা মৌলিক লিংকড লিস্ট ট্রাভার্সাল প্রদর্শন করে</li>
+          <li>সম্প্রসারণ: শেষ থেকে nth নোড পান (দুটি পয়েন্টার ব্যবহার করুন)</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

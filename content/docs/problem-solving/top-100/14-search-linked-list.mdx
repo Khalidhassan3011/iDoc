@@ -1,0 +1,619 @@
+---
+title: 14. Search for a Value in a Linked List
+description: Learn how to search for a specific value in a singly linked list
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Search for a Specific Value in a Linked List" bn="লিংকড লিস্টে একটি নির্দিষ্ট মান অনুসন্ধান করুন" />
+
+<TranslatedText
+  en="Given a singly linked list and a target value, determine if the value exists in the list and optionally return its position."
+  bn="একটি সিঙ্গলি লিংকড লিস্ট এবং একটি লক্ষ্য মান দেওয়া আছে, মানটি লিস্টে আছে কিনা তা নির্ধারণ করুন এবং ঐচ্ছিকভাবে এর অবস্থান ফেরত দিন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> Linked List: 10 → 20 → 30 → 40 → 50, target = 30</p>
+      <p><strong>Output:</strong> Found at position 3 (or true)</p>
+      <p><strong>Task:</strong> Search for the target value and return whether it exists</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> লিংকড লিস্ট: 10 → 20 → 30 → 40 → 50, লক্ষ্য = 30</p>
+      <p><strong>আউটপুট:</strong> অবস্থান 3 এ পাওয়া গেছে (অথবা true)</p>
+      <p><strong>কাজ:</strong> লক্ষ্য মান খুঁজুন এবং এটি বিদ্যমান কিনা তা ফেরত দিন</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Iterative Search" bn="পদ্ধতি ১: পুনরাবৃত্তিমূলক অনুসন্ধান" />
+
+<TranslatedText
+  en={<p>Traverse the linked list from head to tail, checking each node's value against the target.</p>}
+  bn={<p>হেড থেকে টেইল পর্যন্ত লিংকড লিস্ট ট্রাভার্স করুন, প্রতিটি নোডের মান লক্ষ্যের বিরুদ্ধে পরীক্ষা করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+// Function to search for a value (returns position, -1 if not found)
+int searchValue(Node* head, int target) {
+    Node* current = head;
+    int position = 1;
+
+    while (current != nullptr) {
+        if (current->data == target) {
+            return position;
+        }
+        current = current->next;
+        position++;
+    }
+
+    return -1;  // Not found
+}
+
+// Function to search (returns boolean)
+bool searchExists(Node* head, int target) {
+    Node* current = head;
+
+    while (current != nullptr) {
+        if (current->data == target) {
+            return true;
+        }
+        current = current->next;
+    }
+
+    return false;
+}
+
+int main() {
+    // Create linked list: 10 -> 20 -> 30 -> 40 -> 50
+    Node* head = new Node(10);
+    head->next = new Node(20);
+    head->next->next = new Node(30);
+    head->next->next->next = new Node(40);
+    head->next->next->next->next = new Node(50);
+
+    int target = 30;
+
+    // Search with position
+    int position = searchValue(head, target);
+    if (position != -1) {
+        cout << "Value " << target << " found at position " << position << endl;
+    } else {
+        cout << "Value " << target << " not found" << endl;
+    }
+
+    // Search with boolean
+    if (searchExists(head, target)) {
+        cout << "Value " << target << " exists in the list" << endl;
+    }
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Value 30 found at position 3
+Value 30 exists in the list
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+# Function to search for a value (returns position, -1 if not found)
+def search_value(head, target):
+    current = head
+    position = 1
+
+    while current is not None:
+        if current.data == target:
+            return position
+        current = current.next
+        position += 1
+
+    return -1  # Not found
+
+# Function to search (returns boolean)
+def search_exists(head, target):
+    current = head
+
+    while current is not None:
+        if current.data == target:
+            return True
+        current = current.next
+
+    return False
+
+# Create linked list: 10 -> 20 -> 30 -> 40 -> 50
+head = Node(10)
+head.next = Node(20)
+head.next.next = Node(30)
+head.next.next.next = Node(40)
+head.next.next.next.next = Node(50)
+
+target = 30
+
+# Search with position
+position = search_value(head, target)
+if position != -1:
+    print(f"Value {target} found at position {position}")
+else:
+    print(f"Value {target} not found")
+
+# Search with boolean
+if search_exists(head, target):
+    print(f"Value {target} exists in the list")
+```
+
+**Output:**
+```
+Value 30 found at position 3
+Value 30 exists in the list
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+// Function to search for a value (returns position, -1 if not found)
+function searchValue(head, target) {
+    let current = head;
+    let position = 1;
+
+    while (current !== null) {
+        if (current.data === target) {
+            return position;
+        }
+        current = current.next;
+        position++;
+    }
+
+    return -1;  // Not found
+}
+
+// Function to search (returns boolean)
+function searchExists(head, target) {
+    let current = head;
+
+    while (current !== null) {
+        if (current.data === target) {
+            return true;
+        }
+        current = current.next;
+    }
+
+    return false;
+}
+
+// Create linked list: 10 -> 20 -> 30 -> 40 -> 50
+let head = new Node(10);
+head.next = new Node(20);
+head.next.next = new Node(30);
+head.next.next.next = new Node(40);
+head.next.next.next.next = new Node(50);
+
+let target = 30;
+
+// Search with position
+let position = searchValue(head, target);
+if (position !== -1) {
+    console.log(`Value ${target} found at position ${position}`);
+} else {
+    console.log(`Value ${target} not found`);
+}
+
+// Search with boolean
+if (searchExists(head, target)) {
+    console.log(`Value ${target} exists in the list`);
+}
+```
+
+**Output:**
+```
+Value 30 found at position 3
+Value 30 exists in the list
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - may need to traverse entire list</p>
+      <p><strong>Space Complexity:</strong> O(1) - constant extra space</p>
+      <p><strong>Best for:</strong> Production code, most efficient</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - সম্পূর্ণ লিস্ট ট্রাভার্স করতে হতে পারে</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1) - স্থির অতিরিক্ত স্থান</p>
+      <p><strong>সেরা:</strong> প্রোডাকশন কোড, সবচেয়ে কার্যকর</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: Recursive Search" bn="পদ্ধতি ২: রিকার্সিভ অনুসন্ধান" />
+
+<TranslatedText
+  en={<p>Use recursion to search through the linked list, checking one node at a time.</p>}
+  bn={<p>লিংকড লিস্টের মধ্য দিয়ে অনুসন্ধান করতে রিকার্শন ব্যবহার করুন, একবারে একটি নোড পরীক্ষা করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+// Recursive search (returns boolean)
+bool searchRecursive(Node* head, int target) {
+    // Base case: reached end of list
+    if (head == nullptr) {
+        return false;
+    }
+
+    // Base case: found the value
+    if (head->data == target) {
+        return true;
+    }
+
+    // Recursive case: search in remaining list
+    return searchRecursive(head->next, target);
+}
+
+// Recursive search with position (helper function)
+int searchRecursiveHelper(Node* head, int target, int position) {
+    // Base case: reached end of list
+    if (head == nullptr) {
+        return -1;
+    }
+
+    // Base case: found the value
+    if (head->data == target) {
+        return position;
+    }
+
+    // Recursive case: search in remaining list
+    return searchRecursiveHelper(head->next, target, position + 1);
+}
+
+int searchRecursiveWithPosition(Node* head, int target) {
+    return searchRecursiveHelper(head, target, 1);
+}
+
+int main() {
+    // Create linked list: 10 -> 20 -> 30 -> 40 -> 50
+    Node* head = new Node(10);
+    head->next = new Node(20);
+    head->next->next = new Node(30);
+    head->next->next->next = new Node(40);
+    head->next->next->next->next = new Node(50);
+
+    int target = 30;
+
+    // Recursive search
+    if (searchRecursive(head, target)) {
+        cout << "Value " << target << " found (recursive)" << endl;
+    }
+
+    // Recursive search with position
+    int position = searchRecursiveWithPosition(head, target);
+    if (position != -1) {
+        cout << "Value " << target << " found at position " << position << endl;
+    }
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Value 30 found (recursive)
+Value 30 found at position 3
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+# Recursive search (returns boolean)
+def search_recursive(head, target):
+    # Base case: reached end of list
+    if head is None:
+        return False
+
+    # Base case: found the value
+    if head.data == target:
+        return True
+
+    # Recursive case: search in remaining list
+    return search_recursive(head.next, target)
+
+# Recursive search with position (helper function)
+def search_recursive_helper(head, target, position):
+    # Base case: reached end of list
+    if head is None:
+        return -1
+
+    # Base case: found the value
+    if head.data == target:
+        return position
+
+    # Recursive case: search in remaining list
+    return search_recursive_helper(head.next, target, position + 1)
+
+def search_recursive_with_position(head, target):
+    return search_recursive_helper(head, target, 1)
+
+# Create linked list: 10 -> 20 -> 30 -> 40 -> 50
+head = Node(10)
+head.next = Node(20)
+head.next.next = Node(30)
+head.next.next.next = Node(40)
+head.next.next.next.next = Node(50)
+
+target = 30
+
+# Recursive search
+if search_recursive(head, target):
+    print(f"Value {target} found (recursive)")
+
+# Recursive search with position
+position = search_recursive_with_position(head, target)
+if position != -1:
+    print(f"Value {target} found at position {position}")
+```
+
+**Output:**
+```
+Value 30 found (recursive)
+Value 30 found at position 3
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+// Recursive search (returns boolean)
+function searchRecursive(head, target) {
+    // Base case: reached end of list
+    if (head === null) {
+        return false;
+    }
+
+    // Base case: found the value
+    if (head.data === target) {
+        return true;
+    }
+
+    // Recursive case: search in remaining list
+    return searchRecursive(head.next, target);
+}
+
+// Recursive search with position (helper function)
+function searchRecursiveHelper(head, target, position) {
+    // Base case: reached end of list
+    if (head === null) {
+        return -1;
+    }
+
+    // Base case: found the value
+    if (head.data === target) {
+        return position;
+    }
+
+    // Recursive case: search in remaining list
+    return searchRecursiveHelper(head.next, target, position + 1);
+}
+
+function searchRecursiveWithPosition(head, target) {
+    return searchRecursiveHelper(head, target, 1);
+}
+
+// Create linked list: 10 -> 20 -> 30 -> 40 -> 50
+let head = new Node(10);
+head.next = new Node(20);
+head.next.next = new Node(30);
+head.next.next.next = new Node(40);
+head.next.next.next.next = new Node(50);
+
+let target = 30;
+
+// Recursive search
+if (searchRecursive(head, target)) {
+    console.log(`Value ${target} found (recursive)`);
+}
+
+// Recursive search with position
+let position = searchRecursiveWithPosition(head, target);
+if (position !== -1) {
+    console.log(`Value ${target} found at position ${position}`);
+}
+```
+
+**Output:**
+```
+Value 30 found (recursive)
+Value 30 found at position 3
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - recursive calls for each node</p>
+      <p><strong>Space Complexity:</strong> O(n) - recursion call stack</p>
+      <p><strong>Note:</strong> More elegant but uses extra stack space</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - প্রতিটি নোডের জন্য রিকার্সিভ কল</p>
+      <p><strong>স্থান জটিলতা:</strong> O(n) - রিকার্শন কল স্ট্যাক</p>
+      <p><strong>নোট:</strong> আরও মার্জিত কিন্তু অতিরিক্ত স্ট্যাক স্পেস ব্যবহার করে</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Performance Optimization" bn="পারফরম্যান্স অপ্টিমাইজেশন" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Early termination:</strong> Return immediately when value is found</li>
+        <li><strong>Sorted list:</strong> If list is sorted, can terminate early when current value exceeds target</li>
+        <li><strong>Count occurrences:</strong> Continue traversing to count all occurrences instead of stopping at first</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>প্রাথমিক সমাপ্তি:</strong> মান পাওয়া গেলে অবিলম্বে ফেরত দিন</li>
+        <li><strong>সাজানো লিস্ট:</strong> যদি লিস্ট সাজানো থাকে, বর্তমান মান লক্ষ্য অতিক্রম করলে তাড়াতাড়ি সমাপ্ত করা যায়</li>
+        <li><strong>সংঘটন গণনা:</strong> প্রথমটিতে থামার পরিবর্তে সব সংঘটন গণনা করতে ট্রাভার্সিং চালিয়ে যান</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণী" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Approach</th>
+          <th>Time Complexity</th>
+          <th>Space Complexity</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Iterative</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>Production, memory-efficient</td>
+        </tr>
+        <tr>
+          <td>Recursive</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>Educational, cleaner code</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>পদ্ধতি</th>
+          <th>সময় জটিলতা</th>
+          <th>স্থান জটিলতা</th>
+          <th>সেরা কখন</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>পুনরাবৃত্তিমূলক</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>প্রোডাকশন, মেমরি-দক্ষ</td>
+        </tr>
+        <tr>
+          <td>রিকার্সিভ</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>শিক্ষামূলক, পরিষ্কার কোড</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Linear search is the only option for unsorted linked lists</li>
+          <li>Always check for empty list before searching</li>
+          <li>Decide return type: boolean, position, or node reference</li>
+          <li>For production, prefer iterative approach (O(1) space)</li>
+          <li>Extension: find all occurrences, find last occurrence</li>
+          <li>Note: Unlike arrays, linked lists don't support binary search efficiently</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>অসাজানো লিংকড লিস্টের জন্য লিনিয়ার সার্চই একমাত্র বিকল্প</li>
+          <li>অনুসন্ধান করার আগে সর্বদা খালি লিস্ট পরীক্ষা করুন</li>
+          <li>রিটার্ন টাইপ সিদ্ধান্ত নিন: বুলিয়ান, অবস্থান, বা নোড রেফারেন্স</li>
+          <li>প্রোডাকশনের জন্য, পুনরাবৃত্তিমূলক পদ্ধতি পছন্দ করুন (O(1) স্থান)</li>
+          <li>সম্প্রসারণ: সব সংঘটন খুঁজুন, শেষ সংঘটন খুঁজুন</li>
+          <li>নোট: অ্যারের বিপরীতে, লিংকড লিস্ট দক্ষভাবে বাইনারি সার্চ সমর্থন করে না</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>
