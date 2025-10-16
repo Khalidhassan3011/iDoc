@@ -1,0 +1,510 @@
+---
+title: 26. Find Nearest Smaller Numbers on Left
+description: Learn how to find the nearest smaller element to the left of each element in an array
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Find Nearest Smaller Numbers on the Left Side" bn="বাম দিকে নিকটতম ছোট সংখ্যা খুঁজুন" />
+
+<TranslatedText
+  en="For each element in an array, find the nearest element to its left that is smaller than it."
+  bn="একটি অ্যারের প্রতিটি উপাদানের জন্য, এর বাম দিকে নিকটতম উপাদান খুঁজুন যা এর চেয়ে ছোট।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> [4, 5, 2, 10, 8]</p>
+      <p><strong>Output:</strong> [-, 4, -, 2, 2]</p>
+      <p><strong>Explanation:</strong></p>
+      <ul>
+        <li>4: No smaller element to its left → -</li>
+        <li>5: 4 is the nearest smaller element → 4</li>
+        <li>2: No smaller element to its left → -</li>
+        <li>10: 2 is the nearest smaller element → 2</li>
+        <li>8: 2 is the nearest smaller element → 2</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> [4, 5, 2, 10, 8]</p>
+      <p><strong>আউটপুট:</strong> [-, 4, -, 2, 2]</p>
+      <p><strong>ব্যাখ্যা:</strong></p>
+      <ul>
+        <li>4: এর বামে কোন ছোট উপাদান নেই → -</li>
+        <li>5: 4 হল নিকটতম ছোট উপাদান → 4</li>
+        <li>2: এর বামে কোন ছোট উপাদান নেই → -</li>
+        <li>10: 2 হল নিকটতম ছোট উপাদান → 2</li>
+        <li>8: 2 হল নিকটতম ছোট উপাদান → 2</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Brute Force (Nested Loop)" bn="পদ্ধতি ১: ব্রুট ফোর্স (নেস্টেড লুপ)" />
+
+<TranslatedText
+  en={<p>For each element, scan all elements to its left to find the nearest smaller one.</p>}
+  bn={<p>প্রতিটি উপাদানের জন্য, নিকটতম ছোট খুঁজতে এর বামের সমস্ত উপাদান স্ক্যান করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> findNearestSmallerBruteForce(vector<int>& arr) {
+    int n = arr.size();
+    vector<int> result(n, -1);
+
+    for (int i = 0; i < n; i++) {
+        // Scan from i-1 to 0 (right to left)
+        for (int j = i - 1; j >= 0; j--) {
+            if (arr[j] < arr[i]) {
+                result[i] = arr[j];
+                break; // Found nearest smaller, stop
+            }
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    vector<int> arr = {4, 5, 2, 10, 8};
+
+    cout << "Array: ";
+    for (int num : arr) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    vector<int> result = findNearestSmallerBruteForce(arr);
+
+    cout << "Nearest smaller on left: ";
+    for (int num : result) {
+        if (num == -1) {
+            cout << "- ";
+        } else {
+            cout << num << " ";
+        }
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Array: 4 5 2 10 8
+Nearest smaller on left: - 4 - 2 2
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def find_nearest_smaller_brute_force(arr):
+    n = len(arr)
+    result = [-1] * n
+
+    for i in range(n):
+        # Scan from i-1 to 0 (right to left)
+        for j in range(i - 1, -1, -1):
+            if arr[j] < arr[i]:
+                result[i] = arr[j]
+                break  # Found nearest smaller, stop
+
+    return result
+
+arr = [4, 5, 2, 10, 8]
+
+print(f"Array: {arr}")
+
+result = find_nearest_smaller_brute_force(arr)
+result_str = ['-' if x == -1 else str(x) for x in result]
+print(f"Nearest smaller on left: {' '.join(result_str)}")
+```
+
+**Output:**
+```
+Array: [4, 5, 2, 10, 8]
+Nearest smaller on left: - 4 - 2 2
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function findNearestSmallerBruteForce(arr) {
+    const n = arr.length;
+    const result = new Array(n).fill(-1);
+
+    for (let i = 0; i < n; i++) {
+        // Scan from i-1 to 0 (right to left)
+        for (let j = i - 1; j >= 0; j--) {
+            if (arr[j] < arr[i]) {
+                result[i] = arr[j];
+                break; // Found nearest smaller, stop
+            }
+        }
+    }
+
+    return result;
+}
+
+let arr = [4, 5, 2, 10, 8];
+
+console.log(`Array: ${arr}`);
+
+let result = findNearestSmallerBruteForce(arr);
+let resultStr = result.map(x => x === -1 ? '-' : x).join(' ');
+console.log(`Nearest smaller on left: ${resultStr}`);
+```
+
+**Output:**
+```
+Array: 4,5,2,10,8
+Nearest smaller on left: - 4 - 2 2
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n²) - nested loops</p>
+      <p><strong>Space Complexity:</strong> O(n) - result array</p>
+      <p><strong>Note:</strong> Simple but inefficient for large arrays</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n²) - নেস্টেড লুপ</p>
+      <p><strong>স্থান জটিলতা:</strong> O(n) - ফলাফল অ্যারে</p>
+      <p><strong>নোট:</strong> সহজ কিন্তু বড় অ্যারের জন্য অদক্ষ</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: Using Stack (Optimal)" bn="পদ্ধতি ২: স্ট্যাক ব্যবহার করে (সর্বোত্তম)" />
+
+<TranslatedText
+  en={<p>Use a stack to maintain elements in increasing order. This allows O(n) time complexity.</p>}
+  bn={<p>বর্ধমান ক্রমে উপাদান বজায় রাখতে স্ট্যাক ব্যবহার করুন। এটি O(n) সময় জটিলতা অনুমতি দেয়।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+vector<int> findNearestSmallerStack(vector<int>& arr) {
+    int n = arr.size();
+    vector<int> result(n, -1);
+    stack<int> st; // Stack stores elements, not indices
+
+    for (int i = 0; i < n; i++) {
+        // Pop elements from stack that are >= current element
+        while (!st.empty() && st.top() >= arr[i]) {
+            st.pop();
+        }
+
+        // If stack is not empty, top is the nearest smaller
+        if (!st.empty()) {
+            result[i] = st.top();
+        }
+
+        // Push current element to stack
+        st.push(arr[i]);
+    }
+
+    return result;
+}
+
+int main() {
+    vector<int> arr = {4, 5, 2, 10, 8};
+
+    cout << "Array: ";
+    for (int num : arr) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    vector<int> result = findNearestSmallerStack(arr);
+
+    cout << "Nearest smaller on left: ";
+    for (int num : result) {
+        if (num == -1) {
+            cout << "- ";
+        } else {
+            cout << num << " ";
+        }
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Array: 4 5 2 10 8
+Nearest smaller on left: - 4 - 2 2
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def find_nearest_smaller_stack(arr):
+    n = len(arr)
+    result = [-1] * n
+    stack = []  # Stack stores elements, not indices
+
+    for i in range(n):
+        # Pop elements from stack that are >= current element
+        while stack and stack[-1] >= arr[i]:
+            stack.pop()
+
+        # If stack is not empty, top is the nearest smaller
+        if stack:
+            result[i] = stack[-1]
+
+        # Push current element to stack
+        stack.append(arr[i])
+
+    return result
+
+arr = [4, 5, 2, 10, 8]
+
+print(f"Array: {arr}")
+
+result = find_nearest_smaller_stack(arr)
+result_str = ['-' if x == -1 else str(x) for x in result]
+print(f"Nearest smaller on left: {' '.join(result_str)}")
+```
+
+**Output:**
+```
+Array: [4, 5, 2, 10, 8]
+Nearest smaller on left: - 4 - 2 2
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function findNearestSmallerStack(arr) {
+    const n = arr.length;
+    const result = new Array(n).fill(-1);
+    const stack = []; // Stack stores elements, not indices
+
+    for (let i = 0; i < n; i++) {
+        // Pop elements from stack that are >= current element
+        while (stack.length > 0 && stack[stack.length - 1] >= arr[i]) {
+            stack.pop();
+        }
+
+        // If stack is not empty, top is the nearest smaller
+        if (stack.length > 0) {
+            result[i] = stack[stack.length - 1];
+        }
+
+        // Push current element to stack
+        stack.push(arr[i]);
+    }
+
+    return result;
+}
+
+let arr = [4, 5, 2, 10, 8];
+
+console.log(`Array: ${arr}`);
+
+let result = findNearestSmallerStack(arr);
+let resultStr = result.map(x => x === -1 ? '-' : x).join(' ');
+console.log(`Nearest smaller on left: ${resultStr}`);
+```
+
+**Output:**
+```
+Array: 4,5,2,10,8
+Nearest smaller on left: - 4 - 2 2
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - each element pushed and popped at most once</p>
+      <p><strong>Space Complexity:</strong> O(n) - stack storage</p>
+      <p><strong>Advantage:</strong> Optimal solution, much faster for large arrays</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - প্রতিটি উপাদান সর্বাধিক একবার পুশ এবং পপ হয়</p>
+      <p><strong>স্থান জটিলতা:</strong> O(n) - স্ট্যাক স্টোরেজ</p>
+      <p><strong>সুবিধা:</strong> সর্বোত্তম সমাধান, বড় অ্যারের জন্য অনেক দ্রুত</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="How the Stack Algorithm Works" bn="স্ট্যাক অ্যালগরিদম কীভাবে কাজ করে" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Key Insight:</strong> The stack maintains elements in increasing order from bottom to top.</p>
+      <p><strong>Step-by-step for [4, 5, 2, 10, 8]:</strong></p>
+      <ol>
+        <li>i=0, arr[0]=4: Stack empty → result[0]=-1, push 4 → Stack: [4]</li>
+        <li>i=1, arr[1]=5: 4 less than 5 → result[1]=4, push 5 → Stack: [4, 5]</li>
+        <li>i=2, arr[2]=2: Pop 5 (≥2), pop 4 (≥2), stack empty → result[2]=-1, push 2 → Stack: [2]</li>
+        <li>i=3, arr[3]=10: 2 less than 10 → result[3]=2, push 10 → Stack: [2, 10]</li>
+        <li>i=4, arr[4]=8: Pop 10 (≥8), 2 less than 8 → result[4]=2, push 8 → Stack: [2, 8]</li>
+      </ol>
+      <p>Result: [-, 4, -, 2, 2]</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>মূল ধারণা:</strong> স্ট্যাক নিচ থেকে উপরে বর্ধমান ক্রমে উপাদান বজায় রাখে।</p>
+      <p><strong>[4, 5, 2, 10, 8] এর জন্য ধাপে ধাপে:</strong></p>
+      <ol>
+        <li>i=0, arr[0]=4: স্ট্যাক খালি → result[0]=-1, 4 পুশ → স্ট্যাক: [4]</li>
+        <li>i=1, arr[1]=5: 4 এর চেয়ে ছোট 5 → result[1]=4, 5 পুশ → স্ট্যাক: [4, 5]</li>
+        <li>i=2, arr[2]=2: 5 পপ (≥2), 4 পপ (≥2), স্ট্যাক খালি → result[2]=-1, 2 পুশ → স্ট্যাক: [2]</li>
+        <li>i=3, arr[3]=10: 2 এর চেয়ে ছোট 10 → result[3]=2, 10 পুশ → স্ট্যাক: [2, 10]</li>
+        <li>i=4, arr[4]=8: 10 পপ (≥8), 2 এর চেয়ে ছোট 8 → result[4]=2, 8 পুশ → স্ট্যাক: [2, 8]</li>
+      </ol>
+      <p>ফলাফল: [-, 4, -, 2, 2]</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Variants of This Problem" bn="এই সমস্যার রূপান্তর" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Nearest Greater on Left:</strong> Similar logic, but keep elements greater than current</li>
+        <li><strong>Nearest Smaller on Right:</strong> Traverse from right to left</li>
+        <li><strong>Nearest Greater on Right:</strong> Combine both modifications</li>
+        <li><strong>Stock Span Problem:</strong> Count consecutive days with price less than or equal to current</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>বামে নিকটতম বড়:</strong> একই লজিক, কিন্তু বর্তমানের চেয়ে বড় উপাদান রাখুন</li>
+        <li><strong>ডানে নিকটতম ছোট:</strong> ডান থেকে বামে ট্রাভার্স করুন</li>
+        <li><strong>ডানে নিকটতম বড়:</strong> উভয় পরিবর্তন একত্রিত করুন</li>
+        <li><strong>স্টক স্প্যান সমস্যা:</strong> বর্তমানের কম বা সমান মূল্যের ধারাবাহিক দিন গণনা করুন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণী" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Approach</th>
+          <th>Time Complexity</th>
+          <th>Space Complexity</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Brute Force</td>
+          <td>O(n²)</td>
+          <td>O(n)</td>
+          <td>Small arrays, learning</td>
+        </tr>
+        <tr>
+          <td>Stack</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>Production, large arrays</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>পদ্ধতি</th>
+          <th>সময় জটিলতা</th>
+          <th>স্থান জটিলতা</th>
+          <th>সেরা কখন</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ব্রুট ফোর্স</td>
+          <td>O(n²)</td>
+          <td>O(n)</td>
+          <td>ছোট অ্যারে, শেখা</td>
+        </tr>
+        <tr>
+          <td>স্ট্যাক</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>প্রোডাকশন, বড় অ্যারে</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Start with brute force, then optimize with stack</li>
+          <li>Stack maintains monotonic sequence (increasing/decreasing)</li>
+          <li>Each element pushed and popped at most once → amortized O(1)</li>
+          <li>This is a classic "monotonic stack" problem pattern</li>
+          <li>Related: Next Greater Element, Stock Span, Histogram problems</li>
+          <li>Understanding this pattern helps solve many array problems efficiently</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>ব্রুট ফোর্স দিয়ে শুরু করুন, তারপর স্ট্যাক দিয়ে অপ্টিমাইজ করুন</li>
+          <li>স্ট্যাক মনোটোনিক সিকোয়েন্স বজায় রাখে (বর্ধমান/হ্রাসমান)</li>
+          <li>প্রতিটি উপাদান সর্বাধিক একবার পুশ এবং পপ → অ্যামোর্টাইজড O(1)</li>
+          <li>এটি একটি ক্লাসিক "মনোটোনিক স্ট্যাক" সমস্যা প্যাটার্ন</li>
+          <li>সম্পর্কিত: নেক্সট গ্রেটার এলিমেন্ট, স্টক স্প্যান, হিস্টোগ্রাম সমস্যা</li>
+          <li>এই প্যাটার্ন বোঝা অনেক অ্যারে সমস্যা দক্ষতার সাথে সমাধান করতে সাহায্য করে</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

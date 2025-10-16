@@ -1,0 +1,584 @@
+---
+title: 24. Binary Search - Find Element Index
+description: Learn how to implement binary search to find an element's index in a sorted array
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Binary Search - Find Element Index" bn="বাইনারি সার্চ - এলিমেন্ট ইনডেক্স খুঁজুন" />
+
+<TranslatedText
+  en="Binary search is the fastest way to find an element in a sorted array, with O(log n) time complexity."
+  bn="বাইনারি সার্চ হল সাজানো অ্যারেতে একটি এলিমেন্ট খুঁজে পাওয়ার দ্রুততম উপায়, O(log n) সময় জটিলতা সহ।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> Sorted array [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], target = 2</p>
+      <p><strong>Output:</strong> Index 1</p>
+      <p><strong>Requirement:</strong> Array must be sorted for binary search to work</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> সাজানো অ্যারে [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], লক্ষ্য = 2</p>
+      <p><strong>আউটপুট:</strong> ইনডেক্স 1</p>
+      <p><strong>প্রয়োজন:</strong> বাইনারি সার্চ কাজ করার জন্য অ্যারে অবশ্যই সাজানো থাকতে হবে</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Iterative Binary Search" bn="পদ্ধতি ১: পুনরাবৃত্তিমূলক বাইনারি সার্চ" />
+
+<TranslatedText
+  en={<p>Use two pointers (left and right) to narrow down the search space by half in each iteration.</p>}
+  bn={<p>প্রতিটি পুনরাবৃত্তিতে সার্চ স্পেসকে অর্ধেক করতে দুটি পয়েন্টার (বাম এবং ডান) ব্যবহার করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int binarySearch(vector<int>& arr, int target) {
+    int left = 0;
+    int right = arr.size() - 1;
+
+    while (left <= right) {
+        // Calculate middle index (avoid overflow)
+        int mid = left + (right - left) / 2;
+
+        // Check if target is at mid
+        if (arr[mid] == target) {
+            return mid;
+        }
+
+        // If target is greater, ignore left half
+        if (arr[mid] < target) {
+            left = mid + 1;
+        }
+        // If target is smaller, ignore right half
+        else {
+            right = mid - 1;
+        }
+    }
+
+    // Element not found
+    return -1;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+    int target = 2;
+
+    int index = binarySearch(arr, target);
+
+    if (index != -1) {
+        cout << "Element " << target << " found at index " << index << endl;
+    } else {
+        cout << "Element " << target << " not found" << endl;
+    }
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Element 2 found at index 1
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def binary_search(arr, target):
+    left = 0
+    right = len(arr) - 1
+
+    while left <= right:
+        # Calculate middle index
+        mid = left + (right - left) // 2
+
+        # Check if target is at mid
+        if arr[mid] == target:
+            return mid
+
+        # If target is greater, ignore left half
+        if arr[mid] < target:
+            left = mid + 1
+        # If target is smaller, ignore right half
+        else:
+            right = mid - 1
+
+    # Element not found
+    return -1
+
+arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+target = 2
+
+index = binary_search(arr, target)
+
+if index != -1:
+    print(f"Element {target} found at index {index}")
+else:
+    print(f"Element {target} not found")
+```
+
+**Output:**
+```
+Element 2 found at index 1
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function binarySearch(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+
+    while (left <= right) {
+        // Calculate middle index
+        const mid = left + Math.floor((right - left) / 2);
+
+        // Check if target is at mid
+        if (arr[mid] === target) {
+            return mid;
+        }
+
+        // If target is greater, ignore left half
+        if (arr[mid] < target) {
+            left = mid + 1;
+        }
+        // If target is smaller, ignore right half
+        else {
+            right = mid - 1;
+        }
+    }
+
+    // Element not found
+    return -1;
+}
+
+let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+let target = 2;
+
+let index = binarySearch(arr, target);
+
+if (index !== -1) {
+    console.log(`Element ${target} found at index ${index}`);
+} else {
+    console.log(`Element ${target} not found`);
+}
+```
+
+**Output:**
+```
+Element 2 found at index 1
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(log n) - divides search space by 2 each iteration</p>
+      <p><strong>Space Complexity:</strong> O(1) - constant space</p>
+      <p><strong>Advantage:</strong> Most efficient, no recursion overhead</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(log n) - প্রতিটি পুনরাবৃত্তিতে সার্চ স্পেস 2 দ্বারা ভাগ করে</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1) - স্থির স্থান</p>
+      <p><strong>সুবিধা:</strong> সবচেয়ে কার্যকর, রিকার্শন ওভারহেড নেই</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: Recursive Binary Search" bn="পদ্ধতি ২: রিকার্সিভ বাইনারি সার্চ" />
+
+<TranslatedText
+  en={<p>Implement binary search recursively for a more elegant solution.</p>}
+  bn={<p>আরও মার্জিত সমাধানের জন্য বাইনারি সার্চ রিকার্সিভভাবে বাস্তবায়ন করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int binarySearchRecursive(vector<int>& arr, int target, int left, int right) {
+    // Base case: element not found
+    if (left > right) {
+        return -1;
+    }
+
+    // Calculate middle index
+    int mid = left + (right - left) / 2;
+
+    // Base case: element found
+    if (arr[mid] == target) {
+        return mid;
+    }
+
+    // If target is greater, search right half
+    if (arr[mid] < target) {
+        return binarySearchRecursive(arr, target, mid + 1, right);
+    }
+
+    // If target is smaller, search left half
+    return binarySearchRecursive(arr, target, left, mid - 1);
+}
+
+int main() {
+    vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+    int target = 2;
+
+    int index = binarySearchRecursive(arr, target, 0, arr.size() - 1);
+
+    if (index != -1) {
+        cout << "Element " << target << " found at index " << index << endl;
+    } else {
+        cout << "Element " << target << " not found" << endl;
+    }
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def binary_search_recursive(arr, target, left, right):
+    # Base case: element not found
+    if left > right:
+        return -1
+
+    # Calculate middle index
+    mid = left + (right - left) // 2
+
+    # Base case: element found
+    if arr[mid] == target:
+        return mid
+
+    # If target is greater, search right half
+    if arr[mid] < target:
+        return binary_search_recursive(arr, target, mid + 1, right)
+
+    # If target is smaller, search left half
+    return binary_search_recursive(arr, target, left, mid - 1)
+
+arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+target = 2
+
+index = binary_search_recursive(arr, target, 0, len(arr) - 1)
+
+if index != -1:
+    print(f"Element {target} found at index {index}")
+else:
+    print(f"Element {target} not found")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function binarySearchRecursive(arr, target, left, right) {
+    // Base case: element not found
+    if (left > right) {
+        return -1;
+    }
+
+    // Calculate middle index
+    const mid = left + Math.floor((right - left) / 2);
+
+    // Base case: element found
+    if (arr[mid] === target) {
+        return mid;
+    }
+
+    // If target is greater, search right half
+    if (arr[mid] < target) {
+        return binarySearchRecursive(arr, target, mid + 1, right);
+    }
+
+    // If target is smaller, search left half
+    return binarySearchRecursive(arr, target, left, mid - 1);
+}
+
+let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+let target = 2;
+
+let index = binarySearchRecursive(arr, target, 0, arr.length - 1);
+
+if (index !== -1) {
+    console.log(`Element ${target} found at index ${index}`);
+} else {
+    console.log(`Element ${target} not found`);
+}
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(log n)</p>
+      <p><strong>Space Complexity:</strong> O(log n) - recursion call stack</p>
+      <p><strong>Note:</strong> Cleaner code but uses more stack space</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(log n)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(log n) - রিকার্শন কল স্ট্যাক</p>
+      <p><strong>নোট:</strong> পরিষ্কার কোড কিন্তু বেশি স্ট্যাক স্পেস ব্যবহার করে</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 3: Using Built-in Functions" bn="পদ্ধতি ৩: বিল্ট-ইন ফাংশন ব্যবহার করে" />
+
+<TranslatedText
+  en={<p>Most programming languages provide built-in binary search functions.</p>}
+  bn={<p>বেশিরভাগ প্রোগ্রামিং ভাষা বিল্ট-ইন বাইনারি সার্চ ফাংশন প্রদান করে।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+    int target = 2;
+
+    // Using binary_search (returns bool)
+    bool found = binary_search(arr.begin(), arr.end(), target);
+
+    // Using lower_bound (returns iterator to first element >= target)
+    auto it = lower_bound(arr.begin(), arr.end(), target);
+    int index = (it != arr.end() && *it == target) ? distance(arr.begin(), it) : -1;
+
+    if (index != -1) {
+        cout << "Element " << target << " found at index " << index << endl;
+    } else {
+        cout << "Element " << target << " not found" << endl;
+    }
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+import bisect
+
+arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+target = 2
+
+# Using bisect_left (returns leftmost insertion position)
+index = bisect.bisect_left(arr, target)
+
+# Verify that element at index is actually the target
+if index < len(arr) and arr[index] == target:
+    print(f"Element {target} found at index {index}")
+else:
+    print(f"Element {target} not found")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+// JavaScript doesn't have built-in binary search
+// But we can use a library-like implementation
+function binarySearchBuiltin(arr, target) {
+    // This is our custom implementation
+    return arr.indexOf(target); // Note: indexOf is O(n), not O(log n)
+}
+
+// For true binary search, use the iterative approach
+// Or a library like lodash's _.sortedIndexOf
+
+let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+let target = 2;
+
+let index = arr.indexOf(target);
+
+if (index !== -1) {
+    console.log(`Element ${target} found at index ${index}`);
+} else {
+    console.log(`Element ${target} not found`);
+}
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="How Binary Search Works" bn="বাইনারি সার্চ কীভাবে কাজ করে" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Step-by-step for array [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], target = 7:</strong></p>
+      <ol>
+        <li>left=0, right=9, mid=4 → arr[4]=5, 5 less than 7 → search right</li>
+        <li>left=5, right=9, mid=7 → arr[7]=8, 8 greater than 7 → search left</li>
+        <li>left=5, right=6, mid=5 → arr[5]=6, 6 less than 7 → search right</li>
+        <li>left=6, right=6, mid=6 → arr[6]=7, Found! Return 6</li>
+      </ol>
+      <p>Only 4 comparisons instead of 7 with linear search!</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>অ্যারে [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] এর জন্য ধাপে ধাপে, লক্ষ্য = 7:</strong></p>
+      <ol>
+        <li>left=0, right=9, mid=4 → arr[4]=5, 5 এর চেয়ে কম 7 → ডানে সার্চ</li>
+        <li>left=5, right=9, mid=7 → arr[7]=8, 8 এর চেয়ে বেশি 7 → বামে সার্চ</li>
+        <li>left=5, right=6, mid=5 → arr[5]=6, 6 এর চেয়ে কম 7 → ডানে সার্চ</li>
+        <li>left=6, right=6, mid=6 → arr[6]=7, পাওয়া গেছে! 6 ফেরত দিন</li>
+      </ol>
+      <p>লিনিয়ার সার্চের 7 এর পরিবর্তে মাত্র 4টি তুলনা!</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Common Pitfalls" bn="সাধারণ সমস্যা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Overflow in mid calculation:</strong> Use mid = left + (right - left) / 2 instead of (left + right) / 2</li>
+        <li><strong>Off-by-one errors:</strong> Use while (left less than or equal to right), not while (left less than right)</li>
+        <li><strong>Unsorted array:</strong> Binary search only works on sorted arrays</li>
+        <li><strong>Integer division:</strong> Be careful with floor division in different languages</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>mid গণনায় ওভারফ্লো:</strong> (left + right) / 2 এর পরিবর্তে mid = left + (right - left) / 2 ব্যবহার করুন</li>
+        <li><strong>অফ-বাই-ওয়ান ত্রুটি:</strong> while (left less than right) নয়, while (left less than or equal to right) ব্যবহার করুন</li>
+        <li><strong>অসাজানো অ্যারে:</strong> বাইনারি সার্চ শুধুমাত্র সাজানো অ্যারেতে কাজ করে</li>
+        <li><strong>পূর্ণসংখ্যা ভাগ:</strong> বিভিন্ন ভাষায় ফ্লোর ডিভিশন নিয়ে সতর্ক থাকুন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Comparison: Binary vs Linear Search" bn="তুলনা: বাইনারি বনাম লিনিয়ার সার্চ" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Aspect</th>
+          <th>Binary Search</th>
+          <th>Linear Search</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Time Complexity</td>
+          <td>O(log n)</td>
+          <td>O(n)</td>
+        </tr>
+        <tr>
+          <td>Requirement</td>
+          <td>Sorted array</td>
+          <td>Any array</td>
+        </tr>
+        <tr>
+          <td>Comparisons (n=1000)</td>
+          <td>~10</td>
+          <td>~500 average</td>
+        </tr>
+        <tr>
+          <td>Best for</td>
+          <td>Large sorted arrays</td>
+          <td>Small or unsorted arrays</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>দিক</th>
+          <th>বাইনারি সার্চ</th>
+          <th>লিনিয়ার সার্চ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>সময় জটিলতা</td>
+          <td>O(log n)</td>
+          <td>O(n)</td>
+        </tr>
+        <tr>
+          <td>প্রয়োজন</td>
+          <td>সাজানো অ্যারে</td>
+          <td>যেকোনো অ্যারে</td>
+        </tr>
+        <tr>
+          <td>তুলনা (n=1000)</td>
+          <td>~10</td>
+          <td>~500 গড়</td>
+        </tr>
+        <tr>
+          <td>সেরা</td>
+          <td>বড় সাজানো অ্যারে</td>
+          <td>ছোট বা অসাজানো অ্যারে</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Binary search is THE algorithm for searching sorted arrays</li>
+          <li>O(log n) means very fast even for huge arrays (1 million → 20 comparisons)</li>
+          <li>Always clarify if array is sorted before applying binary search</li>
+          <li>Master both iterative and recursive implementations</li>
+          <li>Watch out for integer overflow in mid calculation</li>
+          <li>Variants: lower_bound, upper_bound, search in rotated array</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>বাইনারি সার্চ সাজানো অ্যারে খোঁজার জন্য THE অ্যালগরিদম</li>
+          <li>O(log n) মানে বিশাল অ্যারের জন্যও খুব দ্রুত (1 মিলিয়ন → 20 তুলনা)</li>
+          <li>বাইনারি সার্চ প্রয়োগ করার আগে সর্বদা স্পষ্ট করুন অ্যারে সাজানো কিনা</li>
+          <li>পুনরাবৃত্তিমূলক এবং রিকার্সিভ উভয় বাস্তবায়ন মাস্টার করুন</li>
+          <li>mid গণনায় পূর্ণসংখ্যা ওভারফ্লো সম্পর্কে সতর্ক থাকুন</li>
+          <li>রূপান্তর: lower_bound, upper_bound, রোটেটেড অ্যারেতে সার্চ</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

@@ -1,0 +1,502 @@
+---
+title: Two Sum Problem
+description: Find two numbers in an array that add up to a specific target value
+---
+
+import { Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { TranslatedText } from '@/components/TranslatedText';
+
+<LanguageSwitcher />
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given an array of integers and a target sum, find the indices of two numbers in the array that add up to the target. You may assume that each input has exactly one solution, and you cannot use the same element twice."
+  bn="পূর্ণসংখ্যার একটি অ্যারে এবং একটি লক্ষ্য যোগফল দেওয়া হলে, অ্যারেতে দুটি সংখ্যার সূচক খুঁজে বের করুন যা লক্ষ্যে যোগ করে। আপনি ধরে নিতে পারেন যে প্রতিটি ইনপুটে ঠিক একটি সমাধান আছে এবং আপনি একই উপাদান দুবার ব্যবহার করতে পারবেন না।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: nums = [2, 7, 11, 15], target = 9
+Output: [0, 1]
+Explanation: nums[0] + nums[1] = 2 + 7 = 9
+
+Input: nums = [3, 2, 4], target = 6
+Output: [1, 2]
+Explanation: nums[1] + nums[2] = 2 + 4 = 6
+
+Input: nums = [3, 3], target = 6
+Output: [0, 1]
+Explanation: nums[0] + nums[1] = 3 + 3 = 6
+```
+
+## <TranslatedText en="Approaches" bn="সমাধানের পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Brute Force (Nested Loops)" bn="পদ্ধতি ১: ব্রুট ফোর্স (নেস্টেড লুপ)" />
+
+<TranslatedText
+  en="Check all possible pairs of numbers in the array to see if they sum to the target. This is the simplest approach but has poor performance for large arrays."
+  bn="লক্ষ্যে যোগ হয় কিনা তা দেখতে অ্যারেতে সংখ্যার সমস্ত সম্ভাব্য জোড়া পরীক্ষা করুন। এটি সবচেয়ে সহজ পদ্ধতি কিন্তু বড় অ্যারের জন্য দুর্বল পারফরম্যান্স আছে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> twoSumBruteForce(vector<int>& nums, int target) {
+    int n = nums.size();
+
+    // Check all pairs
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (nums[i] + nums[j] == target) {
+                return {i, j};
+            }
+        }
+    }
+
+    // No solution found (shouldn't happen per problem constraint)
+    return {};
+}
+
+int main() {
+    vector<int> nums = {2, 7, 11, 15};
+    int target = 9;
+
+    vector<int> result = twoSumBruteForce(nums, target);
+    cout << "Indices: [" << result[0] << ", " << result[1] << "]" << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def two_sum_brute_force(nums, target):
+    n = len(nums)
+
+    # Check all pairs
+    for i in range(n - 1):
+        for j in range(i + 1, n):
+            if nums[i] + nums[j] == target:
+                return [i, j]
+
+    # No solution found (shouldn't happen per problem constraint)
+    return []
+
+# Test
+nums = [2, 7, 11, 15]
+target = 9
+
+result = two_sum_brute_force(nums, target)
+print(f"Indices: {result}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function twoSumBruteForce(nums, target) {
+    const n = nums.length;
+
+    // Check all pairs
+    for (let i = 0; i < n - 1; i++) {
+        for (let j = i + 1; j < n; j++) {
+            if (nums[i] + nums[j] === target) {
+                return [i, j];
+            }
+        }
+    }
+
+    // No solution found (shouldn't happen per problem constraint)
+    return [];
+}
+
+// Test
+const nums = [2, 7, 11, 15];
+const target = 9;
+
+const result = twoSumBruteForce(nums, target);
+console.log(`Indices: [${result}]`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n²) <TranslatedText en="where n is the length of the array" bn="যেখানে n হল অ্যারের দৈর্ঘ্য" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+### <TranslatedText en="Approach 2: Hash Map (One Pass) - Optimal" bn="পদ্ধতি ২: হ্যাশ ম্যাপ (একটি পাস) - সর্বোত্তম" />
+
+<TranslatedText
+  en="Use a hash map to store numbers we've seen along with their indices. For each number, check if its complement (target - number) exists in the hash map. This allows us to solve the problem in a single pass."
+  bn="আমরা দেখেছি এমন সংখ্যা এবং তাদের সূচক সংরক্ষণ করতে একটি হ্যাশ ম্যাপ ব্যবহার করুন। প্রতিটি সংখ্যার জন্য, পরীক্ষা করুন যে এর পরিপূরক (target - number) হ্যাশ ম্যাপে বিদ্যমান কিনা। এটি আমাদের একটি একক পাসে সমস্যাটি সমাধান করতে দেয়।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+vector<int> twoSumHashMap(vector<int>& nums, int target) {
+    unordered_map<int, int> numMap; // value -> index
+
+    for (int i = 0; i < nums.size(); i++) {
+        int complement = target - nums[i];
+
+        // Check if complement exists in map
+        if (numMap.find(complement) != numMap.end()) {
+            return {numMap[complement], i};
+        }
+
+        // Store current number with its index
+        numMap[nums[i]] = i;
+    }
+
+    return {};
+}
+
+int main() {
+    vector<int> nums = {2, 7, 11, 15};
+    int target = 9;
+
+    vector<int> result = twoSumHashMap(nums, target);
+    cout << "Indices: [" << result[0] << ", " << result[1] << "]" << endl;
+
+    // Test with duplicates
+    vector<int> nums2 = {3, 3};
+    int target2 = 6;
+    vector<int> result2 = twoSumHashMap(nums2, target2);
+    cout << "Test case [3,3], target=6: [" << result2[0] << ", " << result2[1] << "]" << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def two_sum_hash_map(nums, target):
+    num_map = {}  # value -> index
+
+    for i, num in enumerate(nums):
+        complement = target - num
+
+        # Check if complement exists in map
+        if complement in num_map:
+            return [num_map[complement], i]
+
+        # Store current number with its index
+        num_map[num] = i
+
+    return []
+
+# Test
+nums = [2, 7, 11, 15]
+target = 9
+
+result = two_sum_hash_map(nums, target)
+print(f"Indices: {result}")
+
+# Test with duplicates
+nums2 = [3, 3]
+target2 = 6
+result2 = two_sum_hash_map(nums2, target2)
+print(f"Test case [3,3], target=6: {result2}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function twoSumHashMap(nums, target) {
+    const numMap = new Map(); // value -> index
+
+    for (let i = 0; i < nums.length; i++) {
+        const complement = target - nums[i];
+
+        // Check if complement exists in map
+        if (numMap.has(complement)) {
+            return [numMap.get(complement), i];
+        }
+
+        // Store current number with its index
+        numMap.set(nums[i], i);
+    }
+
+    return [];
+}
+
+// Test
+const nums = [2, 7, 11, 15];
+const target = 9;
+
+const result = twoSumHashMap(nums, target);
+console.log(`Indices: [${result}]`);
+
+// Test with duplicates
+const nums2 = [3, 3];
+const target2 = 6;
+const result2 = twoSumHashMap(nums2, target2);
+console.log(`Test case [3,3], target=6: [${result2}]`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n) <TranslatedText en="for the hash map" bn="হ্যাশ ম্যাপের জন্য" />
+
+### <TranslatedText en="Approach 3: Two Pointers (Requires Sorted Array)" bn="পদ্ধতি ৩: দুটি পয়েন্টার (সাজানো অ্যারে প্রয়োজন)" />
+
+<TranslatedText
+  en="If the array is sorted (or we sort it first), we can use two pointers from both ends. Move the left pointer right if sum is too small, move right pointer left if sum is too large. Note: This approach requires returning values, not indices, or tracking original indices during sorting."
+  bn="যদি অ্যারে সাজানো থাকে (বা আমরা প্রথমে এটি সাজাই), আমরা উভয় প্রান্ত থেকে দুটি পয়েন্টার ব্যবহার করতে পারি। যদি যোগফল খুব ছোট হয় তাহলে বাম পয়েন্টার ডানে সরান, যদি যোগফল খুব বড় হয় তাহলে ডান পয়েন্টার বামে সরান। দ্রষ্টব্য: এই পদ্ধতিতে মান ফেরত দিতে হয়, সূচক নয়, অথবা সাজানোর সময় মূল সূচক ট্র্যাক করতে হয়।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+vector<int> twoSumTwoPointers(vector<int>& nums, int target) {
+    // Create pairs of (value, original_index)
+    vector<pair<int, int>> pairs;
+    for (int i = 0; i < nums.size(); i++) {
+        pairs.push_back({nums[i], i});
+    }
+
+    // Sort by value
+    sort(pairs.begin(), pairs.end());
+
+    int left = 0;
+    int right = pairs.size() - 1;
+
+    while (left < right) {
+        int sum = pairs[left].first + pairs[right].first;
+
+        if (sum == target) {
+            // Return original indices
+            return {pairs[left].second, pairs[right].second};
+        } else if (sum < target) {
+            left++;  // Need larger sum
+        } else {
+            right--; // Need smaller sum
+        }
+    }
+
+    return {};
+}
+
+int main() {
+    vector<int> nums = {2, 7, 11, 15};
+    int target = 9;
+
+    vector<int> result = twoSumTwoPointers(nums, target);
+    cout << "Indices: [" << result[0] << ", " << result[1] << "]" << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def two_sum_two_pointers(nums, target):
+    # Create pairs of (value, original_index)
+    pairs = [(num, i) for i, num in enumerate(nums)]
+
+    # Sort by value
+    pairs.sort()
+
+    left = 0
+    right = len(pairs) - 1
+
+    while left < right:
+        current_sum = pairs[left][0] + pairs[right][0]
+
+        if current_sum == target:
+            # Return original indices
+            return [pairs[left][1], pairs[right][1]]
+        elif current_sum < target:
+            left += 1  # Need larger sum
+        else:
+            right -= 1  # Need smaller sum
+
+    return []
+
+# Test
+nums = [2, 7, 11, 15]
+target = 9
+
+result = two_sum_two_pointers(nums, target)
+print(f"Indices: {result}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function twoSumTwoPointers(nums, target) {
+    // Create pairs of [value, original_index]
+    const pairs = nums.map((num, i) => [num, i]);
+
+    // Sort by value
+    pairs.sort((a, b) => a[0] - b[0]);
+
+    let left = 0;
+    let right = pairs.length - 1;
+
+    while (left < right) {
+        const sum = pairs[left][0] + pairs[right][0];
+
+        if (sum === target) {
+            // Return original indices
+            return [pairs[left][1], pairs[right][1]];
+        } else if (sum < target) {
+            left++;  // Need larger sum
+        } else {
+            right--; // Need smaller sum
+        }
+    }
+
+    return [];
+}
+
+// Test
+const nums = [2, 7, 11, 15];
+const target = 9;
+
+const result = twoSumTwoPointers(nums, target);
+console.log(`Indices: [${result}]`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n log n) <TranslatedText en="due to sorting" bn="সাজানোর কারণে" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n) <TranslatedText en="for storing pairs" bn="জোড়া সংরক্ষণের জন্য" />
+
+## <TranslatedText en="Complexity Comparison" bn="জটিলতার তুলনা" />
+
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time Complexity" bn="সময় জটিলতা" /> | <TranslatedText en="Space Complexity" bn="স্থান জটিলতা" /> | <TranslatedText en="Notes" bn="মন্তব্য" /> |
+|---|---|---|---|
+| <TranslatedText en="Brute Force" bn="ব্রুট ফোর্স" /> | O(n²) | O(1) | <TranslatedText en="Simple but slow" bn="সহজ কিন্তু ধীর" /> |
+| <TranslatedText en="Hash Map" bn="হ্যাশ ম্যাপ" /> | O(n) | O(n) | **<TranslatedText en="Best approach" bn="সেরা পদ্ধতি" />** |
+| <TranslatedText en="Two Pointers" bn="দুটি পয়েন্টার" /> | O(n log n) | O(n) | <TranslatedText en="Requires sorting" bn="সাজানো প্রয়োজন" /> |
+
+## <TranslatedText en="Algorithm Walkthrough" bn="অ্যালগরিদম ওয়াকথ্রু" />
+
+<TranslatedText
+  en="For the hash map approach with nums = [2, 7, 11, 15], target = 9:"
+  bn="হ্যাশ ম্যাপ পদ্ধতির জন্য nums = [2, 7, 11, 15], target = 9:"
+/>
+
+```
+Step 1: i=0, num=2, complement=7
+  - 7 not in map
+  - Add 2->0 to map
+  - map: {2: 0}
+
+Step 2: i=1, num=7, complement=2
+  - 2 found in map at index 0
+  - Return [0, 1]
+  - Done!
+
+Result: [0, 1] because nums[0] + nums[1] = 2 + 7 = 9
+```
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en="1. **Hash map trades space for time**: We use O(n) space to achieve O(n) time instead of O(n²)."
+  bn="1. **হ্যাশ ম্যাপ সময়ের জন্য স্থান বিনিময় করে**: আমরা O(n²) এর পরিবর্তে O(n) সময় অর্জন করতে O(n) স্থান ব্যবহার করি।"
+/>
+
+<TranslatedText
+  en="2. **Check complement before adding**: Always check if the complement exists before adding current number to prevent using the same element twice."
+  bn="2. **যোগ করার আগে পরিপূরক পরীক্ষা করুন**: একই উপাদান দুবার ব্যবহার প্রতিরোধ করতে বর্তমান সংখ্যা যোগ করার আগে সর্বদা পরিপূরক বিদ্যমান কিনা তা পরীক্ষা করুন।"
+/>
+
+<TranslatedText
+  en="3. **One pass is sufficient**: We don't need to scan the array first and then search - we can do both in one pass."
+  bn="3. **একটি পাস যথেষ্ট**: আমাদের প্রথমে অ্যারে স্ক্যান করতে হবে না এবং তারপর অনুসন্ধান করতে হবে না - আমরা একটি পাসে উভয়ই করতে পারি।"
+/>
+
+<TranslatedText
+  en="4. **Hash map stores value-to-index mapping**: This allows O(1) lookup to find if complement exists and retrieve its index."
+  bn="4. **হ্যাশ ম্যাপ মান-থেকে-সূচক ম্যাপিং সংরক্ষণ করে**: এটি পরিপূরক বিদ্যমান কিনা তা খুঁজে বের করতে এবং এর সূচক পুনরুদ্ধার করতে O(1) লুকআপ অনুমতি দেয়।"
+/>
+
+## <TranslatedText en="Edge Cases to Consider" bn="বিবেচনা করার জন্য এজ কেস" />
+
+<TranslatedText
+  en="- **Array with only 2 elements**: Minimum valid input
+- **Duplicate values**: [3, 3], target = 6
+- **Negative numbers**: [-1, -2, -3, -4], target = -6
+- **Zero in array**: [0, 4, 3, 0], target = 0
+- **Large numbers**: Handle integer overflow in some languages"
+  bn="- **মাত্র 2টি উপাদান সহ অ্যারে**: ন্যূনতম বৈধ ইনপুট
+- **ডুপ্লিকেট মান**: [3, 3], target = 6
+- **ঋণাত্মক সংখ্যা**: [-1, -2, -3, -4], target = -6
+- **অ্যারেতে শূন্য**: [0, 4, 3, 0], target = 0
+- **বড় সংখ্যা**: কিছু ভাষায় ইন্টিজার ওভারফ্লো হ্যান্ডেল করুন"
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="- **Start with brute force**: Mention the O(n²) solution first, then optimize to hash map
+- **Clarify requirements**: Ask if array is sorted, if there's always a solution, if we can use same element twice
+- **Explain the complement idea**: target - current = complement we're looking for
+- **Discuss trade-offs**: Hash map uses more space but is much faster
+- **Handle duplicates correctly**: Show you understand the edge case with [3, 3]
+- **Follow-up variations**: Be ready for 3Sum, 4Sum, or Two Sum in sorted array"
+  bn="- **ব্রুট ফোর্স দিয়ে শুরু করুন**: প্রথমে O(n²) সমাধান উল্লেখ করুন, তারপর হ্যাশ ম্যাপে অপ্টিমাইজ করুন
+- **প্রয়োজনীয়তা স্পষ্ট করুন**: অ্যারে সাজানো কিনা, সর্বদা একটি সমাধান আছে কিনা, আমরা একই উপাদান দুবার ব্যবহার করতে পারি কিনা জিজ্ঞাসা করুন
+- **পরিপূরক ধারণা ব্যাখ্যা করুন**: target - current = আমরা যে পরিপূরক খুঁজছি
+- **ট্রেড-অফ আলোচনা করুন**: হ্যাশ ম্যাপ বেশি স্থান ব্যবহার করে কিন্তু অনেক দ্রুত
+- **ডুপ্লিকেট সঠিকভাবে হ্যান্ডেল করুন**: দেখান যে আপনি [3, 3] এর সাথে এজ কেস বোঝেন
+- **ফলো-আপ ভেরিয়েশন**: 3Sum, 4Sum, বা সাজানো অ্যারেতে Two Sum এর জন্য প্রস্তুত থাকুন"
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Two Sum II (sorted array - use two pointers)
+- 3Sum (find three numbers that sum to target)
+- 4Sum (find four numbers that sum to target)
+- Two Sum IV - Input is a BST
+- Subarray Sum Equals K
+
+## <TranslatedText en="Common Mistakes to Avoid" bn="এড়ানোর জন্য সাধারণ ভুল" />
+
+<TranslatedText
+  en="❌ Adding number to map before checking complement (allows using same element twice)
+❌ Returning the values instead of indices
+❌ Not handling duplicate values correctly
+❌ Using two hash map passes when one is sufficient
+❌ Forgetting to check if complement exists before accessing map"
+  bn="❌ পরিপূরক পরীক্ষা করার আগে মানচিত্রে সংখ্যা যোগ করা (একই উপাদান দুবার ব্যবহার করার অনুমতি দেয়)
+❌ সূচকের পরিবর্তে মান ফেরত দেওয়া
+❌ ডুপ্লিকেট মান সঠিকভাবে হ্যান্ডেল না করা
+❌ একটি যথেষ্ট হলে দুটি হ্যাশ ম্যাপ পাস ব্যবহার করা
+❌ মানচিত্র অ্যাক্সেস করার আগে পরিপূরক বিদ্যমান কিনা তা পরীক্ষা করতে ভুলে যাওয়া"
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="✓ Hash map is the optimal solution with O(n) time and O(n) space
+✓ Always check complement before adding to prevent using same element twice
+✓ One pass through the array is sufficient
+✓ This pattern applies to many similar problems (3Sum, 4Sum, etc.)
+✓ Space-time tradeoff: we use extra space to achieve better time complexity"
+  bn="✓ হ্যাশ ম্যাপ হল O(n) সময় এবং O(n) স্থান সহ সর্বোত্তম সমাধান
+✓ একই উপাদান দুবার ব্যবহার প্রতিরোধ করতে যোগ করার আগে সর্বদা পরিপূরক পরীক্ষা করুন
+✓ অ্যারের মধ্য দিয়ে একটি পাস যথেষ্ট
+✓ এই প্যাটার্ন অনেক অনুরূপ সমস্যার ক্ষেত্রে প্রযোজ্য (3Sum, 4Sum, ইত্যাদি)
+✓ স্থান-সময় ট্রেড-অফ: আমরা আরও ভাল সময় জটিলতা অর্জনের জন্য অতিরিক্ত স্থান ব্যবহার করি"
+/>

@@ -1,0 +1,583 @@
+---
+title: 21. Check if a Year is a Leap Year
+description: Learn how to check if a given year is a leap year using different approaches
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Check if a Given Year is a Leap Year" bn="একটি বছর লিপ ইয়ার কিনা পরীক্ষা করুন" />
+
+<TranslatedText
+  en="A leap year has 366 days instead of 365. It occurs every 4 years, with exceptions for century years."
+  bn="একটি লিপ ইয়ারে 365 দিনের পরিবর্তে 366 দিন থাকে। এটি প্রতি 4 বছরে ঘটে, শতাব্দীর বছরের জন্য ব্যতিক্রম সহ।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Leap Year Rules:</strong></p>
+      <ul>
+        <li>A year is a leap year if it is divisible by 4</li>
+        <li>BUT, century years (divisible by 100) are NOT leap years</li>
+        <li>EXCEPT, years divisible by 400 ARE leap years</li>
+      </ul>
+      <p><strong>Examples:</strong></p>
+      <ul>
+        <li>2024 is a leap year (divisible by 4)</li>
+        <li>1900 is NOT a leap year (century year, not divisible by 400)</li>
+        <li>2000 is a leap year (divisible by 400)</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>লিপ ইয়ারের নিয়ম:</strong></p>
+      <ul>
+        <li>একটি বছর লিপ ইয়ার যদি এটি 4 দ্বারা বিভাজ্য হয়</li>
+        <li>কিন্তু, শতাব্দীর বছর (100 দ্বারা বিভাজ্য) লিপ ইয়ার নয়</li>
+        <li>ব্যতিক্রম, 400 দ্বারা বিভাজ্য বছর লিপ ইয়ার</li>
+      </ul>
+      <p><strong>উদাহরণ:</strong></p>
+      <ul>
+        <li>2024 একটি লিপ ইয়ার (4 দ্বারা বিভাজ্য)</li>
+        <li>1900 লিপ ইয়ার নয় (শতাব্দীর বছর, 400 দ্বারা বিভাজ্য নয়)</li>
+        <li>2000 একটি লিপ ইয়ার (400 দ্বারা বিভাজ্য)</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Complete Logic with All Conditions" bn="পদ্ধতি ১: সমস্ত শর্ত সহ সম্পূর্ণ লজিক" />
+
+<TranslatedText
+  en={<p>Implement all three rules explicitly to determine if a year is a leap year.</p>}
+  bn={<p>একটি বছর লিপ ইয়ার কিনা তা নির্ধারণ করতে সমস্ত তিনটি নিয়ম স্পষ্টভাবে বাস্তবায়ন করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+bool isLeapYear(int year) {
+    // Divisible by 400 -> leap year
+    if (year % 400 == 0) {
+        return true;
+    }
+
+    // Divisible by 100 (but not 400) -> not leap year
+    if (year % 100 == 0) {
+        return false;
+    }
+
+    // Divisible by 4 (but not 100) -> leap year
+    if (year % 4 == 0) {
+        return true;
+    }
+
+    // Otherwise -> not leap year
+    return false;
+}
+
+int main() {
+    int years[] = {2024, 1900, 2000, 2023, 2100};
+
+    for (int year : years) {
+        cout << year << " is "
+             << (isLeapYear(year) ? "a leap year" : "not a leap year")
+             << endl;
+    }
+
+    return 0;
+}
+```
+
+**Output:**
+```
+2024 is a leap year
+1900 is not a leap year
+2000 is a leap year
+2023 is not a leap year
+2100 is not a leap year
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def is_leap_year(year):
+    # Divisible by 400 -> leap year
+    if year % 400 == 0:
+        return True
+
+    # Divisible by 100 (but not 400) -> not leap year
+    if year % 100 == 0:
+        return False
+
+    # Divisible by 4 (but not 100) -> leap year
+    if year % 4 == 0:
+        return True
+
+    # Otherwise -> not leap year
+    return False
+
+years = [2024, 1900, 2000, 2023, 2100]
+
+for year in years:
+    print(f"{year} is {'a leap year' if is_leap_year(year) else 'not a leap year'}")
+```
+
+**Output:**
+```
+2024 is a leap year
+1900 is not a leap year
+2000 is a leap year
+2023 is not a leap year
+2100 is not a leap year
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function isLeapYear(year) {
+    // Divisible by 400 -> leap year
+    if (year % 400 === 0) {
+        return true;
+    }
+
+    // Divisible by 100 (but not 400) -> not leap year
+    if (year % 100 === 0) {
+        return false;
+    }
+
+    // Divisible by 4 (but not 100) -> leap year
+    if (year % 4 === 0) {
+        return true;
+    }
+
+    // Otherwise -> not leap year
+    return false;
+}
+
+let years = [2024, 1900, 2000, 2023, 2100];
+
+for (let year of years) {
+    console.log(`${year} is ${isLeapYear(year) ? 'a leap year' : 'not a leap year'}`);
+}
+```
+
+**Output:**
+```
+2024 is a leap year
+1900 is not a leap year
+2000 is a leap year
+2023 is not a leap year
+2100 is not a leap year
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(1) - constant time checks</p>
+      <p><strong>Space Complexity:</strong> O(1) - no extra space</p>
+      <p><strong>Advantage:</strong> Clear, readable logic</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(1) - স্থির সময় চেক</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1) - অতিরিক্ত স্থান নেই</p>
+      <p><strong>সুবিধা:</strong> স্পষ্ট, পাঠযোগ্য লজিক</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: One-Line Condition" bn="পদ্ধতি ২: এক-লাইন শর্ত" />
+
+<TranslatedText
+  en={<p>Combine all conditions into a single boolean expression for conciseness.</p>}
+  bn={<p>সংক্ষিপ্ততার জন্য সমস্ত শর্তকে একটি একক বুলিয়ান এক্সপ্রেশনে একত্রিত করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+bool isLeapYearOneLiner(int year) {
+    return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
+}
+
+int main() {
+    int years[] = {2024, 1900, 2000, 2023, 2100};
+
+    for (int year : years) {
+        cout << year << " is "
+             << (isLeapYearOneLiner(year) ? "a leap year" : "not a leap year")
+             << endl;
+    }
+
+    return 0;
+}
+```
+
+**Output:**
+```
+2024 is a leap year
+1900 is not a leap year
+2000 is a leap year
+2023 is not a leap year
+2100 is not a leap year
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def is_leap_year_one_liner(year):
+    return (year % 400 == 0) or (year % 4 == 0 and year % 100 != 0)
+
+years = [2024, 1900, 2000, 2023, 2100]
+
+for year in years:
+    print(f"{year} is {'a leap year' if is_leap_year_one_liner(year) else 'not a leap year'}")
+```
+
+**Output:**
+```
+2024 is a leap year
+1900 is not a leap year
+2000 is a leap year
+2023 is not a leap year
+2100 is not a leap year
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function isLeapYearOneLiner(year) {
+    return (year % 400 === 0) || (year % 4 === 0 && year % 100 !== 0);
+}
+
+let years = [2024, 1900, 2000, 2023, 2100];
+
+for (let year of years) {
+    console.log(`${year} is ${isLeapYearOneLiner(year) ? 'a leap year' : 'not a leap year'}`);
+}
+```
+
+**Output:**
+```
+2024 is a leap year
+1900 is not a leap year
+2000 is a leap year
+2023 is not a leap year
+2100 is not a leap year
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(1)</p>
+      <p><strong>Space Complexity:</strong> O(1)</p>
+      <p><strong>Advantage:</strong> Concise, efficient</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(1)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1)</p>
+      <p><strong>সুবিধা:</strong> সংক্ষিপ্ত, কার্যকর</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 3: Using Built-in Calendar Libraries" bn="পদ্ধতি ৩: বিল্ট-ইন ক্যালেন্ডার লাইব্রেরি ব্যবহার করে" />
+
+<TranslatedText
+  en={<p>Some languages provide built-in methods to check leap years.</p>}
+  bn={<p>কিছু ভাষা লিপ ইয়ার পরীক্ষা করার জন্য বিল্ট-ইন পদ্ধতি প্রদান করে।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <ctime>
+using namespace std;
+
+// C++ doesn't have built-in leap year check
+// But we can use our custom function
+bool isLeapYearCustom(int year) {
+    return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
+}
+
+int main() {
+    int years[] = {2024, 1900, 2000, 2023, 2100};
+
+    for (int year : years) {
+        cout << year << " is "
+             << (isLeapYearCustom(year) ? "a leap year" : "not a leap year")
+             << endl;
+    }
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+import calendar
+
+def is_leap_year_builtin(year):
+    return calendar.isleap(year)
+
+years = [2024, 1900, 2000, 2023, 2100]
+
+for year in years:
+    print(f"{year} is {'a leap year' if is_leap_year_builtin(year) else 'not a leap year'}")
+```
+
+**Output:**
+```
+2024 is a leap year
+1900 is not a leap year
+2000 is a leap year
+2023 is not a leap year
+2100 is not a leap year
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+// JavaScript doesn't have built-in leap year check
+// We use custom implementation
+function isLeapYearCustom(year) {
+    return (year % 400 === 0) || (year % 4 === 0 && year % 100 !== 0);
+}
+
+// Alternative: Check if Feb 29 exists
+function isLeapYearDateCheck(year) {
+    const feb29 = new Date(year, 1, 29);
+    return feb29.getMonth() === 1; // Feb is month 1 (0-indexed)
+}
+
+let years = [2024, 1900, 2000, 2023, 2100];
+
+console.log("Using custom logic:");
+for (let year of years) {
+    console.log(`${year} is ${isLeapYearCustom(year) ? 'a leap year' : 'not a leap year'}`);
+}
+
+console.log("\nUsing date check:");
+for (let year of years) {
+    console.log(`${year} is ${isLeapYearDateCheck(year) ? 'a leap year' : 'not a leap year'}`);
+}
+```
+
+**Output:**
+```
+Using custom logic:
+2024 is a leap year
+1900 is not a leap year
+2000 is a leap year
+2023 is not a leap year
+2100 is not a leap year
+
+Using date check:
+2024 is a leap year
+1900 is not a leap year
+2000 is a leap year
+2023 is not a leap year
+2100 is not a leap year
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Advantage:</strong> Uses tested, standard library functions</p>
+      <p><strong>Note:</strong> Python has calendar.isleap(), JavaScript can use Date object trick</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সুবিধা:</strong> পরীক্ষিত, স্ট্যান্ডার্ড লাইব্রেরি ফাংশন ব্যবহার করে</p>
+      <p><strong>নোট:</strong> পাইথনে calendar.isleap() আছে, জাভাস্ক্রিপ্ট Date অবজেক্ট ট্রিক ব্যবহার করতে পারে</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Understanding the Logic" bn="লজিক বোঝা" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Why these rules?</strong></p>
+      <ul>
+        <li><strong>Rule 1:</strong> Year divisible by 4 → Usually leap year (adds Feb 29)</li>
+        <li><strong>Rule 2:</strong> Year divisible by 100 → NOT leap year (removes excess days over centuries)</li>
+        <li><strong>Rule 3:</strong> Year divisible by 400 → IS leap year (fine-tunes the calendar)</li>
+      </ul>
+      <p>This system keeps our calendar aligned with Earth's orbit around the sun (365.2425 days).</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>এই নিয়মগুলি কেন?</strong></p>
+      <ul>
+        <li><strong>নিয়ম 1:</strong> 4 দ্বারা বিভাজ্য বছর → সাধারণত লিপ ইয়ার (ফেব 29 যোগ করে)</li>
+        <li><strong>নিয়ম 2:</strong> 100 দ্বারা বিভাজ্য বছর → লিপ ইয়ার নয় (শতাব্দীর উপর অতিরিক্ত দিন সরিয়ে দেয়)</li>
+        <li><strong>নিয়ম 3:</strong> 400 দ্বারা বিভাজ্য বছর → লিপ ইয়ার (ক্যালেন্ডার ফাইন-টিউন করে)</li>
+      </ul>
+      <p>এই সিস্টেম আমাদের ক্যালেন্ডারকে সূর্যের চারপাশে পৃথিবীর কক্ষপথের সাথে সারিবদ্ধ রাখে (365.2425 দিন)।</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Test Cases" bn="টেস্ট কেস" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Divisible by 4?</th>
+          <th>Divisible by 100?</th>
+          <th>Divisible by 400?</th>
+          <th>Leap Year?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2024</td>
+          <td>Yes</td>
+          <td>No</td>
+          <td>No</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>1900</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>2000</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>2023</td>
+          <td>No</td>
+          <td>No</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>2100</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>বছর</th>
+          <th>4 দ্বারা বিভাজ্য?</th>
+          <th>100 দ্বারা বিভাজ্য?</th>
+          <th>400 দ্বারা বিভাজ্য?</th>
+          <th>লিপ ইয়ার?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2024</td>
+          <td>হ্যাঁ</td>
+          <td>না</td>
+          <td>না</td>
+          <td>হ্যাঁ</td>
+        </tr>
+        <tr>
+          <td>1900</td>
+          <td>হ্যাঁ</td>
+          <td>হ্যাঁ</td>
+          <td>না</td>
+          <td>না</td>
+        </tr>
+        <tr>
+          <td>2000</td>
+          <td>হ্যাঁ</td>
+          <td>হ্যাঁ</td>
+          <td>হ্যাঁ</td>
+          <td>হ্যাঁ</td>
+        </tr>
+        <tr>
+          <td>2023</td>
+          <td>না</td>
+          <td>না</td>
+          <td>না</td>
+          <td>না</td>
+        </tr>
+        <tr>
+          <td>2100</td>
+          <td>হ্যাঁ</td>
+          <td>হ্যাঁ</td>
+          <td>না</td>
+          <td>না</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Know all three rules: divisible by 4, 100, and 400</li>
+          <li>Order matters: check 400 first, then 100, then 4</li>
+          <li>Century years (1900, 2100) are the tricky test cases</li>
+          <li>One-liner formula is elegant and efficient</li>
+          <li>This is a common beginner programming problem</li>
+          <li>Related: date calculations, calendar algorithms</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>সমস্ত তিনটি নিয়ম জানুন: 4, 100, এবং 400 দ্বারা বিভাজ্য</li>
+          <li>ক্রম গুরুত্বপূর্ণ: প্রথমে 400, তারপর 100, তারপর 4 পরীক্ষা করুন</li>
+          <li>শতাব্দীর বছর (1900, 2100) কৌশলী টেস্ট কেস</li>
+          <li>এক-লাইনার সূত্র মার্জিত এবং কার্যকর</li>
+          <li>এটি একটি সাধারণ শিক্ষানবিস প্রোগ্রামিং সমস্যা</li>
+          <li>সম্পর্কিত: তারিখ গণনা, ক্যালেন্ডার অ্যালগরিদম</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

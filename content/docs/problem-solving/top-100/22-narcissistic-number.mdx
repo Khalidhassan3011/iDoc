@@ -1,0 +1,411 @@
+---
+title: 22. Check if a Number is Narcissistic
+description: Learn how to check if a number is a Narcissistic (Armstrong) number
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Check if a Number is Narcissistic (Armstrong Number)" bn="একটি সংখ্যা নার্সিসিস্টিক (আর্মস্ট্রং সংখ্যা) কিনা পরীক্ষা করুন" />
+
+<TranslatedText
+  en="A Narcissistic number (also called Armstrong number) is a number that is equal to the sum of its own digits each raised to the power of the number of digits."
+  bn="একটি নার্সিসিস্টিক সংখ্যা (আর্মস্ট্রং সংখ্যা ও বলা হয়) একটি সংখ্যা যা এর নিজস্ব ডিজিটের যোগফলের সমান যেখানে প্রতিটি ডিজিট ডিজিটের সংখ্যার শক্তিতে উত্থাপিত।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Definition:</strong> For an n-digit number, if the sum of each digit raised to power n equals the number itself, it's a Narcissistic number.</p>
+      <p><strong>Examples:</strong></p>
+      <ul>
+        <li>153 = 1³ + 5³ + 3³ = 1 + 125 + 27 = 153 ✓ (Narcissistic)</li>
+        <li>9474 = 9⁴ + 4⁴ + 7⁴ + 4⁴ = 6561 + 256 + 2401 + 256 = 9474 ✓</li>
+        <li>123 = 1³ + 2³ + 3³ = 1 + 8 + 27 = 36 ✗ (Not Narcissistic)</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সংজ্ঞা:</strong> একটি n-ডিজিট সংখ্যার জন্য, যদি প্রতিটি ডিজিট n শক্তিতে উত্থাপিত যোগফল সংখ্যাটির সমান হয়, এটি একটি নার্সিসিস্টিক সংখ্যা।</p>
+      <p><strong>উদাহরণ:</strong></p>
+      <ul>
+        <li>153 = 1³ + 5³ + 3³ = 1 + 125 + 27 = 153 ✓ (নার্সিসিস্টিক)</li>
+        <li>9474 = 9⁴ + 4⁴ + 7⁴ + 4⁴ = 6561 + 256 + 2401 + 256 = 9474 ✓</li>
+        <li>123 = 1³ + 2³ + 3³ = 1 + 8 + 27 = 36 ✗ (নার্সিসিস্টিক নয়)</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Count Digits First" bn="পদ্ধতি ১: প্রথমে ডিজিট গণনা করুন" />
+
+<TranslatedText
+  en={<p>First count the number of digits, then calculate the sum of each digit raised to that power.</p>}
+  bn={<p>প্রথমে ডিজিটের সংখ্যা গণনা করুন, তারপর প্রতিটি ডিজিট সেই শক্তিতে উত্থাপিত যোগফল গণনা করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+bool isNarcissistic(int num) {
+    if (num < 0) return false;
+
+    int original = num;
+    int digitCount = 0;
+
+    // Count digits
+    int temp = num;
+    while (temp > 0) {
+        digitCount++;
+        temp /= 10;
+    }
+
+    // Calculate sum of digits raised to power of digit count
+    int sum = 0;
+    temp = num;
+    while (temp > 0) {
+        int digit = temp % 10;
+        sum += pow(digit, digitCount);
+        temp /= 10;
+    }
+
+    return sum == original;
+}
+
+int main() {
+    int numbers[] = {0, 1, 9, 153, 370, 371, 407, 1634, 9474, 123};
+
+    for (int num : numbers) {
+        cout << num << " is "
+             << (isNarcissistic(num) ? "a Narcissistic number" : "not a Narcissistic number")
+             << endl;
+    }
+
+    return 0;
+}
+```
+
+**Output:**
+```
+0 is a Narcissistic number
+1 is a Narcissistic number
+9 is a Narcissistic number
+153 is a Narcissistic number
+370 is a Narcissistic number
+371 is a Narcissistic number
+407 is a Narcissistic number
+1634 is a Narcissistic number
+9474 is a Narcissistic number
+123 is not a Narcissistic number
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def is_narcissistic(num):
+    if num < 0:
+        return False
+
+    original = num
+    digit_count = len(str(num))
+
+    # Calculate sum of digits raised to power of digit count
+    total = 0
+    temp = num
+    while temp > 0:
+        digit = temp % 10
+        total += digit ** digit_count
+        temp //= 10
+
+    return total == original
+
+numbers = [0, 1, 9, 153, 370, 371, 407, 1634, 9474, 123]
+
+for num in numbers:
+    print(f"{num} is {'a Narcissistic number' if is_narcissistic(num) else 'not a Narcissistic number'}")
+```
+
+**Output:**
+```
+0 is a Narcissistic number
+1 is a Narcissistic number
+9 is a Narcissistic number
+153 is a Narcissistic number
+370 is a Narcissistic number
+371 is a Narcissistic number
+407 is a Narcissistic number
+1634 is a Narcissistic number
+9474 is a Narcissistic number
+123 is not a Narcissistic number
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function isNarcissistic(num) {
+    if (num < 0) return false;
+
+    const original = num;
+    const digitCount = num.toString().length;
+
+    // Calculate sum of digits raised to power of digit count
+    let sum = 0;
+    let temp = num;
+    while (temp > 0) {
+        const digit = temp % 10;
+        sum += Math.pow(digit, digitCount);
+        temp = Math.floor(temp / 10);
+    }
+
+    return sum === original;
+}
+
+let numbers = [0, 1, 9, 153, 370, 371, 407, 1634, 9474, 123];
+
+for (let num of numbers) {
+    console.log(`${num} is ${isNarcissistic(num) ? 'a Narcissistic number' : 'not a Narcissistic number'}`);
+}
+```
+
+**Output:**
+```
+0 is a Narcissistic number
+1 is a Narcissistic number
+9 is a Narcissistic number
+153 is a Narcissistic number
+370 is a Narcissistic number
+371 is a Narcissistic number
+407 is a Narcissistic number
+1634 is a Narcissistic number
+9474 is a Narcissistic number
+123 is not a Narcissistic number
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(d) where d is the number of digits</p>
+      <p><strong>Space Complexity:</strong> O(1) - constant space</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(d) যেখানে d হল ডিজিটের সংখ্যা</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1) - স্থির স্থান</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: Using String Conversion" bn="পদ্ধতি ২: স্ট্রিং রূপান্তর ব্যবহার করে" />
+
+<TranslatedText
+  en={<p>Convert number to string to easily access digits and count them.</p>}
+  bn={<p>ডিজিট অ্যাক্সেস এবং গণনা করতে সহজে সংখ্যাকে স্ট্রিংয়ে রূপান্তর করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+#include <cmath>
+using namespace std;
+
+bool isNarcissisticString(int num) {
+    if (num < 0) return false;
+
+    string numStr = to_string(num);
+    int digitCount = numStr.length();
+    int sum = 0;
+
+    for (char ch : numStr) {
+        int digit = ch - '0';
+        sum += pow(digit, digitCount);
+    }
+
+    return sum == num;
+}
+
+int main() {
+    int numbers[] = {0, 1, 9, 153, 370, 371, 407, 1634, 9474, 123};
+
+    for (int num : numbers) {
+        cout << num << " is "
+             << (isNarcissisticString(num) ? "a Narcissistic number" : "not a Narcissistic number")
+             << endl;
+    }
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def is_narcissistic_string(num):
+    if num < 0:
+        return False
+
+    num_str = str(num)
+    digit_count = len(num_str)
+    total = sum(int(digit) ** digit_count for digit in num_str)
+
+    return total == num
+
+numbers = [0, 1, 9, 153, 370, 371, 407, 1634, 9474, 123]
+
+for num in numbers:
+    print(f"{num} is {'a Narcissistic number' if is_narcissistic_string(num) else 'not a Narcissistic number'}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function isNarcissisticString(num) {
+    if (num < 0) return false;
+
+    const numStr = num.toString();
+    const digitCount = numStr.length;
+
+    const sum = numStr
+        .split('')
+        .reduce((acc, digit) => acc + Math.pow(parseInt(digit), digitCount), 0);
+
+    return sum === num;
+}
+
+let numbers = [0, 1, 9, 153, 370, 371, 407, 1634, 9474, 123];
+
+for (let num of numbers) {
+    console.log(`${num} is ${isNarcissisticString(num) ? 'a Narcissistic number' : 'not a Narcissistic number'}`);
+}
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(d)</p>
+      <p><strong>Space Complexity:</strong> O(d) - string storage</p>
+      <p><strong>Advantage:</strong> Cleaner, more readable code</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(d)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(d) - স্ট্রিং স্টোরেজ</p>
+      <p><strong>সুবিধা:</strong> পরিষ্কার, আরও পাঠযোগ্য কোড</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Common Narcissistic Numbers" bn="সাধারণ নার্সিসিস্টিক সংখ্যা" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>1-digit:</strong> 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 (all single digits)</p>
+      <p><strong>3-digit:</strong> 153, 370, 371, 407</p>
+      <p><strong>4-digit:</strong> 1634, 8208, 9474</p>
+      <p><strong>5-digit:</strong> 54748, 92727, 93084</p>
+      <p><strong>Note:</strong> There are only 88 Narcissistic numbers in total (finite set)</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>1-ডিজিট:</strong> 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 (সব একক ডিজিট)</p>
+      <p><strong>3-ডিজিট:</strong> 153, 370, 371, 407</p>
+      <p><strong>4-ডিজিট:</strong> 1634, 8208, 9474</p>
+      <p><strong>5-ডিজিট:</strong> 54748, 92727, 93084</p>
+      <p><strong>নোট:</strong> মোট মাত্র 88টি নার্সিসিস্টিক সংখ্যা আছে (সীমিত সেট)</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Example Walkthrough" bn="উদাহরণ ব্যাখ্যা" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>For 153:</strong></p>
+      <ul>
+        <li>Number of digits = 3</li>
+        <li>1³ = 1 × 1 × 1 = 1</li>
+        <li>5³ = 5 × 5 × 5 = 125</li>
+        <li>3³ = 3 × 3 × 3 = 27</li>
+        <li>Sum = 1 + 125 + 27 = 153</li>
+        <li>153 == 153 ✓ Narcissistic!</li>
+      </ul>
+      <p><strong>For 123:</strong></p>
+      <ul>
+        <li>Number of digits = 3</li>
+        <li>1³ + 2³ + 3³ = 1 + 8 + 27 = 36</li>
+        <li>36 != 123 ✗ Not Narcissistic</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>153 এর জন্য:</strong></p>
+      <ul>
+        <li>ডিজিটের সংখ্যা = 3</li>
+        <li>1³ = 1 × 1 × 1 = 1</li>
+        <li>5³ = 5 × 5 × 5 = 125</li>
+        <li>3³ = 3 × 3 × 3 = 27</li>
+        <li>যোগফল = 1 + 125 + 27 = 153</li>
+        <li>153 == 153 ✓ নার্সিসিস্টিক!</li>
+      </ul>
+      <p><strong>123 এর জন্য:</strong></p>
+      <ul>
+        <li>ডিজিটের সংখ্যা = 3</li>
+        <li>1³ + 2³ + 3³ = 1 + 8 + 27 = 36</li>
+        <li>36 != 123 ✗ নার্সিসিস্টিক নয়</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Also known as Armstrong numbers or pluperfect digital invariants</li>
+          <li>Key insight: power equals number of digits</li>
+          <li>Single-digit numbers (0-9) are all Narcissistic</li>
+          <li>Only 88 Narcissistic numbers exist in total</li>
+          <li>Discuss time complexity: O(d) where d is digit count</li>
+          <li>Related: Happy numbers, perfect numbers, sum of powers</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>আর্মস্ট্রং সংখ্যা বা প্লুপারফেক্ট ডিজিটাল ইনভেরিয়েন্ট নামেও পরিচিত</li>
+          <li>মূল ধারণা: শক্তি ডিজিটের সংখ্যার সমান</li>
+          <li>একক-ডিজিট সংখ্যা (0-9) সব নার্সিসিস্টিক</li>
+          <li>মোট মাত্র 88টি নার্সিসিস্টিক সংখ্যা বিদ্যমান</li>
+          <li>সময় জটিলতা আলোচনা করুন: O(d) যেখানে d হল ডিজিট গণনা</li>
+          <li>সম্পর্কিত: হ্যাপি নাম্বার, পারফেক্ট নাম্বার, শক্তির যোগফল</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

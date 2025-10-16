@@ -1,0 +1,473 @@
+---
+title: 23. Print Unique Numbers in Random Order
+description: Learn how to extract unique numbers from a list and shuffle them randomly
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Print Unique Numbers in Random Order" bn="এলোমেলো ক্রমে অনন্য সংখ্যা প্রিন্ট করুন" />
+
+<TranslatedText
+  en="Given a list with duplicate numbers, extract unique values and print them in random order without using built-in shuffle functions."
+  bn="ডুপ্লিকেট সংখ্যা সহ একটি তালিকা দেওয়া আছে, অনন্য মান বের করুন এবং বিল্ট-ইন শাফল ফাংশন ব্যবহার না করে এলোমেলো ক্রমে প্রিন্ট করুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> [1, 2, 5, 3, 4, 6, 7, 8, 8, 8, 8, 9, 9, 9]</p>
+      <p><strong>Output:</strong> [2, 4, 9, 7, 1, 3, 6, 5, 8] (unique numbers in random order)</p>
+      <p><strong>Constraints:</strong> Do not use pre-defined shuffle functions</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> [1, 2, 5, 3, 4, 6, 7, 8, 8, 8, 8, 9, 9, 9]</p>
+      <p><strong>আউটপুট:</strong> [2, 4, 9, 7, 1, 3, 6, 5, 8] (এলোমেলো ক্রমে অনন্য সংখ্যা)</p>
+      <p><strong>সীমাবদ্ধতা:</strong> প্রি-ডিফাইন্ড শাফল ফাংশন ব্যবহার করবেন না</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Fisher-Yates Shuffle Algorithm" bn="পদ্ধতি ১: ফিশার-ইয়েটস শাফল অ্যালগরিদম" />
+
+<TranslatedText
+  en={<p>First extract unique numbers using a set, then implement Fisher-Yates shuffle manually.</p>}
+  bn={<p>প্রথমে একটি সেট ব্যবহার করে অনন্য সংখ্যা বের করুন, তারপর ম্যানুয়ালি ফিশার-ইয়েটস শাফল বাস্তবায়ন করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+vector<int> getUniqueRandomOrder(vector<int>& arr) {
+    // Extract unique numbers
+    unordered_set<int> uniqueSet(arr.begin(), arr.end());
+    vector<int> unique(uniqueSet.begin(), uniqueSet.end());
+
+    // Fisher-Yates shuffle algorithm
+    srand(time(0)); // Seed random number generator
+
+    for (int i = unique.size() - 1; i > 0; i--) {
+        // Generate random index from 0 to i
+        int j = rand() % (i + 1);
+
+        // Swap elements at i and j
+        swap(unique[i], unique[j]);
+    }
+
+    return unique;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 5, 3, 4, 6, 7, 8, 8, 8, 8, 9, 9, 9};
+
+    cout << "Original array: ";
+    for (int num : arr) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    vector<int> result = getUniqueRandomOrder(arr);
+
+    cout << "Unique numbers in random order: ";
+    for (int num : result) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+
+**Sample Output:**
+```
+Original array: 1 2 5 3 4 6 7 8 8 8 8 9 9 9
+Unique numbers in random order: 2 4 9 7 1 3 6 5 8
+```
+  </Tab>
+  <Tab value="Python">
+```python
+import random
+
+def get_unique_random_order(arr):
+    # Extract unique numbers
+    unique = list(set(arr))
+
+    # Fisher-Yates shuffle algorithm (manual implementation)
+    for i in range(len(unique) - 1, 0, -1):
+        # Generate random index from 0 to i
+        j = random.randint(0, i)
+
+        # Swap elements at i and j
+        unique[i], unique[j] = unique[j], unique[i]
+
+    return unique
+
+arr = [1, 2, 5, 3, 4, 6, 7, 8, 8, 8, 8, 9, 9, 9]
+
+print(f"Original array: {arr}")
+
+result = get_unique_random_order(arr)
+print(f"Unique numbers in random order: {result}")
+```
+
+**Sample Output:**
+```
+Original array: [1, 2, 5, 3, 4, 6, 7, 8, 8, 8, 8, 9, 9, 9]
+Unique numbers in random order: [2, 4, 9, 7, 1, 3, 6, 5, 8]
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function getUniqueRandomOrder(arr) {
+    // Extract unique numbers using Set
+    const unique = [...new Set(arr)];
+
+    // Fisher-Yates shuffle algorithm (manual implementation)
+    for (let i = unique.length - 1; i > 0; i--) {
+        // Generate random index from 0 to i
+        const j = Math.floor(Math.random() * (i + 1));
+
+        // Swap elements at i and j
+        [unique[i], unique[j]] = [unique[j], unique[i]];
+    }
+
+    return unique;
+}
+
+let arr = [1, 2, 5, 3, 4, 6, 7, 8, 8, 8, 8, 9, 9, 9];
+
+console.log(`Original array: ${arr}`);
+
+let result = getUniqueRandomOrder(arr);
+console.log(`Unique numbers in random order: ${result}`);
+```
+
+**Sample Output:**
+```
+Original array: 1,2,5,3,4,6,7,8,8,8,8,9,9,9
+Unique numbers in random order: 2,4,9,7,1,3,6,5,8
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) - extracting unique + O(k) shuffle where k is unique count</p>
+      <p><strong>Space Complexity:</strong> O(k) - storing unique elements</p>
+      <p><strong>Advantage:</strong> True random shuffle, unbiased</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) - অনন্য বের করা + O(k) শাফল যেখানে k হল অনন্য গণনা</p>
+      <p><strong>স্থান জটিলতা:</strong> O(k) - অনন্য উপাদান সংরক্ষণ করা</p>
+      <p><strong>সুবিধা:</strong> সত্যিকারের এলোমেলো শাফল, নিরপেক্ষ</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: Random Selection Without Replacement" bn="পদ্ধতি ২: প্রতিস্থাপন ছাড়া এলোমেলো নির্বাচন" />
+
+<TranslatedText
+  en={<p>Randomly pick elements from unique list and remove them one by one.</p>}
+  bn={<p>অনন্য তালিকা থেকে এলোমেলোভাবে উপাদান বাছুন এবং একের পর এক সরান।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+vector<int> getUniqueRandomPick(vector<int>& arr) {
+    // Extract unique numbers
+    unordered_set<int> uniqueSet(arr.begin(), arr.end());
+    vector<int> unique(uniqueSet.begin(), uniqueSet.end());
+    vector<int> result;
+
+    srand(time(0));
+
+    // Randomly pick and remove elements
+    while (!unique.empty()) {
+        int randomIndex = rand() % unique.size();
+        result.push_back(unique[randomIndex]);
+
+        // Remove the picked element by swapping with last
+        unique[randomIndex] = unique.back();
+        unique.pop_back();
+    }
+
+    return result;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 5, 3, 4, 6, 7, 8, 8, 8, 8, 9, 9, 9};
+
+    cout << "Original array: ";
+    for (int num : arr) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    vector<int> result = getUniqueRandomPick(arr);
+
+    cout << "Unique numbers in random order: ";
+    for (int num : result) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+import random
+
+def get_unique_random_pick(arr):
+    # Extract unique numbers
+    unique = list(set(arr))
+    result = []
+
+    # Randomly pick and remove elements
+    while unique:
+        random_index = random.randint(0, len(unique) - 1)
+        result.append(unique[random_index])
+
+        # Remove the picked element
+        unique.pop(random_index)
+
+    return result
+
+arr = [1, 2, 5, 3, 4, 6, 7, 8, 8, 8, 8, 9, 9, 9]
+
+print(f"Original array: {arr}")
+
+result = get_unique_random_pick(arr)
+print(f"Unique numbers in random order: {result}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function getUniqueRandomPick(arr) {
+    // Extract unique numbers
+    let unique = [...new Set(arr)];
+    const result = [];
+
+    // Randomly pick and remove elements
+    while (unique.length > 0) {
+        const randomIndex = Math.floor(Math.random() * unique.length);
+        result.push(unique[randomIndex]);
+
+        // Remove the picked element
+        unique.splice(randomIndex, 1);
+    }
+
+    return result;
+}
+
+let arr = [1, 2, 5, 3, 4, 6, 7, 8, 8, 8, 8, 9, 9, 9];
+
+console.log(`Original array: ${arr}`);
+
+let result = getUniqueRandomPick(arr);
+console.log(`Unique numbers in random order: ${result}`);
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) + O(k²) worst case (due to array removal)</p>
+      <p><strong>Space Complexity:</strong> O(k)</p>
+      <p><strong>Note:</strong> Less efficient than Fisher-Yates but conceptually simpler</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) + O(k²) সবচেয়ে খারাপ ক্ষেত্রে (অ্যারে অপসারণের কারণে)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(k)</p>
+      <p><strong>নোট:</strong> ফিশার-ইয়েটস থেকে কম দক্ষ কিন্তু ধারণাগতভাবে সহজ</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Fisher-Yates Algorithm Explained" bn="ফিশার-ইয়েটস অ্যালগরিদম ব্যাখ্যা" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>How it works:</strong></p>
+      <ol>
+        <li>Start from the last element (index n-1)</li>
+        <li>Pick a random index j from 0 to current index i</li>
+        <li>Swap elements at positions i and j</li>
+        <li>Move to previous element (i--)</li>
+        <li>Repeat until i reaches 0</li>
+      </ol>
+      <p><strong>Why it's unbiased:</strong> Each permutation has equal probability (1/n!)</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>এটি কীভাবে কাজ করে:</strong></p>
+      <ol>
+        <li>শেষ উপাদান থেকে শুরু করুন (ইনডেক্স n-1)</li>
+        <li>0 থেকে বর্তমান ইনডেক্স i পর্যন্ত একটি এলোমেলো ইনডেক্স j বাছুন</li>
+        <li>i এবং j অবস্থানে উপাদান অদলবদল করুন</li>
+        <li>পূর্ববর্তী উপাদানে যান (i--)</li>
+        <li>i 0 এ পৌঁছানো পর্যন্ত পুনরাবৃত্তি করুন</li>
+      </ol>
+      <p><strong>কেন এটি নিরপেক্ষ:</strong> প্রতিটি পারমিউটেশন সমান সম্ভাবনা আছে (1/n!)</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Example Walkthrough" bn="উদাহরণ ব্যাখ্যা" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>For array [1, 2, 3]:</strong></p>
+      <ul>
+        <li>i=2: Pick j∈[0,2], say j=0, swap → [3, 2, 1]</li>
+        <li>i=1: Pick j∈[0,1], say j=1, swap → [3, 2, 1]</li>
+        <li>i=0: Done</li>
+        <li>Result: [3, 2, 1]</li>
+      </ul>
+      <p>Each run produces different random order!</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>অ্যারে [1, 2, 3] এর জন্য:</strong></p>
+      <ul>
+        <li>i=2: j∈[0,2] বাছুন, ধরুন j=0, অদলবদল → [3, 2, 1]</li>
+        <li>i=1: j∈[0,1] বাছুন, ধরুন j=1, অদলবদল → [3, 2, 1]</li>
+        <li>i=0: সম্পন্ন</li>
+        <li>ফলাফল: [3, 2, 1]</li>
+      </ul>
+      <p>প্রতিটি রান বিভিন্ন এলোমেলো ক্রম উৎপন্ন করে!</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণী" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Approach</th>
+          <th>Time Complexity</th>
+          <th>Space</th>
+          <th>Bias</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Fisher-Yates</td>
+          <td>O(n + k)</td>
+          <td>O(k)</td>
+          <td>Unbiased</td>
+          <td>Production, optimal</td>
+        </tr>
+        <tr>
+          <td>Random Pick</td>
+          <td>O(n + k²)</td>
+          <td>O(k)</td>
+          <td>Unbiased</td>
+          <td>Learning, simple</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>পদ্ধতি</th>
+          <th>সময় জটিলতা</th>
+          <th>স্থান</th>
+          <th>পক্ষপাত</th>
+          <th>সেরা কখন</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ফিশার-ইয়েটস</td>
+          <td>O(n + k)</td>
+          <td>O(k)</td>
+          <td>নিরপেক্ষ</td>
+          <td>প্রোডাকশন, সর্বোত্তম</td>
+        </tr>
+        <tr>
+          <td>এলোমেলো বাছাই</td>
+          <td>O(n + k²)</td>
+          <td>O(k)</td>
+          <td>নিরপেক্ষ</td>
+          <td>শেখা, সহজ</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Use Set/HashSet to extract unique values efficiently</li>
+          <li>Fisher-Yates is the gold standard for unbiased shuffling</li>
+          <li>Avoid naive approaches like sorting by random keys (biased)</li>
+          <li>Discuss importance of unbiased randomness in production</li>
+          <li>Time complexity: O(n) for unique extraction, O(k) for shuffle</li>
+          <li>Related: reservoir sampling, random sampling algorithms</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>দক্ষতার সাথে অনন্য মান বের করতে Set/HashSet ব্যবহার করুন</li>
+          <li>ফিশার-ইয়েটস নিরপেক্ষ শাফলিংয়ের জন্য গোল্ড স্ট্যান্ডার্ড</li>
+          <li>এলোমেলো কী দ্বারা সাজানোর মতো সরল পদ্ধতি এড়িয়ে চলুন (পক্ষপাতদুষ্ট)</li>
+          <li>প্রোডাকশনে নিরপেক্ষ এলোমেলোতার গুরুত্ব নিয়ে আলোচনা করুন</li>
+          <li>সময় জটিলতা: অনন্য নিষ্কাশনের জন্য O(n), শাফলের জন্য O(k)</li>
+          <li>সম্পর্কিত: রিজার্ভার স্যাম্পলিং, এলোমেলো স্যাম্পলিং অ্যালগরিদম</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

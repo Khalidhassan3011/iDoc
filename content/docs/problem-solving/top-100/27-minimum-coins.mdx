@@ -1,0 +1,516 @@
+---
+title: Minimum Coins for Given Value
+description: Find the minimum number of coins needed to make a given value using available denominations
+---
+
+import { Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { TranslatedText } from '@/components/TranslatedText';
+
+<LanguageSwitcher />
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given a set of coin denominations and a target value, find the minimum number of coins needed to make that value. If it's not possible to make the value with the given coins, return -1."
+  bn="মুদ্রার একটি সেট এবং একটি লক্ষ্য মান দেওয়া হলে, সেই মান তৈরি করতে প্রয়োজনীয় ন্যূনতম সংখ্যক মুদ্রা খুঁজে বের করুন। যদি প্রদত্ত মুদ্রা দিয়ে মান তৈরি করা সম্ভব না হয়, তাহলে -1 রিটার্ন করুন।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: coins = [1, 2, 5], amount = 11
+Output: 3
+Explanation: 11 = 5 + 5 + 1 (3 coins)
+
+Input: coins = [2], amount = 3
+Output: -1
+Explanation: Cannot make 3 with only 2 denomination
+
+Input: coins = [1, 5, 10, 25], amount = 63
+Output: 6
+Explanation: 63 = 25 + 25 + 10 + 1 + 1 + 1 (6 coins)
+```
+
+## <TranslatedText en="Approaches" bn="সমাধানের পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Greedy Algorithm (Works for certain coin systems)" bn="পদ্ধতি ১: গ্রীডি অ্যালগরিদম (নির্দিষ্ট মুদ্রা ব্যবস্থার জন্য কাজ করে)" />
+
+<TranslatedText
+  en="For canonical coin systems (like standard currency denominations), we can use a greedy approach: always pick the largest coin that doesn't exceed the remaining amount. However, this doesn't work for all coin systems."
+  bn="ক্যানোনিকাল মুদ্রা ব্যবস্থার জন্য (যেমন স্ট্যান্ডার্ড মুদ্রার মূল্য), আমরা একটি গ্রীডি পদ্ধতি ব্যবহার করতে পারি: সর্বদা সবচেয়ে বড় মুদ্রা বেছে নিন যা অবশিষ্ট পরিমাণ অতিক্রম করে না। তবে, এটি সব মুদ্রা ব্যবস্থার জন্য কাজ করে না।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int minCoinsGreedy(vector<int>& coins, int amount) {
+    // Sort coins in descending order
+    sort(coins.begin(), coins.end(), greater<int>());
+
+    int count = 0;
+    int remaining = amount;
+
+    for (int coin : coins) {
+        if (remaining == 0) break;
+
+        // Use as many coins of this denomination as possible
+        int numCoins = remaining / coin;
+        count += numCoins;
+        remaining -= numCoins * coin;
+    }
+
+    // If we couldn't make the exact amount
+    if (remaining > 0) return -1;
+
+    return count;
+}
+
+int main() {
+    vector<int> coins = {1, 5, 10, 25};
+    int amount = 63;
+
+    int result = minCoinsGreedy(coins, amount);
+    cout << "Minimum coins needed: " << result << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def min_coins_greedy(coins, amount):
+    # Sort coins in descending order
+    coins.sort(reverse=True)
+
+    count = 0
+    remaining = amount
+
+    for coin in coins:
+        if remaining == 0:
+            break
+
+        # Use as many coins of this denomination as possible
+        num_coins = remaining // coin
+        count += num_coins
+        remaining -= num_coins * coin
+
+    # If we couldn't make the exact amount
+    if remaining > 0:
+        return -1
+
+    return count
+
+# Test
+coins = [1, 5, 10, 25]
+amount = 63
+
+result = min_coins_greedy(coins, amount)
+print(f"Minimum coins needed: {result}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function minCoinsGreedy(coins, amount) {
+    // Sort coins in descending order
+    coins.sort((a, b) => b - a);
+
+    let count = 0;
+    let remaining = amount;
+
+    for (let coin of coins) {
+        if (remaining === 0) break;
+
+        // Use as many coins of this denomination as possible
+        const numCoins = Math.floor(remaining / coin);
+        count += numCoins;
+        remaining -= numCoins * coin;
+    }
+
+    // If we couldn't make the exact amount
+    if (remaining > 0) return -1;
+
+    return count;
+}
+
+// Test
+const coins = [1, 5, 10, 25];
+const amount = 63;
+
+const result = minCoinsGreedy(coins, amount);
+console.log(`Minimum coins needed: ${result}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n log n) <TranslatedText en="for sorting, where n is the number of coin denominations" bn="সর্টিংয়ের জন্য, যেখানে n হল মুদ্রার সংখ্যা" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+**<TranslatedText en="Note" bn="দ্রষ্টব্য" />:** <TranslatedText en="This greedy approach works for standard currency systems but may not give optimal results for arbitrary coin systems. For example, with coins = [1, 3, 4] and amount = 6, greedy gives 3 coins (4+1+1) but optimal is 2 coins (3+3)." bn="এই গ্রীডি পদ্ধতি স্ট্যান্ডার্ড মুদ্রা ব্যবস্থার জন্য কাজ করে কিন্তু স্বেচ্ছাচারী মুদ্রা ব্যবস্থার জন্য সর্বোত্তম ফলাফল নাও দিতে পারে। উদাহরণস্বরূপ, coins = [1, 3, 4] এবং amount = 6 এর জন্য, গ্রীডি 3টি মুদ্রা দেয় (4+1+1) কিন্তু সর্বোত্তম হল 2টি মুদ্রা (3+3)।" />
+
+### <TranslatedText en="Approach 2: Dynamic Programming (Optimal for all cases)" bn="পদ্ধতি ২: ডায়নামিক প্রোগ্রামিং (সব ক্ষেত্রে সর্বোত্তম)" />
+
+<TranslatedText
+  en="Use dynamic programming to build up solutions for smaller amounts until we reach the target. For each amount, we try all possible coins and take the minimum."
+  bn="লক্ষ্যে পৌঁছানো পর্যন্ত ছোট পরিমাণের জন্য সমাধান তৈরি করতে ডায়নামিক প্রোগ্রামিং ব্যবহার করুন। প্রতিটি পরিমাণের জন্য, আমরা সমস্ত সম্ভাব্য মুদ্রা চেষ্টা করি এবং ন্যূনতম নিই।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <climits>
+#include <algorithm>
+using namespace std;
+
+int minCoinsDP(vector<int>& coins, int amount) {
+    // dp[i] represents minimum coins needed to make amount i
+    vector<int> dp(amount + 1, INT_MAX);
+    dp[0] = 0; // 0 coins needed to make amount 0
+
+    // Build up solutions for all amounts from 1 to target
+    for (int i = 1; i <= amount; i++) {
+        // Try each coin
+        for (int coin : coins) {
+            if (coin <= i && dp[i - coin] != INT_MAX) {
+                dp[i] = min(dp[i], dp[i - coin] + 1);
+            }
+        }
+    }
+
+    return dp[amount] == INT_MAX ? -1 : dp[amount];
+}
+
+int main() {
+    vector<int> coins = {1, 2, 5};
+    int amount = 11;
+
+    int result = minCoinsDP(coins, amount);
+    cout << "Minimum coins needed: " << result << endl;
+
+    // Test case where greedy fails
+    vector<int> coins2 = {1, 3, 4};
+    int amount2 = 6;
+    cout << "Test case (coins=[1,3,4], amount=6): " << minCoinsDP(coins2, amount2) << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def min_coins_dp(coins, amount):
+    # dp[i] represents minimum coins needed to make amount i
+    dp = [float('inf')] * (amount + 1)
+    dp[0] = 0  # 0 coins needed to make amount 0
+
+    # Build up solutions for all amounts from 1 to target
+    for i in range(1, amount + 1):
+        # Try each coin
+        for coin in coins:
+            if coin <= i and dp[i - coin] != float('inf'):
+                dp[i] = min(dp[i], dp[i - coin] + 1)
+
+    return dp[amount] if dp[amount] != float('inf') else -1
+
+# Test
+coins = [1, 2, 5]
+amount = 11
+
+result = min_coins_dp(coins, amount)
+print(f"Minimum coins needed: {result}")
+
+# Test case where greedy fails
+coins2 = [1, 3, 4]
+amount2 = 6
+print(f"Test case (coins=[1,3,4], amount=6): {min_coins_dp(coins2, amount2)}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function minCoinsDP(coins, amount) {
+    // dp[i] represents minimum coins needed to make amount i
+    const dp = new Array(amount + 1).fill(Infinity);
+    dp[0] = 0; // 0 coins needed to make amount 0
+
+    // Build up solutions for all amounts from 1 to target
+    for (let i = 1; i <= amount; i++) {
+        // Try each coin
+        for (let coin of coins) {
+            if (coin <= i && dp[i - coin] !== Infinity) {
+                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            }
+        }
+    }
+
+    return dp[amount] === Infinity ? -1 : dp[amount];
+}
+
+// Test
+const coins = [1, 2, 5];
+const amount = 11;
+
+const result = minCoinsDP(coins, amount);
+console.log(`Minimum coins needed: ${result}`);
+
+// Test case where greedy fails
+const coins2 = [1, 3, 4];
+const amount2 = 6;
+console.log(`Test case (coins=[1,3,4], amount=6): ${minCoinsDP(coins2, amount2)}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(amount × n) <TranslatedText en="where n is the number of coin denominations" bn="যেখানে n হল মুদ্রার সংখ্যা" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(amount)
+
+### <TranslatedText en="Approach 3: Dynamic Programming with Coin Tracking" bn="পদ্ধতি ৩: মুদ্রা ট্র্যাকিং সহ ডায়নামিক প্রোগ্রামিং" />
+
+<TranslatedText
+  en="This approach not only finds the minimum number of coins but also tracks which coins were used, allowing us to reconstruct the solution."
+  bn="এই পদ্ধতি শুধুমাত্র ন্যূনতম সংখ্যক মুদ্রা খুঁজে পায় না বরং কোন মুদ্রা ব্যবহার করা হয়েছিল তাও ট্র্যাক করে, যা আমাদের সমাধান পুনর্গঠন করতে দেয়।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+pair<int, vector<int>> minCoinsWithTracking(vector<int>& coins, int amount) {
+    vector<int> dp(amount + 1, INT_MAX);
+    vector<int> parent(amount + 1, -1);
+    dp[0] = 0;
+
+    for (int i = 1; i <= amount; i++) {
+        for (int coin : coins) {
+            if (coin <= i && dp[i - coin] != INT_MAX) {
+                if (dp[i - coin] + 1 < dp[i]) {
+                    dp[i] = dp[i - coin] + 1;
+                    parent[i] = coin; // Track which coin was used
+                }
+            }
+        }
+    }
+
+    if (dp[amount] == INT_MAX) {
+        return {-1, {}};
+    }
+
+    // Reconstruct the coins used
+    vector<int> coinsUsed;
+    int curr = amount;
+    while (curr > 0) {
+        int coin = parent[curr];
+        coinsUsed.push_back(coin);
+        curr -= coin;
+    }
+
+    return {dp[amount], coinsUsed};
+}
+
+int main() {
+    vector<int> coins = {1, 2, 5};
+    int amount = 11;
+
+    auto [minCoins, coinsUsed] = minCoinsWithTracking(coins, amount);
+
+    cout << "Minimum coins needed: " << minCoins << endl;
+    cout << "Coins used: ";
+    for (int coin : coinsUsed) {
+        cout << coin << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def min_coins_with_tracking(coins, amount):
+    dp = [float('inf')] * (amount + 1)
+    parent = [-1] * (amount + 1)
+    dp[0] = 0
+
+    for i in range(1, amount + 1):
+        for coin in coins:
+            if coin <= i and dp[i - coin] != float('inf'):
+                if dp[i - coin] + 1 < dp[i]:
+                    dp[i] = dp[i - coin] + 1
+                    parent[i] = coin  # Track which coin was used
+
+    if dp[amount] == float('inf'):
+        return -1, []
+
+    # Reconstruct the coins used
+    coins_used = []
+    curr = amount
+    while curr > 0:
+        coin = parent[curr]
+        coins_used.append(coin)
+        curr -= coin
+
+    return dp[amount], coins_used
+
+# Test
+coins = [1, 2, 5]
+amount = 11
+
+min_coins, coins_used = min_coins_with_tracking(coins, amount)
+
+print(f"Minimum coins needed: {min_coins}")
+print(f"Coins used: {coins_used}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function minCoinsWithTracking(coins, amount) {
+    const dp = new Array(amount + 1).fill(Infinity);
+    const parent = new Array(amount + 1).fill(-1);
+    dp[0] = 0;
+
+    for (let i = 1; i <= amount; i++) {
+        for (let coin of coins) {
+            if (coin <= i && dp[i - coin] !== Infinity) {
+                if (dp[i - coin] + 1 < dp[i]) {
+                    dp[i] = dp[i - coin] + 1;
+                    parent[i] = coin; // Track which coin was used
+                }
+            }
+        }
+    }
+
+    if (dp[amount] === Infinity) {
+        return { minCoins: -1, coinsUsed: [] };
+    }
+
+    // Reconstruct the coins used
+    const coinsUsed = [];
+    let curr = amount;
+    while (curr > 0) {
+        const coin = parent[curr];
+        coinsUsed.push(coin);
+        curr -= coin;
+    }
+
+    return { minCoins: dp[amount], coinsUsed };
+}
+
+// Test
+const coins = [1, 2, 5];
+const amount = 11;
+
+const { minCoins, coinsUsed } = minCoinsWithTracking(coins, amount);
+
+console.log(`Minimum coins needed: ${minCoins}`);
+console.log(`Coins used: ${coinsUsed.join(', ')}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(amount × n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(amount)
+
+## <TranslatedText en="Complexity Comparison" bn="জটিলতার তুলনা" />
+
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time Complexity" bn="সময় জটিলতা" /> | <TranslatedText en="Space Complexity" bn="স্থান জটিলতা" /> | <TranslatedText en="Correctness" bn="সঠিকতা" /> |
+|---|---|---|---|
+| <TranslatedText en="Greedy" bn="গ্রীডি" /> | O(n log n) | O(1) | <TranslatedText en="Only for canonical systems" bn="শুধুমাত্র ক্যানোনিকাল সিস্টেমের জন্য" /> |
+| <TranslatedText en="DP Basic" bn="ডিপি মৌলিক" /> | O(amount × n) | O(amount) | <TranslatedText en="Always optimal" bn="সর্বদা সর্বোত্তম" /> |
+| <TranslatedText en="DP with Tracking" bn="ট্র্যাকিং সহ ডিপি" /> | O(amount × n) | O(amount) | <TranslatedText en="Always optimal + shows coins" bn="সর্বদা সর্বোত্তম + মুদ্রা দেখায়" /> |
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en="1. **Greedy vs DP**: Greedy approach is faster but only works for canonical coin systems (like standard currency). DP guarantees optimal solution for any coin system."
+  bn="1. **গ্রীডি বনাম ডিপি**: গ্রীডি পদ্ধতি দ্রুত কিন্তু শুধুমাত্র ক্যানোনিকাল মুদ্রা ব্যবস্থার জন্য কাজ করে (যেমন স্ট্যান্ডার্ড মুদ্রা)। ডিপি যেকোনো মুদ্রা ব্যবস্থার জন্য সর্বোত্তম সমাধানের গ্যারান্টি দেয়।"
+/>
+
+<TranslatedText
+  en="2. **Bottom-up DP**: Build solutions from smaller amounts to larger ones. Each amount depends only on smaller amounts."
+  bn="2. **বটম-আপ ডিপি**: ছোট পরিমাণ থেকে বড় পরিমাণে সমাধান তৈরি করুন। প্রতিটি পরিমাণ শুধুমাত্র ছোট পরিমাণের উপর নির্ভর করে।"
+/>
+
+<TranslatedText
+  en="3. **Recurrence relation**: dp[i] = min(dp[i], dp[i-coin] + 1) for all coins where coin ≤ i"
+  bn="3. **পুনরাবৃত্তি সম্পর্ক**: dp[i] = min(dp[i], dp[i-coin] + 1) সব মুদ্রার জন্য যেখানে coin ≤ i"
+/>
+
+<TranslatedText
+  en="4. **Base case**: dp[0] = 0 (zero coins needed to make amount 0)"
+  bn="4. **বেস কেস**: dp[0] = 0 (পরিমাণ 0 তৈরি করতে শূন্য মুদ্রা প্রয়োজন)"
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="- **Start with greedy**: Mention the greedy approach and explain when it works and when it fails
+- **Explain DP intuition**: Walk through a small example to show how DP builds up the solution
+- **Handle edge cases**: Consider amount = 0, no coins available, or impossible amounts
+- **Space optimization**: Note that you can use a 1D array instead of 2D
+- **Follow-up questions**: Be prepared to reconstruct the actual coins used or count the number of ways to make the amount"
+  bn="- **গ্রীডি দিয়ে শুরু করুন**: গ্রীডি পদ্ধতি উল্লেখ করুন এবং ব্যাখ্যা করুন কখন এটি কাজ করে এবং কখন ব্যর্থ হয়
+- **ডিপি ইন্টুইশন ব্যাখ্যা করুন**: একটি ছোট উদাহরণের মাধ্যমে দেখান কিভাবে ডিপি সমাধান তৈরি করে
+- **এজ কেস হ্যান্ডেল করুন**: amount = 0, কোন মুদ্রা উপলব্ধ নেই, বা অসম্ভব পরিমাণ বিবেচনা করুন
+- **স্থান অপ্টিমাইজেশন**: লক্ষ্য করুন যে আপনি 2D এর পরিবর্তে 1D অ্যারে ব্যবহার করতে পারেন
+- **ফলো-আপ প্রশ্ন**: প্রকৃত মুদ্রা পুনর্গঠন করতে বা পরিমাণ তৈরির উপায়ের সংখ্যা গণনা করতে প্রস্তুত থাকুন"
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Coin Change II (count number of ways)
+- Minimum Cost for Tickets
+- Perfect Squares
+- Unbounded Knapsack Problem
+
+## <TranslatedText en="Example Walkthrough" bn="উদাহরণ ওয়াকথ্রু" />
+
+<TranslatedText
+  en="For coins = [1, 2, 5] and amount = 11:"
+  bn="coins = [1, 2, 5] এবং amount = 11 এর জন্য:"
+/>
+
+```
+DP array building:
+dp[0] = 0
+dp[1] = 1 (one 1-coin)
+dp[2] = 1 (one 2-coin)
+dp[3] = 2 (2+1 or 1+1+1, min is 2)
+dp[4] = 2 (2+2)
+dp[5] = 1 (one 5-coin)
+dp[6] = 2 (5+1)
+dp[7] = 2 (5+2)
+dp[8] = 3 (5+2+1)
+dp[9] = 3 (5+2+2)
+dp[10] = 2 (5+5)
+dp[11] = 3 (5+5+1)
+
+Result: 3 coins (5+5+1)
+```
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="✓ Dynamic programming is the go-to solution for optimal coin change
+✓ Greedy works only for canonical coin systems
+✓ Build solutions from smaller subproblems
+✓ Track parent coins if you need to reconstruct the solution
+✓ Time complexity O(amount × n) is acceptable for most interview constraints"
+  bn="✓ ডায়নামিক প্রোগ্রামিং হল সর্বোত্তম মুদ্রা পরিবর্তনের জন্য প্রধান সমাধান
+✓ গ্রীডি শুধুমাত্র ক্যানোনিকাল মুদ্রা ব্যবস্থার জন্য কাজ করে
+✓ ছোট সাবপ্রবলেম থেকে সমাধান তৈরি করুন
+✓ সমাধান পুনর্গঠনের জন্য প্যারেন্ট মুদ্রা ট্র্যাক করুন
+✓ সময় জটিলতা O(amount × n) বেশিরভাগ ইন্টারভিউ সীমাবদ্ধতার জন্য গ্রহণযোগ্য"
+/>
