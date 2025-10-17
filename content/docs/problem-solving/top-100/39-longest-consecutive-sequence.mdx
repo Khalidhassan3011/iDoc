@@ -1,0 +1,315 @@
+---
+title: Longest Consecutive Elements Sequence
+description: Given an unsorted array of integers, find the length of the longest consecutive elements sequence
+---
+
+## Problem Statement
+
+Given an unsorted array of integers, find the length of the longest consecutive elements sequence. The algorithm should run in O(n) time complexity.
+
+## Examples
+
+### Example 1
+```
+Input: [100, 4, 200, 1, 3, 2]
+Output: 4
+Explanation: The longest consecutive sequence is [1, 2, 3, 4]
+```
+
+### Example 2
+```
+Input: [0, 3, 7, 2, 5, 8, 4, 6, 0, 1]
+Output: 9
+Explanation: The longest consecutive sequence is [0, 1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+### Example 3
+```
+Input: [9, 1, 4, 7, 3, 2, 8, 5, 6]
+Output: 9
+Explanation: The entire array forms a consecutive sequence [1-9]
+```
+
+## Solution
+
+### Approach 1: Using Set (Optimal - O(n))
+
+Use a Set for O(1) lookups and only start counting from numbers that begin a sequence.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+int longestConsecutive(List<int> nums) {
+  if (nums.isEmpty) return 0;
+
+  Set<int> numSet = nums.toSet();
+  int maxLength = 0;
+
+  for (int num in numSet) {
+    // Only start counting if this is the beginning of a sequence
+    if (!numSet.contains(num - 1)) {
+      int currentNum = num;
+      int currentLength = 1;
+
+      // Count consecutive numbers
+      while (numSet.contains(currentNum + 1)) {
+        currentNum++;
+        currentLength++;
+      }
+
+      maxLength = maxLength > currentLength ? maxLength : currentLength;
+    }
+  }
+
+  return maxLength;
+}
+
+void main() {
+  List<int> nums1 = [100, 4, 200, 1, 3, 2];
+  print('Array: $nums1');
+  print('Longest consecutive: ${longestConsecutive(nums1)}');
+
+  List<int> nums2 = [0, 3, 7, 2, 5, 8, 4, 6, 0, 1];
+  print('\nArray: $nums2');
+  print('Longest consecutive: ${longestConsecutive(nums2)}');
+
+  List<int> nums3 = [9, 1, 4, 7, 3, 2, 8, 5, 6];
+  print('\nArray: $nums3');
+  print('Longest consecutive: ${longestConsecutive(nums3)}');
+}
+```
+
+### Approach 2: Sorting First
+
+Sort the array first, then find the longest consecutive sequence.
+
+**Time Complexity:** O(n log n)
+**Space Complexity:** O(1) or O(n) depending on sorting implementation
+
+```dart
+int longestConsecutiveSorting(List<int> nums) {
+  if (nums.isEmpty) return 0;
+
+  List<int> sorted = List.from(nums)..sort();
+
+  int maxLength = 1;
+  int currentLength = 1;
+
+  for (int i = 1; i < sorted.length; i++) {
+    // Skip duplicates
+    if (sorted[i] == sorted[i - 1]) {
+      continue;
+    }
+
+    if (sorted[i] == sorted[i - 1] + 1) {
+      // Consecutive number found
+      currentLength++;
+    } else {
+      // Sequence broken
+      maxLength = maxLength > currentLength ? maxLength : currentLength;
+      currentLength = 1;
+    }
+  }
+
+  return maxLength > currentLength ? maxLength : currentLength;
+}
+
+void main() {
+  List<int> nums = [100, 4, 200, 1, 3, 2];
+  print('Array: $nums');
+  print('Longest consecutive: ${longestConsecutiveSorting(nums)}');
+}
+```
+
+### Approach 3: With Sequence Details
+
+Return the actual consecutive sequence, not just the length.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+class SequenceResult {
+  final int length;
+  final List<int> sequence;
+
+  SequenceResult(this.length, this.sequence);
+
+  @override
+  String toString() => 'Length: $length, Sequence: $sequence';
+}
+
+SequenceResult longestConsecutiveWithSequence(List<int> nums) {
+  if (nums.isEmpty) return SequenceResult(0, []);
+
+  Set<int> numSet = nums.toSet();
+  int maxLength = 0;
+  List<int> longestSequence = [];
+
+  for (int num in numSet) {
+    if (!numSet.contains(num - 1)) {
+      int currentNum = num;
+      List<int> currentSequence = [num];
+
+      while (numSet.contains(currentNum + 1)) {
+        currentNum++;
+        currentSequence.add(currentNum);
+      }
+
+      if (currentSequence.length > maxLength) {
+        maxLength = currentSequence.length;
+        longestSequence = currentSequence;
+      }
+    }
+  }
+
+  return SequenceResult(maxLength, longestSequence);
+}
+
+void main() {
+  List<int> nums = [100, 4, 200, 1, 3, 2];
+  print('Array: $nums');
+  print('Result: ${longestConsecutiveWithSequence(nums)}');
+}
+```
+
+### Approach 4: Union-Find (Advanced)
+
+Using Union-Find data structure for more complex scenarios.
+
+**Time Complexity:** O(n) with path compression
+**Space Complexity:** O(n)
+
+```dart
+class UnionFind {
+  Map<int, int> parent = {};
+  Map<int, int> size = {};
+
+  void add(int x) {
+    if (!parent.containsKey(x)) {
+      parent[x] = x;
+      size[x] = 1;
+    }
+  }
+
+  int find(int x) {
+    if (parent[x] != x) {
+      parent[x] = find(parent[x]!); // Path compression
+    }
+    return parent[x]!;
+  }
+
+  void union(int x, int y) {
+    int rootX = find(x);
+    int rootY = find(y);
+
+    if (rootX != rootY) {
+      parent[rootX] = rootY;
+      size[rootY] = size[rootY]! + size[rootX]!;
+    }
+  }
+
+  int getMaxSize() {
+    return size.values.isEmpty ? 0 : size.values.reduce((a, b) => a > b ? a : b);
+  }
+}
+
+int longestConsecutiveUnionFind(List<int> nums) {
+  if (nums.isEmpty) return 0;
+
+  UnionFind uf = UnionFind();
+
+  for (int num in nums) {
+    uf.add(num);
+  }
+
+  for (int num in nums) {
+    if (uf.parent.containsKey(num + 1)) {
+      uf.union(num, num + 1);
+    }
+  }
+
+  return uf.getMaxSize();
+}
+
+void main() {
+  List<int> nums = [100, 4, 200, 1, 3, 2];
+  print('Array: $nums');
+  print('Longest consecutive: ${longestConsecutiveUnionFind(nums)}');
+}
+```
+
+## Comparison of Approaches
+
+| Approach | Time | Space | Pros | Cons |
+|----------|------|-------|------|------|
+| Set with Smart Start | O(n) | O(n) | Optimal, elegant | Requires extra space |
+| Sorting | O(n log n) | O(1)-O(n) | Simple logic | Slower, may modify array |
+| With Sequence | O(n) | O(n) | Returns actual sequence | More space for result |
+| Union-Find | O(n) | O(n) | Good for complex variants | Overkill for this problem |
+
+## Why Set Approach is O(n)
+
+The key insight is that each number is processed at most twice:
+1. Once when checking if it's the start of a sequence
+2. Once when it's part of counting a sequence
+
+Because we only start counting from sequence beginnings (numbers where `num - 1` doesn't exist), we avoid redundant work.
+
+## Key Points
+
+1. **Smart Starting Point**: Only start counting from numbers that begin a sequence
+2. **Set for O(1) Lookup**: Use Set for constant-time contains checks
+3. **Handle Duplicates**: Set automatically removes duplicates
+4. **Edge Cases**: Empty array, single element, all same numbers
+5. **No Sorting Required**: Can achieve O(n) without sorting
+
+## Common Pitfalls
+
+- Starting a new count from every number (makes it O(n²))
+- Not handling duplicates properly
+- Forgetting to compare and update max length
+- Not considering negative numbers
+- Off-by-one errors when checking consecutive numbers
+
+## Test Cases
+
+```dart
+void testLongestConsecutive() {
+  assert(longestConsecutive([100, 4, 200, 1, 3, 2]) == 4);
+  assert(longestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]) == 9);
+  assert(longestConsecutive([]) == 0);
+  assert(longestConsecutive([1]) == 1);
+  assert(longestConsecutive([1, 2, 0, 1]) == 3); // With duplicates
+  assert(longestConsecutive([1, 3, 5, 7]) == 1); // No consecutive
+  assert(longestConsecutive([-1, 0, 1, 2]) == 4); // Negative numbers
+
+  print('All tests passed!');
+}
+```
+
+## Visualization
+
+For array [100, 4, 200, 1, 3, 2]:
+
+```
+Set: {100, 4, 200, 1, 3, 2}
+
+Check 100: no 99 in set → start counting
+  100 → no 101 → length = 1
+
+Check 4: 3 exists in set → skip (not a start)
+
+Check 200: no 199 in set → start counting
+  200 → no 201 → length = 1
+
+Check 1: no 0 in set → start counting
+  1 → 2 → 3 → 4 → no 5 → length = 4 ✓
+
+Max length = 4
+```
+
+## Reference
+
+[CodeReview - Longest Consecutive Elements](https://codereview.stackexchange.com/questions/212785/find-the-length-of-the-longest-consecutive-elements)

@@ -1,0 +1,309 @@
+---
+title: Find Starting and Ending Position of Value
+description: Given an array of integers sorted in ascending order, find the starting and ending position of a given value
+---
+
+## Problem Statement
+
+Given an array of integers sorted in ascending order, find the starting and ending position of a given target value. If the target is not found in the array, return [-1, -1].
+
+You must write an algorithm with O(log n) runtime complexity.
+
+## Examples
+
+### Example 1
+```
+Input: nums = [5, 7, 7, 8, 8, 10], target = 8
+Output: [3, 4]
+Explanation: 8 appears at indices 3 and 4
+```
+
+### Example 2
+```
+Input: nums = [5, 7, 7, 8, 8, 10], target = 6
+Output: [-1, -1]
+Explanation: 6 is not in the array
+```
+
+### Example 3
+```
+Input: nums = [], target = 0
+Output: [-1, -1]
+Explanation: Empty array
+```
+
+### Example 4
+```
+Input: nums = [1], target = 1
+Output: [0, 0]
+Explanation: Single element that matches
+```
+
+## Solution
+
+### Approach 1: Two Binary Searches (Optimal)
+
+Perform two binary searches: one to find the leftmost position and one to find the rightmost position.
+
+**Time Complexity:** O(log n)
+**Space Complexity:** O(1)
+
+```dart
+List<int> searchRange(List<int> nums, int target) {
+  if (nums.isEmpty) return [-1, -1];
+
+  int left = findLeftPosition(nums, target);
+  if (left == -1) return [-1, -1]; // Target not found
+
+  int right = findRightPosition(nums, target);
+
+  return [left, right];
+}
+
+int findLeftPosition(List<int> nums, int target) {
+  int left = 0;
+  int right = nums.length - 1;
+  int result = -1;
+
+  while (left <= right) {
+    int mid = left + (right - left) ~/ 2;
+
+    if (nums[mid] == target) {
+      result = mid;
+      right = mid - 1; // Continue searching in left half
+    } else if (nums[mid] < target) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+
+  return result;
+}
+
+int findRightPosition(List<int> nums, int target) {
+  int left = 0;
+  int right = nums.length - 1;
+  int result = -1;
+
+  while (left <= right) {
+    int mid = left + (right - left) ~/ 2;
+
+    if (nums[mid] == target) {
+      result = mid;
+      left = mid + 1; // Continue searching in right half
+    } else if (nums[mid] < target) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+
+  return result;
+}
+
+void main() {
+  List<int> nums1 = [5, 7, 7, 8, 8, 10];
+  print('Array: $nums1, Target: 8');
+  print('Range: ${searchRange(nums1, 8)}');
+
+  List<int> nums2 = [5, 7, 7, 8, 8, 10];
+  print('\nArray: $nums2, Target: 6');
+  print('Range: ${searchRange(nums2, 6)}');
+
+  List<int> nums3 = [1];
+  print('\nArray: $nums3, Target: 1');
+  print('Range: ${searchRange(nums3, 1)}');
+}
+```
+
+### Approach 2: Single Binary Search + Linear Expansion
+
+Find any occurrence using binary search, then expand left and right.
+
+**Time Complexity:** O(log n) for search + O(k) for expansion where k is count of target
+**Space Complexity:** O(1)
+
+```dart
+List<int> searchRangeExpand(List<int> nums, int target) {
+  if (nums.isEmpty) return [-1, -1];
+
+  // Find any occurrence using binary search
+  int index = binarySearch(nums, target);
+
+  if (index == -1) return [-1, -1];
+
+  // Expand to find leftmost position
+  int left = index;
+  while (left > 0 && nums[left - 1] == target) {
+    left--;
+  }
+
+  // Expand to find rightmost position
+  int right = index;
+  while (right < nums.length - 1 && nums[right + 1] == target) {
+    right++;
+  }
+
+  return [left, right];
+}
+
+int binarySearch(List<int> nums, int target) {
+  int left = 0;
+  int right = nums.length - 1;
+
+  while (left <= right) {
+    int mid = left + (right - left) ~/ 2;
+
+    if (nums[mid] == target) {
+      return mid;
+    } else if (nums[mid] < target) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+
+  return -1;
+}
+
+void main() {
+  List<int> nums = [5, 7, 7, 8, 8, 10];
+  print('Array: $nums, Target: 8');
+  print('Range: ${searchRangeExpand(nums, 8)}');
+}
+```
+
+### Approach 3: Generic Binary Search Helper
+
+A more elegant solution using a helper function.
+
+**Time Complexity:** O(log n)
+**Space Complexity:** O(1)
+
+```dart
+List<int> searchRangeGeneric(List<int> nums, int target) {
+  int left = binarySearchBound(nums, target, true);
+  if (left == -1) return [-1, -1];
+
+  int right = binarySearchBound(nums, target, false);
+
+  return [left, right];
+}
+
+int binarySearchBound(List<int> nums, int target, bool findLeft) {
+  int left = 0;
+  int right = nums.length - 1;
+  int result = -1;
+
+  while (left <= right) {
+    int mid = left + (right - left) ~/ 2;
+
+    if (nums[mid] == target) {
+      result = mid;
+      if (findLeft) {
+        right = mid - 1; // Search left for leftmost
+      } else {
+        left = mid + 1; // Search right for rightmost
+      }
+    } else if (nums[mid] < target) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+
+  return result;
+}
+
+void main() {
+  List<int> nums = [5, 7, 7, 8, 8, 10];
+
+  print('Array: $nums');
+  print('Target 8: ${searchRangeGeneric(nums, 8)}');
+  print('Target 7: ${searchRangeGeneric(nums, 7)}');
+  print('Target 10: ${searchRangeGeneric(nums, 10)}');
+  print('Target 6: ${searchRangeGeneric(nums, 6)}');
+}
+```
+
+### Approach 4: Using Dart's Built-in Methods
+
+Simple approach using indexOf and lastIndexOf (not O(log n) but useful for small arrays).
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1)
+
+```dart
+List<int> searchRangeSimple(List<int> nums, int target) {
+  int left = nums.indexOf(target);
+  if (left == -1) return [-1, -1];
+
+  int right = nums.lastIndexOf(target);
+
+  return [left, right];
+}
+
+void main() {
+  List<int> nums = [5, 7, 7, 8, 8, 10];
+  print('Array: $nums, Target: 8');
+  print('Range: ${searchRangeSimple(nums, 8)}');
+}
+```
+
+## Comparison of Approaches
+
+| Approach | Time | Space | Best Use Case |
+|----------|------|-------|---------------|
+| Two Binary Searches | O(log n) | O(1) | Large sorted arrays, optimal solution |
+| Binary + Expand | O(log n + k) | O(1) | When k (count) is small |
+| Generic Helper | O(log n) | O(1) | Clean code, same as approach 1 |
+| indexOf/lastIndexOf | O(n) | O(1) | Small arrays, simplicity over performance |
+
+## Key Points
+
+1. **Binary Search**: Must use binary search to achieve O(log n) complexity
+2. **Two Searches**: Need separate searches for left and right boundaries
+3. **Continue After Finding**: Don't stop when target is found - continue searching in appropriate direction
+4. **Edge Cases**: Handle empty array, single element, target not found
+5. **Integer Division**: Use `~/ ` for integer division in Dart
+
+## Common Pitfalls
+
+- Stopping binary search as soon as target is found
+- Not handling the case when target doesn't exist
+- Off-by-one errors in boundary conditions
+- Using `left + right ~/ 2` instead of `left + (right - left) ~/ 2` (can overflow in other languages)
+
+## Test Cases
+
+```dart
+void testSearchRange() {
+  // Test case 1: Multiple occurrences
+  assert(searchRange([5, 7, 7, 8, 8, 10], 8).toString() == '[3, 4]');
+
+  // Test case 2: Target not found
+  assert(searchRange([5, 7, 7, 8, 8, 10], 6).toString() == '[-1, -1]');
+
+  // Test case 3: Empty array
+  assert(searchRange([], 0).toString() == '[-1, -1]');
+
+  // Test case 4: Single element match
+  assert(searchRange([1], 1).toString() == '[0, 0]');
+
+  // Test case 5: All elements same
+  assert(searchRange([2, 2, 2, 2], 2).toString() == '[0, 3]');
+
+  // Test case 6: Target at start
+  assert(searchRange([1, 1, 2, 3], 1).toString() == '[0, 1]');
+
+  // Test case 7: Target at end
+  assert(searchRange([1, 2, 3, 3], 3).toString() == '[2, 3]');
+
+  print('All tests passed!');
+}
+```
+
+## Reference
+
+[Chegg - Find Starting and Ending Position](https://www.chegg.com/homework-help/questions-and-answers/given-array-integers-nums-sorted-ascending-order-find-starting-ending-position-given-targe-q93277114)

@@ -1,0 +1,260 @@
+---
+title: Find Duplicates from Unsorted Array
+description: How to find duplicate elements in an unsorted array
+---
+
+## Problem Statement
+
+Write a program to find all duplicate elements in an unsorted array. The array may contain multiple duplicates.
+
+## Examples
+
+### Example 1
+```
+Input: [1, 3, 4, 2, 2, 4, 5]
+Output: [2, 4]
+Explanation: 2 and 4 appear more than once
+```
+
+### Example 2
+```
+Input: [5, 5, 5, 3, 3, 1]
+Output: [5, 3]
+Explanation: 5 and 3 appear more than once
+```
+
+### Example 3
+```
+Input: [1, 2, 3, 4, 5]
+Output: []
+Explanation: No duplicates present
+```
+
+## Solution
+
+### Approach 1: Using Set (Optimal for Most Cases)
+
+Use a Set to track seen elements and another Set for duplicates.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+List<int> findDuplicates(List<int> arr) {
+  Set<int> seen = {};
+  Set<int> duplicates = {};
+
+  for (int num in arr) {
+    if (seen.contains(num)) {
+      duplicates.add(num);
+    } else {
+      seen.add(num);
+    }
+  }
+
+  return duplicates.toList();
+}
+
+void main() {
+  List<int> arr1 = [1, 3, 4, 2, 2, 4, 5];
+  print('Array: $arr1');
+  print('Duplicates: ${findDuplicates(arr1)}');
+
+  List<int> arr2 = [5, 5, 5, 3, 3, 1];
+  print('\nArray: $arr2');
+  print('Duplicates: ${findDuplicates(arr2)}');
+
+  List<int> arr3 = [1, 2, 3, 4, 5];
+  print('\nArray: $arr3');
+  print('Duplicates: ${findDuplicates(arr3)}');
+}
+```
+
+### Approach 2: Using Map for Frequency Count
+
+Track the frequency of each element and return those with count greater than 1.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+List<int> findDuplicatesWithCount(List<int> arr) {
+  Map<int, int> frequency = {};
+
+  // Count frequencies
+  for (int num in arr) {
+    frequency[num] = (frequency[num] ?? 0) + 1;
+  }
+
+  // Find elements with count > 1
+  List<int> duplicates = [];
+  frequency.forEach((key, value) {
+    if (value > 1) {
+      duplicates.add(key);
+    }
+  });
+
+  return duplicates;
+}
+
+// Alternative: Get duplicates with their counts
+Map<int, int> findDuplicatesWithFrequency(List<int> arr) {
+  Map<int, int> frequency = {};
+
+  for (int num in arr) {
+    frequency[num] = (frequency[num] ?? 0) + 1;
+  }
+
+  Map<int, int> duplicates = {};
+  frequency.forEach((key, value) {
+    if (value > 1) {
+      duplicates[key] = value;
+    }
+  });
+
+  return duplicates;
+}
+
+void main() {
+  List<int> arr = [1, 3, 4, 2, 2, 4, 5, 4];
+
+  print('Array: $arr');
+  print('Duplicates: ${findDuplicatesWithCount(arr)}');
+  print('Duplicates with frequency: ${findDuplicatesWithFrequency(arr)}');
+}
+```
+
+### Approach 3: Sort First (No Extra Space for Hash)
+
+Sort the array first, then find consecutive duplicates.
+
+**Time Complexity:** O(n log n)
+**Space Complexity:** O(1) if sorting in place, O(n) if creating new sorted array
+
+```dart
+List<int> findDuplicatesBySorting(List<int> arr) {
+  if (arr.isEmpty) return [];
+
+  // Create a copy and sort it
+  List<int> sorted = List.from(arr)..sort();
+
+  Set<int> duplicates = {};
+
+  for (int i = 0; i < sorted.length - 1; i++) {
+    if (sorted[i] == sorted[i + 1]) {
+      duplicates.add(sorted[i]);
+    }
+  }
+
+  return duplicates.toList();
+}
+
+void main() {
+  List<int> arr = [1, 3, 4, 2, 2, 4, 5];
+
+  print('Array: $arr');
+  print('Duplicates: ${findDuplicatesBySorting(arr)}');
+}
+```
+
+### Approach 4: For Positive Numbers Only (Index Marking)
+
+If array contains only positive numbers in range [1, n], use index marking technique.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1) if modifying in place
+
+```dart
+List<int> findDuplicatesIndexMarking(List<int> arr) {
+  List<int> result = [];
+  List<int> temp = List.from(arr); // Create copy to avoid modifying original
+
+  for (int i = 0; i < temp.length; i++) {
+    int index = temp[i].abs() - 1;
+
+    if (index < temp.length) {
+      if (temp[index] < 0) {
+        // Already negative, means duplicate
+        result.add(index + 1);
+      } else {
+        // Mark as visited by making negative
+        temp[index] = -temp[index];
+      }
+    }
+  }
+
+  return result;
+}
+
+void main() {
+  // This approach works for arrays with positive numbers in range [1, n]
+  List<int> arr = [4, 3, 2, 7, 8, 2, 3, 1];
+
+  print('Array: $arr');
+  print('Duplicates: ${findDuplicatesIndexMarking(arr)}');
+}
+```
+
+### Approach 5: Using Dart's Built-in Methods
+
+Functional approach using Dart's collection methods.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+List<int> findDuplicatesFunctional(List<int> arr) {
+  return arr
+      .toSet()
+      .where((element) =>
+          arr.where((item) => item == element).length > 1)
+      .toList();
+}
+
+void main() {
+  List<int> arr = [1, 3, 4, 2, 2, 4, 5];
+
+  print('Array: $arr');
+  print('Duplicates: ${findDuplicatesFunctional(arr)}');
+}
+```
+
+## Comparison of Approaches
+
+| Approach | Time | Space | Pros | Cons |
+|----------|------|-------|------|------|
+| Set | O(n) | O(n) | Fast, simple | Extra space |
+| Map/Frequency | O(n) | O(n) | Can get counts | Extra space |
+| Sorting | O(n log n) | O(1) or O(n) | Less space | Slower, may modify array |
+| Index Marking | O(n) | O(1) | No extra space | Only for specific ranges |
+| Functional | O(n²) | O(n) | Concise code | Less efficient |
+
+## Key Points
+
+1. **Set Approach**: Best for general use cases - fast and simple
+2. **Map Approach**: Use when you need frequency counts
+3. **Sorting**: Good when space is constrained and modifying array is acceptable
+4. **Index Marking**: Optimal for specific constraints (positive numbers in range)
+5. **Preserve Order**: If order matters, use LinkedHashSet or maintain insertion order
+
+## Common Pitfalls
+
+- Not handling empty arrays
+- Counting the same duplicate multiple times
+- Off-by-one errors in index marking approach
+- Not considering if array can be modified
+
+## Edge Cases to Test
+
+```dart
+void testEdgeCases() {
+  print('Empty array: ${findDuplicates([])}');
+  print('No duplicates: ${findDuplicates([1, 2, 3])}');
+  print('All duplicates: ${findDuplicates([1, 1, 1, 1])}');
+  print('Single element: ${findDuplicates([1])}');
+}
+```
+
+## Reference
+
+[Java67 - Find Duplicate Elements in Array](http://java67.blogspot.com/2015/10/2-ways-to-find-duplicate-elements-in-java-array.html)

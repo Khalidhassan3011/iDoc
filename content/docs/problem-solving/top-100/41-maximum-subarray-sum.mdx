@@ -1,0 +1,337 @@
+---
+title: Maximum Subarray Sum (Kadane's Algorithm)
+description: Find the contiguous subarray with the largest sum and return its sum
+---
+
+## Problem Statement
+
+Given an integer array, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
+
+This is also known as the **Maximum Subarray Problem** and is efficiently solved using **Kadane's Algorithm**.
+
+## Examples
+
+### Example 1
+```
+Input: [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+Output: 6
+Explanation: [4, -1, 2, 1] has the largest sum = 6
+```
+
+### Example 2
+```
+Input: [1]
+Output: 1
+Explanation: Single element is the maximum
+```
+
+### Example 3
+```
+Input: [5, 4, -1, 7, 8]
+Output: 23
+Explanation: Entire array has the largest sum = 23
+```
+
+### Example 4
+```
+Input: [-1, -2, -3, -4]
+Output: -1
+Explanation: When all negative, return the largest (least negative)
+```
+
+## Solution
+
+### Approach 1: Kadane's Algorithm (Optimal)
+
+The most efficient approach using dynamic programming.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1)
+
+```dart
+int maxSubArray(List<int> nums) {
+  if (nums.isEmpty) return 0;
+
+  int maxSum = nums[0];
+  int currentSum = nums[0];
+
+  for (int i = 1; i < nums.length; i++) {
+    // Either extend the existing subarray or start a new one
+    currentSum = currentSum + nums[i] > nums[i]
+        ? currentSum + nums[i]
+        : nums[i];
+
+    // Update maximum sum found so far
+    maxSum = maxSum > currentSum ? maxSum : currentSum;
+  }
+
+  return maxSum;
+}
+
+void main() {
+  List<int> nums1 = [-2, 1, -3, 4, -1, 2, 1, -5, 4];
+  print('Array: $nums1');
+  print('Maximum subarray sum: ${maxSubArray(nums1)}');
+
+  List<int> nums2 = [5, 4, -1, 7, 8];
+  print('\nArray: $nums2');
+  print('Maximum subarray sum: ${maxSubArray(nums2)}');
+
+  List<int> nums3 = [-1, -2, -3, -4];
+  print('\nArray: $nums3');
+  print('Maximum subarray sum: ${maxSubArray(nums3)}');
+}
+```
+
+### Approach 2: Kadane's with Subarray Indices
+
+Return the actual subarray, not just the sum.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1)
+
+```dart
+class SubarrayResult {
+  final int sum;
+  final int start;
+  final int end;
+
+  SubarrayResult(this.sum, this.start, this.end);
+
+  List<int> getSubarray(List<int> nums) {
+    return nums.sublist(start, end + 1);
+  }
+
+  @override
+  String toString() => 'Sum: $sum, Start: $start, End: $end';
+}
+
+SubarrayResult maxSubArrayWithIndices(List<int> nums) {
+  if (nums.isEmpty) return SubarrayResult(0, -1, -1);
+
+  int maxSum = nums[0];
+  int currentSum = nums[0];
+  int start = 0;
+  int end = 0;
+  int tempStart = 0;
+
+  for (int i = 1; i < nums.length; i++) {
+    if (currentSum + nums[i] > nums[i]) {
+      currentSum = currentSum + nums[i];
+    } else {
+      currentSum = nums[i];
+      tempStart = i; // New subarray starts here
+    }
+
+    if (currentSum > maxSum) {
+      maxSum = currentSum;
+      start = tempStart;
+      end = i;
+    }
+  }
+
+  return SubarrayResult(maxSum, start, end);
+}
+
+void main() {
+  List<int> nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4];
+  print('Array: $nums');
+
+  var result = maxSubArrayWithIndices(nums);
+  print('Result: $result');
+  print('Subarray: ${result.getSubarray(nums)}');
+}
+```
+
+### Approach 3: Brute Force (For Understanding)
+
+Check all possible subarrays. Not efficient but helps understand the problem.
+
+**Time Complexity:** O(n²) or O(n³)
+**Space Complexity:** O(1)
+
+```dart
+int maxSubArrayBruteForce(List<int> nums) {
+  if (nums.isEmpty) return 0;
+
+  int maxSum = nums[0];
+
+  for (int i = 0; i < nums.length; i++) {
+    int currentSum = 0;
+    for (int j = i; j < nums.length; j++) {
+      currentSum += nums[j];
+      maxSum = maxSum > currentSum ? maxSum : currentSum;
+    }
+  }
+
+  return maxSum;
+}
+
+void main() {
+  List<int> nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4];
+  print('Array: $nums');
+  print('Maximum subarray sum: ${maxSubArrayBruteForce(nums)}');
+}
+```
+
+### Approach 4: Divide and Conquer
+
+Recursive approach that divides the array into halves.
+
+**Time Complexity:** O(n log n)
+**Space Complexity:** O(log n) for recursion
+
+```dart
+int maxSubArrayDivideConquer(List<int> nums, int left, int right) {
+  if (left == right) return nums[left];
+
+  int mid = left + (right - left) ~/ 2;
+
+  // Maximum in left half
+  int leftMax = maxSubArrayDivideConquer(nums, left, mid);
+
+  // Maximum in right half
+  int rightMax = maxSubArrayDivideConquer(nums, mid + 1, right);
+
+  // Maximum crossing the middle
+  int crossMax = maxCrossingSum(nums, left, mid, right);
+
+  // Return maximum of three
+  return [leftMax, rightMax, crossMax].reduce((a, b) => a > b ? a : b);
+}
+
+int maxCrossingSum(List<int> nums, int left, int mid, int right) {
+  // Include elements on left of mid
+  int leftSum = nums[mid];
+  int sum = 0;
+  for (int i = mid; i >= left; i--) {
+    sum += nums[i];
+    leftSum = leftSum > sum ? leftSum : sum;
+  }
+
+  // Include elements on right of mid
+  int rightSum = nums[mid + 1];
+  sum = 0;
+  for (int i = mid + 1; i <= right; i++) {
+    sum += nums[i];
+    rightSum = rightSum > sum ? rightSum : sum;
+  }
+
+  return leftSum + rightSum;
+}
+
+void main() {
+  List<int> nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4];
+  print('Array: $nums');
+  print('Maximum subarray sum: ${maxSubArrayDivideConquer(nums, 0, nums.length - 1)}');
+}
+```
+
+### Approach 5: With Visual Explanation
+
+Add debug output to understand how Kadane's works.
+
+```dart
+int maxSubArrayDebug(List<int> nums) {
+  if (nums.isEmpty) return 0;
+
+  int maxSum = nums[0];
+  int currentSum = nums[0];
+
+  print('i\tnum\tcurrentSum\tmaxSum');
+  print('0\t${nums[0]}\t$currentSum\t\t$maxSum');
+
+  for (int i = 1; i < nums.length; i++) {
+    currentSum = currentSum + nums[i] > nums[i]
+        ? currentSum + nums[i]
+        : nums[i];
+    maxSum = maxSum > currentSum ? maxSum : currentSum;
+
+    print('$i\t${nums[i]}\t$currentSum\t\t$maxSum');
+  }
+
+  return maxSum;
+}
+
+void main() {
+  List<int> nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4];
+  print('Array: $nums\n');
+  int result = maxSubArrayDebug(nums);
+  print('\nMaximum subarray sum: $result');
+}
+```
+
+## How Kadane's Algorithm Works
+
+The key insight: At each position, decide whether to:
+1. **Extend** the current subarray by adding the current element
+2. **Start fresh** from the current element
+
+Formula: `currentSum = max(currentSum + nums[i], nums[i])`
+
+## Visualization
+
+For array [-2, 1, -3, 4, -1, 2, 1, -5, 4]:
+
+```
+Index:       0   1   2   3   4   5   6   7   8
+Array:     [-2,  1, -3,  4, -1,  2,  1, -5,  4]
+Current:   -2   1  -2   4   3   5   6   1   5
+Max:       -2   1   1   4   4   5   6   6   6
+                                    ↑
+                            Maximum subarray sum = 6
+                            Subarray: [4, -1, 2, 1]
+```
+
+## Comparison of Approaches
+
+| Approach | Time | Space | Best For |
+|----------|------|-------|----------|
+| Kadane's Algorithm | O(n) | O(1) | Production code - optimal |
+| With Indices | O(n) | O(1) | When you need the subarray |
+| Brute Force | O(n²) | O(1) | Learning, small arrays |
+| Divide & Conquer | O(n log n) | O(log n) | Educational purposes |
+
+## Key Points
+
+1. **Kadane's Algorithm**: The standard optimal solution
+2. **Local vs Global**: Track both current and maximum sums
+3. **All Negative**: Works correctly when all numbers are negative
+4. **Single Element**: Handles single-element arrays correctly
+5. **Empty Array**: Need to handle as edge case
+
+## Common Pitfalls
+
+- Not handling all-negative arrays correctly
+- Forgetting to update max sum
+- Starting with 0 instead of first element
+- Not considering single-element subarrays
+- Confusing current sum with maximum sum
+
+## Test Cases
+
+```dart
+void testMaxSubArray() {
+  assert(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]) == 6);
+  assert(maxSubArray([1]) == 1);
+  assert(maxSubArray([5, 4, -1, 7, 8]) == 23);
+  assert(maxSubArray([-1, -2, -3, -4]) == -1);
+  assert(maxSubArray([1, 2, 3, 4, 5]) == 15);
+  assert(maxSubArray([-5, -2, -8, -1]) == -1);
+  assert(maxSubArray([0, 0, 0]) == 0);
+
+  print('All tests passed!');
+}
+```
+
+## Applications
+
+- Stock trading (maximum profit)
+- Image processing (brightest region)
+- Genomics (GC-rich regions)
+- Network flow analysis
+- Load balancing
+
+## Reference
+
+[StackOverflow - Maximum Subarray Problem](https://stackoverflow.com/questions/61013256/can-anyone-explain-this-maxium-subarray-problem)

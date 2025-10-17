@@ -1,0 +1,403 @@
+---
+title: Reverse Array In Place
+description: How to reverse an array in place without using extra space
+---
+
+## Problem Statement
+
+Write a program to reverse an array in place. The array should be reversed without using any additional array or collection.
+
+## Examples
+
+### Example 1
+```
+Input: [1, 2, 3, 4, 5]
+Output: [5, 4, 3, 2, 1]
+```
+
+### Example 2
+```
+Input: ['a', 'b', 'c', 'd']
+Output: ['d', 'c', 'b', 'a']
+```
+
+### Example 3
+```
+Input: [10]
+Output: [10]
+Explanation: Single element remains same
+```
+
+## Solution
+
+### Approach 1: Two Pointers (Optimal)
+
+Use two pointers from both ends and swap elements.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1)
+
+```dart
+void reverseArray(List<int> arr) {
+  int left = 0;
+  int right = arr.length - 1;
+
+  while (left < right) {
+    // Swap elements at left and right
+    int temp = arr[left];
+    arr[left] = arr[right];
+    arr[right] = temp;
+
+    left++;
+    right--;
+  }
+}
+
+void main() {
+  List<int> arr1 = [1, 2, 3, 4, 5];
+  print('Original: $arr1');
+  reverseArray(arr1);
+  print('Reversed: $arr1');
+
+  List<int> arr2 = [10, 20, 30, 40];
+  print('\nOriginal: $arr2');
+  reverseArray(arr2);
+  print('Reversed: $arr2');
+
+  List<int> arr3 = [1];
+  print('\nOriginal: $arr3');
+  reverseArray(arr3);
+  print('Reversed: $arr3');
+}
+```
+
+### Approach 2: For Loop with Index
+
+Classic approach using a for loop.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1)
+
+```dart
+void reverseArrayForLoop(List<int> arr) {
+  int n = arr.length;
+
+  for (int i = 0; i < n ~/ 2; i++) {
+    // Swap arr[i] with arr[n-1-i]
+    int temp = arr[i];
+    arr[i] = arr[n - 1 - i];
+    arr[n - 1 - i] = temp;
+  }
+}
+
+void main() {
+  List<int> arr = [1, 2, 3, 4, 5];
+  print('Original: $arr');
+  reverseArrayForLoop(arr);
+  print('Reversed: $arr');
+}
+```
+
+### Approach 3: Using XOR Swap (No Temp Variable)
+
+Swap without using a temporary variable (for integers only).
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1)
+
+```dart
+void reverseArrayXOR(List<int> arr) {
+  int left = 0;
+  int right = arr.length - 1;
+
+  while (left < right) {
+    if (arr[left] != arr[right]) {
+      arr[left] = arr[left] ^ arr[right];
+      arr[right] = arr[left] ^ arr[right];
+      arr[left] = arr[left] ^ arr[right];
+    }
+
+    left++;
+    right--;
+  }
+}
+
+void main() {
+  List<int> arr = [1, 2, 3, 4, 5];
+  print('Original: $arr');
+  reverseArrayXOR(arr);
+  print('Reversed: $arr');
+}
+```
+
+### Approach 4: Recursive Approach
+
+Reverse array using recursion.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n) for recursion stack
+
+```dart
+void reverseArrayRecursive(List<int> arr, int left, int right) {
+  if (left >= right) return;
+
+  // Swap
+  int temp = arr[left];
+  arr[left] = arr[right];
+  arr[right] = temp;
+
+  // Recursive call
+  reverseArrayRecursive(arr, left + 1, right - 1);
+}
+
+void main() {
+  List<int> arr = [1, 2, 3, 4, 5];
+  print('Original: $arr');
+  reverseArrayRecursive(arr, 0, arr.length - 1);
+  print('Reversed: $arr');
+}
+```
+
+### Approach 5: Dart-Specific Using Built-in
+
+Dart has built-in methods but creates a new list (not in-place).
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+void reverseArrayDart(List<int> arr) {
+  // This creates a new list, not truly in-place
+  List<int> reversed = arr.reversed.toList();
+
+  // Copy back to original array
+  for (int i = 0; i < arr.length; i++) {
+    arr[i] = reversed[i];
+  }
+}
+
+// For immutable approach (returns new list)
+List<int> reverseArrayImmutable(List<int> arr) {
+  return arr.reversed.toList();
+}
+
+void main() {
+  List<int> arr = [1, 2, 3, 4, 5];
+  print('Original: $arr');
+  reverseArrayDart(arr);
+  print('Reversed: $arr');
+
+  // Immutable version
+  List<int> arr2 = [10, 20, 30];
+  print('\nOriginal: $arr2');
+  print('Reversed (new list): ${reverseArrayImmutable(arr2)}');
+  print('Original unchanged: $arr2');
+}
+```
+
+### Approach 6: Generic Type Version
+
+Works with any type of list.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1)
+
+```dart
+void reverseArrayGeneric<T>(List<T> arr) {
+  int left = 0;
+  int right = arr.length - 1;
+
+  while (left < right) {
+    T temp = arr[left];
+    arr[left] = arr[right];
+    arr[right] = temp;
+
+    left++;
+    right--;
+  }
+}
+
+void main() {
+  // Integer array
+  List<int> intArr = [1, 2, 3, 4, 5];
+  print('Int array: $intArr');
+  reverseArrayGeneric(intArr);
+  print('Reversed: $intArr');
+
+  // String array
+  List<String> strArr = ['a', 'b', 'c', 'd'];
+  print('\nString array: $strArr');
+  reverseArrayGeneric(strArr);
+  print('Reversed: $strArr');
+
+  // Double array
+  List<double> doubleArr = [1.1, 2.2, 3.3];
+  print('\nDouble array: $doubleArr');
+  reverseArrayGeneric(doubleArr);
+  print('Reversed: $doubleArr');
+}
+```
+
+### Approach 7: Reverse Subarray (Partial Reverse)
+
+Reverse only a portion of the array.
+
+**Time Complexity:** O(k) where k is the range
+**Space Complexity:** O(1)
+
+```dart
+void reverseSubarray(List<int> arr, int start, int end) {
+  while (start < end) {
+    int temp = arr[start];
+    arr[start] = arr[end];
+    arr[end] = temp;
+
+    start++;
+    end--;
+  }
+}
+
+void main() {
+  List<int> arr = [1, 2, 3, 4, 5, 6, 7];
+  print('Original: $arr');
+
+  // Reverse middle portion (indices 2 to 5)
+  reverseSubarray(arr, 2, 5);
+  print('After reversing [2-5]: $arr');
+}
+```
+
+## Comparison of Approaches
+
+| Approach | Time | Space | Pros | Cons |
+|----------|------|-------|------|------|
+| Two Pointers | O(n) | O(1) | Simple, efficient | - |
+| For Loop | O(n) | O(1) | Classic approach | - |
+| XOR Swap | O(n) | O(1) | No temp variable | Integers only, less readable |
+| Recursive | O(n) | O(n) | Elegant | Stack space, slower |
+| Built-in | O(n) | O(n) | Easy to write | Not truly in-place |
+| Generic | O(n) | O(1) | Works with any type | - |
+
+## Visualization
+
+For array [1, 2, 3, 4, 5]:
+
+```
+Step 0:  [1, 2, 3, 4, 5]   left=0, right=4
+          ↑           ↑
+
+Step 1:  [5, 2, 3, 4, 1]   left=1, right=3
+             ↑     ↑
+
+Step 2:  [5, 4, 3, 2, 1]   left=2, right=2
+                ↑
+
+Done! left >= right
+```
+
+## Key Points
+
+1. **In-Place**: Modify the original array without extra space
+2. **Two Pointers**: Most common and efficient approach
+3. **Swap Logic**: Temporary variable is clearest
+4. **Middle Element**: Handled automatically (never swapped)
+5. **Generic**: Can work with any data type
+
+## Common Pitfalls
+
+- Not checking for empty array
+- Not checking for single-element array
+- Off-by-one errors in loop condition
+- Forgetting to increment/decrement pointers
+- Using `<=` instead of `<` in while condition (swaps middle twice)
+
+## Edge Cases
+
+```dart
+void testEdgeCases() {
+  // Empty array
+  List<int> empty = [];
+  reverseArray(empty);
+  print('Empty: $empty');
+
+  // Single element
+  List<int> single = [1];
+  reverseArray(single);
+  print('Single: $single');
+
+  // Two elements
+  List<int> two = [1, 2];
+  reverseArray(two);
+  print('Two: $two');
+
+  // Even length
+  List<int> even = [1, 2, 3, 4];
+  reverseArray(even);
+  print('Even: $even');
+
+  // Odd length
+  List<int> odd = [1, 2, 3, 4, 5];
+  reverseArray(odd);
+  print('Odd: $odd');
+}
+```
+
+## Test Cases
+
+```dart
+void testReverseArray() {
+  // Test 1
+  List<int> arr1 = [1, 2, 3, 4, 5];
+  reverseArray(arr1);
+  assert(arr1.toString() == '[5, 4, 3, 2, 1]');
+
+  // Test 2
+  List<int> arr2 = [1];
+  reverseArray(arr2);
+  assert(arr2.toString() == '[1]');
+
+  // Test 3
+  List<int> arr3 = [];
+  reverseArray(arr3);
+  assert(arr3.toString() == '[]');
+
+  // Test 4
+  List<int> arr4 = [1, 2];
+  reverseArray(arr4);
+  assert(arr4.toString() == '[2, 1]');
+
+  print('All tests passed!');
+}
+```
+
+## Applications
+
+- String reversal
+- Palindrome checking
+- Array rotation
+- Reversing linked lists (similar logic)
+- Reversing parts of arrays for sorting algorithms
+
+## Performance Comparison
+
+```dart
+import 'dart:io';
+
+void benchmark() {
+  List<int> sizes = [1000, 10000, 100000];
+
+  for (int size in sizes) {
+    List<int> arr = List.generate(size, (i) => i);
+
+    Stopwatch sw = Stopwatch()..start();
+    reverseArray(arr);
+    sw.stop();
+
+    print('Size: $size, Time: ${sw.elapsedMicroseconds} μs');
+  }
+}
+```
+
+## Reference
+
+[JavaRevisited - Reverse Array in Java](http://javarevisited.blogspot.com/2013/03/how-to-reverse-array-in-java-int-String-array-example.html)

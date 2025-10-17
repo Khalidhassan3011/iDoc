@@ -1,0 +1,416 @@
+---
+title: Convert Byte Array to String
+description: How to convert a byte array to a String in different ways
+---
+
+## Problem Statement
+
+Write a program to convert a byte array to a String. Learn different approaches including using encoding, decoding, and various character sets.
+
+## Examples
+
+### Example 1: ASCII
+```
+Input: [72, 101, 108, 108, 111]
+Output: "Hello"
+```
+
+### Example 2: UTF-8
+```
+Input: [68, 97, 114, 116]
+Output: "Dart"
+```
+
+### Example 3: Special Characters
+```
+Input: [240, 159, 152, 128]  // UTF-8 bytes for 😀
+Output: "😀"
+```
+
+## Solution
+
+### Approach 1: Using String.fromCharCodes
+
+The simplest way in Dart to convert a list of bytes to a string.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+import 'dart:typed_data';
+
+String byteArrayToString(List<int> bytes) {
+  return String.fromCharCodes(bytes);
+}
+
+void main() {
+  // ASCII characters
+  List<int> bytes1 = [72, 101, 108, 108, 111]; // "Hello"
+  print('Bytes: $bytes1');
+  print('String: ${byteArrayToString(bytes1)}');
+
+  // Another example
+  List<int> bytes2 = [68, 97, 114, 116]; // "Dart"
+  print('\nBytes: $bytes2');
+  print('String: ${byteArrayToString(bytes2)}');
+
+  // Numbers and symbols
+  List<int> bytes3 = [49, 50, 51, 33]; // "123!"
+  print('\nBytes: $bytes3');
+  print('String: ${byteArrayToString(bytes3)}');
+}
+```
+
+### Approach 2: Using UTF-8 Decoder
+
+Properly decode UTF-8 encoded bytes, important for multi-byte characters.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+import 'dart:convert';
+import 'dart:typed_data';
+
+String byteArrayToStringUTF8(List<int> bytes) {
+  return utf8.decode(bytes);
+}
+
+void main() {
+  // Simple ASCII
+  List<int> bytes1 = [72, 101, 108, 108, 111];
+  print('UTF-8 decode: ${byteArrayToStringUTF8(bytes1)}');
+
+  // Multi-byte UTF-8 character (emoji)
+  List<int> bytes2 = [240, 159, 152, 128]; // 😀
+  print('UTF-8 emoji: ${byteArrayToStringUTF8(bytes2)}');
+
+  // Accented characters
+  List<int> bytes3 = [195, 169]; // é
+  print('UTF-8 accented: ${byteArrayToStringUTF8(bytes3)}');
+
+  // Mixed content
+  String original = 'Hello 👋 World!';
+  List<int> encoded = utf8.encode(original);
+  String decoded = utf8.decode(encoded);
+  print('\nOriginal: $original');
+  print('Encoded bytes: $encoded');
+  print('Decoded: $decoded');
+}
+```
+
+### Approach 3: Using Different Encodings
+
+Convert using Latin1, ASCII, or other encodings.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+import 'dart:convert';
+
+void demonstrateEncodings() {
+  String original = 'Hello World';
+
+  // UTF-8 encoding/decoding
+  List<int> utf8Bytes = utf8.encode(original);
+  String fromUtf8 = utf8.decode(utf8Bytes);
+  print('UTF-8: $fromUtf8');
+
+  // Latin1 (ISO-8859-1) encoding/decoding
+  List<int> latin1Bytes = latin1.encode(original);
+  String fromLatin1 = latin1.decode(latin1Bytes);
+  print('Latin1: $fromLatin1');
+
+  // ASCII encoding/decoding
+  List<int> asciiBytes = ascii.encode(original);
+  String fromAscii = ascii.decode(asciiBytes);
+  print('ASCII: $fromAscii');
+
+  print('\nByte comparison:');
+  print('UTF-8 bytes: $utf8Bytes');
+  print('Latin1 bytes: $latin1Bytes');
+  print('ASCII bytes: $asciiBytes');
+}
+
+void main() {
+  demonstrateEncodings();
+}
+```
+
+### Approach 4: Using Uint8List (Typed Data)
+
+Work with typed byte arrays for better performance.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+import 'dart:typed_data';
+import 'dart:convert';
+
+String uint8ListToString(Uint8List bytes) {
+  return utf8.decode(bytes);
+}
+
+Uint8List stringToUint8List(String str) {
+  return Uint8List.fromList(utf8.encode(str));
+}
+
+void main() {
+  // Create Uint8List
+  Uint8List bytes = Uint8List.fromList([72, 101, 108, 108, 111]);
+  print('Uint8List: $bytes');
+  print('To String: ${uint8ListToString(bytes)}');
+
+  // Convert string to Uint8List and back
+  String original = 'Dart Programming';
+  Uint8List encoded = stringToUint8List(original);
+  String decoded = uint8ListToString(encoded);
+
+  print('\nOriginal: $original');
+  print('Encoded: $encoded');
+  print('Decoded: $decoded');
+}
+```
+
+### Approach 5: Manual Conversion (Understanding Bytes)
+
+Convert bytes manually to understand the process.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+String byteArrayToStringManual(List<int> bytes) {
+  StringBuffer buffer = StringBuffer();
+
+  for (int byte in bytes) {
+    if (byte >= 0 && byte <= 127) {
+      // ASCII range
+      buffer.writeCharCode(byte);
+    } else {
+      // For simplicity, replace non-ASCII with '?'
+      buffer.write('?');
+    }
+  }
+
+  return buffer.toString();
+}
+
+void main() {
+  List<int> bytes = [72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100];
+  print('Bytes: $bytes');
+  print('String (manual): ${byteArrayToStringManual(bytes)}');
+
+  // With non-ASCII
+  List<int> mixedBytes = [72, 101, 108, 108, 111, 200];
+  print('\nMixed bytes: $mixedBytes');
+  print('String (manual): ${byteArrayToStringManual(mixedBytes)}');
+}
+```
+
+### Approach 6: Handling Errors and Invalid Bytes
+
+Gracefully handle invalid byte sequences.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+import 'dart:convert';
+
+String byteArrayToStringWithErrorHandling(List<int> bytes) {
+  try {
+    // Try UTF-8 decode
+    return utf8.decode(bytes, allowMalformed: true);
+  } catch (e) {
+    print('Error decoding: $e');
+    // Fallback to Latin1 which accepts all byte values
+    return latin1.decode(bytes);
+  }
+}
+
+void main() {
+  // Valid UTF-8
+  List<int> validBytes = [72, 101, 108, 108, 111];
+  print('Valid UTF-8: ${byteArrayToStringWithErrorHandling(validBytes)}');
+
+  // Invalid UTF-8 sequence
+  List<int> invalidBytes = [72, 255, 255, 108, 111];
+  print('Invalid UTF-8 (with error handling): '
+      '${byteArrayToStringWithErrorHandling(invalidBytes)}');
+
+  // Using allowMalformed flag
+  String malformed = utf8.decode(invalidBytes, allowMalformed: true);
+  print('With allowMalformed: $malformed');
+}
+```
+
+### Approach 7: Base64 Encoded Bytes
+
+Convert Base64 encoded byte array to string.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+import 'dart:convert';
+
+String base64BytesToString(String base64String) {
+  List<int> bytes = base64.decode(base64String);
+  return utf8.decode(bytes);
+}
+
+String stringToBase64(String str) {
+  List<int> bytes = utf8.encode(str);
+  return base64.encode(bytes);
+}
+
+void main() {
+  String original = 'Hello Dart!';
+
+  // Encode to Base64
+  String base64Str = stringToBase64(original);
+  print('Original: $original');
+  print('Base64: $base64Str');
+
+  // Decode from Base64
+  String decoded = base64BytesToString(base64Str);
+  print('Decoded: $decoded');
+}
+```
+
+## Comparison of Approaches
+
+| Approach | Use Case | Pros | Cons |
+|----------|----------|------|------|
+| String.fromCharCodes | Simple ASCII | Easy, built-in | Limited encoding support |
+| UTF-8 Decoder | Multi-byte chars | Proper UTF-8, emojis | May fail on invalid sequences |
+| Different Encodings | Specific needs | Flexible | Need to know encoding |
+| Uint8List | Performance | Type-safe, fast | More verbose |
+| Manual | Learning | Educational | Not practical |
+| Error Handling | Untrusted data | Robust | Slower |
+| Base64 | Binary data | Safe transport | Larger size |
+
+## Character Encoding Basics
+
+### ASCII (0-127)
+- Single byte per character
+- English letters, numbers, symbols
+- Limited to 128 characters
+
+### UTF-8
+- Variable length (1-4 bytes)
+- Backward compatible with ASCII
+- Supports all Unicode characters
+- Most common encoding on web
+
+### Latin1 (ISO-8859-1)
+- Single byte (0-255)
+- Western European languages
+- Each byte is a valid character
+
+## Common Use Cases
+
+### Use Case 1: Reading File as Bytes
+```dart
+import 'dart:io';
+import 'dart:convert';
+
+Future<String> readFileAsString(String path) async {
+  File file = File(path);
+  List<int> bytes = await file.readAsBytes();
+  return utf8.decode(bytes);
+}
+```
+
+### Use Case 2: Network Data
+```dart
+import 'dart:convert';
+
+void handleNetworkData(List<int> receivedBytes) {
+  String message = utf8.decode(receivedBytes);
+  print('Received: $message');
+}
+```
+
+### Use Case 3: Hex String to Bytes
+```dart
+List<int> hexStringToBytes(String hex) {
+  List<int> bytes = [];
+  for (int i = 0; i < hex.length; i += 2) {
+    String hexByte = hex.substring(i, i + 2);
+    bytes.add(int.parse(hexByte, radix: 16));
+  }
+  return bytes;
+}
+
+void main() {
+  String hex = '48656C6C6F'; // "Hello"
+  List<int> bytes = hexStringToBytes(hex);
+  String str = String.fromCharCodes(bytes);
+  print('Hex: $hex');
+  print('String: $str');
+}
+```
+
+## Key Points
+
+1. **Encoding Matters**: Choose correct encoding (UTF-8 is usually best)
+2. **UTF-8 for Unicode**: Use for international text and emojis
+3. **Error Handling**: Always handle invalid byte sequences
+4. **Performance**: Uint8List for large data
+5. **Reversibility**: Ensure encode/decode cycle preserves data
+
+## Common Pitfalls
+
+- Using wrong encoding (ASCII for non-ASCII text)
+- Not handling invalid byte sequences
+- Assuming one byte = one character (not true for UTF-8)
+- Ignoring BOM (Byte Order Mark) in files
+- Not validating input bytes
+
+## Test Cases
+
+```dart
+import 'dart:convert';
+
+void testByteArrayToString() {
+  // Test 1: Simple ASCII
+  assert(String.fromCharCodes([72, 101, 108, 108, 111]) == 'Hello');
+
+  // Test 2: Empty array
+  assert(String.fromCharCodes([]) == '');
+
+  // Test 3: Single character
+  assert(String.fromCharCodes([65]) == 'A');
+
+  // Test 4: UTF-8 emoji
+  List<int> emojiBytes = utf8.encode('😀');
+  assert(utf8.decode(emojiBytes) == '😀');
+
+  // Test 5: Round trip
+  String original = 'Test String 123!';
+  List<int> bytes = utf8.encode(original);
+  String decoded = utf8.decode(bytes);
+  assert(original == decoded);
+
+  print('All tests passed!');
+}
+```
+
+## Byte Value Reference
+
+```
+Common ASCII Values:
+'A' = 65, 'Z' = 90
+'a' = 97, 'z' = 122
+'0' = 48, '9' = 57
+' ' (space) = 32
+'!' = 33, '?' = 63
+```
+
+## Reference
+
+[JavaRevisited - Convert Byte Array to String](https://javarevisited.blogspot.com/2014/08/2-examples-to-convert-byte-array-to-String-in-Java.html)

@@ -1,0 +1,496 @@
+---
+title: Find Multiple Duplicates in Array
+description: How to find all duplicate numbers in an array that contains multiple duplicates
+---
+
+## Problem Statement
+
+Write a program to find all duplicate numbers in an array where the array may contain multiple duplicates. Return all numbers that appear more than once.
+
+## Examples
+
+### Example 1
+```
+Input: [1, 2, 3, 4, 2, 5, 3, 6]
+Output: [2, 3]
+Explanation: 2 and 3 appear twice
+```
+
+### Example 2
+```
+Input: [4, 3, 2, 7, 8, 2, 3, 1]
+Output: [2, 3]
+Explanation: 2 and 3 are duplicated
+```
+
+### Example 3
+```
+Input: [1, 1, 2, 2, 3, 3]
+Output: [1, 2, 3]
+Explanation: All numbers appear twice
+```
+
+### Example 4
+```
+Input: [1, 2, 3, 4, 5]
+Output: []
+Explanation: No duplicates
+```
+
+## Solution
+
+### Approach 1: Using Set (Optimal for Most Cases)
+
+Track seen elements and duplicates using Sets.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+List<int> findDuplicates(List<int> nums) {
+  Set<int> seen = {};
+  Set<int> duplicates = {};
+
+  for (int num in nums) {
+    if (seen.contains(num)) {
+      duplicates.add(num);
+    } else {
+      seen.add(num);
+    }
+  }
+
+  return duplicates.toList();
+}
+
+void main() {
+  List<int> nums1 = [1, 2, 3, 4, 2, 5, 3, 6];
+  print('Array: $nums1');
+  print('Duplicates: ${findDuplicates(nums1)}');
+
+  List<int> nums2 = [4, 3, 2, 7, 8, 2, 3, 1];
+  print('\nArray: $nums2');
+  print('Duplicates: ${findDuplicates(nums2)}');
+
+  List<int> nums3 = [1, 2, 3, 4, 5];
+  print('\nArray: $nums3');
+  print('Duplicates: ${findDuplicates(nums3)}');
+}
+```
+
+### Approach 2: Using Map for Frequency Count
+
+Get duplicates with their frequencies.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+Map<int, int> findDuplicatesWithCount(List<int> nums) {
+  Map<int, int> frequency = {};
+
+  // Count frequencies
+  for (int num in nums) {
+    frequency[num] = (frequency[num] ?? 0) + 1;
+  }
+
+  // Filter elements that appear more than once
+  Map<int, int> duplicates = {};
+  frequency.forEach((key, value) {
+    if (value > 1) {
+      duplicates[key] = value;
+    }
+  });
+
+  return duplicates;
+}
+
+void main() {
+  List<int> nums = [1, 2, 3, 2, 4, 3, 5, 3];
+
+  print('Array: $nums');
+  var duplicates = findDuplicatesWithCount(nums);
+
+  duplicates.forEach((num, count) {
+    print('$num appears $count times');
+  });
+}
+```
+
+### Approach 3: Sorting First
+
+Sort the array and find consecutive duplicates.
+
+**Time Complexity:** O(n log n)
+**Space Complexity:** O(1) if sorting in place
+
+```dart
+List<int> findDuplicatesSorting(List<int> nums) {
+  if (nums.length < 2) return [];
+
+  List<int> sorted = List.from(nums)..sort();
+  List<int> duplicates = [];
+
+  for (int i = 0; i < sorted.length - 1; i++) {
+    if (sorted[i] == sorted[i + 1]) {
+      // Add only if not already in duplicates
+      if (duplicates.isEmpty || duplicates.last != sorted[i]) {
+        duplicates.add(sorted[i]);
+      }
+    }
+  }
+
+  return duplicates;
+}
+
+void main() {
+  List<int> nums = [4, 3, 2, 7, 8, 2, 3, 1];
+  print('Array: $nums');
+  print('Duplicates: ${findDuplicatesSorting(nums)}');
+}
+```
+
+### Approach 4: Index Marking (For Specific Range)
+
+For arrays with positive numbers in range [1, n], use index marking.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1) if modifying in place
+
+```dart
+List<int> findDuplicatesIndexMarking(List<int> nums) {
+  List<int> duplicates = [];
+  List<int> arr = List.from(nums); // Copy to avoid modifying original
+
+  for (int i = 0; i < arr.length; i++) {
+    int index = arr[i].abs() - 1;
+
+    if (index >= 0 && index < arr.length) {
+      if (arr[index] < 0) {
+        // Already negative, means we've seen this number
+        if (!duplicates.contains(index + 1)) {
+          duplicates.add(index + 1);
+        }
+      } else {
+        // Mark as seen by making negative
+        arr[index] = -arr[index];
+      }
+    }
+  }
+
+  return duplicates;
+}
+
+void main() {
+  List<int> nums = [4, 3, 2, 7, 8, 2, 3, 1];
+  print('Array: $nums');
+  print('Duplicates: ${findDuplicatesIndexMarking(nums)}');
+}
+```
+
+### Approach 5: Using Two Pointers (For Sorted Array)
+
+If array is already sorted or can be sorted.
+
+**Time Complexity:** O(n log n) for sorting + O(n) for finding = O(n log n)
+**Space Complexity:** O(1)
+
+```dart
+List<int> findDuplicatesTwoPointers(List<int> nums) {
+  if (nums.length < 2) return [];
+
+  List<int> sorted = List.from(nums)..sort();
+  List<int> duplicates = [];
+
+  int i = 0;
+  while (i < sorted.length - 1) {
+    if (sorted[i] == sorted[i + 1]) {
+      duplicates.add(sorted[i]);
+
+      // Skip all occurrences of this duplicate
+      int current = sorted[i];
+      while (i < sorted.length && sorted[i] == current) {
+        i++;
+      }
+    } else {
+      i++;
+    }
+  }
+
+  return duplicates;
+}
+
+void main() {
+  List<int> nums = [1, 1, 1, 2, 2, 3, 4, 5, 5, 5];
+  print('Array: $nums');
+  print('Duplicates: ${findDuplicatesTwoPointers(nums)}');
+}
+```
+
+### Approach 6: Nested Loops (Brute Force)
+
+Simple but inefficient approach for understanding.
+
+**Time Complexity:** O(n²)
+**Space Complexity:** O(n)
+
+```dart
+List<int> findDuplicatesBruteForce(List<int> nums) {
+  Set<int> duplicates = {};
+
+  for (int i = 0; i < nums.length; i++) {
+    for (int j = i + 1; j < nums.length; j++) {
+      if (nums[i] == nums[j]) {
+        duplicates.add(nums[i]);
+      }
+    }
+  }
+
+  return duplicates.toList();
+}
+
+void main() {
+  List<int> nums = [1, 2, 3, 4, 2, 5, 3, 6];
+  print('Array: $nums');
+  print('Duplicates: ${findDuplicatesBruteForce(nums)}');
+}
+```
+
+### Approach 7: Advanced - With All Occurrences
+
+Return each duplicate with all its positions.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+class DuplicateInfo {
+  int value;
+  List<int> positions;
+  int count;
+
+  DuplicateInfo(this.value, this.positions)
+      : count = positions.length;
+
+  @override
+  String toString() =>
+      'Value: $value, Count: $count, Positions: $positions';
+}
+
+List<DuplicateInfo> findDuplicatesWithPositions(List<int> nums) {
+  Map<int, List<int>> positions = {};
+
+  // Record all positions
+  for (int i = 0; i < nums.length; i++) {
+    if (!positions.containsKey(nums[i])) {
+      positions[nums[i]] = [];
+    }
+    positions[nums[i]]!.add(i);
+  }
+
+  // Filter duplicates and create info objects
+  List<DuplicateInfo> duplicates = [];
+  positions.forEach((value, posList) {
+    if (posList.length > 1) {
+      duplicates.add(DuplicateInfo(value, posList));
+    }
+  });
+
+  return duplicates;
+}
+
+void main() {
+  List<int> nums = [1, 2, 3, 2, 4, 3, 5, 3];
+  print('Array: $nums\n');
+
+  var duplicates = findDuplicatesWithPositions(nums);
+
+  print('Duplicates with positions:');
+  for (var dup in duplicates) {
+    print(dup);
+  }
+}
+```
+
+## Comparison of Approaches
+
+| Approach | Time | Space | Best For |
+|----------|------|-------|----------|
+| Set | O(n) | O(n) | General use, fast |
+| Map/Frequency | O(n) | O(n) | Need counts |
+| Sorting | O(n log n) | O(1) | Space constrained |
+| Index Marking | O(n) | O(1) | Range [1,n] |
+| Two Pointers | O(n log n) | O(1) | Already sorted |
+| Brute Force | O(n²) | O(n) | Small arrays, learning |
+| With Positions | O(n) | O(n) | Need locations |
+
+## Special Cases
+
+### Case 1: Find Elements Appearing Exactly K Times
+
+```dart
+List<int> findElementsWithFrequency(List<int> nums, int k) {
+  Map<int, int> frequency = {};
+
+  for (int num in nums) {
+    frequency[num] = (frequency[num] ?? 0) + 1;
+  }
+
+  List<int> result = [];
+  frequency.forEach((num, count) {
+    if (count == k) {
+      result.add(num);
+    }
+  });
+
+  return result;
+}
+
+void main() {
+  List<int> nums = [1, 1, 1, 2, 2, 3, 4, 4];
+  print('Elements appearing exactly 2 times: '
+      '${findElementsWithFrequency(nums, 2)}');
+  print('Elements appearing exactly 3 times: '
+      '${findElementsWithFrequency(nums, 3)}');
+}
+```
+
+### Case 2: Find Elements Appearing More Than N/K Times
+
+```dart
+List<int> findMajorityElements(List<int> nums, int k) {
+  Map<int, int> frequency = {};
+
+  for (int num in nums) {
+    frequency[num] = (frequency[num] ?? 0) + 1;
+  }
+
+  List<int> result = [];
+  int threshold = nums.length ~/ k;
+
+  frequency.forEach((num, count) {
+    if (count > threshold) {
+      result.add(num);
+    }
+  });
+
+  return result;
+}
+
+void main() {
+  List<int> nums = [1, 1, 1, 2, 2, 3, 4];
+  print('Array: $nums');
+  print('Elements appearing > n/3 times: '
+      '${findMajorityElements(nums, 3)}');
+}
+```
+
+## Key Points
+
+1. **Set Approach**: Best for general use - fast and simple
+2. **Map Approach**: Use when frequency information is needed
+3. **Sorting**: Good when space is limited
+4. **Index Marking**: Optimal for specific constraints
+5. **Order Preservation**: Set/Map approaches preserve first occurrence order
+
+## Common Pitfalls
+
+- Not handling empty arrays
+- Counting the same duplicate multiple times
+- Not considering negative numbers
+- Modifying the original array unintentionally
+- Integer overflow in index calculations
+
+## Test Cases
+
+```dart
+void testFindDuplicates() {
+  // Test 1: Multiple duplicates
+  assert(findDuplicates([1, 2, 3, 2, 4, 3]).toSet().containsAll([2, 3]));
+
+  // Test 2: No duplicates
+  assert(findDuplicates([1, 2, 3, 4, 5]).isEmpty);
+
+  // Test 3: All duplicates
+  assert(findDuplicates([1, 1, 2, 2, 3, 3]).length == 3);
+
+  // Test 4: Empty array
+  assert(findDuplicates([]).isEmpty);
+
+  // Test 5: Single element
+  assert(findDuplicates([1]).isEmpty);
+
+  // Test 6: Two same elements
+  assert(findDuplicates([1, 1]).contains(1));
+
+  // Test 7: Negative numbers
+  assert(findDuplicates([-1, -2, -1, -3]).contains(-1));
+
+  print('All tests passed!');
+}
+```
+
+## Visualization
+
+For array [4, 3, 2, 7, 8, 2, 3, 1]:
+
+### Using Set Approach:
+```
+Index: 0  1  2  3  4  5  6  7
+Array: 4  3  2  7  8  2  3  1
+
+Seen: {}              Duplicates: {}
+Process 4 → Seen: {4}
+Process 3 → Seen: {4,3}
+Process 2 → Seen: {4,3,2}
+Process 7 → Seen: {4,3,2,7}
+Process 8 → Seen: {4,3,2,7,8}
+Process 2 → Already in seen! Duplicates: {2}
+Process 3 → Already in seen! Duplicates: {2,3}
+Process 1 → Seen: {4,3,2,7,8,1}
+
+Result: [2, 3]
+```
+
+## Performance Considerations
+
+```dart
+import 'dart:math';
+
+void benchmarkFindDuplicates() {
+  List<int> sizes = [100, 1000, 10000];
+
+  for (int size in sizes) {
+    // Create array with ~20% duplicates
+    List<int> arr = List.generate(
+      size,
+      (i) => Random().nextInt(size ~/ 2),
+    );
+
+    // Test Set approach
+    Stopwatch sw1 = Stopwatch()..start();
+    findDuplicates(arr);
+    sw1.stop();
+
+    // Test Sorting approach
+    Stopwatch sw2 = Stopwatch()..start();
+    findDuplicatesSorting(arr);
+    sw2.stop();
+
+    print('Size: $size');
+    print('  Set: ${sw1.elapsedMicroseconds} μs');
+    print('  Sort: ${sw2.elapsedMicroseconds} μs\n');
+  }
+}
+```
+
+## Applications
+
+- Data validation
+- Finding repeated entries in logs
+- Detecting duplicate records in databases
+- Finding recurring patterns
+- Data deduplication systems
+
+## Reference
+
+[JavaRevisited - Find Non-Repeated Character](http://javarevisited.blogspot.com/2014/03/3-ways-to-find-first-non-repeated-character-String-programming-problem.html)

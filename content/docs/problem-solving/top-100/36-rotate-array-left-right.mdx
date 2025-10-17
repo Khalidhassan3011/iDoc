@@ -1,0 +1,210 @@
+---
+title: Rotate Array Left and Right by K
+description: How to rotate an array left and right by a given number K
+---
+
+## Problem Statement
+
+Write a program to rotate an array to the left and right by a given number K positions.
+
+## Examples
+
+### Example 1: Left Rotation
+```
+Input: arr = [1, 2, 3, 4, 5], k = 2
+Output: [3, 4, 5, 1, 2]
+Explanation: After 2 left rotations: [2,3,4,5,1] then [3,4,5,1,2]
+```
+
+### Example 2: Right Rotation
+```
+Input: arr = [1, 2, 3, 4, 5], k = 2
+Output: [4, 5, 1, 2, 3]
+Explanation: After 2 right rotations: [5,1,2,3,4] then [4,5,1,2,3]
+```
+
+## Solution
+
+### Approach 1: Using Array Reversal (Optimal)
+
+The most efficient approach uses array reversal:
+- For left rotation: Reverse first k elements, then remaining elements, then entire array
+- For right rotation: Reverse last k elements, then remaining elements, then entire array
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1)
+
+```dart
+void reverseArray(List<int> arr, int start, int end) {
+  while (start < end) {
+    int temp = arr[start];
+    arr[start] = arr[end];
+    arr[end] = temp;
+    start++;
+    end--;
+  }
+}
+
+List<int> rotateLeft(List<int> arr, int k) {
+  int n = arr.length;
+  k = k % n; // Handle k greater than n
+
+  if (k == 0) return arr;
+
+  // Create a copy to avoid modifying original
+  List<int> result = List.from(arr);
+
+  // Reverse first k elements
+  reverseArray(result, 0, k - 1);
+  // Reverse remaining elements
+  reverseArray(result, k, n - 1);
+  // Reverse entire array
+  reverseArray(result, 0, n - 1);
+
+  return result;
+}
+
+List<int> rotateRight(List<int> arr, int k) {
+  int n = arr.length;
+  k = k % n; // Handle k greater than n
+
+  if (k == 0) return arr;
+
+  // Create a copy to avoid modifying original
+  List<int> result = List.from(arr);
+
+  // Reverse entire array
+  reverseArray(result, 0, n - 1);
+  // Reverse first k elements
+  reverseArray(result, 0, k - 1);
+  // Reverse remaining elements
+  reverseArray(result, k, n - 1);
+
+  return result;
+}
+
+void main() {
+  List<int> arr = [1, 2, 3, 4, 5];
+
+  print('Original array: $arr');
+  print('Left rotation by 2: ${rotateLeft(arr, 2)}');
+  print('Right rotation by 2: ${rotateRight(arr, 2)}');
+
+  // Test with k greater than length
+  print('Left rotation by 7: ${rotateLeft(arr, 7)}');
+  print('Right rotation by 7: ${rotateRight(arr, 7)}');
+}
+```
+
+### Approach 2: Using Extra Space
+
+A simpler approach using extra array space.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+List<int> rotateLeftSimple(List<int> arr, int k) {
+  int n = arr.length;
+  k = k % n;
+
+  if (k == 0) return arr;
+
+  List<int> result = [];
+
+  // Add elements from k to end
+  for (int i = k; i < n; i++) {
+    result.add(arr[i]);
+  }
+
+  // Add elements from start to k-1
+  for (int i = 0; i < k; i++) {
+    result.add(arr[i]);
+  }
+
+  return result;
+}
+
+List<int> rotateRightSimple(List<int> arr, int k) {
+  int n = arr.length;
+  k = k % n;
+
+  if (k == 0) return arr;
+
+  List<int> result = [];
+
+  // Add elements from (n-k) to end
+  for (int i = n - k; i < n; i++) {
+    result.add(arr[i]);
+  }
+
+  // Add elements from start to (n-k-1)
+  for (int i = 0; i < n - k; i++) {
+    result.add(arr[i]);
+  }
+
+  return result;
+}
+
+void main() {
+  List<int> arr = [1, 2, 3, 4, 5];
+
+  print('Original array: $arr');
+  print('Left rotation by 2: ${rotateLeftSimple(arr, 2)}');
+  print('Right rotation by 2: ${rotateRightSimple(arr, 2)}');
+}
+```
+
+### Approach 3: Using List Methods
+
+Dart-specific approach using sublist and spread operator.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+List<int> rotateLeftDart(List<int> arr, int k) {
+  int n = arr.length;
+  k = k % n;
+
+  if (k == 0) return arr;
+
+  return [...arr.sublist(k), ...arr.sublist(0, k)];
+}
+
+List<int> rotateRightDart(List<int> arr, int k) {
+  int n = arr.length;
+  k = k % n;
+
+  if (k == 0) return arr;
+
+  return [...arr.sublist(n - k), ...arr.sublist(0, n - k)];
+}
+
+void main() {
+  List<int> arr = [1, 2, 3, 4, 5];
+
+  print('Original array: $arr');
+  print('Left rotation by 2: ${rotateLeftDart(arr, 2)}');
+  print('Right rotation by 2: ${rotateRightDart(arr, 2)}');
+}
+```
+
+## Key Points
+
+1. **Modulo Operation**: Always use `k % n` to handle cases where k is greater than array length
+2. **Edge Cases**: Handle k = 0, empty array, and single element array
+3. **Left vs Right**: Right rotation by k = Left rotation by (n - k)
+4. **In-Place**: The reversal method can be done in-place without extra space
+5. **Immutability**: The examples above create new arrays to preserve the original
+
+## Common Pitfalls
+
+- Forgetting to handle k greater than array length
+- Not handling empty arrays or single elements
+- Confusing left and right rotation logic
+- Off-by-one errors in array indices
+
+## Reference
+
+[Java67 - How to Rotate Array](https://www.java67.com/2018/05/how-to-rotate-array-left-and-right-by-given-number.html)

@@ -30,13 +30,26 @@
     "26-nearest-smaller-left",
     "27-minimum-coins",
     "28-two-sum",
-    "---Array---",
+    "---Array Problems---",
     "29-remove-duplicates-array",
     "30-search-rotated-array",
     "31-find-missing-number",
     "32-find-duplicate-number",
     "33-largest-smallest-array",
     "34-all-pairs-given-sum",
-    "35-remove-duplicates-in-place"
+    "35-remove-duplicates-in-place",
+    "36-rotate-array-left-right",
+    "37-find-duplicates-unsorted",
+    "38-find-position-sorted-array",
+    "39-longest-consecutive-sequence",
+    "40-quicksort-in-place",
+    "41-maximum-subarray-sum",
+    "42-reverse-array-in-place",
+    "43-remove-duplicates-no-library",
+    "44-byte-array-to-string",
+    "45-array-vs-linked-list",
+    "46-binary-search-array",
+    "47-median-two-sorted-arrays",
+    "48-find-multiple-duplicates"
   ]
 }

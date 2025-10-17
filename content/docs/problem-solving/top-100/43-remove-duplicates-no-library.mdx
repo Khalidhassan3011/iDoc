@@ -1,0 +1,442 @@
+---
+title: Remove Duplicates Without Library
+description: How to remove duplicates from an array without using any library or built-in collection methods
+---
+
+## Problem Statement
+
+Write a program to remove duplicate elements from an array without using any collection API or library methods. The solution should use only basic array operations and loops.
+
+## Examples
+
+### Example 1
+```
+Input: [1, 2, 3, 2, 4, 1, 5]
+Output: [1, 2, 3, 4, 5]
+```
+
+### Example 2
+```
+Input: [5, 5, 5, 3, 3, 1]
+Output: [5, 3, 1]
+```
+
+### Example 3
+```
+Input: [1, 2, 3, 4, 5]
+Output: [1, 2, 3, 4, 5]
+Explanation: No duplicates
+```
+
+## Solution
+
+### Approach 1: Using Temporary Array
+
+Create a new array and copy only unique elements.
+
+**Time Complexity:** O(n²)
+**Space Complexity:** O(n)
+
+```dart
+List<int> removeDuplicates(List<int> arr) {
+  if (arr.isEmpty) return [];
+
+  List<int> result = [];
+
+  for (int i = 0; i < arr.length; i++) {
+    bool isDuplicate = false;
+
+    // Check if element already exists in result
+    for (int j = 0; j < result.length; j++) {
+      if (arr[i] == result[j]) {
+        isDuplicate = true;
+        break;
+      }
+    }
+
+    // Add to result if not duplicate
+    if (!isDuplicate) {
+      result.add(arr[i]);
+    }
+  }
+
+  return result;
+}
+
+void main() {
+  List<int> arr1 = [1, 2, 3, 2, 4, 1, 5];
+  print('Original: $arr1');
+  print('Without duplicates: ${removeDuplicates(arr1)}');
+
+  List<int> arr2 = [5, 5, 5, 3, 3, 1];
+  print('\nOriginal: $arr2');
+  print('Without duplicates: ${removeDuplicates(arr2)}');
+}
+```
+
+### Approach 2: Sort First Then Remove
+
+Sort the array first, then remove consecutive duplicates.
+
+**Time Complexity:** O(n log n) for sorting + O(n) for removal = O(n log n)
+**Space Complexity:** O(n)
+
+```dart
+void quickSort(List<int> arr, int low, int high) {
+  if (low < high) {
+    int pivot = partition(arr, low, high);
+    quickSort(arr, low, pivot - 1);
+    quickSort(arr, pivot + 1, high);
+  }
+}
+
+int partition(List<int> arr, int low, int high) {
+  int pivot = arr[high];
+  int i = low - 1;
+
+  for (int j = low; j < high; j++) {
+    if (arr[j] <= pivot) {
+      i++;
+      int temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
+    }
+  }
+
+  int temp = arr[i + 1];
+  arr[i + 1] = arr[high];
+  arr[high] = temp;
+
+  return i + 1;
+}
+
+List<int> removeDuplicatesSorted(List<int> arr) {
+  if (arr.isEmpty) return [];
+
+  // Create a copy and sort it
+  List<int> sorted = List.from(arr);
+  quickSort(sorted, 0, sorted.length - 1);
+
+  // Remove consecutive duplicates
+  List<int> result = [sorted[0]];
+
+  for (int i = 1; i < sorted.length; i++) {
+    if (sorted[i] != sorted[i - 1]) {
+      result.add(sorted[i]);
+    }
+  }
+
+  return result;
+}
+
+void main() {
+  List<int> arr = [1, 2, 3, 2, 4, 1, 5];
+  print('Original: $arr');
+  print('Without duplicates: ${removeDuplicatesSorted(arr)}');
+}
+```
+
+### Approach 3: In-Place with Sorting
+
+Remove duplicates in-place after sorting, minimizing space usage.
+
+**Time Complexity:** O(n log n)
+**Space Complexity:** O(1) if modifying original array
+
+```dart
+int removeDuplicatesInPlace(List<int> arr) {
+  if (arr.isEmpty) return 0;
+
+  // Sort the array first
+  quickSort(arr, 0, arr.length - 1);
+
+  // Remove duplicates in-place
+  int writeIndex = 1;
+
+  for (int readIndex = 1; readIndex < arr.length; readIndex++) {
+    if (arr[readIndex] != arr[readIndex - 1]) {
+      arr[writeIndex] = arr[readIndex];
+      writeIndex++;
+    }
+  }
+
+  return writeIndex; // New length
+}
+
+void main() {
+  List<int> arr = [1, 2, 3, 2, 4, 1, 5];
+  print('Original: $arr');
+
+  int newLength = removeDuplicatesInPlace(arr);
+
+  print('New length: $newLength');
+  print('Array after removal: ${arr.sublist(0, newLength)}');
+}
+```
+
+### Approach 4: Using Boolean Array (For Limited Range)
+
+If elements are in a known range, use a boolean array to track seen elements.
+
+**Time Complexity:** O(n + range)
+**Space Complexity:** O(range)
+
+```dart
+List<int> removeDuplicatesRange(List<int> arr, int maxValue) {
+  if (arr.isEmpty) return [];
+
+  // Boolean array to track seen elements
+  List<bool> seen = List.filled(maxValue + 1, false);
+  List<int> result = [];
+
+  for (int i = 0; i < arr.length; i++) {
+    if (arr[i] >= 0 && arr[i] <= maxValue) {
+      if (!seen[arr[i]]) {
+        seen[arr[i]] = true;
+        result.add(arr[i]);
+      }
+    }
+  }
+
+  return result;
+}
+
+void main() {
+  List<int> arr = [1, 2, 3, 2, 4, 1, 5];
+  print('Original: $arr');
+  print('Without duplicates: ${removeDuplicatesRange(arr, 10)}');
+}
+```
+
+### Approach 5: Nested Loop with Marker
+
+Mark duplicates in the original array and then create result.
+
+**Time Complexity:** O(n²)
+**Space Complexity:** O(n)
+
+```dart
+List<int> removeDuplicatesMarker(List<int> arr) {
+  if (arr.isEmpty) return [];
+
+  // Create a copy to avoid modifying original
+  List<int> temp = List.from(arr);
+
+  // Mark duplicates with a special value (assuming array doesn't contain this)
+  int marker = -999999;
+
+  for (int i = 0; i < temp.length; i++) {
+    if (temp[i] == marker) continue;
+
+    for (int j = i + 1; j < temp.length; j++) {
+      if (temp[i] == temp[j]) {
+        temp[j] = marker;
+      }
+    }
+  }
+
+  // Collect non-marked elements
+  List<int> result = [];
+  for (int i = 0; i < temp.length; i++) {
+    if (temp[i] != marker) {
+      result.add(temp[i]);
+    }
+  }
+
+  return result;
+}
+
+void main() {
+  List<int> arr = [1, 2, 3, 2, 4, 1, 5];
+  print('Original: $arr');
+  print('Without duplicates: ${removeDuplicatesMarker(arr)}');
+}
+```
+
+### Approach 6: Manual Hash Table Implementation
+
+Implement a simple hash table without using library collections.
+
+**Time Complexity:** O(n) average
+**Space Complexity:** O(n)
+
+```dart
+class SimpleHashTable {
+  late List<List<int>> buckets;
+  int size;
+
+  SimpleHashTable(this.size) {
+    buckets = List.generate(size, (_) => []);
+  }
+
+  int hash(int key) {
+    return key.abs() % size;
+  }
+
+  bool contains(int key) {
+    int index = hash(key);
+    for (int value in buckets[index]) {
+      if (value == key) return true;
+    }
+    return false;
+  }
+
+  void add(int key) {
+    if (!contains(key)) {
+      int index = hash(key);
+      buckets[index].add(key);
+    }
+  }
+}
+
+List<int> removeDuplicatesHash(List<int> arr) {
+  if (arr.isEmpty) return [];
+
+  SimpleHashTable hashTable = SimpleHashTable(arr.length);
+  List<int> result = [];
+
+  for (int i = 0; i < arr.length; i++) {
+    if (!hashTable.contains(arr[i])) {
+      hashTable.add(arr[i]);
+      result.add(arr[i]);
+    }
+  }
+
+  return result;
+}
+
+void main() {
+  List<int> arr = [1, 2, 3, 2, 4, 1, 5];
+  print('Original: $arr');
+  print('Without duplicates: ${removeDuplicatesHash(arr)}');
+}
+```
+
+## Comparison of Approaches
+
+| Approach | Time | Space | Pros | Cons |
+|----------|------|-------|------|------|
+| Temporary Array | O(n²) | O(n) | Simple, preserves order | Slow for large arrays |
+| Sort First | O(n log n) | O(n) | Faster than nested loops | Changes order |
+| In-Place | O(n log n) | O(1) | Minimal space | Modifies original |
+| Boolean Array | O(n) | O(range) | Fast for limited range | Requires known range |
+| Marker | O(n²) | O(n) | Preserves order | Slow, needs special marker |
+| Manual Hash | O(n) | O(n) | Fast, preserves order | Complex implementation |
+
+## Key Points
+
+1. **No Library Methods**: Cannot use Set, Map, or other collections
+2. **Order Preservation**: Some approaches maintain original order, others don't
+3. **In-Place vs Copy**: Trade-off between space and preserving original
+4. **Time vs Space**: Faster solutions often use more space
+5. **Range Considerations**: Boolean array approach only works for limited ranges
+
+## Common Pitfalls
+
+- Not handling empty arrays
+- Assuming elements are in a specific range
+- Modifying original array unintentionally
+- Not preserving insertion order when required
+- Integer overflow in hash function
+- Using special marker values that might exist in array
+
+## Test Cases
+
+```dart
+void testRemoveDuplicates() {
+  // Test 1: Normal case with duplicates
+  List<int> arr1 = [1, 2, 3, 2, 4, 1, 5];
+  print('Test 1: ${removeDuplicates(arr1)}');
+
+  // Test 2: All duplicates
+  List<int> arr2 = [1, 1, 1, 1];
+  print('Test 2: ${removeDuplicates(arr2)}');
+
+  // Test 3: No duplicates
+  List<int> arr3 = [1, 2, 3, 4, 5];
+  print('Test 3: ${removeDuplicates(arr3)}');
+
+  // Test 4: Empty array
+  List<int> arr4 = [];
+  print('Test 4: ${removeDuplicates(arr4)}');
+
+  // Test 5: Single element
+  List<int> arr5 = [1];
+  print('Test 5: ${removeDuplicates(arr5)}');
+
+  // Test 6: Two elements, same
+  List<int> arr6 = [1, 1];
+  print('Test 6: ${removeDuplicates(arr6)}');
+
+  // Test 7: Negative numbers
+  List<int> arr7 = [-1, -2, -1, 0, -2];
+  print('Test 7: ${removeDuplicates(arr7)}');
+}
+```
+
+## Visualization
+
+For array [1, 2, 3, 2, 4, 1, 5]:
+
+### Temporary Array Approach:
+```
+Step 1: Check 1 → result = [1]
+Step 2: Check 2 → result = [1, 2]
+Step 3: Check 3 → result = [1, 2, 3]
+Step 4: Check 2 → already in result, skip
+Step 5: Check 4 → result = [1, 2, 3, 4]
+Step 6: Check 1 → already in result, skip
+Step 7: Check 5 → result = [1, 2, 3, 4, 5]
+```
+
+### Sort First Approach:
+```
+Original: [1, 2, 3, 2, 4, 1, 5]
+Sorted:   [1, 1, 2, 2, 3, 4, 5]
+Remove:   [1, 2, 3, 4, 5]
+```
+
+## Alternative Challenge
+
+Implement without:
+- Any collection classes (Set, Map, List except result)
+- Sorting
+- Extra space except result array
+
+```dart
+List<int> removeDuplicatesHardMode(List<int> arr) {
+  if (arr.isEmpty) return [];
+
+  int resultSize = 0;
+  List<int> result = List.filled(arr.length, 0);
+
+  for (int i = 0; i < arr.length; i++) {
+    bool found = false;
+
+    // Check in result array only up to resultSize
+    for (int j = 0; j < resultSize; j++) {
+      if (arr[i] == result[j]) {
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      result[resultSize] = arr[i];
+      resultSize++;
+    }
+  }
+
+  // Return only the filled portion
+  List<int> finalResult = [];
+  for (int i = 0; i < resultSize; i++) {
+    finalResult.add(result[i]);
+  }
+
+  return finalResult;
+}
+```
+
+## Reference
+
+[JavaRevisited - Remove Duplicates Without Collection API](http://javarevisited.blogspot.sg/2014/01/how-to-remove-duplicates-from-array-java-without-collection-API.html)

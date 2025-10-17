@@ -1,0 +1,425 @@
+---
+title: Array vs Linked List - Differences
+description: Understanding the key differences between arrays and linked lists data structures
+---
+
+## Problem Statement
+
+Explain the differences between Array and Linked List data structures. Understand their characteristics, advantages, disadvantages, and when to use each.
+
+## Overview
+
+Arrays and Linked Lists are both linear data structures used to store collections of elements, but they differ fundamentally in how they store and access data.
+
+## Key Differences
+
+| Aspect | Array | Linked List |
+|--------|-------|-------------|
+| **Memory Allocation** | Contiguous memory | Non-contiguous memory |
+| **Size** | Fixed size (static) | Dynamic size |
+| **Access Time** | O(1) - Direct access | O(n) - Sequential access |
+| **Insertion (beginning)** | O(n) - Need to shift | O(1) - Just update pointers |
+| **Insertion (end)** | O(1) if space available | O(n) to find end, O(1) to insert |
+| **Deletion (beginning)** | O(n) - Need to shift | O(1) - Just update pointers |
+| **Memory Overhead** | No extra | Extra for pointers |
+| **Cache Performance** | Better (locality) | Worse (scattered) |
+| **Random Access** | Yes (by index) | No (must traverse) |
+| **Memory Waste** | Can have unused space | Only allocated nodes |
+
+## Detailed Comparison
+
+### 1. Memory Allocation
+
+**Array:**
+```dart
+// Dart List (backed by array) - contiguous memory
+List<int> array = [1, 2, 3, 4, 5];
+// Memory: [1][2][3][4][5] - all in one block
+```
+
+**Linked List:**
+```dart
+// Linked List - scattered memory
+class Node {
+  int data;
+  Node? next;
+  Node(this.data, [this.next]);
+}
+
+// Memory: [1|*] -> [2|*] -> [3|*] -> [4|*] -> [5|null]
+// Can be anywhere in memory
+```
+
+### 2. Access Time
+
+**Array - O(1) Direct Access:**
+```dart
+List<int> array = [10, 20, 30, 40, 50];
+int value = array[2]; // Instant access to index 2
+print(value); // 30
+```
+
+**Linked List - O(n) Sequential Access:**
+```dart
+Node? getNodeAt(Node? head, int index) {
+  Node? current = head;
+  int count = 0;
+
+  while (current != null && count < index) {
+    current = current.next;
+    count++;
+  }
+
+  return current;
+}
+
+void main() {
+  Node head = Node(10, Node(20, Node(30, Node(40, Node(50)))));
+  Node? node = getNodeAt(head, 2);
+  print(node?.data); // 30 - but had to traverse
+}
+```
+
+### 3. Insertion Operations
+
+**Array - Insertion at Beginning O(n):**
+```dart
+void insertAtBeginning(List<int> array, int value) {
+  array.insert(0, value); // Shifts all elements
+}
+
+void main() {
+  List<int> array = [2, 3, 4, 5];
+  insertAtBeginning(array, 1);
+  print(array); // [1, 2, 3, 4, 5]
+}
+```
+
+**Linked List - Insertion at Beginning O(1):**
+```dart
+Node insertAtBeginning(Node? head, int value) {
+  return Node(value, head); // Just create new node
+}
+
+void main() {
+  Node? head = Node(2, Node(3, Node(4, Node(5))));
+  head = insertAtBeginning(head, 1);
+  // New node points to old head - O(1)
+}
+```
+
+### 4. Deletion Operations
+
+**Array - Deletion O(n):**
+```dart
+void deleteAt(List<int> array, int index) {
+  array.removeAt(index); // Shifts elements after index
+}
+
+void main() {
+  List<int> array = [1, 2, 3, 4, 5];
+  deleteAt(array, 2);
+  print(array); // [1, 2, 4, 5]
+}
+```
+
+**Linked List - Deletion O(1) if node reference known:**
+```dart
+Node? deleteNode(Node? head, int value) {
+  if (head == null) return null;
+
+  if (head.data == value) {
+    return head.next; // O(1) for head
+  }
+
+  Node? current = head;
+  while (current?.next != null) {
+    if (current!.next!.data == value) {
+      current.next = current.next!.next; // O(1) operation
+      break;
+    }
+    current = current.next;
+  }
+
+  return head;
+}
+```
+
+## Implementation Examples
+
+### Complete Array Operations
+
+```dart
+class ArrayOperations {
+  List<int> array;
+
+  ArrayOperations(this.array);
+
+  // Access - O(1)
+  int? get(int index) {
+    if (index >= 0 && index < array.length) {
+      return array[index];
+    }
+    return null;
+  }
+
+  // Insert - O(n)
+  void insert(int index, int value) {
+    array.insert(index, value);
+  }
+
+  // Delete - O(n)
+  void delete(int index) {
+    array.removeAt(index);
+  }
+
+  // Search - O(n)
+  int search(int value) {
+    return array.indexOf(value);
+  }
+
+  void display() {
+    print(array);
+  }
+}
+
+void main() {
+  ArrayOperations arr = ArrayOperations([1, 2, 3, 4, 5]);
+
+  print('Original:');
+  arr.display();
+
+  print('\nGet element at index 2: ${arr.get(2)}');
+
+  arr.insert(2, 99);
+  print('\nAfter insert 99 at index 2:');
+  arr.display();
+
+  arr.delete(2);
+  print('\nAfter delete at index 2:');
+  arr.display();
+
+  print('\nSearch for 4: index ${arr.search(4)}');
+}
+```
+
+### Complete Linked List Operations
+
+```dart
+class Node {
+  int data;
+  Node? next;
+
+  Node(this.data, [this.next]);
+}
+
+class LinkedList {
+  Node? head;
+
+  // Insert at beginning - O(1)
+  void insertAtBeginning(int data) {
+    head = Node(data, head);
+  }
+
+  // Insert at end - O(n)
+  void insertAtEnd(int data) {
+    if (head == null) {
+      head = Node(data);
+      return;
+    }
+
+    Node? current = head;
+    while (current!.next != null) {
+      current = current.next;
+    }
+    current.next = Node(data);
+  }
+
+  // Delete - O(n)
+  void delete(int data) {
+    if (head == null) return;
+
+    if (head!.data == data) {
+      head = head!.next;
+      return;
+    }
+
+    Node? current = head;
+    while (current?.next != null) {
+      if (current!.next!.data == data) {
+        current.next = current.next!.next;
+        return;
+      }
+      current = current.next;
+    }
+  }
+
+  // Search - O(n)
+  bool search(int data) {
+    Node? current = head;
+    while (current != null) {
+      if (current.data == data) return true;
+      current = current.next;
+    }
+    return false;
+  }
+
+  // Display
+  void display() {
+    Node? current = head;
+    List<int> elements = [];
+    while (current != null) {
+      elements.add(current.data);
+      current = current.next;
+    }
+    print(elements.join(' -> '));
+  }
+}
+
+void main() {
+  LinkedList list = LinkedList();
+
+  list.insertAtEnd(1);
+  list.insertAtEnd(2);
+  list.insertAtEnd(3);
+  list.insertAtEnd(4);
+  list.insertAtEnd(5);
+
+  print('Original:');
+  list.display();
+
+  list.insertAtBeginning(0);
+  print('\nAfter insert 0 at beginning:');
+  list.display();
+
+  list.delete(3);
+  print('\nAfter delete 3:');
+  list.display();
+
+  print('\nSearch for 4: ${list.search(4)}');
+  print('Search for 10: ${list.search(10)}');
+}
+```
+
+## When to Use Each
+
+### Use Array When:
+
+1. **Random Access Needed**: Need to access elements by index frequently
+2. **Size is Known**: Number of elements is known and fixed
+3. **Memory Locality**: Better cache performance is important
+4. **Simple Data**: Just storing and accessing data
+5. **Binary Search**: Need to perform binary search
+
+**Example Use Cases:**
+- Storing student grades
+- Lookup tables
+- Matrix operations
+- Buffer implementations
+
+### Use Linked List When:
+
+1. **Dynamic Size**: Number of elements changes frequently
+2. **Frequent Insertions/Deletions**: Especially at beginning or middle
+3. **Unknown Size**: Don't know how many elements in advance
+4. **No Random Access**: Don't need to access by index
+5. **Memory Fragmentation**: Can't allocate large contiguous block
+
+**Example Use Cases:**
+- Implementing Stack/Queue
+- Undo functionality
+- Music playlist
+- Browser history
+- Dynamic memory allocation
+
+## Advantages and Disadvantages
+
+### Array Advantages
+✅ Fast random access O(1)
+✅ Better cache locality
+✅ Less memory per element (no pointers)
+✅ Can use binary search (if sorted)
+✅ Simple to implement and use
+
+### Array Disadvantages
+❌ Fixed size (in traditional arrays)
+❌ Insertion/deletion is expensive
+❌ Wasted space if not full
+❌ Cannot easily insert in middle
+❌ Reallocation needed for resizing
+
+### Linked List Advantages
+✅ Dynamic size
+✅ Fast insertion/deletion at beginning
+✅ No wasted space
+✅ Easy to insert/delete anywhere (with pointer)
+✅ Can grow without reallocation
+
+### Linked List Disadvantages
+❌ No random access
+❌ Extra memory for pointers
+❌ Poor cache locality
+❌ Cannot use binary search
+❌ More complex to implement
+
+## Memory Visualization
+
+### Array Memory Layout:
+```
+Index:    0    1    2    3    4
+Value:  [10] [20] [30] [40] [50]
+Address: 100  104  108  112  116  (contiguous)
+```
+
+### Linked List Memory Layout:
+```
+Node 1: [10|*]  at address 200, points to 450
+         ↓
+Node 2: [20|*]  at address 450, points to 150
+         ↓
+Node 3: [30|*]  at address 150, points to 800
+         ↓
+Node 4: [40|*]  at address 800, points to 320
+         ↓
+Node 5: [50|null] at address 320
+
+(scattered in memory)
+```
+
+## Dart-Specific Notes
+
+In Dart:
+- `List` is the built-in dynamic array (can grow)
+- No built-in linked list (must implement)
+- `List` internally uses a growable array
+- For linked-list behavior, implement custom class
+
+```dart
+// Dart List (dynamic array)
+List<int> list = [1, 2, 3];
+list.add(4); // Can grow
+list[0]; // O(1) access
+
+// Custom Linked List
+class LinkedList {
+  // Must implement yourself
+}
+```
+
+## Performance Summary
+
+| Operation | Array | Linked List | Winner |
+|-----------|-------|-------------|---------|
+| Access by index | O(1) | O(n) | Array |
+| Insert at start | O(n) | O(1) | Linked List |
+| Insert at end | O(1)* | O(n) or O(1)** | Depends |
+| Delete at start | O(n) | O(1) | Linked List |
+| Search | O(n) | O(n) | Tie |
+| Memory usage | Less | More | Array |
+
+\* Assuming space available
+\** O(1) with tail pointer
+
+## Reference
+
+[Java67 - Array vs Linked List Differences](http://www.java67.com/2017/06/5-difference-between-array-and-linked.html)
