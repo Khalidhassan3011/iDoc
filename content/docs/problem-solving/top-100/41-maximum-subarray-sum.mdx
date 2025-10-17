@@ -3,335 +3,595 @@ title: 41. Maximum Subarray Sum (Kadane's Algorithm)
 description: Find the contiguous subarray with the largest sum and return its sum
 ---
 
-## Problem Statement
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { TranslatedText, LanguageSwitcher } from '@/components/LanguageSwitcher';
 
-Given an integer array, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
+<LanguageSwitcher />
 
-This is also known as the **Maximum Subarray Problem** and is efficiently solved using **Kadane's Algorithm**.
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
 
-## Examples
+<TranslatedText
+  en="Given an integer array, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum."
+  bn="একটি ইন্টিজার অ্যারে দেওয়া হলে, সবচেয়ে বড় যোগফল সহ পরপর সাবঅ্যারে (অন্তত একটি নম্বর সহ) খুঁজুন এবং এর যোগফল রিটার্ন করুন।"
+/>
 
-### Example 1
+<TranslatedText
+  en="This is also known as the **Maximum Subarray Problem** and is efficiently solved using **Kadane's Algorithm**."
+  bn="এটি **ম্যাক্সিমাম সাবঅ্যারে সমস্যা** নামেও পরিচিত এবং **কাদানের অ্যালগরিদম** ব্যবহার করে দক্ষভাবে সমাধান করা হয়।"
+/>
+
+### <TranslatedText en="Examples" bn="উদাহরণ" />
+
+#### <TranslatedText en="Example 1" bn="উদাহরণ ১" />
+
 ```
 Input: [-2, 1, -3, 4, -1, 2, 1, -5, 4]
 Output: 6
-Explanation: [4, -1, 2, 1] has the largest sum = 6
 ```
 
-### Example 2
+<TranslatedText
+  en="**Explanation:** [4, -1, 2, 1] has the largest sum = 6"
+  bn="**ব্যাখ্যা:** [4, -1, 2, 1] এর সবচেয়ে বড় যোগফল = 6"
+/>
+
+#### <TranslatedText en="Example 2" bn="উদাহরণ ২" />
+
 ```
 Input: [1]
 Output: 1
-Explanation: Single element is the maximum
 ```
 
-### Example 3
+<TranslatedText
+  en="**Explanation:** Single element is the maximum"
+  bn="**ব্যাখ্যা:** একক এলিমেন্টই সর্বোচ্চ"
+/>
+
+#### <TranslatedText en="Example 3" bn="উদাহরণ ৩" />
+
 ```
 Input: [5, 4, -1, 7, 8]
 Output: 23
-Explanation: Entire array has the largest sum = 23
 ```
 
-### Example 4
+<TranslatedText
+  en="**Explanation:** Entire array has the largest sum = 23"
+  bn="**ব্যাখ্যা:** সম্পূর্ণ অ্যারের সবচেয়ে বড় যোগফল = 23"
+/>
+
+#### <TranslatedText en="Example 4" bn="উদাহরণ ৪" />
+
 ```
 Input: [-1, -2, -3, -4]
 Output: -1
-Explanation: When all negative, return the largest (least negative)
 ```
 
-## Solution
+<TranslatedText
+  en="**Explanation:** When all negative, return the largest (least negative)"
+  bn="**ব্যাখ্যা:** সব নেগেটিভ হলে, সবচেয়ে বড় (কম নেগেটিভ) রিটার্ন করুন"
+/>
 
-### Approach 1: Kadane's Algorithm (Optimal)
+---
 
-The most efficient approach using dynamic programming.
+## <TranslatedText en="Solution Approaches" bn="সমাধানের পদ্ধতি" />
 
-**Time Complexity:** O(n)
-**Space Complexity:** O(1)
+### <TranslatedText en="Approach 1: Kadane's Algorithm (Optimal)" bn="পদ্ধতি ১: কাদানের অ্যালগরিদম (সর্বোত্তম)" />
 
-```dart
-int maxSubArray(List<int> nums) {
-  if (nums.isEmpty) return 0;
+<TranslatedText
+  en="The most efficient approach using dynamic programming. At each position, we decide whether to extend the current subarray or start fresh from the current element."
+  bn="ডায়নামিক প্রোগ্রামিং ব্যবহার করে সবচেয়ে দক্ষ পদ্ধতি। প্রতিটি অবস্থানে, আমরা সিদ্ধান্ত নিই যে বর্তমান সাবঅ্যারে বাড়াবো নাকি বর্তমান এলিমেন্ট থেকে নতুন শুরু করবো।"
+/>
 
-  int maxSum = nums[0];
-  int currentSum = nums[0];
+<TranslatedText
+  en="**Time Complexity:** O(n)"
+  bn="**সময় জটিলতা:** O(n)"
+/>
 
-  for (int i = 1; i < nums.length; i++) {
-    // Either extend the existing subarray or start a new one
-    currentSum = currentSum + nums[i] > nums[i]
-        ? currentSum + nums[i]
-        : nums[i];
+<TranslatedText
+  en="**Space Complexity:** O(1)"
+  bn="**স্থান জটিলতা:** O(1)"
+/>
 
-    // Update maximum sum found so far
-    maxSum = maxSum > currentSum ? maxSum : currentSum;
-  }
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
 
-  return maxSum;
-}
+int maxSubArray(vector<int>& nums) {
+    if (nums.empty()) return 0;
 
-void main() {
-  List<int> nums1 = [-2, 1, -3, 4, -1, 2, 1, -5, 4];
-  print('Array: $nums1');
-  print('Maximum subarray sum: ${maxSubArray(nums1)}');
+    int maxSum = nums[0];
+    int currentSum = nums[0];
 
-  List<int> nums2 = [5, 4, -1, 7, 8];
-  print('\nArray: $nums2');
-  print('Maximum subarray sum: ${maxSubArray(nums2)}');
+    for (int i = 1; i < nums.size(); i++) {
+        // Either extend the existing subarray or start a new one
+        currentSum = max(currentSum + nums[i], nums[i]);
 
-  List<int> nums3 = [-1, -2, -3, -4];
-  print('\nArray: $nums3');
-  print('Maximum subarray sum: ${maxSubArray(nums3)}');
-}
-```
-
-### Approach 2: Kadane's with Subarray Indices
-
-Return the actual subarray, not just the sum.
-
-**Time Complexity:** O(n)
-**Space Complexity:** O(1)
-
-```dart
-class SubarrayResult {
-  final int sum;
-  final int start;
-  final int end;
-
-  SubarrayResult(this.sum, this.start, this.end);
-
-  List<int> getSubarray(List<int> nums) {
-    return nums.sublist(start, end + 1);
-  }
-
-  @override
-  String toString() => 'Sum: $sum, Start: $start, End: $end';
-}
-
-SubarrayResult maxSubArrayWithIndices(List<int> nums) {
-  if (nums.isEmpty) return SubarrayResult(0, -1, -1);
-
-  int maxSum = nums[0];
-  int currentSum = nums[0];
-  int start = 0;
-  int end = 0;
-  int tempStart = 0;
-
-  for (int i = 1; i < nums.length; i++) {
-    if (currentSum + nums[i] > nums[i]) {
-      currentSum = currentSum + nums[i];
-    } else {
-      currentSum = nums[i];
-      tempStart = i; // New subarray starts here
+        // Update maximum sum found so far
+        maxSum = max(maxSum, currentSum);
     }
 
-    if (currentSum > maxSum) {
-      maxSum = currentSum;
-      start = tempStart;
-      end = i;
+    return maxSum;
+}
+
+int main() {
+    vector<int> nums1 = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+    cout << "Array: [-2, 1, -3, 4, -1, 2, 1, -5, 4]" << endl;
+    cout << "Maximum subarray sum: " << maxSubArray(nums1) << endl;
+
+    vector<int> nums2 = {5, 4, -1, 7, 8};
+    cout << "\nArray: [5, 4, -1, 7, 8]" << endl;
+    cout << "Maximum subarray sum: " << maxSubArray(nums2) << endl;
+
+    vector<int> nums3 = {-1, -2, -3, -4};
+    cout << "\nArray: [-1, -2, -3, -4]" << endl;
+    cout << "Maximum subarray sum: " << maxSubArray(nums3) << endl;
+
+    return 0;
+}
+```
+  </Tab>
+
+  <Tab value="Python">
+```python
+def max_sub_array(nums):
+    if not nums:
+        return 0
+
+    max_sum = nums[0]
+    current_sum = nums[0]
+
+    for i in range(1, len(nums)):
+        # Either extend the existing subarray or start a new one
+        current_sum = max(current_sum + nums[i], nums[i])
+
+        # Update maximum sum found so far
+        max_sum = max(max_sum, current_sum)
+
+    return max_sum
+
+# Test cases
+nums1 = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+print(f"Array: {nums1}")
+print(f"Maximum subarray sum: {max_sub_array(nums1)}")
+
+nums2 = [5, 4, -1, 7, 8]
+print(f"\nArray: {nums2}")
+print(f"Maximum subarray sum: {max_sub_array(nums2)}")
+
+nums3 = [-1, -2, -3, -4]
+print(f"\nArray: {nums3}")
+print(f"Maximum subarray sum: {max_sub_array(nums3)}")
+```
+  </Tab>
+
+  <Tab value="JavaScript">
+```javascript
+function maxSubArray(nums) {
+    if (nums.length === 0) return 0;
+
+    let maxSum = nums[0];
+    let currentSum = nums[0];
+
+    for (let i = 1; i < nums.length; i++) {
+        // Either extend the existing subarray or start a new one
+        currentSum = Math.max(currentSum + nums[i], nums[i]);
+
+        // Update maximum sum found so far
+        maxSum = Math.max(maxSum, currentSum);
     }
-  }
 
-  return SubarrayResult(maxSum, start, end);
+    return maxSum;
 }
 
-void main() {
-  List<int> nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4];
-  print('Array: $nums');
+// Test cases
+const nums1 = [-2, 1, -3, 4, -1, 2, 1, -5, 4];
+console.log(`Array: [${nums1}]`);
+console.log(`Maximum subarray sum: ${maxSubArray(nums1)}`);
 
-  var result = maxSubArrayWithIndices(nums);
-  print('Result: $result');
-  print('Subarray: ${result.getSubarray(nums)}');
-}
+const nums2 = [5, 4, -1, 7, 8];
+console.log(`\nArray: [${nums2}]`);
+console.log(`Maximum subarray sum: ${maxSubArray(nums2)}`);
+
+const nums3 = [-1, -2, -3, -4];
+console.log(`\nArray: [${nums3}]`);
+console.log(`Maximum subarray sum: ${maxSubArray(nums3)}`);
 ```
+  </Tab>
+</Tabs>
 
-### Approach 3: Brute Force (For Understanding)
+---
 
-Check all possible subarrays. Not efficient but helps understand the problem.
+### <TranslatedText en="Approach 2: Kadane's with Subarray Indices" bn="পদ্ধতি ২: সাবঅ্যারে ইনডেক্স সহ কাদানের" />
 
-**Time Complexity:** O(n²) or O(n³)
-**Space Complexity:** O(1)
+<TranslatedText
+  en="Return the actual subarray along with the sum, tracking the start and end indices of the maximum subarray."
+  bn="যোগফলের সাথে প্রকৃত সাবঅ্যারে রিটার্ন করুন, ম্যাক্সিমাম সাবঅ্যারের শুরু এবং শেষ ইনডেক্স ট্র্যাক করে।"
+/>
 
-```dart
-int maxSubArrayBruteForce(List<int> nums) {
-  if (nums.isEmpty) return 0;
+<TranslatedText
+  en="**Time Complexity:** O(n)"
+  bn="**সময় জটিলতা:** O(n)"
+/>
 
-  int maxSum = nums[0];
+<TranslatedText
+  en="**Space Complexity:** O(1)"
+  bn="**স্থান জটিলতা:** O(1)"
+/>
 
-  for (int i = 0; i < nums.length; i++) {
-    int currentSum = 0;
-    for (int j = i; j < nums.length; j++) {
-      currentSum += nums[j];
-      maxSum = maxSum > currentSum ? maxSum : currentSum;
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct SubarrayResult {
+    int sum;
+    int start;
+    int end;
+};
+
+SubarrayResult maxSubArrayWithIndices(vector<int>& nums) {
+    if (nums.empty()) return {0, -1, -1};
+
+    int maxSum = nums[0];
+    int currentSum = nums[0];
+    int start = 0;
+    int end = 0;
+    int tempStart = 0;
+
+    for (int i = 1; i < nums.size(); i++) {
+        if (currentSum + nums[i] > nums[i]) {
+            currentSum = currentSum + nums[i];
+        } else {
+            currentSum = nums[i];
+            tempStart = i; // New subarray starts here
+        }
+
+        if (currentSum > maxSum) {
+            maxSum = currentSum;
+            start = tempStart;
+            end = i;
+        }
     }
-  }
 
-  return maxSum;
+    return {maxSum, start, end};
 }
 
-void main() {
-  List<int> nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4];
-  print('Array: $nums');
-  print('Maximum subarray sum: ${maxSubArrayBruteForce(nums)}');
-}
-```
+int main() {
+    vector<int> nums = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+    cout << "Array: [-2, 1, -3, 4, -1, 2, 1, -5, 4]" << endl;
 
-### Approach 4: Divide and Conquer
+    auto result = maxSubArrayWithIndices(nums);
+    cout << "Sum: " << result.sum << endl;
+    cout << "Start: " << result.start << ", End: " << result.end << endl;
 
-Recursive approach that divides the array into halves.
+    cout << "Subarray: [";
+    for (int i = result.start; i <= result.end; i++) {
+        cout << nums[i];
+        if (i < result.end) cout << ", ";
+    }
+    cout << "]" << endl;
 
-**Time Complexity:** O(n log n)
-**Space Complexity:** O(log n) for recursion
-
-```dart
-int maxSubArrayDivideConquer(List<int> nums, int left, int right) {
-  if (left == right) return nums[left];
-
-  int mid = left + (right - left) ~/ 2;
-
-  // Maximum in left half
-  int leftMax = maxSubArrayDivideConquer(nums, left, mid);
-
-  // Maximum in right half
-  int rightMax = maxSubArrayDivideConquer(nums, mid + 1, right);
-
-  // Maximum crossing the middle
-  int crossMax = maxCrossingSum(nums, left, mid, right);
-
-  // Return maximum of three
-  return [leftMax, rightMax, crossMax].reduce((a, b) => a > b ? a : b);
-}
-
-int maxCrossingSum(List<int> nums, int left, int mid, int right) {
-  // Include elements on left of mid
-  int leftSum = nums[mid];
-  int sum = 0;
-  for (int i = mid; i >= left; i--) {
-    sum += nums[i];
-    leftSum = leftSum > sum ? leftSum : sum;
-  }
-
-  // Include elements on right of mid
-  int rightSum = nums[mid + 1];
-  sum = 0;
-  for (int i = mid + 1; i <= right; i++) {
-    sum += nums[i];
-    rightSum = rightSum > sum ? rightSum : sum;
-  }
-
-  return leftSum + rightSum;
-}
-
-void main() {
-  List<int> nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4];
-  print('Array: $nums');
-  print('Maximum subarray sum: ${maxSubArrayDivideConquer(nums, 0, nums.length - 1)}');
+    return 0;
 }
 ```
+  </Tab>
 
-### Approach 5: With Visual Explanation
+  <Tab value="Python">
+```python
+def max_sub_array_with_indices(nums):
+    if not nums:
+        return {'sum': 0, 'start': -1, 'end': -1}
 
-Add debug output to understand how Kadane's works.
+    max_sum = nums[0]
+    current_sum = nums[0]
+    start = 0
+    end = 0
+    temp_start = 0
 
-```dart
-int maxSubArrayDebug(List<int> nums) {
-  if (nums.isEmpty) return 0;
+    for i in range(1, len(nums)):
+        if current_sum + nums[i] > nums[i]:
+            current_sum = current_sum + nums[i]
+        else:
+            current_sum = nums[i]
+            temp_start = i  # New subarray starts here
 
-  int maxSum = nums[0];
-  int currentSum = nums[0];
+        if current_sum > max_sum:
+            max_sum = current_sum
+            start = temp_start
+            end = i
 
-  print('i\tnum\tcurrentSum\tmaxSum');
-  print('0\t${nums[0]}\t$currentSum\t\t$maxSum');
+    return {
+        'sum': max_sum,
+        'start': start,
+        'end': end,
+        'subarray': nums[start:end+1]
+    }
 
-  for (int i = 1; i < nums.length; i++) {
-    currentSum = currentSum + nums[i] > nums[i]
-        ? currentSum + nums[i]
-        : nums[i];
-    maxSum = maxSum > currentSum ? maxSum : currentSum;
+# Test
+nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+print(f"Array: {nums}")
 
-    print('$i\t${nums[i]}\t$currentSum\t\t$maxSum');
-  }
+result = max_sub_array_with_indices(nums)
+print(f"Sum: {result['sum']}")
+print(f"Start: {result['start']}, End: {result['end']}")
+print(f"Subarray: {result['subarray']}")
+```
+  </Tab>
 
-  return maxSum;
+  <Tab value="JavaScript">
+```javascript
+function maxSubArrayWithIndices(nums) {
+    if (nums.length === 0) return { sum: 0, start: -1, end: -1 };
+
+    let maxSum = nums[0];
+    let currentSum = nums[0];
+    let start = 0;
+    let end = 0;
+    let tempStart = 0;
+
+    for (let i = 1; i < nums.length; i++) {
+        if (currentSum + nums[i] > nums[i]) {
+            currentSum = currentSum + nums[i];
+        } else {
+            currentSum = nums[i];
+            tempStart = i; // New subarray starts here
+        }
+
+        if (currentSum > maxSum) {
+            maxSum = currentSum;
+            start = tempStart;
+            end = i;
+        }
+    }
+
+    return {
+        sum: maxSum,
+        start: start,
+        end: end,
+        subarray: nums.slice(start, end + 1)
+    };
 }
 
-void main() {
-  List<int> nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4];
-  print('Array: $nums\n');
-  int result = maxSubArrayDebug(nums);
-  print('\nMaximum subarray sum: $result');
-}
+// Test
+const nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4];
+console.log(`Array: [${nums}]`);
+
+const result = maxSubArrayWithIndices(nums);
+console.log(`Sum: ${result.sum}`);
+console.log(`Start: ${result.start}, End: ${result.end}`);
+console.log(`Subarray: [${result.subarray}]`);
+```
+  </Tab>
+</Tabs>
+
+---
+
+## <TranslatedText en="Algorithm Walkthrough" bn="অ্যালগরিদম বিশ্লেষণ" />
+
+<TranslatedText
+  en="Let's trace through **Kadane's Algorithm** with array `[-2, 1, -3, 4, -1, 2, 1, -5, 4]`:"
+  bn="চলুন **কাদানের অ্যালগরিদম** অ্যারে `[-2, 1, -3, 4, -1, 2, 1, -5, 4]` দিয়ে ট্রেস করি:"
+/>
+
+```
+Array: [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+
+Step 0 (Initialization):
+  i=0, nums[0]=-2
+  currentSum = -2
+  maxSum = -2
+
+Step 1: i=1, nums[1]=1
+  currentSum = max(-2 + 1, 1) = max(-1, 1) = 1
+  maxSum = max(-2, 1) = 1
+  Decision: Start fresh from 1
+
+Step 2: i=2, nums[2]=-3
+  currentSum = max(1 + (-3), -3) = max(-2, -3) = -2
+  maxSum = max(1, -2) = 1
+  Decision: Extend (even though negative)
+
+Step 3: i=3, nums[3]=4
+  currentSum = max(-2 + 4, 4) = max(2, 4) = 4
+  maxSum = max(1, 4) = 4
+  Decision: Start fresh from 4
+
+Step 4: i=4, nums[4]=-1
+  currentSum = max(4 + (-1), -1) = max(3, -1) = 3
+  maxSum = max(4, 3) = 4
+  Decision: Extend to [4, -1]
+
+Step 5: i=5, nums[5]=2
+  currentSum = max(3 + 2, 2) = max(5, 2) = 5
+  maxSum = max(4, 5) = 5
+  Decision: Extend to [4, -1, 2]
+
+Step 6: i=6, nums[6]=1
+  currentSum = max(5 + 1, 1) = max(6, 1) = 6
+  maxSum = max(5, 6) = 6 ✓
+  Decision: Extend to [4, -1, 2, 1]
+
+Step 7: i=7, nums[7]=-5
+  currentSum = max(6 + (-5), -5) = max(1, -5) = 1
+  maxSum = max(6, 1) = 6
+  Decision: Extend (but sum decreases)
+
+Step 8: i=8, nums[8]=4
+  currentSum = max(1 + 4, 4) = max(5, 4) = 5
+  maxSum = max(6, 5) = 6
+
+Final Result: 6
+Maximum Subarray: [4, -1, 2, 1]
 ```
 
-## How Kadane's Algorithm Works
+---
 
-The key insight: At each position, decide whether to:
-1. **Extend** the current subarray by adding the current element
-2. **Start fresh** from the current element
+## <TranslatedText en="How Kadane's Algorithm Works" bn="কাদানের অ্যালগরিদম কিভাবে কাজ করে" />
 
-Formula: `currentSum = max(currentSum + nums[i], nums[i])`
+<TranslatedText
+  en="The key insight: At each position, decide whether to:"
+  bn="মূল অন্তর্দৃষ্টি: প্রতিটি অবস্থানে, সিদ্ধান্ত নিন যে:"
+/>
 
-## Visualization
+<TranslatedText
+  en="1. **Extend** the current subarray by adding the current element"
+  bn="১. **বাড়ান** বর্তমান সাবঅ্যারে বর্তমান এলিমেন্ট যোগ করে"
+/>
 
-For array [-2, 1, -3, 4, -1, 2, 1, -5, 4]:
+<TranslatedText
+  en="2. **Start fresh** from the current element"
+  bn="২. **নতুন শুরু করুন** বর্তমান এলিমেন্ট থেকে"
+/>
 
-```
-Index:       0   1   2   3   4   5   6   7   8
-Array:     [-2,  1, -3,  4, -1,  2,  1, -5,  4]
-Current:   -2   1  -2   4   3   5   6   1   5
-Max:       -2   1   1   4   4   5   6   6   6
-                                    ↑
-                            Maximum subarray sum = 6
-                            Subarray: [4, -1, 2, 1]
-```
+<TranslatedText
+  en="**Formula:** `currentSum = max(currentSum + nums[i], nums[i])`"
+  bn="**সূত্র:** `currentSum = max(currentSum + nums[i], nums[i])`"
+/>
 
-## Comparison of Approaches
+<TranslatedText
+  en="If `currentSum + nums[i]` is less than `nums[i]`, it's better to start a new subarray from `nums[i]`."
+  bn="যদি `currentSum + nums[i]` এর চেয়ে `nums[i]` কম হয়, তাহলে `nums[i]` থেকে নতুন সাবঅ্যারে শুরু করা ভালো।"
+/>
 
-| Approach | Time | Space | Best For |
+---
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণি" />
+
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time Complexity" bn="সময় জটিলতা" /> | <TranslatedText en="Space Complexity" bn="স্থান জটিলতা" /> | <TranslatedText en="Best For" bn="সেরা জন্য" /> |
 |----------|------|-------|----------|
-| Kadane's Algorithm | O(n) | O(1) | Production code - optimal |
-| With Indices | O(n) | O(1) | When you need the subarray |
-| Brute Force | O(n²) | O(1) | Learning, small arrays |
-| Divide & Conquer | O(n log n) | O(log n) | Educational purposes |
+| <TranslatedText en="Kadane's Algorithm" bn="কাদানের অ্যালগরিদম" /> | O(n) | O(1) | <TranslatedText en="Production code - optimal" bn="প্রোডাকশন কোড - সর্বোত্তম" /> |
+| <TranslatedText en="With Indices" bn="ইনডেক্স সহ" /> | O(n) | O(1) | <TranslatedText en="When you need the subarray" bn="যখন সাবঅ্যারে প্রয়োজন" /> |
 
-## Key Points
+---
 
-1. **Kadane's Algorithm**: The standard optimal solution
-2. **Local vs Global**: Track both current and maximum sums
-3. **All Negative**: Works correctly when all numbers are negative
-4. **Single Element**: Handles single-element arrays correctly
-5. **Empty Array**: Need to handle as edge case
+## <TranslatedText en="Key Insights" bn="মূল পর্যবেক্ষণ" />
 
-## Common Pitfalls
+<TranslatedText
+  en="### Local vs Global Maximum"
+  bn="### স্থানীয় বনাম গ্লোবাল ম্যাক্সিমাম"
+/>
 
-- Not handling all-negative arrays correctly
-- Forgetting to update max sum
-- Starting with 0 instead of first element
-- Not considering single-element subarrays
-- Confusing current sum with maximum sum
+<TranslatedText
+  en="- **currentSum** - Local maximum: best sum ending at current position"
+  bn="- **currentSum** - স্থানীয় সর্বোচ্চ: বর্তমান অবস্থানে শেষ হওয়া সেরা যোগফল"
+/>
 
-## Test Cases
+<TranslatedText
+  en="- **maxSum** - Global maximum: best sum found so far in entire array"
+  bn="- **maxSum** - গ্লোবাল সর্বোচ্চ: সম্পূর্ণ অ্যারেতে এখন পর্যন্ত পাওয়া সেরা যোগফল"
+/>
 
-```dart
-void testMaxSubArray() {
-  assert(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]) == 6);
-  assert(maxSubArray([1]) == 1);
-  assert(maxSubArray([5, 4, -1, 7, 8]) == 23);
-  assert(maxSubArray([-1, -2, -3, -4]) == -1);
-  assert(maxSubArray([1, 2, 3, 4, 5]) == 15);
-  assert(maxSubArray([-5, -2, -8, -1]) == -1);
-  assert(maxSubArray([0, 0, 0]) == 0);
+<TranslatedText
+  en="### Why It Works for All-Negative Arrays"
+  bn="### কেন এটি সব-নেগেটিভ অ্যারের জন্য কাজ করে"
+/>
 
-  print('All tests passed!');
-}
-```
+<TranslatedText
+  en="When all numbers are negative, Kadane's algorithm correctly returns the largest (least negative) number because:"
+  bn="যখন সব নম্বর নেগেটিভ, কাদানের অ্যালগরিদম সঠিকভাবে সবচেয়ে বড় (কম নেগেটিভ) নম্বর রিটার্ন করে কারণ:"
+/>
 
-## Applications
+<TranslatedText
+  en="- We initialize with `nums[0]`, not 0"
+  bn="- আমরা `nums[0]` দিয়ে ইনিশিয়ালাইজ করি, 0 দিয়ে নয়"
+/>
 
-- Stock trading (maximum profit)
-- Image processing (brightest region)
-- Genomics (GC-rich regions)
-- Network flow analysis
-- Load balancing
+<TranslatedText
+  en="- Starting fresh is better than extending when extending makes sum worse"
+  bn="- নতুন শুরু করা ভালো যখন বাড়ালে যোগফল খারাপ হয়"
+/>
 
-## Reference
+---
 
-[StackOverflow - Maximum Subarray Problem](https://stackoverflow.com/questions/61013256/can-anyone-explain-this-maxium-subarray-problem)
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="### Questions to Ask the Interviewer"
+  bn="### ইন্টারভিউয়ারকে জিজ্ঞাসা করার প্রশ্ন"
+/>
+
+<TranslatedText
+  en="1. Can the array be empty? What should we return?"
+  bn="১. অ্যারে কি খালি হতে পারে? আমাদের কি রিটার্ন করা উচিত?"
+/>
+
+<TranslatedText
+  en="2. Do we need just the sum, or also the subarray itself?"
+  bn="২. আমাদের কি শুধু যোগফল প্রয়োজন, নাকি সাবঅ্যারেও?"
+/>
+
+<TranslatedText
+  en="3. Can the array contain all negative numbers?"
+  bn="৩. অ্যারেতে কি সব নেগেটিভ নম্বর থাকতে পারে?"
+/>
+
+<TranslatedText
+  en="4. Should we consider empty subarray as valid (sum = 0)?"
+  bn="৪. আমাদের কি খালি সাবঅ্যারেকে বৈধ হিসেবে বিবেচনা করা উচিত (যোগফল = 0)?"
+/>
+
+<TranslatedText
+  en="### Common Pitfalls"
+  bn="### সাধারণ সমস্যা"
+/>
+
+<TranslatedText
+  en="- Not handling all-negative arrays correctly"
+  bn="- সব-নেগেটিভ অ্যারে সঠিকভাবে হ্যান্ডল না করা"
+/>
+
+<TranslatedText
+  en="- Forgetting to update max sum"
+  bn="- সর্বোচ্চ যোগফল আপডেট করতে ভুলে যাওয়া"
+/>
+
+<TranslatedText
+  en="- Starting with 0 instead of first element"
+  bn="- প্রথম এলিমেন্টের পরিবর্তে 0 দিয়ে শুরু করা"
+/>
+
+<TranslatedText
+  en="- Confusing current sum with maximum sum"
+  bn="- বর্তমান যোগফলকে সর্বোচ্চ যোগফলের সাথে গুলিয়ে ফেলা"
+/>
+
+---
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="1. **Kadane's Algorithm** - The standard optimal solution with O(n) time and O(1) space"
+  bn="১. **কাদানের অ্যালগরিদম** - O(n) সময় এবং O(1) স্থান সহ স্ট্যান্ডার্ড সর্বোত্তম সমাধান"
+/>
+
+<TranslatedText
+  en="2. **Local vs Global** - Track both current sum (local) and maximum sum (global)"
+  bn="২. **স্থানীয় বনাম গ্লোবাল** - বর্তমান যোগফল (স্থানীয়) এবং সর্বোচ্চ যোগফল (গ্লোবাল) উভয় ট্র্যাক করুন"
+/>
+
+<TranslatedText
+  en="3. **Greedy Decision** - At each step, choose whether to extend or start fresh"
+  bn="৩. **গ্রিডি সিদ্ধান্ত** - প্রতিটি ধাপে, বাড়াবেন নাকি নতুন শুরু করবেন তা বেছে নিন"
+/>
+
+<TranslatedText
+  en="4. **All Negative** - Initialize with first element, not 0, to handle all-negative correctly"
+  bn="৪. **সব নেগেটিভ** - সব-নেগেটিভ সঠিকভাবে হ্যান্ডল করতে 0 নয়, প্রথম এলিমেন্ট দিয়ে ইনিশিয়ালাইজ করুন"
+/>
+
+<TranslatedText
+  en="5. **Applications** - Used in stock trading, image processing, genomics, and network analysis"
+  bn="৫. **প্রয়োগ** - স্টক ট্রেডিং, ইমেজ প্রসেসিং, জিনোমিক্স এবং নেটওয়ার্ক বিশ্লেষণে ব্যবহৃত"
+/>
+
+---
+
+## <TranslatedText en="Reference" bn="রেফারেন্স" />
+
+- [StackOverflow - Maximum Subarray Problem](https://stackoverflow.com/questions/61013256/can-anyone-explain-this-maxium-subarray-problem)

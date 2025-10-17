@@ -3,368 +3,631 @@ title: 40. Quicksort Algorithm In Place
 description: How to sort an integer array in place using the quicksort algorithm
 ---
 
-## Problem Statement
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { TranslatedText, LanguageSwitcher } from '@/components/LanguageSwitcher';
 
-Implement the quicksort algorithm to sort an integer array in place. Quicksort is a divide-and-conquer algorithm that picks a pivot element and partitions the array around the pivot.
+<LanguageSwitcher />
 
-## Algorithm Overview
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
 
-1. **Choose a pivot** element from the array
-2. **Partition** the array so that:
-   - Elements less than pivot are on the left
-   - Elements greater than pivot are on the right
-3. **Recursively** apply the same process to the left and right subarrays
+<TranslatedText
+  en="Implement the quicksort algorithm to sort an integer array in place. Quicksort is a divide-and-conquer algorithm that picks a pivot element and partitions the array around the pivot."
+  bn="একটি ইন্টিজার অ্যারে ইন-প্লেস সাজানোর জন্য কুইকসর্ট অ্যালগরিদম ইমপ্লিমেন্ট করুন। কুইকসর্ট একটি ডিভাইড-অ্যান্ড-কনকার অ্যালগরিদম যা একটি পিভট এলিমেন্ট বেছে নেয় এবং পিভটের চারপাশে অ্যারে পার্টিশন করে।"
+/>
 
-## Examples
+### <TranslatedText en="Algorithm Overview" bn="অ্যালগরিদম পর্যালোচনা" />
 
-### Example 1
+<TranslatedText
+  en="1. **Choose a pivot** element from the array"
+  bn="১. **একটি পিভট বেছে নিন** অ্যারে থেকে একটি এলিমেন্ট"
+/>
+
+<TranslatedText
+  en="2. **Partition** the array so that:"
+  bn="২. **পার্টিশন করুন** অ্যারে যাতে:"
+/>
+
+<TranslatedText
+  en="   - Elements less than pivot are on the left"
+  bn="   - পিভটের চেয়ে ছোট এলিমেন্টগুলো বামে থাকে"
+/>
+
+<TranslatedText
+  en="   - Elements greater than pivot are on the right"
+  bn="   - পিভটের চেয়ে বড় এলিমেন্টগুলো ডানে থাকে"
+/>
+
+<TranslatedText
+  en="3. **Recursively** apply the same process to the left and right subarrays"
+  bn="৩. **পুনরাবৃত্তিমূলকভাবে** বাম এবং ডান সাবঅ্যারেতে একই প্রক্রিয়া প্রয়োগ করুন"
+/>
+
+### <TranslatedText en="Examples" bn="উদাহরণ" />
+
+#### <TranslatedText en="Example 1" bn="উদাহরণ ১" />
+
 ```
 Input: [64, 34, 25, 12, 22, 11, 90]
 Output: [11, 12, 22, 25, 34, 64, 90]
 ```
 
-### Example 2
+#### <TranslatedText en="Example 2" bn="উদাহরণ ২" />
+
 ```
 Input: [5, 2, 8, 1, 9]
 Output: [1, 2, 5, 8, 9]
 ```
 
-### Example 3
+#### <TranslatedText en="Example 3" bn="উদাহরণ ৩" />
+
 ```
 Input: [3, 3, 1, 2, 3]
 Output: [1, 2, 3, 3, 3]
 ```
 
-## Solution
+---
 
-### Approach 1: Classic Quicksort with Last Element as Pivot
+## <TranslatedText en="Solution Approaches" bn="সমাধানের পদ্ধতি" />
 
-**Time Complexity:**
-- Average: O(n log n)
-- Worst: O(n²) when array is already sorted
-**Space Complexity:** O(log n) for recursion stack
+### <TranslatedText en="Approach 1: Classic Quicksort with Last Element as Pivot" bn="পদ্ধতি ১: শেষ এলিমেন্টকে পিভট হিসেবে ক্লাসিক কুইকসর্ট" />
 
-```dart
-void quickSort(List<int> arr, int low, int high) {
-  if (low < high) {
-    // Partition the array and get pivot index
-    int pivotIndex = partition(arr, low, high);
+<TranslatedText
+  en="The classic quicksort implementation that chooses the last element as the pivot. This is simple and effective for most cases."
+  bn="ক্লাসিক কুইকসর্ট ইমপ্লিমেন্টেশন যা শেষ এলিমেন্টকে পিভট হিসেবে বেছে নেয়। এটি বেশিরভাগ ক্ষেত্রে সহজ এবং কার্যকর।"
+/>
 
-    // Recursively sort elements before and after partition
-    quickSort(arr, low, pivotIndex - 1);
-    quickSort(arr, pivotIndex + 1, high);
-  }
-}
+<TranslatedText
+  en="**Time Complexity:**"
+  bn="**সময় জটিলতা:**"
+/>
 
-int partition(List<int> arr, int low, int high) {
-  // Choose the last element as pivot
-  int pivot = arr[high];
-  int i = low - 1; // Index of smaller element
+<TranslatedText
+  en="- Average: O(n log n)"
+  bn="- গড়: O(n log n)"
+/>
 
-  for (int j = low; j < high; j++) {
-    // If current element is less than or equal to pivot
-    if (arr[j] <= pivot) {
-      i++;
-      // Swap arr[i] and arr[j]
-      int temp = arr[i];
-      arr[i] = arr[j];
-      arr[j] = temp;
+<TranslatedText
+  en="- Worst: O(n²) when array is already sorted"
+  bn="- সবচেয়ে খারাপ: O(n²) যখন অ্যারে ইতিমধ্যে সাজানো"
+/>
+
+<TranslatedText
+  en="**Space Complexity:** O(log n) for recursion stack"
+  bn="**স্থান জটিলতা:** O(log n) রিকার্শন স্ট্যাকের জন্য"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int partition(vector<int>& arr, int low, int high) {
+    // Choose the last element as pivot
+    int pivot = arr[high];
+    int i = low - 1; // Index of smaller element
+
+    for (int j = low; j < high; j++) {
+        // If current element is less than or equal to pivot
+        if (arr[j] <= pivot) {
+            i++;
+            // Swap arr[i] and arr[j]
+            swap(arr[i], arr[j]);
+        }
     }
-  }
 
-  // Swap arr[i+1] and arr[high] (put pivot in correct position)
-  int temp = arr[i + 1];
-  arr[i + 1] = arr[high];
-  arr[high] = temp;
+    // Swap arr[i+1] and arr[high] (put pivot in correct position)
+    swap(arr[i + 1], arr[high]);
 
-  return i + 1;
+    return i + 1;
 }
 
-void main() {
-  List<int> arr = [64, 34, 25, 12, 22, 11, 90];
-  print('Original array: $arr');
-
-  quickSort(arr, 0, arr.length - 1);
-  print('Sorted array: $arr');
-
-  // Test with duplicates
-  List<int> arr2 = [3, 3, 1, 2, 3];
-  print('\nOriginal array: $arr2');
-  quickSort(arr2, 0, arr2.length - 1);
-  print('Sorted array: $arr2');
-}
-```
-
-### Approach 2: Quicksort with Random Pivot
-
-Choosing a random pivot helps avoid worst-case O(n²) for sorted arrays.
-
-**Time Complexity:**
-- Average: O(n log n)
-- Worst: O(n²) (unlikely with random pivot)
-**Space Complexity:** O(log n)
-
-```dart
-import 'dart:math';
-
-void quickSortRandom(List<int> arr, int low, int high) {
-  if (low < high) {
-    int pivotIndex = partitionRandom(arr, low, high);
-    quickSortRandom(arr, low, pivotIndex - 1);
-    quickSortRandom(arr, pivotIndex + 1, high);
-  }
-}
-
-int partitionRandom(List<int> arr, int low, int high) {
-  // Choose random pivot and swap with last element
-  Random random = Random();
-  int randomIndex = low + random.nextInt(high - low + 1);
-
-  // Swap random element with last element
-  int temp = arr[randomIndex];
-  arr[randomIndex] = arr[high];
-  arr[high] = temp;
-
-  // Now use standard partition with last element as pivot
-  return partition(arr, low, high);
-}
-
-void main() {
-  List<int> arr = [64, 34, 25, 12, 22, 11, 90];
-  print('Original array: $arr');
-
-  quickSortRandom(arr, 0, arr.length - 1);
-  print('Sorted array: $arr');
-}
-```
-
-### Approach 3: Quicksort with Median-of-Three Pivot
-
-Choose the median of first, middle, and last elements as pivot.
-
-**Time Complexity:** O(n log n) average, better pivot selection
-**Space Complexity:** O(log n)
-
-```dart
-void quickSortMedian(List<int> arr, int low, int high) {
-  if (low < high) {
-    int pivotIndex = partitionMedian(arr, low, high);
-    quickSortMedian(arr, low, pivotIndex - 1);
-    quickSortMedian(arr, pivotIndex + 1, high);
-  }
-}
-
-int medianOfThree(List<int> arr, int low, int high) {
-  int mid = low + (high - low) ~/ 2;
-
-  // Sort low, mid, high
-  if (arr[low] > arr[mid]) {
-    swap(arr, low, mid);
-  }
-  if (arr[low] > arr[high]) {
-    swap(arr, low, high);
-  }
-  if (arr[mid] > arr[high]) {
-    swap(arr, mid, high);
-  }
-
-  // Place median at high-1 position
-  swap(arr, mid, high);
-  return high;
-}
-
-void swap(List<int> arr, int i, int j) {
-  int temp = arr[i];
-  arr[i] = arr[j];
-  arr[j] = temp;
-}
-
-int partitionMedian(List<int> arr, int low, int high) {
-  medianOfThree(arr, low, high);
-  return partition(arr, low, high);
-}
-
-void main() {
-  List<int> arr = [64, 34, 25, 12, 22, 11, 90];
-  print('Original array: $arr');
-
-  quickSortMedian(arr, 0, arr.length - 1);
-  print('Sorted array: $arr');
-}
-```
-
-### Approach 4: Three-Way Quicksort (Dutch National Flag)
-
-Efficient for arrays with many duplicate elements.
-
-**Time Complexity:** O(n log n), better with duplicates
-**Space Complexity:** O(log n)
-
-```dart
-void quickSort3Way(List<int> arr, int low, int high) {
-  if (low >= high) return;
-
-  // Partition into three parts
-  var result = partition3Way(arr, low, high);
-  int lt = result[0]; // Less than region end
-  int gt = result[1]; // Greater than region start
-
-  quickSort3Way(arr, low, lt);
-  quickSort3Way(arr, gt, high);
-}
-
-List<int> partition3Way(List<int> arr, int low, int high) {
-  int pivot = arr[low];
-  int lt = low;      // arr[low..lt-1] < pivot
-  int i = low + 1;   // arr[lt..i-1] == pivot
-  int gt = high;     // arr[gt+1..high] > pivot
-
-  while (i <= gt) {
-    if (arr[i] < pivot) {
-      swap(arr, lt++, i++);
-    } else if (arr[i] > pivot) {
-      swap(arr, i, gt--);
-    } else {
-      i++;
-    }
-  }
-
-  return [lt, gt + 1];
-}
-
-void main() {
-  List<int> arr = [3, 5, 2, 3, 8, 3, 1, 3, 9];
-  print('Original array: $arr');
-
-  quickSort3Way(arr, 0, arr.length - 1);
-  print('Sorted array: $arr');
-}
-```
-
-### Approach 5: Iterative Quicksort (Without Recursion)
-
-Uses a stack to avoid recursion.
-
-**Time Complexity:** O(n log n) average
-**Space Complexity:** O(log n) for stack
-
-```dart
-void quickSortIterative(List<int> arr) {
-  if (arr.length <= 1) return;
-
-  List<int> stack = [];
-  stack.add(0);
-  stack.add(arr.length - 1);
-
-  while (stack.isNotEmpty) {
-    int high = stack.removeLast();
-    int low = stack.removeLast();
-
+void quickSort(vector<int>& arr, int low, int high) {
     if (low < high) {
-      int pivotIndex = partition(arr, low, high);
+        // Partition the array and get pivot index
+        int pivotIndex = partition(arr, low, high);
 
-      // Push left subarray bounds
-      stack.add(low);
-      stack.add(pivotIndex - 1);
-
-      // Push right subarray bounds
-      stack.add(pivotIndex + 1);
-      stack.add(high);
+        // Recursively sort elements before and after partition
+        quickSort(arr, low, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, high);
     }
-  }
 }
 
-void main() {
-  List<int> arr = [64, 34, 25, 12, 22, 11, 90];
-  print('Original array: $arr');
+int main() {
+    vector<int> arr = {64, 34, 25, 12, 22, 11, 90};
+    cout << "Original array: ";
+    for (int num : arr) cout << num << " ";
+    cout << endl;
 
-  quickSortIterative(arr);
-  print('Sorted array: $arr');
+    quickSort(arr, 0, arr.size() - 1);
+
+    cout << "Sorted array: ";
+    for (int num : arr) cout << num << " ";
+    cout << endl;
+
+    // Test with duplicates
+    vector<int> arr2 = {3, 3, 1, 2, 3};
+    cout << "\nOriginal array: ";
+    for (int num : arr2) cout << num << " ";
+    cout << endl;
+
+    quickSort(arr2, 0, arr2.size() - 1);
+
+    cout << "Sorted array: ";
+    for (int num : arr2) cout << num << " ";
+    cout << endl;
+
+    return 0;
 }
 ```
+  </Tab>
 
-## Comparison of Approaches
+  <Tab value="Python">
+```python
+def partition(arr, low, high):
+    # Choose the last element as pivot
+    pivot = arr[high]
+    i = low - 1  # Index of smaller element
 
-| Approach | Avg Time | Worst Time | Best For |
+    for j in range(low, high):
+        # If current element is less than or equal to pivot
+        if arr[j] <= pivot:
+            i += 1
+            # Swap arr[i] and arr[j]
+            arr[i], arr[j] = arr[j], arr[i]
+
+    # Swap arr[i+1] and arr[high] (put pivot in correct position)
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+
+    return i + 1
+
+def quick_sort(arr, low, high):
+    if low < high:
+        # Partition the array and get pivot index
+        pivot_index = partition(arr, low, high)
+
+        # Recursively sort elements before and after partition
+        quick_sort(arr, low, pivot_index - 1)
+        quick_sort(arr, pivot_index + 1, high)
+
+# Test
+arr = [64, 34, 25, 12, 22, 11, 90]
+print(f"Original array: {arr}")
+
+quick_sort(arr, 0, len(arr) - 1)
+print(f"Sorted array: {arr}")
+
+# Test with duplicates
+arr2 = [3, 3, 1, 2, 3]
+print(f"\nOriginal array: {arr2}")
+quick_sort(arr2, 0, len(arr2) - 1)
+print(f"Sorted array: {arr2}")
+```
+  </Tab>
+
+  <Tab value="JavaScript">
+```javascript
+function partition(arr, low, high) {
+    // Choose the last element as pivot
+    const pivot = arr[high];
+    let i = low - 1; // Index of smaller element
+
+    for (let j = low; j < high; j++) {
+        // If current element is less than or equal to pivot
+        if (arr[j] <= pivot) {
+            i++;
+            // Swap arr[i] and arr[j]
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+    }
+
+    // Swap arr[i+1] and arr[high] (put pivot in correct position)
+    [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+
+    return i + 1;
+}
+
+function quickSort(arr, low, high) {
+    if (low < high) {
+        // Partition the array and get pivot index
+        const pivotIndex = partition(arr, low, high);
+
+        // Recursively sort elements before and after partition
+        quickSort(arr, low, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, high);
+    }
+}
+
+// Test
+const arr = [64, 34, 25, 12, 22, 11, 90];
+console.log(`Original array: [${arr}]`);
+
+quickSort(arr, 0, arr.length - 1);
+console.log(`Sorted array: [${arr}]`);
+
+// Test with duplicates
+const arr2 = [3, 3, 1, 2, 3];
+console.log(`\nOriginal array: [${arr2}]`);
+quickSort(arr2, 0, arr2.length - 1);
+console.log(`Sorted array: [${arr2}]`);
+```
+  </Tab>
+</Tabs>
+
+---
+
+### <TranslatedText en="Approach 2: Three-Way Quicksort (Dutch National Flag)" bn="পদ্ধতি ২: থ্রি-ওয়ে কুইকসর্ট (ডাচ ন্যাশনাল ফ্ল্যাগ)" />
+
+<TranslatedText
+  en="Efficient for arrays with many duplicate elements. Partitions the array into three sections: less than, equal to, and greater than the pivot."
+  bn="অনেক ডুপ্লিকেট এলিমেন্ট সহ অ্যারের জন্য দক্ষ। অ্যারেকে তিনটি বিভাগে পার্টিশন করে: পিভটের চেয়ে ছোট, সমান এবং বড়।"
+/>
+
+<TranslatedText
+  en="**Time Complexity:** O(n log n), better with duplicates"
+  bn="**সময় জটিলতা:** O(n log n), ডুপ্লিকেটের সাথে আরও ভালো"
+/>
+
+<TranslatedText
+  en="**Space Complexity:** O(log n)"
+  bn="**স্থান জটিলতা:** O(log n)"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+pair<int, int> partition3Way(vector<int>& arr, int low, int high) {
+    int pivot = arr[low];
+    int lt = low;      // arr[low..lt-1] < pivot
+    int i = low + 1;   // arr[lt..i-1] == pivot
+    int gt = high;     // arr[gt+1..high] > pivot
+
+    while (i <= gt) {
+        if (arr[i] < pivot) {
+            swap(arr[lt++], arr[i++]);
+        } else if (arr[i] > pivot) {
+            swap(arr[i], arr[gt--]);
+        } else {
+            i++;
+        }
+    }
+
+    return {lt, gt + 1};
+}
+
+void quickSort3Way(vector<int>& arr, int low, int high) {
+    if (low >= high) return;
+
+    // Partition into three parts
+    auto [lt, gt] = partition3Way(arr, low, high);
+
+    quickSort3Way(arr, low, lt);
+    quickSort3Way(arr, gt, high);
+}
+
+int main() {
+    vector<int> arr = {3, 5, 2, 3, 8, 3, 1, 3, 9};
+    cout << "Original array: ";
+    for (int num : arr) cout << num << " ";
+    cout << endl;
+
+    quickSort3Way(arr, 0, arr.size() - 1);
+
+    cout << "Sorted array: ";
+    for (int num : arr) cout << num << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+  </Tab>
+
+  <Tab value="Python">
+```python
+def partition_3way(arr, low, high):
+    pivot = arr[low]
+    lt = low       # arr[low..lt-1] < pivot
+    i = low + 1    # arr[lt..i-1] == pivot
+    gt = high      # arr[gt+1..high] > pivot
+
+    while i <= gt:
+        if arr[i] < pivot:
+            arr[lt], arr[i] = arr[i], arr[lt]
+            lt += 1
+            i += 1
+        elif arr[i] > pivot:
+            arr[i], arr[gt] = arr[gt], arr[i]
+            gt -= 1
+        else:
+            i += 1
+
+    return lt, gt + 1
+
+def quick_sort_3way(arr, low, high):
+    if low >= high:
+        return
+
+    # Partition into three parts
+    lt, gt = partition_3way(arr, low, high)
+
+    quick_sort_3way(arr, low, lt)
+    quick_sort_3way(arr, gt, high)
+
+# Test
+arr = [3, 5, 2, 3, 8, 3, 1, 3, 9]
+print(f"Original array: {arr}")
+
+quick_sort_3way(arr, 0, len(arr) - 1)
+print(f"Sorted array: {arr}")
+```
+  </Tab>
+
+  <Tab value="JavaScript">
+```javascript
+function partition3Way(arr, low, high) {
+    const pivot = arr[low];
+    let lt = low;      // arr[low..lt-1] < pivot
+    let i = low + 1;   // arr[lt..i-1] == pivot
+    let gt = high;     // arr[gt+1..high] > pivot
+
+    while (i <= gt) {
+        if (arr[i] < pivot) {
+            [arr[lt], arr[i]] = [arr[i], arr[lt]];
+            lt++;
+            i++;
+        } else if (arr[i] > pivot) {
+            [arr[i], arr[gt]] = [arr[gt], arr[i]];
+            gt--;
+        } else {
+            i++;
+        }
+    }
+
+    return [lt, gt + 1];
+}
+
+function quickSort3Way(arr, low, high) {
+    if (low >= high) return;
+
+    // Partition into three parts
+    const [lt, gt] = partition3Way(arr, low, high);
+
+    quickSort3Way(arr, low, lt);
+    quickSort3Way(arr, gt, high);
+}
+
+// Test
+const arr = [3, 5, 2, 3, 8, 3, 1, 3, 9];
+console.log(`Original array: [${arr}]`);
+
+quickSort3Way(arr, 0, arr.length - 1);
+console.log(`Sorted array: [${arr}]`);
+```
+  </Tab>
+</Tabs>
+
+---
+
+## <TranslatedText en="Algorithm Walkthrough" bn="অ্যালগরিদম বিশ্লেষণ" />
+
+<TranslatedText
+  en="Let's trace through the partition process with array `[64, 34, 25, 12, 22, 11, 90]` using last element (90) as pivot:"
+  bn="চলুন অ্যারে `[64, 34, 25, 12, 22, 11, 90]` দিয়ে পার্টিশন প্রক্রিয়া ট্রেস করি শেষ এলিমেন্ট (90) পিভট হিসেবে ব্যবহার করে:"
+/>
+
+```
+Initial array: [64, 34, 25, 12, 22, 11, 90]
+Pivot = 90 (last element)
+i = -1 (will track position for next element ≤ pivot)
+
+Step 1: j=0, arr[0]=64 ≤ 90? YES
+  i++ → i=0
+  Swap arr[0] with arr[0]: [64, 34, 25, 12, 22, 11, 90]
+
+Step 2: j=1, arr[1]=34 ≤ 90? YES
+  i++ → i=1
+  Swap arr[1] with arr[1]: [64, 34, 25, 12, 22, 11, 90]
+
+Step 3: j=2, arr[2]=25 ≤ 90? YES
+  i++ → i=2
+  Swap arr[2] with arr[2]: [64, 34, 25, 12, 22, 11, 90]
+
+Step 4: j=3, arr[3]=12 ≤ 90? YES
+  i++ → i=3
+  Swap arr[3] with arr[3]: [64, 34, 25, 12, 22, 11, 90]
+
+Step 5: j=4, arr[4]=22 ≤ 90? YES
+  i++ → i=4
+  Swap arr[4] with arr[4]: [64, 34, 25, 12, 22, 11, 90]
+
+Step 6: j=5, arr[5]=11 ≤ 90? YES
+  i++ → i=5
+  Swap arr[5] with arr[5]: [64, 34, 25, 12, 22, 11, 90]
+
+After loop: i=5
+Place pivot at position i+1=6:
+Swap arr[6] with arr[6]: [64, 34, 25, 12, 22, 11, 90]
+
+Result: All elements ≤ 90 on left, pivot at index 6
+
+Next: Recursively sort [64, 34, 25, 12, 22, 11] and []
+```
+
+---
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণি" />
+
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Avg Time" bn="গড় সময়" /> | <TranslatedText en="Worst Time" bn="সবচেয়ে খারাপ সময়" /> | <TranslatedText en="Best For" bn="সেরা জন্য" /> |
 |----------|----------|------------|----------|
-| Last Element Pivot | O(n log n) | O(n²) | General use, simple |
-| Random Pivot | O(n log n) | O(n²)* | Avoid worst case |
-| Median-of-Three | O(n log n) | O(n log n)* | Better pivot choice |
-| Three-Way | O(n log n) | O(n log n) | Many duplicates |
-| Iterative | O(n log n) | O(n²) | Avoid recursion limits |
+| <TranslatedText en="Last Element Pivot" bn="শেষ এলিমেন্ট পিভট" /> | O(n log n) | O(n²) | <TranslatedText en="General use, simple" bn="সাধারণ ব্যবহার, সহজ" /> |
+| <TranslatedText en="Three-Way" bn="থ্রি-ওয়ে" /> | O(n log n) | O(n log n) | <TranslatedText en="Many duplicates" bn="অনেক ডুপ্লিকেট" /> |
 
-\* Less likely to hit worst case
+---
 
-## Key Characteristics of Quicksort
+## <TranslatedText en="Key Insights" bn="মূল পর্যবেক্ষণ" />
 
-**Advantages:**
-- Fast average-case performance O(n log n)
-- In-place sorting (no extra array needed)
-- Cache-friendly
-- Good for large datasets
+<TranslatedText
+  en="### Key Characteristics of Quicksort"
+  bn="### কুইকসর্টের মূল বৈশিষ্ট্য"
+/>
 
-**Disadvantages:**
-- O(n²) worst case (already sorted with bad pivot)
-- Not stable (relative order of equal elements may change)
-- Recursive implementation uses stack space
+<TranslatedText
+  en="**Advantages:**"
+  bn="**সুবিধা:**"
+/>
 
-## Partition Visualization
+<TranslatedText
+  en="- Fast average-case performance O(n log n)"
+  bn="- দ্রুত গড়-ক্ষেত্র পারফরম্যান্স O(n log n)"
+/>
 
-For array [64, 34, 25, 12, 22, 11, 90] with pivot = 90:
+<TranslatedText
+  en="- In-place sorting (no extra array needed)"
+  bn="- ইন-প্লেস সাজানো (কোনো অতিরিক্ত অ্যারে প্রয়োজন নেই)"
+/>
 
-```
-Initial: [64, 34, 25, 12, 22, 11, 90]
+<TranslatedText
+  en="- Cache-friendly (good memory locality)"
+  bn="- ক্যাশ-বান্ধব (ভালো মেমরি লোকালিটি)"
+/>
 
-After partition:
-[64, 34, 25, 12, 22, 11] [90] []
-         ↓                pivot  ↓
-    (less than 90)              (greater than 90)
-```
+<TranslatedText
+  en="- Good for large datasets"
+  bn="- বড় ডেটাসেটের জন্য ভালো"
+/>
 
-## Common Pitfalls
+<TranslatedText
+  en="**Disadvantages:**"
+  bn="**অসুবিধা:**"
+/>
 
-- Choosing bad pivot (first/last element in sorted array)
-- Not handling duplicates efficiently
-- Off-by-one errors in partition logic
-- Stack overflow with deep recursion on large arrays
-- Not checking for empty or single-element arrays
+<TranslatedText
+  en="- O(n²) worst case (already sorted with bad pivot)"
+  bn="- O(n²) সবচেয়ে খারাপ ক্ষেত্র (খারাপ পিভট দিয়ে ইতিমধ্যে সাজানো)"
+/>
 
-## Test Cases
+<TranslatedText
+  en="- Not stable (relative order of equal elements may change)"
+  bn="- স্থিতিশীল নয় (সমান এলিমেন্টের আপেক্ষিক ক্রম পরিবর্তন হতে পারে)"
+/>
 
-```dart
-void testQuickSort() {
-  // Test case 1: Random array
-  List<int> arr1 = [64, 34, 25, 12, 22, 11, 90];
-  quickSort(arr1, 0, arr1.length - 1);
-  print('Test 1: $arr1');
+<TranslatedText
+  en="- Recursive implementation uses stack space"
+  bn="- পুনরাবৃত্তিমূলক ইমপ্লিমেন্টেশন স্ট্যাক স্পেস ব্যবহার করে"
+/>
 
-  // Test case 2: Already sorted
-  List<int> arr2 = [1, 2, 3, 4, 5];
-  quickSort(arr2, 0, arr2.length - 1);
-  print('Test 2: $arr2');
+### <TranslatedText en="Partition Strategy" bn="পার্টিশন কৌশল" />
 
-  // Test case 3: Reverse sorted
-  List<int> arr3 = [5, 4, 3, 2, 1];
-  quickSort(arr3, 0, arr3.length - 1);
-  print('Test 3: $arr3');
+<TranslatedText
+  en="The partition function is the heart of quicksort. It rearranges elements so that:"
+  bn="পার্টিশন ফাংশন কুইকসর্টের হৃদয়। এটি এলিমেন্টগুলো পুনর্বিন্যাস করে যাতে:"
+/>
 
-  // Test case 4: With duplicates
-  List<int> arr4 = [3, 3, 1, 2, 3];
-  quickSort(arr4, 0, arr4.length - 1);
-  print('Test 4: $arr4');
+<TranslatedText
+  en="- All elements **less than** the pivot come before it"
+  bn="- পিভটের **চেয়ে ছোট** সব এলিমেন্ট এর আগে আসে"
+/>
 
-  // Test case 5: Single element
-  List<int> arr5 = [1];
-  quickSort(arr5, 0, arr5.length - 1);
-  print('Test 5: $arr5');
+<TranslatedText
+  en="- All elements **greater than** the pivot come after it"
+  bn="- পিভটের **চেয়ে বড়** সব এলিমেন্ট এর পরে আসে"
+/>
 
-  // Test case 6: Empty array
-  List<int> arr6 = [];
-  quickSort(arr6, 0, arr6.length - 1);
-  print('Test 6: $arr6');
-}
-```
+<TranslatedText
+  en="- The pivot is in its **final sorted position**"
+  bn="- পিভট তার **চূড়ান্ত সাজানো অবস্থানে** থাকে"
+/>
 
-## Reference
+---
 
-[JavaRevisited - Quicksort Algorithm](http://javarevisited.blogspot.com/2014/08/quicksort-sorting-algorithm-in-java-in-place-example.html)
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="### Questions to Ask the Interviewer"
+  bn="### ইন্টারভিউয়ারকে জিজ্ঞাসা করার প্রশ্ন"
+/>
+
+<TranslatedText
+  en="1. Should the sorting be in-place or can we use extra space?"
+  bn="১. সাজানো কি ইন-প্লেস হওয়া উচিত নাকি আমরা অতিরিক্ত স্থান ব্যবহার করতে পারি?"
+/>
+
+<TranslatedText
+  en="2. Does the array contain many duplicate elements?"
+  bn="২. অ্যারেতে কি অনেক ডুপ্লিকেট এলিমেন্ট আছে?"
+/>
+
+<TranslatedText
+  en="3. What is the expected size of the input array?"
+  bn="৩. ইনপুট অ্যারের প্রত্যাশিত সাইজ কত?"
+/>
+
+<TranslatedText
+  en="4. Do we need a stable sort?"
+  bn="৪. আমাদের কি একটি স্থিতিশীল সর্ট প্রয়োজন?"
+/>
+
+<TranslatedText
+  en="### Common Pitfalls"
+  bn="### সাধারণ সমস্যা"
+/>
+
+<TranslatedText
+  en="- Choosing bad pivot (first/last element in sorted array)"
+  bn="- খারাপ পিভট বেছে নেওয়া (সাজানো অ্যারেতে প্রথম/শেষ এলিমেন্ট)"
+/>
+
+<TranslatedText
+  en="- Not handling duplicates efficiently"
+  bn="- ডুপ্লিকেটগুলো দক্ষভাবে হ্যান্ডল না করা"
+/>
+
+<TranslatedText
+  en="- Off-by-one errors in partition logic"
+  bn="- পার্টিশন লজিকে অফ-বাই-ওয়ান ত্রুটি"
+/>
+
+<TranslatedText
+  en="- Stack overflow with deep recursion on large arrays"
+  bn="- বড় অ্যারেতে গভীর রিকার্শন দিয়ে স্ট্যাক ওভারফ্লো"
+/>
+
+---
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="1. **Divide and Conquer** - Quicksort uses the divide-and-conquer paradigm effectively"
+  bn="১. **ডিভাইড এন্ড কনকার** - কুইকসর্ট ডিভাইড-এন্ড-কনকার প্যারাডাইম কার্যকরভাবে ব্যবহার করে"
+/>
+
+<TranslatedText
+  en="2. **Pivot Selection** - Choice of pivot significantly affects performance"
+  bn="২. **পিভট নির্বাচন** - পিভটের পছন্দ পারফরম্যান্সকে উল্লেখযোগ্যভাবে প্রভাবিত করে"
+/>
+
+<TranslatedText
+  en="3. **In-Place Sorting** - O(1) extra space (excluding recursion stack)"
+  bn="৩. **ইন-প্লেস সাজানো** - O(1) অতিরিক্ত স্থান (রিকার্শন স্ট্যাক বাদে)"
+/>
+
+<TranslatedText
+  en="4. **Average O(n log n)** - Fast for most practical cases"
+  bn="৪. **গড় O(n log n)** - বেশিরভাগ ব্যবহারিক ক্ষেত্রে দ্রুত"
+/>
+
+<TranslatedText
+  en="5. **Three-Way for duplicates** - Use 3-way partitioning when array has many duplicates"
+  bn="৫. **ডুপ্লিকেটের জন্য থ্রি-ওয়ে** - অ্যারেতে অনেক ডুপ্লিকেট থাকলে ৩-ওয়ে পার্টিশনিং ব্যবহার করুন"
+/>
+
+---
+
+## <TranslatedText en="Reference" bn="রেফারেন্স" />
+
+- [JavaRevisited - Quicksort Algorithm](http://javarevisited.blogspot.com/2014/08/quicksort-sorting-algorithm-in-java-in-place-example.html)

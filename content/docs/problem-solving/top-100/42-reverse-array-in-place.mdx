@@ -3,401 +3,585 @@ title: 42. Reverse Array In Place
 description: How to reverse an array in place without using extra space
 ---
 
-## Problem Statement
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { TranslatedText, LanguageSwitcher } from '@/components/LanguageSwitcher';
 
-Write a program to reverse an array in place. The array should be reversed without using any additional array or collection.
+<LanguageSwitcher />
 
-## Examples
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
 
-### Example 1
+<TranslatedText
+  en="Write a program to reverse an array in place. The array should be reversed without using any additional array or collection."
+  bn="একটি অ্যারে ইন-প্লেস রিভার্স করার জন্য একটি প্রোগ্রাম লিখুন। অতিরিক্ত অ্যারে বা কালেকশন ব্যবহার না করে অ্যারে রিভার্স করতে হবে।"
+/>
+
+## <TranslatedText en="Examples" bn="উদাহরণসমূহ" />
+
+### <TranslatedText en="Example 1" bn="উদাহরণ ১" />
+
 ```
 Input: [1, 2, 3, 4, 5]
 Output: [5, 4, 3, 2, 1]
 ```
 
-### Example 2
+### <TranslatedText en="Example 2" bn="উদাহরণ ২" />
+
 ```
 Input: ['a', 'b', 'c', 'd']
 Output: ['d', 'c', 'b', 'a']
 ```
 
-### Example 3
+### <TranslatedText en="Example 3" bn="উদাহরণ ৩" />
+
 ```
 Input: [10]
 Output: [10]
 Explanation: Single element remains same
 ```
 
-## Solution
+## <TranslatedText en="Solution Approaches" bn="সমাধানের পদ্ধতিসমূহ" />
 
-### Approach 1: Two Pointers (Optimal)
+### <TranslatedText en="Approach 1: Two Pointers (Optimal)" bn="পদ্ধতি ১: টু পয়েন্টার (সর্বোত্তম)" />
 
-Use two pointers from both ends and swap elements.
+<TranslatedText
+  en="Use two pointers from both ends and swap elements. This is the most efficient and commonly used approach."
+  bn="উভয় প্রান্ত থেকে দুটি পয়েন্টার ব্যবহার করে এলিমেন্ট সোয়াপ করুন। এটি সবচেয়ে কার্যকর এবং সাধারণভাবে ব্যবহৃত পদ্ধতি।"
+/>
 
-**Time Complexity:** O(n)
-**Space Complexity:** O(1)
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
 
-```dart
-void reverseArray(List<int> arr) {
-  int left = 0;
-  int right = arr.length - 1;
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
 
-  while (left < right) {
-    // Swap elements at left and right
+void reverseArray(vector<int>& arr) {
+    int left = 0;
+    int right = arr.size() - 1;
+
+    while (left < right) {
+        // Swap elements at left and right
+        int temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+
+        left++;
+        right--;
+    }
+}
+
+int main() {
+    vector<int> arr1 = {1, 2, 3, 4, 5};
+    cout << "Original: ";
+    for (int x : arr1) cout << x << " ";
+
+    reverseArray(arr1);
+
+    cout << "\nReversed: ";
+    for (int x : arr1) cout << x << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def reverse_array(arr):
+    """Reverse array in place using two pointers"""
+    left = 0
+    right = len(arr) - 1
+
+    while left < right:
+        # Swap elements at left and right
+        arr[left], arr[right] = arr[right], arr[left]
+
+        left += 1
+        right -= 1
+
+# Example usage
+arr1 = [1, 2, 3, 4, 5]
+print(f"Original: {arr1}")
+reverse_array(arr1)
+print(f"Reversed: {arr1}")
+
+arr2 = [10, 20, 30, 40]
+print(f"\nOriginal: {arr2}")
+reverse_array(arr2)
+print(f"Reversed: {arr2}")
+
+arr3 = [1]
+print(f"\nOriginal: {arr3}")
+reverse_array(arr3)
+print(f"Reversed: {arr3}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function reverseArray(arr) {
+    let left = 0;
+    let right = arr.length - 1;
+
+    while (left < right) {
+        // Swap elements at left and right
+        let temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+
+        left++;
+        right--;
+    }
+}
+
+// Example usage
+let arr1 = [1, 2, 3, 4, 5];
+console.log("Original:", arr1);
+reverseArray(arr1);
+console.log("Reversed:", arr1);
+
+let arr2 = [10, 20, 30, 40];
+console.log("\nOriginal:", arr2);
+reverseArray(arr2);
+console.log("Reversed:", arr2);
+
+let arr3 = [1];
+console.log("\nOriginal:", arr3);
+reverseArray(arr3);
+console.log("Reversed:", arr3);
+```
+  </Tab>
+</Tabs>
+
+### <TranslatedText en="Approach 2: For Loop with Index" bn="পদ্ধতি ২: ইনডেক্স সহ ফর লুপ" />
+
+<TranslatedText
+  en="Classic approach using a for loop. Iterate only until the middle of the array and swap elements."
+  bn="ফর লুপ ব্যবহার করে ক্লাসিক পদ্ধতি। অ্যারের মাঝামাঝি পর্যন্ত ইটারেট করুন এবং এলিমেন্ট সোয়াপ করুন।"
+/>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void reverseArrayForLoop(vector<int>& arr) {
+    int n = arr.size();
+
+    for (int i = 0; i < n / 2; i++) {
+        // Swap arr[i] with arr[n-1-i]
+        int temp = arr[i];
+        arr[i] = arr[n - 1 - i];
+        arr[n - 1 - i] = temp;
+    }
+}
+
+int main() {
+    vector<int> arr = {1, 2, 3, 4, 5};
+    cout << "Original: ";
+    for (int x : arr) cout << x << " ";
+
+    reverseArrayForLoop(arr);
+
+    cout << "\nReversed: ";
+    for (int x : arr) cout << x << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def reverse_array_for_loop(arr):
+    """Reverse array using for loop"""
+    n = len(arr)
+
+    for i in range(n // 2):
+        # Swap arr[i] with arr[n-1-i]
+        arr[i], arr[n - 1 - i] = arr[n - 1 - i], arr[i]
+
+# Example usage
+arr = [1, 2, 3, 4, 5]
+print(f"Original: {arr}")
+reverse_array_for_loop(arr)
+print(f"Reversed: {arr}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function reverseArrayForLoop(arr) {
+    const n = arr.length;
+
+    for (let i = 0; i < Math.floor(n / 2); i++) {
+        // Swap arr[i] with arr[n-1-i]
+        let temp = arr[i];
+        arr[i] = arr[n - 1 - i];
+        arr[n - 1 - i] = temp;
+    }
+}
+
+// Example usage
+let arr = [1, 2, 3, 4, 5];
+console.log("Original:", arr);
+reverseArrayForLoop(arr);
+console.log("Reversed:", arr);
+```
+  </Tab>
+</Tabs>
+
+### <TranslatedText en="Approach 3: Recursive Approach" bn="পদ্ধতি ৩: রিকার্সিভ পদ্ধতি" />
+
+<TranslatedText
+  en="Reverse array using recursion. This approach is elegant but uses extra stack space."
+  bn="রিকার্শন ব্যবহার করে অ্যারে রিভার্স করুন। এই পদ্ধতিটি মার্জিত কিন্তু অতিরিক্ত স্ট্যাক স্পেস ব্যবহার করে।"
+/>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n) <TranslatedText en="for recursion stack" bn="রিকার্শন স্ট্যাকের জন্য" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void reverseArrayRecursive(vector<int>& arr, int left, int right) {
+    if (left >= right) return;
+
+    // Swap
     int temp = arr[left];
     arr[left] = arr[right];
     arr[right] = temp;
 
-    left++;
-    right--;
-  }
+    // Recursive call
+    reverseArrayRecursive(arr, left + 1, right - 1);
 }
 
-void main() {
-  List<int> arr1 = [1, 2, 3, 4, 5];
-  print('Original: $arr1');
-  reverseArray(arr1);
-  print('Reversed: $arr1');
+int main() {
+    vector<int> arr = {1, 2, 3, 4, 5};
+    cout << "Original: ";
+    for (int x : arr) cout << x << " ";
 
-  List<int> arr2 = [10, 20, 30, 40];
-  print('\nOriginal: $arr2');
-  reverseArray(arr2);
-  print('Reversed: $arr2');
+    reverseArrayRecursive(arr, 0, arr.size() - 1);
 
-  List<int> arr3 = [1];
-  print('\nOriginal: $arr3');
-  reverseArray(arr3);
-  print('Reversed: $arr3');
+    cout << "\nReversed: ";
+    for (int x : arr) cout << x << " ";
+    cout << endl;
+
+    return 0;
 }
 ```
+  </Tab>
+  <Tab value="Python">
+```python
+def reverse_array_recursive(arr, left, right):
+    """Reverse array using recursion"""
+    if left >= right:
+        return
 
-### Approach 2: For Loop with Index
+    # Swap
+    arr[left], arr[right] = arr[right], arr[left]
 
-Classic approach using a for loop.
+    # Recursive call
+    reverse_array_recursive(arr, left + 1, right - 1)
 
-**Time Complexity:** O(n)
-**Space Complexity:** O(1)
-
-```dart
-void reverseArrayForLoop(List<int> arr) {
-  int n = arr.length;
-
-  for (int i = 0; i < n ~/ 2; i++) {
-    // Swap arr[i] with arr[n-1-i]
-    int temp = arr[i];
-    arr[i] = arr[n - 1 - i];
-    arr[n - 1 - i] = temp;
-  }
-}
-
-void main() {
-  List<int> arr = [1, 2, 3, 4, 5];
-  print('Original: $arr');
-  reverseArrayForLoop(arr);
-  print('Reversed: $arr');
-}
+# Example usage
+arr = [1, 2, 3, 4, 5]
+print(f"Original: {arr}")
+reverse_array_recursive(arr, 0, len(arr) - 1)
+print(f"Reversed: {arr}")
 ```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function reverseArrayRecursive(arr, left, right) {
+    if (left >= right) return;
 
-### Approach 3: Using XOR Swap (No Temp Variable)
-
-Swap without using a temporary variable (for integers only).
-
-**Time Complexity:** O(n)
-**Space Complexity:** O(1)
-
-```dart
-void reverseArrayXOR(List<int> arr) {
-  int left = 0;
-  int right = arr.length - 1;
-
-  while (left < right) {
-    if (arr[left] != arr[right]) {
-      arr[left] = arr[left] ^ arr[right];
-      arr[right] = arr[left] ^ arr[right];
-      arr[left] = arr[left] ^ arr[right];
-    }
-
-    left++;
-    right--;
-  }
-}
-
-void main() {
-  List<int> arr = [1, 2, 3, 4, 5];
-  print('Original: $arr');
-  reverseArrayXOR(arr);
-  print('Reversed: $arr');
-}
-```
-
-### Approach 4: Recursive Approach
-
-Reverse array using recursion.
-
-**Time Complexity:** O(n)
-**Space Complexity:** O(n) for recursion stack
-
-```dart
-void reverseArrayRecursive(List<int> arr, int left, int right) {
-  if (left >= right) return;
-
-  // Swap
-  int temp = arr[left];
-  arr[left] = arr[right];
-  arr[right] = temp;
-
-  // Recursive call
-  reverseArrayRecursive(arr, left + 1, right - 1);
-}
-
-void main() {
-  List<int> arr = [1, 2, 3, 4, 5];
-  print('Original: $arr');
-  reverseArrayRecursive(arr, 0, arr.length - 1);
-  print('Reversed: $arr');
-}
-```
-
-### Approach 5: Dart-Specific Using Built-in
-
-Dart has built-in methods but creates a new list (not in-place).
-
-**Time Complexity:** O(n)
-**Space Complexity:** O(n)
-
-```dart
-void reverseArrayDart(List<int> arr) {
-  // This creates a new list, not truly in-place
-  List<int> reversed = arr.reversed.toList();
-
-  // Copy back to original array
-  for (int i = 0; i < arr.length; i++) {
-    arr[i] = reversed[i];
-  }
-}
-
-// For immutable approach (returns new list)
-List<int> reverseArrayImmutable(List<int> arr) {
-  return arr.reversed.toList();
-}
-
-void main() {
-  List<int> arr = [1, 2, 3, 4, 5];
-  print('Original: $arr');
-  reverseArrayDart(arr);
-  print('Reversed: $arr');
-
-  // Immutable version
-  List<int> arr2 = [10, 20, 30];
-  print('\nOriginal: $arr2');
-  print('Reversed (new list): ${reverseArrayImmutable(arr2)}');
-  print('Original unchanged: $arr2');
-}
-```
-
-### Approach 6: Generic Type Version
-
-Works with any type of list.
-
-**Time Complexity:** O(n)
-**Space Complexity:** O(1)
-
-```dart
-void reverseArrayGeneric<T>(List<T> arr) {
-  int left = 0;
-  int right = arr.length - 1;
-
-  while (left < right) {
-    T temp = arr[left];
+    // Swap
+    let temp = arr[left];
     arr[left] = arr[right];
     arr[right] = temp;
 
-    left++;
-    right--;
-  }
+    // Recursive call
+    reverseArrayRecursive(arr, left + 1, right - 1);
 }
 
-void main() {
-  // Integer array
-  List<int> intArr = [1, 2, 3, 4, 5];
-  print('Int array: $intArr');
-  reverseArrayGeneric(intArr);
-  print('Reversed: $intArr');
+// Example usage
+let arr = [1, 2, 3, 4, 5];
+console.log("Original:", arr);
+reverseArrayRecursive(arr, 0, arr.length - 1);
+console.log("Reversed:", arr);
+```
+  </Tab>
+</Tabs>
 
-  // String array
-  List<String> strArr = ['a', 'b', 'c', 'd'];
-  print('\nString array: $strArr');
-  reverseArrayGeneric(strArr);
-  print('Reversed: $strArr');
+## <TranslatedText en="Algorithm Walkthrough" bn="অ্যালগরিদম ওয়াকথ্রু" />
 
-  // Double array
-  List<double> doubleArr = [1.1, 2.2, 3.3];
-  print('\nDouble array: $doubleArr');
-  reverseArrayGeneric(doubleArr);
-  print('Reversed: $doubleArr');
-}
+<TranslatedText
+  en="Let's trace the **Two Pointers** approach with array `[1, 2, 3, 4, 5]`:"
+  bn="চলুন `[1, 2, 3, 4, 5]` অ্যারে দিয়ে **টু পয়েন্টার** পদ্ধতি ট্রেস করি:"
+/>
+
+```
+Initial Array: [1, 2, 3, 4, 5]
+
+Step 0:
+  Array: [1, 2, 3, 4, 5]
+         ↑           ↑
+       left=0     right=4
+  Swap: 1 ↔ 5
+
+Step 1:
+  Array: [5, 2, 3, 4, 1]
+            ↑     ↑
+          left=1 right=3
+  Swap: 2 ↔ 4
+
+Step 2:
+  Array: [5, 4, 3, 2, 1]
+               ↑
+            left=2=right
+  Condition: left >= right ✓
+  Stop!
+
+Final Array: [5, 4, 3, 2, 1]
 ```
 
-### Approach 7: Reverse Subarray (Partial Reverse)
+### <TranslatedText en="Key Observations" bn="মূল পর্যবেক্ষণ" />
 
-Reverse only a portion of the array.
+<TranslatedText
+  en="1. **Middle Element**: In an odd-length array, the middle element never moves (it's already in the correct position)"
+  bn="১. **মধ্যম এলিমেন্ট**: বিষম-দৈর্ঘ্যের অ্যারেতে, মধ্যম এলিমেন্ট কখনো সরে না (এটি ইতিমধ্যে সঠিক অবস্থানে)"
+/>
 
-**Time Complexity:** O(k) where k is the range
-**Space Complexity:** O(1)
+<TranslatedText
+  en="2. **Loop Condition**: We use `left < right` (not `<=`) to avoid swapping the middle element with itself"
+  bn="২. **লুপ কন্ডিশন**: আমরা `left < right` ব্যবহার করি (`<=` নয়) মধ্যম এলিমেন্ট নিজের সাথে সোয়াপ এড়াতে"
+/>
 
-```dart
-void reverseSubarray(List<int> arr, int start, int end) {
-  while (start < end) {
-    int temp = arr[start];
-    arr[start] = arr[end];
-    arr[end] = temp;
+<TranslatedText
+  en="3. **Number of Swaps**: For an array of size n, we perform exactly n/2 swaps"
+  bn="৩. **সোয়াপের সংখ্যা**: n সাইজের অ্যারের জন্য, আমরা ঠিক n/2 সোয়াপ করি"
+/>
 
-    start++;
-    end--;
-  }
-}
+## <TranslatedText en="Comparison of Approaches" bn="পদ্ধতিসমূহের তুলনা" />
 
-void main() {
-  List<int> arr = [1, 2, 3, 4, 5, 6, 7];
-  print('Original: $arr');
-
-  // Reverse middle portion (indices 2 to 5)
-  reverseSubarray(arr, 2, 5);
-  print('After reversing [2-5]: $arr');
-}
-```
-
-## Comparison of Approaches
-
-| Approach | Time | Space | Pros | Cons |
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time" bn="সময়" /> | <TranslatedText en="Space" bn="স্থান" /> | <TranslatedText en="Pros" bn="সুবিধা" /> | <TranslatedText en="Cons" bn="অসুবিধা" /> |
 |----------|------|-------|------|------|
-| Two Pointers | O(n) | O(1) | Simple, efficient | - |
-| For Loop | O(n) | O(1) | Classic approach | - |
-| XOR Swap | O(n) | O(1) | No temp variable | Integers only, less readable |
-| Recursive | O(n) | O(n) | Elegant | Stack space, slower |
-| Built-in | O(n) | O(n) | Easy to write | Not truly in-place |
-| Generic | O(n) | O(1) | Works with any type | - |
+| Two Pointers | O(n) | O(1) | <TranslatedText en="Simple, efficient, most popular" bn="সহজ, কার্যকর, সবচেয়ে জনপ্রিয়" /> | <TranslatedText en="None" bn="কোনো নেই" /> |
+| For Loop | O(n) | O(1) | <TranslatedText en="Classic, easy to understand" bn="ক্লাসিক, বোঝা সহজ" /> | <TranslatedText en="None" bn="কোনো নেই" /> |
+| Recursive | O(n) | O(n) | <TranslatedText en="Elegant, functional style" bn="মার্জিত, ফাংশনাল স্টাইল" /> | <TranslatedText en="Uses stack space, slower" bn="স্ট্যাক স্পেস ব্যবহার করে, ধীর" /> |
 
-## Visualization
+## <TranslatedText en="Edge Cases" bn="এজ কেস" />
 
-For array [1, 2, 3, 4, 5]:
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
 
-```
-Step 0:  [1, 2, 3, 4, 5]   left=0, right=4
-          ↑           ↑
-
-Step 1:  [5, 2, 3, 4, 1]   left=1, right=3
-             ↑     ↑
-
-Step 2:  [5, 4, 3, 2, 1]   left=2, right=2
-                ↑
-
-Done! left >= right
-```
-
-## Key Points
-
-1. **In-Place**: Modify the original array without extra space
-2. **Two Pointers**: Most common and efficient approach
-3. **Swap Logic**: Temporary variable is clearest
-4. **Middle Element**: Handled automatically (never swapped)
-5. **Generic**: Can work with any data type
-
-## Common Pitfalls
-
-- Not checking for empty array
-- Not checking for single-element array
-- Off-by-one errors in loop condition
-- Forgetting to increment/decrement pointers
-- Using `<=` instead of `<` in while condition (swaps middle twice)
-
-## Edge Cases
-
-```dart
 void testEdgeCases() {
-  // Empty array
-  List<int> empty = [];
-  reverseArray(empty);
-  print('Empty: $empty');
+    // Empty array
+    vector<int> empty = {};
+    reverseArray(empty);
+    cout << "Empty: []" << endl;
 
-  // Single element
-  List<int> single = [1];
-  reverseArray(single);
-  print('Single: $single');
+    // Single element
+    vector<int> single = {1};
+    reverseArray(single);
+    cout << "Single: [1]" << endl;
 
-  // Two elements
-  List<int> two = [1, 2];
-  reverseArray(two);
-  print('Two: $two');
+    // Two elements
+    vector<int> two = {1, 2};
+    reverseArray(two);
+    cout << "Two: [2, 1]" << endl;
 
-  // Even length
-  List<int> even = [1, 2, 3, 4];
-  reverseArray(even);
-  print('Even: $even');
+    // Even length
+    vector<int> even = {1, 2, 3, 4};
+    reverseArray(even);
+    cout << "Even: [4, 3, 2, 1]" << endl;
 
-  // Odd length
-  List<int> odd = [1, 2, 3, 4, 5];
-  reverseArray(odd);
-  print('Odd: $odd');
+    // Odd length
+    vector<int> odd = {1, 2, 3, 4, 5};
+    reverseArray(odd);
+    cout << "Odd: [5, 4, 3, 2, 1]" << endl;
 }
 ```
+  </Tab>
+  <Tab value="Python">
+```python
+def test_edge_cases():
+    # Empty array
+    empty = []
+    reverse_array(empty)
+    print(f"Empty: {empty}")
 
-## Test Cases
+    # Single element
+    single = [1]
+    reverse_array(single)
+    print(f"Single: {single}")
 
-```dart
-void testReverseArray() {
-  // Test 1
-  List<int> arr1 = [1, 2, 3, 4, 5];
-  reverseArray(arr1);
-  assert(arr1.toString() == '[5, 4, 3, 2, 1]');
+    # Two elements
+    two = [1, 2]
+    reverse_array(two)
+    print(f"Two: {two}")
 
-  // Test 2
-  List<int> arr2 = [1];
-  reverseArray(arr2);
-  assert(arr2.toString() == '[1]');
+    # Even length
+    even = [1, 2, 3, 4]
+    reverse_array(even)
+    print(f"Even: {even}")
 
-  // Test 3
-  List<int> arr3 = [];
-  reverseArray(arr3);
-  assert(arr3.toString() == '[]');
+    # Odd length
+    odd = [1, 2, 3, 4, 5]
+    reverse_array(odd)
+    print(f"Odd: {odd}")
 
-  // Test 4
-  List<int> arr4 = [1, 2];
-  reverseArray(arr4);
-  assert(arr4.toString() == '[2, 1]');
-
-  print('All tests passed!');
-}
+test_edge_cases()
 ```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function testEdgeCases() {
+    // Empty array
+    let empty = [];
+    reverseArray(empty);
+    console.log("Empty:", empty);
 
-## Applications
+    // Single element
+    let single = [1];
+    reverseArray(single);
+    console.log("Single:", single);
 
-- String reversal
-- Palindrome checking
-- Array rotation
-- Reversing linked lists (similar logic)
-- Reversing parts of arrays for sorting algorithms
+    // Two elements
+    let two = [1, 2];
+    reverseArray(two);
+    console.log("Two:", two);
 
-## Performance Comparison
+    // Even length
+    let even = [1, 2, 3, 4];
+    reverseArray(even);
+    console.log("Even:", even);
 
-```dart
-import 'dart:io';
-
-void benchmark() {
-  List<int> sizes = [1000, 10000, 100000];
-
-  for (int size in sizes) {
-    List<int> arr = List.generate(size, (i) => i);
-
-    Stopwatch sw = Stopwatch()..start();
-    reverseArray(arr);
-    sw.stop();
-
-    print('Size: $size, Time: ${sw.elapsedMicroseconds} μs');
-  }
+    // Odd length
+    let odd = [1, 2, 3, 4, 5];
+    reverseArray(odd);
+    console.log("Odd:", odd);
 }
-```
 
-## Reference
+testEdgeCases();
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+### 1. <TranslatedText en="In-Place Modification" bn="ইন-প্লেস পরিবর্তন" />
+
+<TranslatedText
+  en="The key to this problem is modifying the original array without using extra space. We achieve O(1) space complexity by only using a few variables."
+  bn="এই সমস্যার মূল চাবিকাঠি হলো অতিরিক্ত স্পেস ব্যবহার না করে অরিজিনাল অ্যারে পরিবর্তন করা। আমরা শুধুমাত্র কয়েকটি ভেরিয়েবল ব্যবহার করে O(1) স্পেস কমপ্লেক্সিটি অর্জন করি।"
+/>
+
+### 2. <TranslatedText en="Swap Logic" bn="সোয়াপ লজিক" />
+
+<TranslatedText
+  en="Using a temporary variable is the clearest way to swap. While XOR swap exists, it's less readable and only works for integers."
+  bn="টেম্পোরারি ভেরিয়েবল ব্যবহার করা সোয়াপ করার সবচেয়ে পরিষ্কার উপায়। যদিও XOR সোয়াপ বিদ্যমান, এটি কম পাঠযোগ্য এবং শুধুমাত্র ইন্টিজারের জন্য কাজ করে।"
+/>
+
+### 3. <TranslatedText en="Generic Implementation" bn="জেনেরিক বাস্তবায়ন" />
+
+<TranslatedText
+  en="The algorithm works for any data type - integers, strings, objects. The swap logic remains the same."
+  bn="অ্যালগরিদমটি যেকোনো ডেটা টাইপের জন্য কাজ করে - ইন্টিজার, স্ট্রিং, অবজেক্ট। সোয়াপ লজিক একই থাকে।"
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="1. **Clarify Requirements**: Ask if you need to reverse in-place or if you can create a new array"
+  bn="১. **প্রয়োজনীয়তা স্পষ্ট করুন**: জিজ্ঞাসা করুন আপনি ইন-প্লেস রিভার্স করতে হবে নাকি নতুন অ্যারে তৈরি করতে পারবেন"
+/>
+
+<TranslatedText
+  en="2. **Start with Simple**: Begin with the two-pointer approach - it's the most intuitive"
+  bn="২. **সহজ দিয়ে শুরু করুন**: টু-পয়েন্টার পদ্ধতি দিয়ে শুরু করুন - এটি সবচেয়ে স্বজ্ঞাত"
+/>
+
+<TranslatedText
+  en="3. **Discuss Edge Cases**: Mention empty arrays, single elements, and even vs odd lengths"
+  bn="৩. **এজ কেস আলোচনা করুন**: খালি অ্যারে, একক এলিমেন্ট এবং জোড় বনাম বিষম দৈর্ঘ্য উল্লেখ করুন"
+/>
+
+<TranslatedText
+  en="4. **Watch the Condition**: Use `left < right` not `left <= right` to avoid double-swapping the middle"
+  bn="৪. **কন্ডিশন দেখুন**: মাঝের ডাবল-সোয়াপিং এড়াতে `left <= right` নয় `left < right` ব্যবহার করুন"
+/>
+
+<TranslatedText
+  en="5. **Common Pitfalls**: Off-by-one errors, forgetting to increment/decrement pointers"
+  bn="৫. **সাধারণ সমস্যা**: অফ-বাই-ওয়ান ত্রুটি, পয়েন্টার ইনক্রিমেন্ট/ডিক্রিমেন্ট করতে ভুলে যাওয়া"
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="- **In-Place Reversal**: Use two pointers from both ends, swap elements, and move towards center"
+  bn="- **ইন-প্লেস রিভার্সাল**: উভয় প্রান্ত থেকে দুটি পয়েন্টার ব্যবহার করুন, এলিমেন্ট সোয়াপ করুন এবং কেন্দ্রের দিকে সরান"
+/>
+
+<TranslatedText
+  en="- **Time Complexity**: O(n) - we visit each element once"
+  bn="- **সময় জটিলতা**: O(n) - আমরা প্রতিটি এলিমেন্ট একবার ভিজিট করি"
+/>
+
+<TranslatedText
+  en="- **Space Complexity**: O(1) - only use a few variables (iterative approach)"
+  bn="- **স্থান জটিলতা**: O(1) - শুধুমাত্র কয়েকটি ভেরিয়েবল ব্যবহার করি (ইটারেটিভ পদ্ধতি)"
+/>
+
+<TranslatedText
+  en="- **Foundational Skill**: This technique is used in many other algorithms (string reversal, palindrome check, array rotation)"
+  bn="- **মৌলিক দক্ষতা**: এই কৌশল অনেক অন্যান্য অ্যালগরিদমে ব্যবহৃত হয় (স্ট্রিং রিভার্সাল, প্যালিনড্রোম চেক, অ্যারে রোটেশন)"
+/>
+
+## <TranslatedText en="Applications" bn="প্রয়োগসমূহ" />
+
+<TranslatedText
+  en="- String reversal"
+  bn="- স্ট্রিং রিভার্সাল"
+/>
+
+<TranslatedText
+  en="- Palindrome checking"
+  bn="- প্যালিনড্রোম চেকিং"
+/>
+
+<TranslatedText
+  en="- Array rotation"
+  bn="- অ্যারে রোটেশন"
+/>
+
+<TranslatedText
+  en="- Reversing linked lists (similar logic)"
+  bn="- লিঙ্কড লিস্ট রিভার্সিং (অনুরূপ লজিক)"
+/>
+
+<TranslatedText
+  en="- Reversing parts of arrays for sorting algorithms"
+  bn="- সর্টিং অ্যালগরিদমের জন্য অ্যারের অংশ রিভার্সিং"
+/>
+
+## <TranslatedText en="Reference" bn="রেফারেন্স" />
 
 [JavaRevisited - Reverse Array in Java](http://javarevisited.blogspot.com/2013/03/how-to-reverse-array-in-java-int-String-array-example.html)

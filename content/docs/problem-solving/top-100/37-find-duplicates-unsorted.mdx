@@ -3,258 +3,672 @@ title: 37. Find Duplicates from Unsorted Array
 description: How to find duplicate elements in an unsorted array
 ---
 
-## Problem Statement
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { TranslatedText, LanguageSwitcher } from '@/components/LanguageSwitcher';
 
-Write a program to find all duplicate elements in an unsorted array. The array may contain multiple duplicates.
+<LanguageSwitcher />
 
-## Examples
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
 
-### Example 1
+<TranslatedText
+  en="Write a program to find all duplicate elements in an unsorted array. The array may contain multiple duplicates."
+  bn="একটি আনসর্টেড অ্যারেতে সব ডুপ্লিকেট এলিমেন্ট খুঁজে বের করার একটি প্রোগ্রাম লিখুন। অ্যারেতে একাধিক ডুপ্লিকেট থাকতে পারে।"
+/>
+
+### <TranslatedText en="Examples" bn="উদাহরণ" />
+
+#### <TranslatedText en="Example 1" bn="উদাহরণ ১" />
+
 ```
 Input: [1, 3, 4, 2, 2, 4, 5]
 Output: [2, 4]
-Explanation: 2 and 4 appear more than once
 ```
 
-### Example 2
+<TranslatedText
+  en="**Explanation:** 2 and 4 appear more than once"
+  bn="**ব্যাখ্যা:** ২ এবং ৪ একাধিকবার উপস্থিত হয়েছে"
+/>
+
+#### <TranslatedText en="Example 2" bn="উদাহরণ ২" />
+
 ```
 Input: [5, 5, 5, 3, 3, 1]
 Output: [5, 3]
-Explanation: 5 and 3 appear more than once
 ```
 
-### Example 3
+<TranslatedText
+  en="**Explanation:** 5 and 3 appear more than once"
+  bn="**ব্যাখ্যা:** ৫ এবং ৩ একাধিকবার উপস্থিত হয়েছে"
+/>
+
+#### <TranslatedText en="Example 3" bn="উদাহরণ ৩" />
+
 ```
 Input: [1, 2, 3, 4, 5]
 Output: []
-Explanation: No duplicates present
 ```
 
-## Solution
+<TranslatedText
+  en="**Explanation:** No duplicates present"
+  bn="**ব্যাখ্যা:** কোনো ডুপ্লিকেট নেই"
+/>
 
-### Approach 1: Using Set (Optimal for Most Cases)
+---
 
-Use a Set to track seen elements and another Set for duplicates.
+## <TranslatedText en="Solution Approaches" bn="সমাধানের পদ্ধতি" />
 
-**Time Complexity:** O(n)
-**Space Complexity:** O(n)
+### <TranslatedText en="Approach 1: Using Set (Hash Set)" bn="পদ্ধতি ১: সেট ব্যবহার করে (হ্যাশ সেট)" />
 
-```dart
-List<int> findDuplicates(List<int> arr) {
-  Set<int> seen = {};
-  Set<int> duplicates = {};
+<TranslatedText
+  en="Use a Set to track seen elements and another Set for duplicates. This is the optimal approach for most cases."
+  bn="দেখা এলিমেন্ট ট্র্যাক করার জন্য একটি সেট এবং ডুপ্লিকেটের জন্য আরেকটি সেট ব্যবহার করুন। এটি বেশিরভাগ ক্ষেত্রে সর্বোত্তম পদ্ধতি।"
+/>
 
-  for (int num in arr) {
-    if (seen.contains(num)) {
-      duplicates.add(num);
-    } else {
-      seen.add(num);
+<TranslatedText
+  en="**Time Complexity:** O(n)"
+  bn="**সময় জটিলতা:** O(n)"
+/>
+
+<TranslatedText
+  en="**Space Complexity:** O(n)"
+  bn="**স্থান জটিলতা:** O(n)"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+using namespace std;
+
+vector<int> findDuplicates(vector<int>& arr) {
+    unordered_set<int> seen;
+    unordered_set<int> duplicates;
+
+    for (int num : arr) {
+        if (seen.count(num)) {
+            duplicates.insert(num);
+        } else {
+            seen.insert(num);
+        }
     }
-  }
 
-  return duplicates.toList();
+    return vector<int>(duplicates.begin(), duplicates.end());
 }
 
-void main() {
-  List<int> arr1 = [1, 3, 4, 2, 2, 4, 5];
-  print('Array: $arr1');
-  print('Duplicates: ${findDuplicates(arr1)}');
+int main() {
+    vector<int> arr1 = {1, 3, 4, 2, 2, 4, 5};
+    vector<int> result1 = findDuplicates(arr1);
 
-  List<int> arr2 = [5, 5, 5, 3, 3, 1];
-  print('\nArray: $arr2');
-  print('Duplicates: ${findDuplicates(arr2)}');
+    cout << "Array: [1, 3, 4, 2, 2, 4, 5]" << endl;
+    cout << "Duplicates: [";
+    for (int i = 0; i < result1.size(); i++) {
+        cout << result1[i];
+        if (i < result1.size() - 1) cout << ", ";
+    }
+    cout << "]" << endl;
 
-  List<int> arr3 = [1, 2, 3, 4, 5];
-  print('\nArray: $arr3');
-  print('Duplicates: ${findDuplicates(arr3)}');
+    vector<int> arr2 = {5, 5, 5, 3, 3, 1};
+    vector<int> result2 = findDuplicates(arr2);
+
+    cout << "\nArray: [5, 5, 5, 3, 3, 1]" << endl;
+    cout << "Duplicates: [";
+    for (int i = 0; i < result2.size(); i++) {
+        cout << result2[i];
+        if (i < result2.size() - 1) cout << ", ";
+    }
+    cout << "]" << endl;
+
+    return 0;
 }
 ```
+  </Tab>
 
-### Approach 2: Using Map for Frequency Count
+  <Tab value="Python">
+```python
+def find_duplicates(arr):
+    seen = set()
+    duplicates = set()
 
-Track the frequency of each element and return those with count greater than 1.
+    for num in arr:
+        if num in seen:
+            duplicates.add(num)
+        else:
+            seen.add(num)
 
-**Time Complexity:** O(n)
-**Space Complexity:** O(n)
+    return list(duplicates)
 
-```dart
-List<int> findDuplicatesWithCount(List<int> arr) {
-  Map<int, int> frequency = {};
+# Test cases
+arr1 = [1, 3, 4, 2, 2, 4, 5]
+print(f"Array: {arr1}")
+print(f"Duplicates: {find_duplicates(arr1)}")
 
-  // Count frequencies
-  for (int num in arr) {
-    frequency[num] = (frequency[num] ?? 0) + 1;
-  }
+arr2 = [5, 5, 5, 3, 3, 1]
+print(f"\nArray: {arr2}")
+print(f"Duplicates: {find_duplicates(arr2)}")
 
-  // Find elements with count > 1
-  List<int> duplicates = [];
-  frequency.forEach((key, value) {
-    if (value > 1) {
-      duplicates.add(key);
+arr3 = [1, 2, 3, 4, 5]
+print(f"\nArray: {arr3}")
+print(f"Duplicates: {find_duplicates(arr3)}")
+```
+  </Tab>
+
+  <Tab value="JavaScript">
+```javascript
+function findDuplicates(arr) {
+    const seen = new Set();
+    const duplicates = new Set();
+
+    for (const num of arr) {
+        if (seen.has(num)) {
+            duplicates.add(num);
+        } else {
+            seen.add(num);
+        }
     }
-  });
 
-  return duplicates;
+    return Array.from(duplicates);
+}
+
+// Test cases
+const arr1 = [1, 3, 4, 2, 2, 4, 5];
+console.log(`Array: [${arr1}]`);
+console.log(`Duplicates: [${findDuplicates(arr1)}]`);
+
+const arr2 = [5, 5, 5, 3, 3, 1];
+console.log(`\nArray: [${arr2}]`);
+console.log(`Duplicates: [${findDuplicates(arr2)}]`);
+
+const arr3 = [1, 2, 3, 4, 5];
+console.log(`\nArray: [${arr3}]`);
+console.log(`Duplicates: [${findDuplicates(arr3)}]`);
+```
+  </Tab>
+</Tabs>
+
+---
+
+### <TranslatedText en="Approach 2: Using Hash Map (Frequency Count)" bn="পদ্ধতি ২: হ্যাশ ম্যাপ ব্যবহার করে (ফ্রিকোয়েন্সি কাউন্ট)" />
+
+<TranslatedText
+  en="Track the frequency of each element using a hash map and return those with count greater than 1. This approach is useful when you also need the frequency of duplicates."
+  bn="একটি হ্যাশ ম্যাপ ব্যবহার করে প্রতিটি এলিমেন্টের ফ্রিকোয়েন্সি ট্র্যাক করুন এবং যেগুলোর কাউন্ট ১ এর বেশি তা রিটার্ন করুন। এই পদ্ধতিটি তখন উপকারী যখন আপনার ডুপ্লিকেটের ফ্রিকোয়েন্সিও প্রয়োজন।"
+/>
+
+<TranslatedText
+  en="**Time Complexity:** O(n)"
+  bn="**সময় জটিলতা:** O(n)"
+/>
+
+<TranslatedText
+  en="**Space Complexity:** O(n)"
+  bn="**স্থান জটিলতা:** O(n)"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+vector<int> findDuplicatesWithCount(vector<int>& arr) {
+    unordered_map<int, int> frequency;
+
+    // Count frequencies
+    for (int num : arr) {
+        frequency[num]++;
+    }
+
+    // Find elements with count > 1
+    vector<int> duplicates;
+    for (auto& pair : frequency) {
+        if (pair.second > 1) {
+            duplicates.push_back(pair.first);
+        }
+    }
+
+    return duplicates;
 }
 
 // Alternative: Get duplicates with their counts
-Map<int, int> findDuplicatesWithFrequency(List<int> arr) {
-  Map<int, int> frequency = {};
+unordered_map<int, int> findDuplicatesWithFrequency(vector<int>& arr) {
+    unordered_map<int, int> frequency;
 
-  for (int num in arr) {
-    frequency[num] = (frequency[num] ?? 0) + 1;
-  }
-
-  Map<int, int> duplicates = {};
-  frequency.forEach((key, value) {
-    if (value > 1) {
-      duplicates[key] = value;
+    for (int num : arr) {
+        frequency[num]++;
     }
-  });
 
-  return duplicates;
-}
-
-void main() {
-  List<int> arr = [1, 3, 4, 2, 2, 4, 5, 4];
-
-  print('Array: $arr');
-  print('Duplicates: ${findDuplicatesWithCount(arr)}');
-  print('Duplicates with frequency: ${findDuplicatesWithFrequency(arr)}');
-}
-```
-
-### Approach 3: Sort First (No Extra Space for Hash)
-
-Sort the array first, then find consecutive duplicates.
-
-**Time Complexity:** O(n log n)
-**Space Complexity:** O(1) if sorting in place, O(n) if creating new sorted array
-
-```dart
-List<int> findDuplicatesBySorting(List<int> arr) {
-  if (arr.isEmpty) return [];
-
-  // Create a copy and sort it
-  List<int> sorted = List.from(arr)..sort();
-
-  Set<int> duplicates = {};
-
-  for (int i = 0; i < sorted.length - 1; i++) {
-    if (sorted[i] == sorted[i + 1]) {
-      duplicates.add(sorted[i]);
+    unordered_map<int, int> duplicates;
+    for (auto& pair : frequency) {
+        if (pair.second > 1) {
+            duplicates[pair.first] = pair.second;
+        }
     }
-  }
 
-  return duplicates.toList();
+    return duplicates;
 }
 
-void main() {
-  List<int> arr = [1, 3, 4, 2, 2, 4, 5];
+int main() {
+    vector<int> arr = {1, 3, 4, 2, 2, 4, 5, 4};
 
-  print('Array: $arr');
-  print('Duplicates: ${findDuplicatesBySorting(arr)}');
-}
-```
+    cout << "Array: [1, 3, 4, 2, 2, 4, 5, 4]" << endl;
 
-### Approach 4: For Positive Numbers Only (Index Marking)
-
-If array contains only positive numbers in range [1, n], use index marking technique.
-
-**Time Complexity:** O(n)
-**Space Complexity:** O(1) if modifying in place
-
-```dart
-List<int> findDuplicatesIndexMarking(List<int> arr) {
-  List<int> result = [];
-  List<int> temp = List.from(arr); // Create copy to avoid modifying original
-
-  for (int i = 0; i < temp.length; i++) {
-    int index = temp[i].abs() - 1;
-
-    if (index < temp.length) {
-      if (temp[index] < 0) {
-        // Already negative, means duplicate
-        result.add(index + 1);
-      } else {
-        // Mark as visited by making negative
-        temp[index] = -temp[index];
-      }
+    vector<int> result = findDuplicatesWithCount(arr);
+    cout << "Duplicates: [";
+    for (int i = 0; i < result.size(); i++) {
+        cout << result[i];
+        if (i < result.size() - 1) cout << ", ";
     }
-  }
+    cout << "]" << endl;
 
-  return result;
-}
+    auto freqMap = findDuplicatesWithFrequency(arr);
+    cout << "Duplicates with frequency: {";
+    bool first = true;
+    for (auto& pair : freqMap) {
+        if (!first) cout << ", ";
+        cout << pair.first << ": " << pair.second;
+        first = false;
+    }
+    cout << "}" << endl;
 
-void main() {
-  // This approach works for arrays with positive numbers in range [1, n]
-  List<int> arr = [4, 3, 2, 7, 8, 2, 3, 1];
-
-  print('Array: $arr');
-  print('Duplicates: ${findDuplicatesIndexMarking(arr)}');
-}
-```
-
-### Approach 5: Using Dart's Built-in Methods
-
-Functional approach using Dart's collection methods.
-
-**Time Complexity:** O(n)
-**Space Complexity:** O(n)
-
-```dart
-List<int> findDuplicatesFunctional(List<int> arr) {
-  return arr
-      .toSet()
-      .where((element) =>
-          arr.where((item) => item == element).length > 1)
-      .toList();
-}
-
-void main() {
-  List<int> arr = [1, 3, 4, 2, 2, 4, 5];
-
-  print('Array: $arr');
-  print('Duplicates: ${findDuplicatesFunctional(arr)}');
+    return 0;
 }
 ```
+  </Tab>
 
-## Comparison of Approaches
+  <Tab value="Python">
+```python
+def find_duplicates_with_count(arr):
+    frequency = {}
 
-| Approach | Time | Space | Pros | Cons |
+    # Count frequencies
+    for num in arr:
+        frequency[num] = frequency.get(num, 0) + 1
+
+    # Find elements with count > 1
+    duplicates = [key for key, value in frequency.items() if value > 1]
+
+    return duplicates
+
+# Alternative: Get duplicates with their counts
+def find_duplicates_with_frequency(arr):
+    frequency = {}
+
+    for num in arr:
+        frequency[num] = frequency.get(num, 0) + 1
+
+    duplicates = {key: value for key, value in frequency.items() if value > 1}
+
+    return duplicates
+
+# Test
+arr = [1, 3, 4, 2, 2, 4, 5, 4]
+
+print(f"Array: {arr}")
+print(f"Duplicates: {find_duplicates_with_count(arr)}")
+print(f"Duplicates with frequency: {find_duplicates_with_frequency(arr)}")
+```
+  </Tab>
+
+  <Tab value="JavaScript">
+```javascript
+function findDuplicatesWithCount(arr) {
+    const frequency = {};
+
+    // Count frequencies
+    for (const num of arr) {
+        frequency[num] = (frequency[num] || 0) + 1;
+    }
+
+    // Find elements with count > 1
+    const duplicates = [];
+    for (const [key, value] of Object.entries(frequency)) {
+        if (value > 1) {
+            duplicates.push(parseInt(key));
+        }
+    }
+
+    return duplicates;
+}
+
+// Alternative: Get duplicates with their counts
+function findDuplicatesWithFrequency(arr) {
+    const frequency = {};
+
+    for (const num of arr) {
+        frequency[num] = (frequency[num] || 0) + 1;
+    }
+
+    const duplicates = {};
+    for (const [key, value] of Object.entries(frequency)) {
+        if (value > 1) {
+            duplicates[key] = value;
+        }
+    }
+
+    return duplicates;
+}
+
+// Test
+const arr = [1, 3, 4, 2, 2, 4, 5, 4];
+
+console.log(`Array: [${arr}]`);
+console.log(`Duplicates: [${findDuplicatesWithCount(arr)}]`);
+console.log(`Duplicates with frequency:`, findDuplicatesWithFrequency(arr));
+```
+  </Tab>
+</Tabs>
+
+---
+
+### <TranslatedText en="Approach 3: Sort First" bn="পদ্ধতি ৩: প্রথমে সাজান" />
+
+<TranslatedText
+  en="Sort the array first, then find consecutive duplicates. This approach uses less extra space but has a higher time complexity."
+  bn="প্রথমে অ্যারে সাজান, তারপর পরপর থাকা ডুপ্লিকেট খুঁজুন। এই পদ্ধতিতে কম অতিরিক্ত স্থান ব্যবহৃত হয় কিন্তু সময় জটিলতা বেশি।"
+/>
+
+<TranslatedText
+  en="**Time Complexity:** O(n log n)"
+  bn="**সময় জটিলতা:** O(n log n)"
+/>
+
+<TranslatedText
+  en="**Space Complexity:** O(1) if sorting in place, O(n) if creating new sorted array"
+  bn="**স্থান জটিলতা:** O(1) যদি জায়গাতেই সাজানো হয়, O(n) যদি নতুন সাজানো অ্যারে তৈরি করা হয়"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <unordered_set>
+using namespace std;
+
+vector<int> findDuplicatesBySorting(vector<int> arr) {
+    if (arr.empty()) return {};
+
+    // Sort the array
+    sort(arr.begin(), arr.end());
+
+    unordered_set<int> duplicatesSet;
+
+    for (int i = 0; i < arr.size() - 1; i++) {
+        if (arr[i] == arr[i + 1]) {
+            duplicatesSet.insert(arr[i]);
+        }
+    }
+
+    return vector<int>(duplicatesSet.begin(), duplicatesSet.end());
+}
+
+int main() {
+    vector<int> arr = {1, 3, 4, 2, 2, 4, 5};
+
+    cout << "Array: [1, 3, 4, 2, 2, 4, 5]" << endl;
+
+    vector<int> result = findDuplicatesBySorting(arr);
+    cout << "Duplicates: [";
+    for (int i = 0; i < result.size(); i++) {
+        cout << result[i];
+        if (i < result.size() - 1) cout << ", ";
+    }
+    cout << "]" << endl;
+
+    return 0;
+}
+```
+  </Tab>
+
+  <Tab value="Python">
+```python
+def find_duplicates_by_sorting(arr):
+    if not arr:
+        return []
+
+    # Create a copy and sort it
+    sorted_arr = sorted(arr)
+
+    duplicates = set()
+
+    for i in range(len(sorted_arr) - 1):
+        if sorted_arr[i] == sorted_arr[i + 1]:
+            duplicates.add(sorted_arr[i])
+
+    return list(duplicates)
+
+# Test
+arr = [1, 3, 4, 2, 2, 4, 5]
+
+print(f"Array: {arr}")
+print(f"Duplicates: {find_duplicates_by_sorting(arr)}")
+```
+  </Tab>
+
+  <Tab value="JavaScript">
+```javascript
+function findDuplicatesBySorting(arr) {
+    if (arr.length === 0) return [];
+
+    // Create a copy and sort it
+    const sorted = [...arr].sort((a, b) => a - b);
+
+    const duplicates = new Set();
+
+    for (let i = 0; i < sorted.length - 1; i++) {
+        if (sorted[i] === sorted[i + 1]) {
+            duplicates.add(sorted[i]);
+        }
+    }
+
+    return Array.from(duplicates);
+}
+
+// Test
+const arr = [1, 3, 4, 2, 2, 4, 5];
+
+console.log(`Array: [${arr}]`);
+console.log(`Duplicates: [${findDuplicatesBySorting(arr)}]`);
+```
+  </Tab>
+</Tabs>
+
+---
+
+## <TranslatedText en="Algorithm Walkthrough" bn="অ্যালগরিদম বিশ্লেষণ" />
+
+<TranslatedText
+  en="Let's trace through **Approach 1 (Using Set)** with the array `[1, 3, 4, 2, 2, 4, 5]`:"
+  bn="চলুন **পদ্ধতি ১ (সেট ব্যবহার করে)** অ্যারে `[1, 3, 4, 2, 2, 4, 5]` দিয়ে ট্রেস করি:"
+/>
+
+```
+Initial State:
+seen = {}
+duplicates = {}
+
+Step 1: num = 1
+  - 1 not in seen
+  - Add 1 to seen
+  seen = {1}, duplicates = {}
+
+Step 2: num = 3
+  - 3 not in seen
+  - Add 3 to seen
+  seen = {1, 3}, duplicates = {}
+
+Step 3: num = 4
+  - 4 not in seen
+  - Add 4 to seen
+  seen = {1, 3, 4}, duplicates = {}
+
+Step 4: num = 2
+  - 2 not in seen
+  - Add 2 to seen
+  seen = {1, 3, 4, 2}, duplicates = {}
+
+Step 5: num = 2
+  - 2 is in seen ✓
+  - Add 2 to duplicates
+  seen = {1, 3, 4, 2}, duplicates = {2}
+
+Step 6: num = 4
+  - 4 is in seen ✓
+  - Add 4 to duplicates
+  seen = {1, 3, 4, 2}, duplicates = {2, 4}
+
+Step 7: num = 5
+  - 5 not in seen
+  - Add 5 to seen
+  seen = {1, 3, 4, 2, 5}, duplicates = {2, 4}
+
+Final Result: [2, 4]
+```
+
+---
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণি" />
+
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time Complexity" bn="সময় জটিলতা" /> | <TranslatedText en="Space Complexity" bn="স্থান জটিলতা" /> | <TranslatedText en="Pros" bn="সুবিধা" /> | <TranslatedText en="Cons" bn="অসুবিধা" /> |
 |----------|------|-------|------|------|
-| Set | O(n) | O(n) | Fast, simple | Extra space |
-| Map/Frequency | O(n) | O(n) | Can get counts | Extra space |
-| Sorting | O(n log n) | O(1) or O(n) | Less space | Slower, may modify array |
-| Index Marking | O(n) | O(1) | No extra space | Only for specific ranges |
-| Functional | O(n²) | O(n) | Concise code | Less efficient |
+| <TranslatedText en="Set" bn="সেট" /> | O(n) | O(n) | <TranslatedText en="Fast, simple" bn="দ্রুত, সহজ" /> | <TranslatedText en="Extra space" bn="অতিরিক্ত স্থান" /> |
+| <TranslatedText en="Hash Map" bn="হ্যাশ ম্যাপ" /> | O(n) | O(n) | <TranslatedText en="Can get counts" bn="কাউন্ট পাওয়া যায়" /> | <TranslatedText en="Extra space" bn="অতিরিক্ত স্থান" /> |
+| <TranslatedText en="Sorting" bn="সাজানো" /> | O(n log n) | O(1) or O(n) | <TranslatedText en="Less space" bn="কম স্থান" /> | <TranslatedText en="Slower, may modify array" bn="ধীর, অ্যারে পরিবর্তন হতে পারে" /> |
 
-## Key Points
+---
 
-1. **Set Approach**: Best for general use cases - fast and simple
-2. **Map Approach**: Use when you need frequency counts
-3. **Sorting**: Good when space is constrained and modifying array is acceptable
-4. **Index Marking**: Optimal for specific constraints (positive numbers in range)
-5. **Preserve Order**: If order matters, use LinkedHashSet or maintain insertion order
+## <TranslatedText en="Key Insights" bn="মূল পর্যবেক্ষণ" />
 
-## Common Pitfalls
+<TranslatedText
+  en="### When to Use Each Approach"
+  bn="### কোন পদ্ধতি কখন ব্যবহার করবেন"
+/>
 
-- Not handling empty arrays
-- Counting the same duplicate multiple times
-- Off-by-one errors in index marking approach
-- Not considering if array can be modified
+<TranslatedText
+  en="- **Set Approach:** Best for general use cases when you need to find duplicates quickly"
+  bn="- **সেট পদ্ধতি:** সাধারণ ক্ষেত্রে দ্রুত ডুপ্লিকেট খুঁজে পেতে সেরা"
+/>
 
-## Edge Cases to Test
+<TranslatedText
+  en="- **Hash Map Approach:** Use when you need frequency counts along with duplicates"
+  bn="- **হ্যাশ ম্যাপ পদ্ধতি:** ডুপ্লিকেটের সাথে ফ্রিকোয়েন্সি কাউন্ট প্রয়োজন হলে ব্যবহার করুন"
+/>
 
-```dart
-void testEdgeCases() {
-  print('Empty array: ${findDuplicates([])}');
-  print('No duplicates: ${findDuplicates([1, 2, 3])}');
-  print('All duplicates: ${findDuplicates([1, 1, 1, 1])}');
-  print('Single element: ${findDuplicates([1])}');
-}
-```
+<TranslatedText
+  en="- **Sorting Approach:** Good when space is constrained and modifying the array is acceptable"
+  bn="- **সাজানো পদ্ধতি:** স্থান সীমিত এবং অ্যারে পরিবর্তন করা গ্রহণযোগ্য হলে ভালো"
+/>
 
-## Reference
+<TranslatedText
+  en="### Important Considerations"
+  bn="### গুরুত্বপূর্ণ বিবেচনা"
+/>
 
-[Java67 - Find Duplicate Elements in Array](http://java67.blogspot.com/2015/10/2-ways-to-find-duplicate-elements-in-java-array.html)
+<TranslatedText
+  en="1. **Preserve Order:** If the order of duplicates in the result matters, use LinkedHashSet or maintain insertion order"
+  bn="১. **ক্রম সংরক্ষণ:** যদি ফলাফলে ডুপ্লিকেটের ক্রম গুরুত্বপূর্ণ হয়, তাহলে LinkedHashSet ব্যবহার করুন বা ইনসার্শন অর্ডার রাখুন"
+/>
+
+<TranslatedText
+  en="2. **Memory vs Speed:** Set approach trades memory for speed, while sorting trades time for space"
+  bn="২. **মেমরি বনাম গতি:** সেট পদ্ধতি গতির জন্য মেমরি ব্যয় করে, যেখানে সাজানো স্থানের জন্য সময় ব্যয় করে"
+/>
+
+<TranslatedText
+  en="3. **Uniqueness of Result:** Use Set for the duplicates collection to ensure each duplicate appears only once"
+  bn="৩. **ফলাফলের অনন্যতা:** প্রতিটি ডুপ্লিকেট শুধুমাত্র একবার প্রদর্শিত হয় তা নিশ্চিত করতে ডুপ্লিকেট কালেকশনে সেট ব্যবহার করুন"
+/>
+
+---
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="### Questions to Ask the Interviewer"
+  bn="### ইন্টারভিউয়ারকে জিজ্ঞাসা করার প্রশ্ন"
+/>
+
+<TranslatedText
+  en="1. Can the input array be modified?"
+  bn="১. ইনপুট অ্যারে কি পরিবর্তন করা যাবে?"
+/>
+
+<TranslatedText
+  en="2. Do we need to preserve the order of duplicates in the output?"
+  bn="২. আউটপুটে ডুপ্লিকেটের ক্রম কি সংরক্ষণ করতে হবে?"
+/>
+
+<TranslatedText
+  en="3. Are there any constraints on the range of numbers?"
+  bn="৩. নম্বরের রেঞ্জে কোনো সীমাবদ্ধতা আছে কি?"
+/>
+
+<TranslatedText
+  en="4. Should each duplicate be listed only once in the result, or should we include the frequency?"
+  bn="৪. ফলাফলে প্রতিটি ডুপ্লিকেট শুধুমাত্র একবার তালিকাভুক্ত হবে, নাকি ফ্রিকোয়েন্সি অন্তর্ভুক্ত করতে হবে?"
+/>
+
+<TranslatedText
+  en="### Common Edge Cases"
+  bn="### সাধারণ এজ কেস"
+/>
+
+<TranslatedText
+  en="- Empty array"
+  bn="- খালি অ্যারে"
+/>
+
+<TranslatedText
+  en="- Array with no duplicates"
+  bn="- ডুপ্লিকেট ছাড়া অ্যারে"
+/>
+
+<TranslatedText
+  en="- Array where all elements are duplicates"
+  bn="- অ্যারে যেখানে সব এলিমেন্ট ডুপ্লিকেট"
+/>
+
+<TranslatedText
+  en="- Single element array"
+  bn="- একক এলিমেন্ট অ্যারে"
+/>
+
+---
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="1. **Hash Set is optimal** for finding duplicates in most scenarios - O(n) time with O(n) space"
+  bn="১. **হ্যাশ সেট সর্বোত্তম** বেশিরভাগ পরিস্থিতিতে ডুপ্লিকেট খুঁজে পেতে - O(n) সময় O(n) স্থান সহ"
+/>
+
+<TranslatedText
+  en="2. **Sorting approach** can save space but takes O(n log n) time"
+  bn="২. **সাজানো পদ্ধতি** স্থান সাশ্রয় করতে পারে কিন্তু O(n log n) সময় নেয়"
+/>
+
+<TranslatedText
+  en="3. **Use Hash Map** when you need both duplicates and their frequencies"
+  bn="৩. **হ্যাশ ম্যাপ ব্যবহার করুন** যখন আপনার ডুপ্লিকেট এবং তাদের ফ্রিকোয়েন্সি উভয়ই প্রয়োজন"
+/>
+
+<TranslatedText
+  en="4. **Consider the trade-offs** between time, space, and whether the array can be modified"
+  bn="৪. **ট্রেড-অফ বিবেচনা করুন** সময়, স্থান এবং অ্যারে পরিবর্তন করা যায় কিনা তার মধ্যে"
+/>
+
+<TranslatedText
+  en="5. **Always use a Set** for the duplicates collection to ensure uniqueness in the result"
+  bn="৫. **সবসময় একটি সেট ব্যবহার করুন** ডুপ্লিকেট কালেকশনে ফলাফলে অনন্যতা নিশ্চিত করতে"
+/>
+
+---
+
+## <TranslatedText en="Reference" bn="রেফারেন্স" />
+
+- [Java67 - Find Duplicate Elements in Array](http://java67.blogspot.com/2015/10/2-ways-to-find-duplicate-elements-in-java-array.html)

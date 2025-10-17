@@ -3,307 +3,694 @@ title: 38. Find Starting and Ending Position of Value
 description: Given an array of integers sorted in ascending order, find the starting and ending position of a given value
 ---
 
-## Problem Statement
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { TranslatedText, LanguageSwitcher } from '@/components/LanguageSwitcher';
 
-Given an array of integers sorted in ascending order, find the starting and ending position of a given target value. If the target is not found in the array, return [-1, -1].
+<LanguageSwitcher />
 
-You must write an algorithm with O(log n) runtime complexity.
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
 
-## Examples
+<TranslatedText
+  en="Given an array of integers sorted in ascending order, find the starting and ending position of a given target value. If the target is not found in the array, return `[-1, -1]`."
+  bn="ঊর্ধ্বক্রমে সাজানো একটি ইন্টিজার অ্যারেতে একটি নির্দিষ্ট টার্গেট ভ্যালুর শুরু এবং শেষ অবস্থান খুঁজে বের করুন। যদি টার্গেট অ্যারেতে না পাওয়া যায়, তাহলে `[-1, -1]` রিটার্ন করুন।"
+/>
 
-### Example 1
+<TranslatedText
+  en="**Constraint:** You must write an algorithm with O(log n) runtime complexity."
+  bn="**সীমাবদ্ধতা:** আপনাকে অবশ্যই O(log n) রানটাইম জটিলতা সহ একটি অ্যালগরিদম লিখতে হবে।"
+/>
+
+### <TranslatedText en="Examples" bn="উদাহরণ" />
+
+#### <TranslatedText en="Example 1" bn="উদাহরণ ১" />
+
 ```
 Input: nums = [5, 7, 7, 8, 8, 10], target = 8
 Output: [3, 4]
-Explanation: 8 appears at indices 3 and 4
 ```
 
-### Example 2
+<TranslatedText
+  en="**Explanation:** 8 appears at indices 3 and 4"
+  bn="**ব্যাখ্যা:** ৮ ইনডেক্স ৩ এবং ৪ তে উপস্থিত"
+/>
+
+#### <TranslatedText en="Example 2" bn="উদাহরণ ২" />
+
 ```
 Input: nums = [5, 7, 7, 8, 8, 10], target = 6
 Output: [-1, -1]
-Explanation: 6 is not in the array
 ```
 
-### Example 3
+<TranslatedText
+  en="**Explanation:** 6 is not in the array"
+  bn="**ব্যাখ্যা:** ৬ অ্যারেতে নেই"
+/>
+
+#### <TranslatedText en="Example 3" bn="উদাহরণ ৩" />
+
 ```
 Input: nums = [], target = 0
 Output: [-1, -1]
-Explanation: Empty array
 ```
 
-### Example 4
+<TranslatedText
+  en="**Explanation:** Empty array"
+  bn="**ব্যাখ্যা:** খালি অ্যারে"
+/>
+
+#### <TranslatedText en="Example 4" bn="উদাহরণ ৪" />
+
 ```
 Input: nums = [1], target = 1
 Output: [0, 0]
-Explanation: Single element that matches
 ```
 
-## Solution
+<TranslatedText
+  en="**Explanation:** Single element that matches"
+  bn="**ব্যাখ্যা:** একক এলিমেন্ট যা মিলে যায়"
+/>
 
-### Approach 1: Two Binary Searches (Optimal)
+---
 
-Perform two binary searches: one to find the leftmost position and one to find the rightmost position.
+## <TranslatedText en="Solution Approaches" bn="সমাধানের পদ্ধতি" />
 
-**Time Complexity:** O(log n)
-**Space Complexity:** O(1)
+### <TranslatedText en="Approach 1: Two Binary Searches (Optimal)" bn="পদ্ধতি ১: দুটি বাইনারি সার্চ (সর্বোত্তম)" />
 
-```dart
-List<int> searchRange(List<int> nums, int target) {
-  if (nums.isEmpty) return [-1, -1];
+<TranslatedText
+  en="Perform two binary searches: one to find the leftmost position and one to find the rightmost position. This is the optimal solution that achieves O(log n) time complexity."
+  bn="দুটি বাইনারি সার্চ করুন: একটি বামতম অবস্থান খুঁজে পেতে এবং একটি ডানতম অবস্থান খুঁজে পেতে। এটি সর্বোত্তম সমাধান যা O(log n) সময় জটিলতা অর্জন করে।"
+/>
 
-  int left = findLeftPosition(nums, target);
-  if (left == -1) return [-1, -1]; // Target not found
+<TranslatedText
+  en="**Time Complexity:** O(log n)"
+  bn="**সময় জটিলতা:** O(log n)"
+/>
 
-  int right = findRightPosition(nums, target);
+<TranslatedText
+  en="**Space Complexity:** O(1)"
+  bn="**স্থান জটিলতা:** O(1)"
+/>
 
-  return [left, right];
-}
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
 
-int findLeftPosition(List<int> nums, int target) {
-  int left = 0;
-  int right = nums.length - 1;
-  int result = -1;
+int findLeftPosition(vector<int>& nums, int target) {
+    int left = 0;
+    int right = nums.size() - 1;
+    int result = -1;
 
-  while (left <= right) {
-    int mid = left + (right - left) ~/ 2;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
 
-    if (nums[mid] == target) {
-      result = mid;
-      right = mid - 1; // Continue searching in left half
-    } else if (nums[mid] < target) {
-      left = mid + 1;
-    } else {
-      right = mid - 1;
+        if (nums[mid] == target) {
+            result = mid;
+            right = mid - 1; // Continue searching in left half
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
     }
-  }
 
-  return result;
+    return result;
 }
 
-int findRightPosition(List<int> nums, int target) {
-  int left = 0;
-  int right = nums.length - 1;
-  int result = -1;
+int findRightPosition(vector<int>& nums, int target) {
+    int left = 0;
+    int right = nums.size() - 1;
+    int result = -1;
 
-  while (left <= right) {
-    int mid = left + (right - left) ~/ 2;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
 
-    if (nums[mid] == target) {
-      result = mid;
-      left = mid + 1; // Continue searching in right half
-    } else if (nums[mid] < target) {
-      left = mid + 1;
-    } else {
-      right = mid - 1;
+        if (nums[mid] == target) {
+            result = mid;
+            left = mid + 1; // Continue searching in right half
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
     }
-  }
 
-  return result;
+    return result;
 }
 
-void main() {
-  List<int> nums1 = [5, 7, 7, 8, 8, 10];
-  print('Array: $nums1, Target: 8');
-  print('Range: ${searchRange(nums1, 8)}');
+vector<int> searchRange(vector<int>& nums, int target) {
+    if (nums.empty()) return {-1, -1};
 
-  List<int> nums2 = [5, 7, 7, 8, 8, 10];
-  print('\nArray: $nums2, Target: 6');
-  print('Range: ${searchRange(nums2, 6)}');
+    int leftPos = findLeftPosition(nums, target);
+    if (leftPos == -1) return {-1, -1}; // Target not found
 
-  List<int> nums3 = [1];
-  print('\nArray: $nums3, Target: 1');
-  print('Range: ${searchRange(nums3, 1)}');
+    int rightPos = findRightPosition(nums, target);
+
+    return {leftPos, rightPos};
+}
+
+int main() {
+    vector<int> nums1 = {5, 7, 7, 8, 8, 10};
+    vector<int> result1 = searchRange(nums1, 8);
+    cout << "Array: [5, 7, 7, 8, 8, 10], Target: 8" << endl;
+    cout << "Range: [" << result1[0] << ", " << result1[1] << "]" << endl;
+
+    vector<int> nums2 = {5, 7, 7, 8, 8, 10};
+    vector<int> result2 = searchRange(nums2, 6);
+    cout << "\nArray: [5, 7, 7, 8, 8, 10], Target: 6" << endl;
+    cout << "Range: [" << result2[0] << ", " << result2[1] << "]" << endl;
+
+    vector<int> nums3 = {1};
+    vector<int> result3 = searchRange(nums3, 1);
+    cout << "\nArray: [1], Target: 1" << endl;
+    cout << "Range: [" << result3[0] << ", " << result3[1] << "]" << endl;
+
+    return 0;
 }
 ```
+  </Tab>
 
-### Approach 2: Single Binary Search + Linear Expansion
+  <Tab value="Python">
+```python
+def find_left_position(nums, target):
+    left, right = 0, len(nums) - 1
+    result = -1
 
-Find any occurrence using binary search, then expand left and right.
+    while left <= right:
+        mid = left + (right - left) // 2
 
-**Time Complexity:** O(log n) for search + O(k) for expansion where k is count of target
-**Space Complexity:** O(1)
+        if nums[mid] == target:
+            result = mid
+            right = mid - 1  # Continue searching in left half
+        elif nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
 
-```dart
-List<int> searchRangeExpand(List<int> nums, int target) {
-  if (nums.isEmpty) return [-1, -1];
+    return result
 
-  // Find any occurrence using binary search
-  int index = binarySearch(nums, target);
+def find_right_position(nums, target):
+    left, right = 0, len(nums) - 1
+    result = -1
 
-  if (index == -1) return [-1, -1];
+    while left <= right:
+        mid = left + (right - left) // 2
 
-  // Expand to find leftmost position
-  int left = index;
-  while (left > 0 && nums[left - 1] == target) {
-    left--;
-  }
+        if nums[mid] == target:
+            result = mid
+            left = mid + 1  # Continue searching in right half
+        elif nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
 
-  // Expand to find rightmost position
-  int right = index;
-  while (right < nums.length - 1 && nums[right + 1] == target) {
-    right++;
-  }
+    return result
 
-  return [left, right];
-}
+def search_range(nums, target):
+    if not nums:
+        return [-1, -1]
 
-int binarySearch(List<int> nums, int target) {
-  int left = 0;
-  int right = nums.length - 1;
+    left_pos = find_left_position(nums, target)
+    if left_pos == -1:
+        return [-1, -1]  # Target not found
 
-  while (left <= right) {
-    int mid = left + (right - left) ~/ 2;
+    right_pos = find_right_position(nums, target)
 
-    if (nums[mid] == target) {
-      return mid;
-    } else if (nums[mid] < target) {
-      left = mid + 1;
-    } else {
-      right = mid - 1;
+    return [left_pos, right_pos]
+
+# Test cases
+nums1 = [5, 7, 7, 8, 8, 10]
+print(f"Array: {nums1}, Target: 8")
+print(f"Range: {search_range(nums1, 8)}")
+
+nums2 = [5, 7, 7, 8, 8, 10]
+print(f"\nArray: {nums2}, Target: 6")
+print(f"Range: {search_range(nums2, 6)}")
+
+nums3 = [1]
+print(f"\nArray: {nums3}, Target: 1")
+print(f"Range: {search_range(nums3, 1)}")
+```
+  </Tab>
+
+  <Tab value="JavaScript">
+```javascript
+function findLeftPosition(nums, target) {
+    let left = 0;
+    let right = nums.length - 1;
+    let result = -1;
+
+    while (left <= right) {
+        const mid = left + Math.floor((right - left) / 2);
+
+        if (nums[mid] === target) {
+            result = mid;
+            right = mid - 1; // Continue searching in left half
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
     }
-  }
 
-  return -1;
+    return result;
 }
 
-void main() {
-  List<int> nums = [5, 7, 7, 8, 8, 10];
-  print('Array: $nums, Target: 8');
-  print('Range: ${searchRangeExpand(nums, 8)}');
-}
-```
+function findRightPosition(nums, target) {
+    let left = 0;
+    let right = nums.length - 1;
+    let result = -1;
 
-### Approach 3: Generic Binary Search Helper
+    while (left <= right) {
+        const mid = left + Math.floor((right - left) / 2);
 
-A more elegant solution using a helper function.
-
-**Time Complexity:** O(log n)
-**Space Complexity:** O(1)
-
-```dart
-List<int> searchRangeGeneric(List<int> nums, int target) {
-  int left = binarySearchBound(nums, target, true);
-  if (left == -1) return [-1, -1];
-
-  int right = binarySearchBound(nums, target, false);
-
-  return [left, right];
-}
-
-int binarySearchBound(List<int> nums, int target, bool findLeft) {
-  int left = 0;
-  int right = nums.length - 1;
-  int result = -1;
-
-  while (left <= right) {
-    int mid = left + (right - left) ~/ 2;
-
-    if (nums[mid] == target) {
-      result = mid;
-      if (findLeft) {
-        right = mid - 1; // Search left for leftmost
-      } else {
-        left = mid + 1; // Search right for rightmost
-      }
-    } else if (nums[mid] < target) {
-      left = mid + 1;
-    } else {
-      right = mid - 1;
+        if (nums[mid] === target) {
+            result = mid;
+            left = mid + 1; // Continue searching in right half
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
     }
-  }
 
-  return result;
+    return result;
 }
 
-void main() {
-  List<int> nums = [5, 7, 7, 8, 8, 10];
+function searchRange(nums, target) {
+    if (nums.length === 0) return [-1, -1];
 
-  print('Array: $nums');
-  print('Target 8: ${searchRangeGeneric(nums, 8)}');
-  print('Target 7: ${searchRangeGeneric(nums, 7)}');
-  print('Target 10: ${searchRangeGeneric(nums, 10)}');
-  print('Target 6: ${searchRangeGeneric(nums, 6)}');
+    const leftPos = findLeftPosition(nums, target);
+    if (leftPos === -1) return [-1, -1]; // Target not found
+
+    const rightPos = findRightPosition(nums, target);
+
+    return [leftPos, rightPos];
+}
+
+// Test cases
+const nums1 = [5, 7, 7, 8, 8, 10];
+console.log(`Array: [${nums1}], Target: 8`);
+console.log(`Range: [${searchRange(nums1, 8)}]`);
+
+const nums2 = [5, 7, 7, 8, 8, 10];
+console.log(`\nArray: [${nums2}], Target: 6`);
+console.log(`Range: [${searchRange(nums2, 6)}]`);
+
+const nums3 = [1];
+console.log(`\nArray: [${nums3}], Target: 1`);
+console.log(`Range: [${searchRange(nums3, 1)}]`);
+```
+  </Tab>
+</Tabs>
+
+---
+
+### <TranslatedText en="Approach 2: Generic Binary Search Helper" bn="পদ্ধতি ২: জেনেরিক বাইনারি সার্চ হেল্পার" />
+
+<TranslatedText
+  en="A more elegant solution using a single helper function that can find either the leftmost or rightmost position based on a boolean flag."
+  bn="একটি একক হেল্পার ফাংশন ব্যবহার করে একটি আরও মার্জিত সমাধান যা একটি বুলিয়ান ফ্ল্যাগের উপর ভিত্তি করে বামতম বা ডানতম অবস্থান খুঁজে পেতে পারে।"
+/>
+
+<TranslatedText
+  en="**Time Complexity:** O(log n)"
+  bn="**সময় জটিলতা:** O(log n)"
+/>
+
+<TranslatedText
+  en="**Space Complexity:** O(1)"
+  bn="**স্থান জটিলতা:** O(1)"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int binarySearchBound(vector<int>& nums, int target, bool findLeft) {
+    int left = 0;
+    int right = nums.size() - 1;
+    int result = -1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (nums[mid] == target) {
+            result = mid;
+            if (findLeft) {
+                right = mid - 1; // Search left for leftmost
+            } else {
+                left = mid + 1; // Search right for rightmost
+            }
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return result;
+}
+
+vector<int> searchRangeGeneric(vector<int>& nums, int target) {
+    int leftPos = binarySearchBound(nums, target, true);
+    if (leftPos == -1) return {-1, -1};
+
+    int rightPos = binarySearchBound(nums, target, false);
+
+    return {leftPos, rightPos};
+}
+
+int main() {
+    vector<int> nums = {5, 7, 7, 8, 8, 10};
+
+    cout << "Array: [5, 7, 7, 8, 8, 10]" << endl;
+
+    vector<int> result1 = searchRangeGeneric(nums, 8);
+    cout << "Target 8: [" << result1[0] << ", " << result1[1] << "]" << endl;
+
+    vector<int> result2 = searchRangeGeneric(nums, 7);
+    cout << "Target 7: [" << result2[0] << ", " << result2[1] << "]" << endl;
+
+    vector<int> result3 = searchRangeGeneric(nums, 10);
+    cout << "Target 10: [" << result3[0] << ", " << result3[1] << "]" << endl;
+
+    vector<int> result4 = searchRangeGeneric(nums, 6);
+    cout << "Target 6: [" << result4[0] << ", " << result4[1] << "]" << endl;
+
+    return 0;
 }
 ```
+  </Tab>
 
-### Approach 4: Using Dart's Built-in Methods
+  <Tab value="Python">
+```python
+def binary_search_bound(nums, target, find_left):
+    left, right = 0, len(nums) - 1
+    result = -1
 
-Simple approach using indexOf and lastIndexOf (not O(log n) but useful for small arrays).
+    while left <= right:
+        mid = left + (right - left) // 2
 
-**Time Complexity:** O(n)
-**Space Complexity:** O(1)
+        if nums[mid] == target:
+            result = mid
+            if find_left:
+                right = mid - 1  # Search left for leftmost
+            else:
+                left = mid + 1   # Search right for rightmost
+        elif nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
 
-```dart
-List<int> searchRangeSimple(List<int> nums, int target) {
-  int left = nums.indexOf(target);
-  if (left == -1) return [-1, -1];
+    return result
 
-  int right = nums.lastIndexOf(target);
+def search_range_generic(nums, target):
+    left_pos = binary_search_bound(nums, target, True)
+    if left_pos == -1:
+        return [-1, -1]
 
-  return [left, right];
+    right_pos = binary_search_bound(nums, target, False)
+
+    return [left_pos, right_pos]
+
+# Test
+nums = [5, 7, 7, 8, 8, 10]
+
+print(f"Array: {nums}")
+print(f"Target 8: {search_range_generic(nums, 8)}")
+print(f"Target 7: {search_range_generic(nums, 7)}")
+print(f"Target 10: {search_range_generic(nums, 10)}")
+print(f"Target 6: {search_range_generic(nums, 6)}")
+```
+  </Tab>
+
+  <Tab value="JavaScript">
+```javascript
+function binarySearchBound(nums, target, findLeft) {
+    let left = 0;
+    let right = nums.length - 1;
+    let result = -1;
+
+    while (left <= right) {
+        const mid = left + Math.floor((right - left) / 2);
+
+        if (nums[mid] === target) {
+            result = mid;
+            if (findLeft) {
+                right = mid - 1; // Search left for leftmost
+            } else {
+                left = mid + 1;  // Search right for rightmost
+            }
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return result;
 }
 
-void main() {
-  List<int> nums = [5, 7, 7, 8, 8, 10];
-  print('Array: $nums, Target: 8');
-  print('Range: ${searchRangeSimple(nums, 8)}');
+function searchRangeGeneric(nums, target) {
+    const leftPos = binarySearchBound(nums, target, true);
+    if (leftPos === -1) return [-1, -1];
+
+    const rightPos = binarySearchBound(nums, target, false);
+
+    return [leftPos, rightPos];
 }
+
+// Test
+const nums = [5, 7, 7, 8, 8, 10];
+
+console.log(`Array: [${nums}]`);
+console.log(`Target 8: [${searchRangeGeneric(nums, 8)}]`);
+console.log(`Target 7: [${searchRangeGeneric(nums, 7)}]`);
+console.log(`Target 10: [${searchRangeGeneric(nums, 10)}]`);
+console.log(`Target 6: [${searchRangeGeneric(nums, 6)}]`);
+```
+  </Tab>
+</Tabs>
+
+---
+
+## <TranslatedText en="Algorithm Walkthrough" bn="অ্যালগরিদম বিশ্লেষণ" />
+
+<TranslatedText
+  en="Let's trace through finding the range for target `8` in array `[5, 7, 7, 8, 8, 10]`:"
+  bn="চলুন অ্যারে `[5, 7, 7, 8, 8, 10]` তে টার্গেট `8` এর রেঞ্জ খুঁজে বের করার ট্রেস করি:"
+/>
+
+### <TranslatedText en="Finding Left Position:" bn="বাম অবস্থান খুঁজে বের করা:" />
+
+```
+Array: [5, 7, 7, 8, 8, 10]
+Index:  0  1  2  3  4   5
+Target: 8
+
+Iteration 1:
+  left = 0, right = 5
+  mid = 0 + (5-0)/2 = 2
+  nums[2] = 7 < 8
+  → left = 3
+
+Iteration 2:
+  left = 3, right = 5
+  mid = 3 + (5-3)/2 = 4
+  nums[4] = 8 == 8 ✓
+  → result = 4, right = 3 (search left)
+
+Iteration 3:
+  left = 3, right = 3
+  mid = 3 + (3-3)/2 = 3
+  nums[3] = 8 == 8 ✓
+  → result = 3, right = 2 (search left)
+
+Iteration 4:
+  left = 3, right = 2
+  → left > right, exit
+
+Left Position: 3
 ```
 
-## Comparison of Approaches
+### <TranslatedText en="Finding Right Position:" bn="ডান অবস্থান খুঁজে বের করা:" />
 
-| Approach | Time | Space | Best Use Case |
+```
+Array: [5, 7, 7, 8, 8, 10]
+Index:  0  1  2  3  4   5
+Target: 8
+
+Iteration 1:
+  left = 0, right = 5
+  mid = 0 + (5-0)/2 = 2
+  nums[2] = 7 < 8
+  → left = 3
+
+Iteration 2:
+  left = 3, right = 5
+  mid = 3 + (5-3)/2 = 4
+  nums[4] = 8 == 8 ✓
+  → result = 4, left = 5 (search right)
+
+Iteration 3:
+  left = 5, right = 5
+  mid = 5 + (5-5)/2 = 5
+  nums[5] = 10 > 8
+  → right = 4
+
+Iteration 4:
+  left = 5, right = 4
+  → left > right, exit
+
+Right Position: 4
+
+Final Result: [3, 4]
+```
+
+---
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণি" />
+
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time Complexity" bn="সময় জটিলতা" /> | <TranslatedText en="Space Complexity" bn="স্থান জটিলতা" /> | <TranslatedText en="Best Use Case" bn="সেরা ব্যবহারের ক্ষেত্র" /> |
 |----------|------|-------|---------------|
-| Two Binary Searches | O(log n) | O(1) | Large sorted arrays, optimal solution |
-| Binary + Expand | O(log n + k) | O(1) | When k (count) is small |
-| Generic Helper | O(log n) | O(1) | Clean code, same as approach 1 |
-| indexOf/lastIndexOf | O(n) | O(1) | Small arrays, simplicity over performance |
+| <TranslatedText en="Two Binary Searches" bn="দুটি বাইনারি সার্চ" /> | O(log n) | O(1) | <TranslatedText en="Large sorted arrays, optimal solution" bn="বড় সাজানো অ্যারে, সর্বোত্তম সমাধান" /> |
+| <TranslatedText en="Generic Helper" bn="জেনেরিক হেল্পার" /> | O(log n) | O(1) | <TranslatedText en="Clean code, same as approach 1" bn="পরিচ্ছন্ন কোড, পদ্ধতি ১ এর মতো" /> |
 
-## Key Points
+---
 
-1. **Binary Search**: Must use binary search to achieve O(log n) complexity
-2. **Two Searches**: Need separate searches for left and right boundaries
-3. **Continue After Finding**: Don't stop when target is found - continue searching in appropriate direction
-4. **Edge Cases**: Handle empty array, single element, target not found
-5. **Integer Division**: Use `~/ ` for integer division in Dart
+## <TranslatedText en="Key Insights" bn="মূল পর্যবেক্ষণ" />
 
-## Common Pitfalls
+<TranslatedText
+  en="### Why Two Separate Searches?"
+  bn="### কেন দুটি পৃথক সার্চ?"
+/>
 
-- Stopping binary search as soon as target is found
-- Not handling the case when target doesn't exist
-- Off-by-one errors in boundary conditions
-- Using `left + right ~/ 2` instead of `left + (right - left) ~/ 2` (can overflow in other languages)
+<TranslatedText
+  en="- **For leftmost:** When we find the target, we continue searching LEFT to ensure we find the first occurrence"
+  bn="- **বামতমের জন্য:** যখন আমরা টার্গেট খুঁজে পাই, আমরা বামে সার্চ চালিয়ে যাই প্রথম ঘটনা খুঁজে পেতে"
+/>
 
-## Test Cases
+<TranslatedText
+  en="- **For rightmost:** When we find the target, we continue searching RIGHT to ensure we find the last occurrence"
+  bn="- **ডানতমের জন্য:** যখন আমরা টার্গেট খুঁজে পাই, আমরা ডানে সার্চ চালিয়ে যাই শেষ ঘটনা খুঁজে পেতে"
+/>
 
-```dart
-void testSearchRange() {
-  // Test case 1: Multiple occurrences
-  assert(searchRange([5, 7, 7, 8, 8, 10], 8).toString() == '[3, 4]');
+<TranslatedText
+  en="### Key Binary Search Modifications"
+  bn="### মূল বাইনারি সার্চ পরিবর্তন"
+/>
 
-  // Test case 2: Target not found
-  assert(searchRange([5, 7, 7, 8, 8, 10], 6).toString() == '[-1, -1]');
+<TranslatedText
+  en="1. **Don't stop when found:** Standard binary search stops when target is found, but here we continue"
+  bn="১. **খুঁজে পেলে থামবেন না:** স্ট্যান্ডার্ড বাইনারি সার্চ টার্গেট খুঁজে পেলে থামে, কিন্তু এখানে আমরা চালিয়ে যাই"
+/>
 
-  // Test case 3: Empty array
-  assert(searchRange([], 0).toString() == '[-1, -1]');
+<TranslatedText
+  en="2. **Store result:** Keep updating result variable each time we find the target"
+  bn="২. **রেজাল্ট সংরক্ষণ করুন:** প্রতিবার টার্গেট খুঁজে পেলে রেজাল্ট ভেরিয়েবল আপডেট করতে থাকুন"
+/>
 
-  // Test case 4: Single element match
-  assert(searchRange([1], 1).toString() == '[0, 0]');
+<TranslatedText
+  en="3. **Direction matters:** After finding target, adjust search boundary to continue in correct direction"
+  bn="৩. **দিক গুরুত্বপূর্ণ:** টার্গেট খুঁজে পাওয়ার পর, সঠিক দিকে চালিয়ে যেতে সার্চ সীমা সামঞ্জস্য করুন"
+/>
 
-  // Test case 5: All elements same
-  assert(searchRange([2, 2, 2, 2], 2).toString() == '[0, 3]');
+---
 
-  // Test case 6: Target at start
-  assert(searchRange([1, 1, 2, 3], 1).toString() == '[0, 1]');
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
 
-  // Test case 7: Target at end
-  assert(searchRange([1, 2, 3, 3], 3).toString() == '[2, 3]');
+<TranslatedText
+  en="### Questions to Ask the Interviewer"
+  bn="### ইন্টারভিউয়ারকে জিজ্ঞাসা করার প্রশ্ন"
+/>
 
-  print('All tests passed!');
-}
-```
+<TranslatedText
+  en="1. Is the array guaranteed to be sorted?"
+  bn="১. অ্যারে কি সাজানো থাকার নিশ্চয়তা আছে?"
+/>
 
-## Reference
+<TranslatedText
+  en="2. Can the array contain duplicates? (Yes, as shown in examples)"
+  bn="২. অ্যারেতে কি ডুপ্লিকেট থাকতে পারে? (হ্যাঁ, উদাহরণে দেখানো হয়েছে)"
+/>
 
-[Chegg - Find Starting and Ending Position](https://www.chegg.com/homework-help/questions-and-answers/given-array-integers-nums-sorted-ascending-order-find-starting-ending-position-given-targe-q93277114)
+<TranslatedText
+  en="3. What should be returned if the target is not found? ([-1, -1])"
+  bn="৩. টার্গেট না পাওয়া গেলে কি রিটার্ন করতে হবে? ([-1, -1])"
+/>
+
+<TranslatedText
+  en="4. Are there any constraints on array size?"
+  bn="৪. অ্যারের সাইজে কোনো সীমাবদ্ধতা আছে কি?"
+/>
+
+<TranslatedText
+  en="### Common Edge Cases"
+  bn="### সাধারণ এজ কেস"
+/>
+
+<TranslatedText
+  en="- Empty array"
+  bn="- খালি অ্যারে"
+/>
+
+<TranslatedText
+  en="- Single element array (matching and non-matching)"
+  bn="- একক এলিমেন্ট অ্যারে (মিলে যাওয়া এবং না মিলা)"
+/>
+
+<TranslatedText
+  en="- All elements are the same"
+  bn="- সব এলিমেন্ট একই"
+/>
+
+<TranslatedText
+  en="- Target at the beginning or end of array"
+  bn="- টার্গেট অ্যারের শুরু বা শেষে"
+/>
+
+<TranslatedText
+  en="- Target not in array"
+  bn="- টার্গেট অ্যারেতে নেই"
+/>
+
+---
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="1. **Two binary searches** are needed: one for leftmost position, one for rightmost"
+  bn="১. **দুটি বাইনারি সার্চ** প্রয়োজন: একটি বামতম অবস্থানের জন্য, একটি ডানতমের জন্য"
+/>
+
+<TranslatedText
+  en="2. **Don't stop early:** Continue searching even after finding the target to find boundaries"
+  bn="২. **তাড়াতাড়ি থামবেন না:** টার্গেট খুঁজে পাওয়ার পরেও সীমানা খুঁজে পেতে সার্চ চালিয়ে যান"
+/>
+
+<TranslatedText
+  en="3. **O(log n) complexity** is achieved by using binary search instead of linear scan"
+  bn="৩. **O(log n) জটিলতা** লিনিয়ার স্ক্যানের পরিবর্তে বাইনারি সার্চ ব্যবহার করে অর্জিত হয়"
+/>
+
+<TranslatedText
+  en="4. **Avoid overflow:** Use `left + (right - left) / 2` instead of `(left + right) / 2`"
+  bn="৪. **ওভারফ্লো এড়ান:** `(left + right) / 2` এর পরিবর্তে `left + (right - left) / 2` ব্যবহার করুন"
+/>
+
+<TranslatedText
+  en="5. **Handle edge cases:** Empty array, single element, target not found"
+  bn="৫. **এজ কেস হ্যান্ডেল করুন:** খালি অ্যারে, একক এলিমেন্ট, টার্গেট পাওয়া যায়নি"
+/>
+
+---
+
+## <TranslatedText en="Reference" bn="রেফারেন্স" />
+
+- [Chegg - Find Starting and Ending Position](https://www.chegg.com/homework-help/questions-and-answers/given-array-integers-nums-sorted-ascending-order-find-starting-ending-position-given-targe-q93277114)

@@ -3,313 +3,562 @@ title: 39. Longest Consecutive Elements Sequence
 description: Given an unsorted array of integers, find the length of the longest consecutive elements sequence
 ---
 
-## Problem Statement
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { TranslatedText, LanguageSwitcher } from '@/components/LanguageSwitcher';
 
-Given an unsorted array of integers, find the length of the longest consecutive elements sequence. The algorithm should run in O(n) time complexity.
+<LanguageSwitcher />
 
-## Examples
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
 
-### Example 1
+<TranslatedText
+  en="Given an unsorted array of integers, find the length of the longest consecutive elements sequence."
+  bn="একটি আনসর্টেড ইন্টিজার অ্যারেতে সবচেয়ে দীর্ঘ পরপর এলিমেন্ট সিকোয়েন্সের দৈর্ঘ্য খুঁজে বের করুন।"
+/>
+
+<TranslatedText
+  en="**Constraint:** The algorithm should run in O(n) time complexity."
+  bn="**সীমাবদ্ধতা:** অ্যালগরিদম অবশ্যই O(n) সময় জটিলতায় চলতে হবে।"
+/>
+
+### <TranslatedText en="Examples" bn="উদাহরণ" />
+
+#### <TranslatedText en="Example 1" bn="উদাহরণ ১" />
+
 ```
 Input: [100, 4, 200, 1, 3, 2]
 Output: 4
-Explanation: The longest consecutive sequence is [1, 2, 3, 4]
 ```
 
-### Example 2
+<TranslatedText
+  en="**Explanation:** The longest consecutive sequence is [1, 2, 3, 4]"
+  bn="**ব্যাখ্যা:** সবচেয়ে দীর্ঘ পরপর সিকোয়েন্স হলো [1, 2, 3, 4]"
+/>
+
+#### <TranslatedText en="Example 2" bn="উদাহরণ ২" />
+
 ```
 Input: [0, 3, 7, 2, 5, 8, 4, 6, 0, 1]
 Output: 9
-Explanation: The longest consecutive sequence is [0, 1, 2, 3, 4, 5, 6, 7, 8]
 ```
 
-### Example 3
+<TranslatedText
+  en="**Explanation:** The longest consecutive sequence is [0, 1, 2, 3, 4, 5, 6, 7, 8]"
+  bn="**ব্যাখ্যা:** সবচেয়ে দীর্ঘ পরপর সিকোয়েন্স হলো [0, 1, 2, 3, 4, 5, 6, 7, 8]"
+/>
+
+#### <TranslatedText en="Example 3" bn="উদাহরণ ৩" />
+
 ```
 Input: [9, 1, 4, 7, 3, 2, 8, 5, 6]
 Output: 9
-Explanation: The entire array forms a consecutive sequence [1-9]
 ```
 
-## Solution
+<TranslatedText
+  en="**Explanation:** The entire array forms a consecutive sequence [1-9]"
+  bn="**ব্যাখ্যা:** সম্পূর্ণ অ্যারে একটি পরপর সিকোয়েন্স তৈরি করে [1-9]"
+/>
 
-### Approach 1: Using Set (Optimal - O(n))
+---
 
-Use a Set for O(1) lookups and only start counting from numbers that begin a sequence.
+## <TranslatedText en="Solution Approaches" bn="সমাধানের পদ্ধতি" />
 
-**Time Complexity:** O(n)
-**Space Complexity:** O(n)
+### <TranslatedText en="Approach 1: Using Set with Smart Start (Optimal)" bn="পদ্ধতি ১: স্মার্ট স্টার্ট সহ সেট ব্যবহার করে (সর্বোত্তম)" />
 
-```dart
-int longestConsecutive(List<int> nums) {
-  if (nums.isEmpty) return 0;
+<TranslatedText
+  en="Use a Set for O(1) lookups and only start counting from numbers that begin a sequence. The key insight is to check if `num - 1` exists before starting to count - this ensures each number is processed at most twice."
+  bn="O(1) লুকআপের জন্য একটি সেট ব্যবহার করুন এবং শুধুমাত্র সিকোয়েন্স শুরু করা নম্বর থেকে গণনা শুরু করুন। মূল অন্তর্দৃষ্টি হলো গণনা শুরু করার আগে `num - 1` আছে কিনা চেক করা - এটি নিশ্চিত করে যে প্রতিটি নম্বর সর্বোচ্চ দুইবার প্রসেস করা হয়।"
+/>
 
-  Set<int> numSet = nums.toSet();
-  int maxLength = 0;
+<TranslatedText
+  en="**Time Complexity:** O(n)"
+  bn="**সময় জটিলতা:** O(n)"
+/>
 
-  for (int num in numSet) {
-    // Only start counting if this is the beginning of a sequence
-    if (!numSet.contains(num - 1)) {
-      int currentNum = num;
-      int currentLength = 1;
+<TranslatedText
+  en="**Space Complexity:** O(n)"
+  bn="**স্থান জটিলতা:** O(n)"
+/>
 
-      // Count consecutive numbers
-      while (numSet.contains(currentNum + 1)) {
-        currentNum++;
-        currentLength++;
-      }
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+#include <algorithm>
+using namespace std;
 
-      maxLength = maxLength > currentLength ? maxLength : currentLength;
+int longestConsecutive(vector<int>& nums) {
+    if (nums.empty()) return 0;
+
+    unordered_set<int> numSet(nums.begin(), nums.end());
+    int maxLength = 0;
+
+    for (int num : numSet) {
+        // Only start counting if this is the beginning of a sequence
+        if (numSet.find(num - 1) == numSet.end()) {
+            int currentNum = num;
+            int currentLength = 1;
+
+            // Count consecutive numbers
+            while (numSet.find(currentNum + 1) != numSet.end()) {
+                currentNum++;
+                currentLength++;
+            }
+
+            maxLength = max(maxLength, currentLength);
+        }
     }
-  }
 
-  return maxLength;
+    return maxLength;
 }
 
-void main() {
-  List<int> nums1 = [100, 4, 200, 1, 3, 2];
-  print('Array: $nums1');
-  print('Longest consecutive: ${longestConsecutive(nums1)}');
+int main() {
+    vector<int> nums1 = {100, 4, 200, 1, 3, 2};
+    cout << "Array: [100, 4, 200, 1, 3, 2]" << endl;
+    cout << "Longest consecutive: " << longestConsecutive(nums1) << endl;
 
-  List<int> nums2 = [0, 3, 7, 2, 5, 8, 4, 6, 0, 1];
-  print('\nArray: $nums2');
-  print('Longest consecutive: ${longestConsecutive(nums2)}');
+    vector<int> nums2 = {0, 3, 7, 2, 5, 8, 4, 6, 0, 1};
+    cout << "\nArray: [0, 3, 7, 2, 5, 8, 4, 6, 0, 1]" << endl;
+    cout << "Longest consecutive: " << longestConsecutive(nums2) << endl;
 
-  List<int> nums3 = [9, 1, 4, 7, 3, 2, 8, 5, 6];
-  print('\nArray: $nums3');
-  print('Longest consecutive: ${longestConsecutive(nums3)}');
+    vector<int> nums3 = {9, 1, 4, 7, 3, 2, 8, 5, 6};
+    cout << "\nArray: [9, 1, 4, 7, 3, 2, 8, 5, 6]" << endl;
+    cout << "Longest consecutive: " << longestConsecutive(nums3) << endl;
+
+    return 0;
 }
 ```
+  </Tab>
 
-### Approach 2: Sorting First
+  <Tab value="Python">
+```python
+def longest_consecutive(nums):
+    if not nums:
+        return 0
 
-Sort the array first, then find the longest consecutive sequence.
+    num_set = set(nums)
+    max_length = 0
 
-**Time Complexity:** O(n log n)
-**Space Complexity:** O(1) or O(n) depending on sorting implementation
+    for num in num_set:
+        # Only start counting if this is the beginning of a sequence
+        if num - 1 not in num_set:
+            current_num = num
+            current_length = 1
 
-```dart
-int longestConsecutiveSorting(List<int> nums) {
-  if (nums.isEmpty) return 0;
+            # Count consecutive numbers
+            while current_num + 1 in num_set:
+                current_num += 1
+                current_length += 1
 
-  List<int> sorted = List.from(nums)..sort();
+            max_length = max(max_length, current_length)
 
-  int maxLength = 1;
-  int currentLength = 1;
+    return max_length
 
-  for (int i = 1; i < sorted.length; i++) {
-    // Skip duplicates
-    if (sorted[i] == sorted[i - 1]) {
-      continue;
+# Test cases
+nums1 = [100, 4, 200, 1, 3, 2]
+print(f"Array: {nums1}")
+print(f"Longest consecutive: {longest_consecutive(nums1)}")
+
+nums2 = [0, 3, 7, 2, 5, 8, 4, 6, 0, 1]
+print(f"\nArray: {nums2}")
+print(f"Longest consecutive: {longest_consecutive(nums2)}")
+
+nums3 = [9, 1, 4, 7, 3, 2, 8, 5, 6]
+print(f"\nArray: {nums3}")
+print(f"Longest consecutive: {longest_consecutive(nums3)}")
+```
+  </Tab>
+
+  <Tab value="JavaScript">
+```javascript
+function longestConsecutive(nums) {
+    if (nums.length === 0) return 0;
+
+    const numSet = new Set(nums);
+    let maxLength = 0;
+
+    for (const num of numSet) {
+        // Only start counting if this is the beginning of a sequence
+        if (!numSet.has(num - 1)) {
+            let currentNum = num;
+            let currentLength = 1;
+
+            // Count consecutive numbers
+            while (numSet.has(currentNum + 1)) {
+                currentNum++;
+                currentLength++;
+            }
+
+            maxLength = Math.max(maxLength, currentLength);
+        }
     }
 
-    if (sorted[i] == sorted[i - 1] + 1) {
-      // Consecutive number found
-      currentLength++;
-    } else {
-      // Sequence broken
-      maxLength = maxLength > currentLength ? maxLength : currentLength;
-      currentLength = 1;
-    }
-  }
-
-  return maxLength > currentLength ? maxLength : currentLength;
+    return maxLength;
 }
 
-void main() {
-  List<int> nums = [100, 4, 200, 1, 3, 2];
-  print('Array: $nums');
-  print('Longest consecutive: ${longestConsecutiveSorting(nums)}');
+// Test cases
+const nums1 = [100, 4, 200, 1, 3, 2];
+console.log(`Array: [${nums1}]`);
+console.log(`Longest consecutive: ${longestConsecutive(nums1)}`);
+
+const nums2 = [0, 3, 7, 2, 5, 8, 4, 6, 0, 1];
+console.log(`\nArray: [${nums2}]`);
+console.log(`Longest consecutive: ${longestConsecutive(nums2)}`);
+
+const nums3 = [9, 1, 4, 7, 3, 2, 8, 5, 6];
+console.log(`\nArray: [${nums3}]`);
+console.log(`Longest consecutive: ${longestConsecutive(nums3)}`);
+```
+  </Tab>
+</Tabs>
+
+---
+
+### <TranslatedText en="Approach 2: Sorting First" bn="পদ্ধতি ২: প্রথমে সাজান" />
+
+<TranslatedText
+  en="Sort the array first, then find the longest consecutive sequence by traversing the sorted array. This approach is simpler but has higher time complexity."
+  bn="প্রথমে অ্যারে সাজান, তারপর সাজানো অ্যারে ট্রাভার্স করে সবচেয়ে দীর্ঘ পরপর সিকোয়েন্স খুঁজুন। এই পদ্ধতিটি সহজ কিন্তু উচ্চতর সময় জটিলতা আছে।"
+/>
+
+<TranslatedText
+  en="**Time Complexity:** O(n log n)"
+  bn="**সময় জটিলতা:** O(n log n)"
+/>
+
+<TranslatedText
+  en="**Space Complexity:** O(1) or O(n) depending on sorting implementation"
+  bn="**স্থান জটিলতা:** O(1) বা O(n) সর্টিং ইমপ্লিমেন্টেশনের উপর নির্ভর করে"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int longestConsecutiveSorting(vector<int> nums) {
+    if (nums.empty()) return 0;
+
+    sort(nums.begin(), nums.end());
+
+    int maxLength = 1;
+    int currentLength = 1;
+
+    for (int i = 1; i < nums.size(); i++) {
+        // Skip duplicates
+        if (nums[i] == nums[i - 1]) {
+            continue;
+        }
+
+        if (nums[i] == nums[i - 1] + 1) {
+            // Consecutive number found
+            currentLength++;
+        } else {
+            // Sequence broken
+            maxLength = max(maxLength, currentLength);
+            currentLength = 1;
+        }
+    }
+
+    return max(maxLength, currentLength);
+}
+
+int main() {
+    vector<int> nums = {100, 4, 200, 1, 3, 2};
+    cout << "Array: [100, 4, 200, 1, 3, 2]" << endl;
+    cout << "Longest consecutive: " << longestConsecutiveSorting(nums) << endl;
+
+    return 0;
 }
 ```
+  </Tab>
 
-### Approach 3: With Sequence Details
+  <Tab value="Python">
+```python
+def longest_consecutive_sorting(nums):
+    if not nums:
+        return 0
 
-Return the actual consecutive sequence, not just the length.
+    sorted_nums = sorted(nums)
 
-**Time Complexity:** O(n)
-**Space Complexity:** O(n)
+    max_length = 1
+    current_length = 1
 
-```dart
-class SequenceResult {
-  final int length;
-  final List<int> sequence;
+    for i in range(1, len(sorted_nums)):
+        # Skip duplicates
+        if sorted_nums[i] == sorted_nums[i - 1]:
+            continue
 
-  SequenceResult(this.length, this.sequence);
+        if sorted_nums[i] == sorted_nums[i - 1] + 1:
+            # Consecutive number found
+            current_length += 1
+        else:
+            # Sequence broken
+            max_length = max(max_length, current_length)
+            current_length = 1
 
-  @override
-  String toString() => 'Length: $length, Sequence: $sequence';
-}
+    return max(max_length, current_length)
 
-SequenceResult longestConsecutiveWithSequence(List<int> nums) {
-  if (nums.isEmpty) return SequenceResult(0, []);
-
-  Set<int> numSet = nums.toSet();
-  int maxLength = 0;
-  List<int> longestSequence = [];
-
-  for (int num in numSet) {
-    if (!numSet.contains(num - 1)) {
-      int currentNum = num;
-      List<int> currentSequence = [num];
-
-      while (numSet.contains(currentNum + 1)) {
-        currentNum++;
-        currentSequence.add(currentNum);
-      }
-
-      if (currentSequence.length > maxLength) {
-        maxLength = currentSequence.length;
-        longestSequence = currentSequence;
-      }
-    }
-  }
-
-  return SequenceResult(maxLength, longestSequence);
-}
-
-void main() {
-  List<int> nums = [100, 4, 200, 1, 3, 2];
-  print('Array: $nums');
-  print('Result: ${longestConsecutiveWithSequence(nums)}');
-}
+# Test
+nums = [100, 4, 200, 1, 3, 2]
+print(f"Array: {nums}")
+print(f"Longest consecutive: {longest_consecutive_sorting(nums)}")
 ```
+  </Tab>
 
-### Approach 4: Union-Find (Advanced)
+  <Tab value="JavaScript">
+```javascript
+function longestConsecutiveSorting(nums) {
+    if (nums.length === 0) return 0;
 
-Using Union-Find data structure for more complex scenarios.
+    const sorted = [...nums].sort((a, b) => a - b);
 
-**Time Complexity:** O(n) with path compression
-**Space Complexity:** O(n)
+    let maxLength = 1;
+    let currentLength = 1;
 
-```dart
-class UnionFind {
-  Map<int, int> parent = {};
-  Map<int, int> size = {};
+    for (let i = 1; i < sorted.length; i++) {
+        // Skip duplicates
+        if (sorted[i] === sorted[i - 1]) {
+            continue;
+        }
 
-  void add(int x) {
-    if (!parent.containsKey(x)) {
-      parent[x] = x;
-      size[x] = 1;
+        if (sorted[i] === sorted[i - 1] + 1) {
+            // Consecutive number found
+            currentLength++;
+        } else {
+            // Sequence broken
+            maxLength = Math.max(maxLength, currentLength);
+            currentLength = 1;
+        }
     }
-  }
 
-  int find(int x) {
-    if (parent[x] != x) {
-      parent[x] = find(parent[x]!); // Path compression
-    }
-    return parent[x]!;
-  }
-
-  void union(int x, int y) {
-    int rootX = find(x);
-    int rootY = find(y);
-
-    if (rootX != rootY) {
-      parent[rootX] = rootY;
-      size[rootY] = size[rootY]! + size[rootX]!;
-    }
-  }
-
-  int getMaxSize() {
-    return size.values.isEmpty ? 0 : size.values.reduce((a, b) => a > b ? a : b);
-  }
+    return Math.max(maxLength, currentLength);
 }
 
-int longestConsecutiveUnionFind(List<int> nums) {
-  if (nums.isEmpty) return 0;
-
-  UnionFind uf = UnionFind();
-
-  for (int num in nums) {
-    uf.add(num);
-  }
-
-  for (int num in nums) {
-    if (uf.parent.containsKey(num + 1)) {
-      uf.union(num, num + 1);
-    }
-  }
-
-  return uf.getMaxSize();
-}
-
-void main() {
-  List<int> nums = [100, 4, 200, 1, 3, 2];
-  print('Array: $nums');
-  print('Longest consecutive: ${longestConsecutiveUnionFind(nums)}');
-}
+// Test
+const nums = [100, 4, 200, 1, 3, 2];
+console.log(`Array: [${nums}]`);
+console.log(`Longest consecutive: ${longestConsecutiveSorting(nums)}`);
 ```
+  </Tab>
+</Tabs>
 
-## Comparison of Approaches
+---
 
-| Approach | Time | Space | Pros | Cons |
-|----------|------|-------|------|------|
-| Set with Smart Start | O(n) | O(n) | Optimal, elegant | Requires extra space |
-| Sorting | O(n log n) | O(1)-O(n) | Simple logic | Slower, may modify array |
-| With Sequence | O(n) | O(n) | Returns actual sequence | More space for result |
-| Union-Find | O(n) | O(n) | Good for complex variants | Overkill for this problem |
+## <TranslatedText en="Algorithm Walkthrough" bn="অ্যালগরিদম বিশ্লেষণ" />
 
-## Why Set Approach is O(n)
-
-The key insight is that each number is processed at most twice:
-1. Once when checking if it's the start of a sequence
-2. Once when it's part of counting a sequence
-
-Because we only start counting from sequence beginnings (numbers where `num - 1` doesn't exist), we avoid redundant work.
-
-## Key Points
-
-1. **Smart Starting Point**: Only start counting from numbers that begin a sequence
-2. **Set for O(1) Lookup**: Use Set for constant-time contains checks
-3. **Handle Duplicates**: Set automatically removes duplicates
-4. **Edge Cases**: Empty array, single element, all same numbers
-5. **No Sorting Required**: Can achieve O(n) without sorting
-
-## Common Pitfalls
-
-- Starting a new count from every number (makes it O(n²))
-- Not handling duplicates properly
-- Forgetting to compare and update max length
-- Not considering negative numbers
-- Off-by-one errors when checking consecutive numbers
-
-## Test Cases
-
-```dart
-void testLongestConsecutive() {
-  assert(longestConsecutive([100, 4, 200, 1, 3, 2]) == 4);
-  assert(longestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]) == 9);
-  assert(longestConsecutive([]) == 0);
-  assert(longestConsecutive([1]) == 1);
-  assert(longestConsecutive([1, 2, 0, 1]) == 3); // With duplicates
-  assert(longestConsecutive([1, 3, 5, 7]) == 1); // No consecutive
-  assert(longestConsecutive([-1, 0, 1, 2]) == 4); // Negative numbers
-
-  print('All tests passed!');
-}
-```
-
-## Visualization
-
-For array [100, 4, 200, 1, 3, 2]:
+<TranslatedText
+  en="Let's trace through **Approach 1 (Set with Smart Start)** with array `[100, 4, 200, 1, 3, 2]`:"
+  bn="চলুন **পদ্ধতি ১ (স্মার্ট স্টার্ট সহ সেট)** অ্যারে `[100, 4, 200, 1, 3, 2]` দিয়ে ট্রেস করি:"
+/>
 
 ```
+Original Array: [100, 4, 200, 1, 3, 2]
 Set: {100, 4, 200, 1, 3, 2}
 
-Check 100: no 99 in set → start counting
-  100 → no 101 → length = 1
+Step 1: Check num = 100
+  - Is (100 - 1) = 99 in set? NO ✓ (start of sequence)
+  - Start counting from 100:
+    - Is 101 in set? NO
+    - Sequence length = 1
+  - maxLength = 1
 
-Check 4: 3 exists in set → skip (not a start)
+Step 2: Check num = 4
+  - Is (4 - 1) = 3 in set? YES ✗ (not start of sequence, skip)
 
-Check 200: no 199 in set → start counting
-  200 → no 201 → length = 1
+Step 3: Check num = 200
+  - Is (200 - 1) = 199 in set? NO ✓ (start of sequence)
+  - Start counting from 200:
+    - Is 201 in set? NO
+    - Sequence length = 1
+  - maxLength = 1
 
-Check 1: no 0 in set → start counting
-  1 → 2 → 3 → 4 → no 5 → length = 4 ✓
+Step 4: Check num = 1
+  - Is (1 - 1) = 0 in set? NO ✓ (start of sequence)
+  - Start counting from 1:
+    - Is 2 in set? YES → currentNum = 2, length = 2
+    - Is 3 in set? YES → currentNum = 3, length = 3
+    - Is 4 in set? YES → currentNum = 4, length = 4
+    - Is 5 in set? NO
+    - Sequence length = 4
+  - maxLength = 4 ✓
 
-Max length = 4
+Step 5: Check num = 3
+  - Is (3 - 1) = 2 in set? YES ✗ (not start of sequence, skip)
+
+Step 6: Check num = 2
+  - Is (2 - 1) = 1 in set? YES ✗ (not start of sequence, skip)
+
+Final Result: 4
+Longest consecutive sequence: [1, 2, 3, 4]
 ```
 
-## Reference
+---
 
-[CodeReview - Longest Consecutive Elements](https://codereview.stackexchange.com/questions/212785/find-the-length-of-the-longest-consecutive-elements)
+## <TranslatedText en="Why Set Approach is O(n)" bn="কেন সেট পদ্ধতি O(n)" />
+
+<TranslatedText
+  en="The key insight is that each number is processed **at most twice**:"
+  bn="মূল অন্তর্দৃষ্টি হলো প্রতিটি নম্বর **সর্বোচ্চ দুইবার** প্রসেস করা হয়:"
+/>
+
+<TranslatedText
+  en="1. **Once** when checking if it's the start of a sequence (checking if `num - 1` exists)"
+  bn="১. **একবার** যখন এটি একটি সিকোয়েন্সের শুরু কিনা চেক করা হয় (`num - 1` আছে কিনা চেক)"
+/>
+
+<TranslatedText
+  en="2. **Once** when it's part of counting a sequence (when we increment through consecutive numbers)"
+  bn="২. **একবার** যখন এটি একটি সিকোয়েন্স গণনার অংশ (যখন আমরা পরপর নম্বরের মাধ্যমে ইনক্রিমেন্ট করি)"
+/>
+
+<TranslatedText
+  en="Because we only start counting from sequence beginnings (numbers where `num - 1` doesn't exist), we avoid redundant work. This makes the total time complexity **O(n)** despite the nested loop appearance."
+  bn="যেহেতু আমরা শুধুমাত্র সিকোয়েন্সের শুরু থেকে গণনা শুরু করি (যেখানে `num - 1` নেই), আমরা অপ্রয়োজনীয় কাজ এড়াতে পারি। এটি নেস্টেড লুপ দেখা সত্ত্বেও মোট সময় জটিলতা **O(n)** করে।"
+/>
+
+---
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণি" />
+
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time Complexity" bn="সময় জটিলতা" /> | <TranslatedText en="Space Complexity" bn="স্থান জটিলতা" /> | <TranslatedText en="Pros" bn="সুবিধা" /> | <TranslatedText en="Cons" bn="অসুবিধা" /> |
+|----------|------|-------|------|------|
+| <TranslatedText en="Set with Smart Start" bn="স্মার্ট স্টার্ট সহ সেট" /> | O(n) | O(n) | <TranslatedText en="Optimal, elegant" bn="সর্বোত্তম, মার্জিত" /> | <TranslatedText en="Requires extra space" bn="অতিরিক্ত স্থান প্রয়োজন" /> |
+| <TranslatedText en="Sorting" bn="সাজানো" /> | O(n log n) | O(1)-O(n) | <TranslatedText en="Simple logic" bn="সহজ লজিক" /> | <TranslatedText en="Slower, may modify array" bn="ধীর, অ্যারে পরিবর্তন হতে পারে" /> |
+
+---
+
+## <TranslatedText en="Key Insights" bn="মূল পর্যবেক্ষণ" />
+
+<TranslatedText
+  en="### The Smart Starting Point Strategy"
+  bn="### স্মার্ট স্টার্টিং পয়েন্ট কৌশল"
+/>
+
+<TranslatedText
+  en="- **Key Question:** How do we identify the start of a sequence?"
+  bn="- **মূল প্রশ্ন:** আমরা কিভাবে একটি সিকোয়েন্সের শুরু চিহ্নিত করব?"
+/>
+
+<TranslatedText
+  en="- **Answer:** A number `num` is the start of a sequence if `num - 1` does NOT exist in the set"
+  bn="- **উত্তর:** একটি নম্বর `num` একটি সিকোয়েন্সের শুরু যদি `num - 1` সেটে না থাকে"
+/>
+
+<TranslatedText
+  en="- **Why This Works:** If `num - 1` exists, then `num` is in the middle or end of a sequence, not the beginning"
+  bn="- **কেন এটি কাজ করে:** যদি `num - 1` থাকে, তাহলে `num` একটি সিকোয়েন্সের মাঝখানে বা শেষে, শুরুতে নয়"
+/>
+
+<TranslatedText
+  en="### Handling Duplicates"
+  bn="### ডুপ্লিকেট হ্যান্ডল করা"
+/>
+
+<TranslatedText
+  en="- Using a **Set** automatically removes duplicates from the input array"
+  bn="- একটি **সেট** ব্যবহার করলে স্বয়ংক্রিয়ভাবে ইনপুট অ্যারে থেকে ডুপ্লিকেট সরে যায়"
+/>
+
+<TranslatedText
+  en="- This prevents counting the same number multiple times"
+  bn="- এটি একই নম্বর একাধিকবার গণনা করা প্রতিরোধ করে"
+/>
+
+---
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="### Questions to Ask the Interviewer"
+  bn="### ইন্টারভিউয়ারকে জিজ্ঞাসা করার প্রশ্ন"
+/>
+
+<TranslatedText
+  en="1. Can the array contain duplicates?"
+  bn="১. অ্যারেতে কি ডুপ্লিকেট থাকতে পারে?"
+/>
+
+<TranslatedText
+  en="2. Can the array contain negative numbers?"
+  bn="২. অ্যারেতে কি নেগেটিভ নম্বর থাকতে পারে?"
+/>
+
+<TranslatedText
+  en="3. What should be returned for an empty array? (0)"
+  bn="৩. খালি অ্যারের জন্য কি রিটার্ন করতে হবে? (০)"
+/>
+
+<TranslatedText
+  en="4. Do we need to return the actual sequence or just the length?"
+  bn="৪. আমাদের কি প্রকৃত সিকোয়েন্স রিটার্ন করতে হবে নাকি শুধু দৈর্ঘ্য?"
+/>
+
+<TranslatedText
+  en="### Common Edge Cases"
+  bn="### সাধারণ এজ কেস"
+/>
+
+<TranslatedText
+  en="- Empty array → return 0"
+  bn="- খালি অ্যারে → 0 রিটার্ন করুন"
+/>
+
+<TranslatedText
+  en="- Single element → return 1"
+  bn="- একক এলিমেন্ট → 1 রিটার্ন করুন"
+/>
+
+<TranslatedText
+  en="- Array with duplicates → [1, 2, 0, 1] should give 3 (sequence: 0, 1, 2)"
+  bn="- ডুপ্লিকেট সহ অ্যারে → [1, 2, 0, 1] দিতে হবে 3 (সিকোয়েন্স: 0, 1, 2)"
+/>
+
+<TranslatedText
+  en="- No consecutive numbers → [1, 3, 5, 7] should give 1"
+  bn="- পরপর নম্বর নেই → [1, 3, 5, 7] দিতে হবে 1"
+/>
+
+<TranslatedText
+  en="- Negative numbers → [-1, 0, 1, 2] should give 4"
+  bn="- নেগেটিভ নম্বর → [-1, 0, 1, 2] দিতে হবে 4"
+/>
+
+---
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="1. **Smart starting point** - Only count from sequence beginnings (where `num - 1` doesn't exist)"
+  bn="১. **স্মার্ট স্টার্টিং পয়েন্ট** - শুধুমাত্র সিকোয়েন্সের শুরু থেকে গণনা করুন (যেখানে `num - 1` নেই)"
+/>
+
+<TranslatedText
+  en="2. **Set for O(1) lookup** - Use Set/HashSet for constant-time contains checks"
+  bn="২. **O(1) লুকআপের জন্য সেট** - ধ্রুবক-সময় কন্টেইন চেকের জন্য Set/HashSet ব্যবহার করুন"
+/>
+
+<TranslatedText
+  en="3. **Automatic duplicate handling** - Set automatically removes duplicates"
+  bn="৩. **স্বয়ংক্রিয় ডুপ্লিকেট হ্যান্ডলিং** - সেট স্বয়ংক্রিয়ভাবে ডুপ্লিকেট সরিয়ে দেয়"
+/>
+
+<TranslatedText
+  en="4. **True O(n) complexity** - Each number is processed at most twice despite nested loop"
+  bn="৪. **প্রকৃত O(n) জটিলতা** - নেস্টেড লুপ সত্ত্বেও প্রতিটি নম্বর সর্বোচ্চ দুইবার প্রসেস করা হয়"
+/>
+
+<TranslatedText
+  en="5. **No sorting required** - Can achieve O(n) without sorting the array"
+  bn="৫. **সাজানোর প্রয়োজন নেই** - অ্যারে সাজানো ছাড়াই O(n) অর্জন করা যায়"
+/>
+
+---
+
+## <TranslatedText en="Reference" bn="রেফারেন্স" />
+
+- [CodeReview - Longest Consecutive Elements](https://codereview.stackexchange.com/questions/212785/find-the-length-of-the-longest-consecutive-elements)

@@ -3,440 +3,808 @@ title: 43. Remove Duplicates Without Library
 description: How to remove duplicates from an array without using any library or built-in collection methods
 ---
 
-## Problem Statement
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { TranslatedText, LanguageSwitcher } from '@/components/LanguageSwitcher';
 
-Write a program to remove duplicate elements from an array without using any collection API or library methods. The solution should use only basic array operations and loops.
+<LanguageSwitcher />
 
-## Examples
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
 
-### Example 1
+<TranslatedText
+  en="Write a program to remove duplicate elements from an array without using any collection API or library methods. The solution should use only basic array operations and loops."
+  bn="কোনো কালেকশন API বা লাইব্রেরি মেথড ব্যবহার না করে একটি অ্যারে থেকে ডুপ্লিকেট এলিমেন্ট সরানোর জন্য একটি প্রোগ্রাম লিখুন। সমাধানে শুধুমাত্র মৌলিক অ্যারে অপারেশন এবং লুপ ব্যবহার করতে হবে।"
+/>
+
+## <TranslatedText en="Examples" bn="উদাহরণসমূহ" />
+
+### <TranslatedText en="Example 1" bn="উদাহরণ ১" />
+
 ```
 Input: [1, 2, 3, 2, 4, 1, 5]
 Output: [1, 2, 3, 4, 5]
 ```
 
-### Example 2
+### <TranslatedText en="Example 2" bn="উদাহরণ ২" />
+
 ```
 Input: [5, 5, 5, 3, 3, 1]
 Output: [5, 3, 1]
 ```
 
-### Example 3
+### <TranslatedText en="Example 3" bn="উদাহরণ ৩" />
+
 ```
 Input: [1, 2, 3, 4, 5]
 Output: [1, 2, 3, 4, 5]
 Explanation: No duplicates
 ```
 
-## Solution
+## <TranslatedText en="Solution Approaches" bn="সমাধানের পদ্ধতিসমূহ" />
 
-### Approach 1: Using Temporary Array
+### <TranslatedText en="Approach 1: Using Temporary Array (Simple)" bn="পদ্ধতি ১: টেম্পোরারি অ্যারে ব্যবহার করে (সহজ)" />
 
-Create a new array and copy only unique elements.
+<TranslatedText
+  en="Create a new array and copy only unique elements. For each element, check if it already exists in the result array before adding."
+  bn="একটি নতুন অ্যারে তৈরি করুন এবং শুধুমাত্র ইউনিক এলিমেন্ট কপি করুন। প্রতিটি এলিমেন্টের জন্য, যোগ করার আগে চেক করুন এটি ইতিমধ্যে রেজাল্ট অ্যারেতে বিদ্যমান কিনা।"
+/>
 
-**Time Complexity:** O(n²)
-**Space Complexity:** O(n)
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n²)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n)
 
-```dart
-List<int> removeDuplicates(List<int> arr) {
-  if (arr.isEmpty) return [];
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
 
-  List<int> result = [];
+vector<int> removeDuplicates(const vector<int>& arr) {
+    if (arr.empty()) return {};
 
-  for (int i = 0; i < arr.length; i++) {
-    bool isDuplicate = false;
+    vector<int> result;
 
-    // Check if element already exists in result
-    for (int j = 0; j < result.length; j++) {
-      if (arr[i] == result[j]) {
-        isDuplicate = true;
-        break;
-      }
+    for (int i = 0; i < arr.size(); i++) {
+        bool isDuplicate = false;
+
+        // Check if element already exists in result
+        for (int j = 0; j < result.size(); j++) {
+            if (arr[i] == result[j]) {
+                isDuplicate = true;
+                break;
+            }
+        }
+
+        // Add to result if not duplicate
+        if (!isDuplicate) {
+            result.push_back(arr[i]);
+        }
     }
 
-    // Add to result if not duplicate
-    if (!isDuplicate) {
-      result.add(arr[i]);
-    }
-  }
-
-  return result;
+    return result;
 }
 
-void main() {
-  List<int> arr1 = [1, 2, 3, 2, 4, 1, 5];
-  print('Original: $arr1');
-  print('Without duplicates: ${removeDuplicates(arr1)}');
+int main() {
+    vector<int> arr1 = {1, 2, 3, 2, 4, 1, 5};
+    cout << "Original: ";
+    for (int x : arr1) cout << x << " ";
 
-  List<int> arr2 = [5, 5, 5, 3, 3, 1];
-  print('\nOriginal: $arr2');
-  print('Without duplicates: ${removeDuplicates(arr2)}');
+    vector<int> unique1 = removeDuplicates(arr1);
+    cout << "\nWithout duplicates: ";
+    for (int x : unique1) cout << x << " ";
+    cout << endl;
+
+    vector<int> arr2 = {5, 5, 5, 3, 3, 1};
+    cout << "\nOriginal: ";
+    for (int x : arr2) cout << x << " ";
+
+    vector<int> unique2 = removeDuplicates(arr2);
+    cout << "\nWithout duplicates: ";
+    for (int x : unique2) cout << x << " ";
+    cout << endl;
+
+    return 0;
 }
 ```
+  </Tab>
+  <Tab value="Python">
+```python
+def remove_duplicates(arr):
+    """Remove duplicates using temporary array"""
+    if not arr:
+        return []
 
-### Approach 2: Sort First Then Remove
+    result = []
 
-Sort the array first, then remove consecutive duplicates.
+    for i in range(len(arr)):
+        is_duplicate = False
 
-**Time Complexity:** O(n log n) for sorting + O(n) for removal = O(n log n)
-**Space Complexity:** O(n)
+        # Check if element already exists in result
+        for j in range(len(result)):
+            if arr[i] == result[j]:
+                is_duplicate = True
+                break
 
-```dart
-void quickSort(List<int> arr, int low, int high) {
-  if (low < high) {
-    int pivot = partition(arr, low, high);
-    quickSort(arr, low, pivot - 1);
-    quickSort(arr, pivot + 1, high);
-  }
-}
+        # Add to result if not duplicate
+        if not is_duplicate:
+            result.append(arr[i])
 
-int partition(List<int> arr, int low, int high) {
-  int pivot = arr[high];
-  int i = low - 1;
+    return result
 
-  for (int j = low; j < high; j++) {
-    if (arr[j] <= pivot) {
-      i++;
-      int temp = arr[i];
-      arr[i] = arr[j];
-      arr[j] = temp;
+# Example usage
+arr1 = [1, 2, 3, 2, 4, 1, 5]
+print(f"Original: {arr1}")
+print(f"Without duplicates: {remove_duplicates(arr1)}")
+
+arr2 = [5, 5, 5, 3, 3, 1]
+print(f"\nOriginal: {arr2}")
+print(f"Without duplicates: {remove_duplicates(arr2)}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function removeDuplicates(arr) {
+    if (arr.length === 0) return [];
+
+    let result = [];
+
+    for (let i = 0; i < arr.length; i++) {
+        let isDuplicate = false;
+
+        // Check if element already exists in result
+        for (let j = 0; j < result.length; j++) {
+            if (arr[i] === result[j]) {
+                isDuplicate = true;
+                break;
+            }
+        }
+
+        // Add to result if not duplicate
+        if (!isDuplicate) {
+            result.push(arr[i]);
+        }
     }
-  }
 
-  int temp = arr[i + 1];
-  arr[i + 1] = arr[high];
-  arr[high] = temp;
-
-  return i + 1;
+    return result;
 }
 
-List<int> removeDuplicatesSorted(List<int> arr) {
-  if (arr.isEmpty) return [];
+// Example usage
+let arr1 = [1, 2, 3, 2, 4, 1, 5];
+console.log("Original:", arr1);
+console.log("Without duplicates:", removeDuplicates(arr1));
 
-  // Create a copy and sort it
-  List<int> sorted = List.from(arr);
-  quickSort(sorted, 0, sorted.length - 1);
+let arr2 = [5, 5, 5, 3, 3, 1];
+console.log("\nOriginal:", arr2);
+console.log("Without duplicates:", removeDuplicates(arr2));
+```
+  </Tab>
+</Tabs>
 
-  // Remove consecutive duplicates
-  List<int> result = [sorted[0]];
+### <TranslatedText en="Approach 2: Sort First Then Remove" bn="পদ্ধতি ২: প্রথমে সর্ট করুন তারপর সরান" />
 
-  for (int i = 1; i < sorted.length; i++) {
-    if (sorted[i] != sorted[i - 1]) {
-      result.add(sorted[i]);
+<TranslatedText
+  en="Sort the array first, then remove consecutive duplicates. After sorting, duplicates will be adjacent, making removal easier."
+  bn="প্রথমে অ্যারে সর্ট করুন, তারপর পরপর ডুপ্লিকেট সরান। সর্ট করার পরে, ডুপ্লিকেটগুলি পাশাপাশি থাকবে, যা সরানো সহজ করে তোলে।"
+/>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n log n) <TranslatedText en="for sorting + O(n) for removal" bn="সর্টিং এর জন্য + O(n) সরানোর জন্য" />
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n)
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+void quickSort(vector<int>& arr, int low, int high) {
+    if (low < high) {
+        // Partition
+        int pivot = arr[high];
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+                swap(arr[i], arr[j]);
+            }
+        }
+        swap(arr[i + 1], arr[high]);
+        int pivotIndex = i + 1;
+
+        // Recursively sort
+        quickSort(arr, low, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, high);
     }
-  }
-
-  return result;
 }
 
-void main() {
-  List<int> arr = [1, 2, 3, 2, 4, 1, 5];
-  print('Original: $arr');
-  print('Without duplicates: ${removeDuplicatesSorted(arr)}');
+vector<int> removeDuplicatesSorted(vector<int> arr) {
+    if (arr.empty()) return {};
+
+    // Sort the array
+    quickSort(arr, 0, arr.size() - 1);
+
+    // Remove consecutive duplicates
+    vector<int> result;
+    result.push_back(arr[0]);
+
+    for (int i = 1; i < arr.size(); i++) {
+        if (arr[i] != arr[i - 1]) {
+            result.push_back(arr[i]);
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 3, 2, 4, 1, 5};
+    cout << "Original: ";
+    for (int x : arr) cout << x << " ";
+
+    vector<int> unique = removeDuplicatesSorted(arr);
+    cout << "\nWithout duplicates: ";
+    for (int x : unique) cout << x << " ";
+    cout << endl;
+
+    return 0;
 }
 ```
+  </Tab>
+  <Tab value="Python">
+```python
+def quick_sort(arr, low, high):
+    """Quick sort implementation"""
+    if low < high:
+        # Partition
+        pivot = arr[high]
+        i = low - 1
 
-### Approach 3: In-Place with Sorting
+        for j in range(low, high):
+            if arr[j] <= pivot:
+                i += 1
+                arr[i], arr[j] = arr[j], arr[i]
 
-Remove duplicates in-place after sorting, minimizing space usage.
+        arr[i + 1], arr[high] = arr[high], arr[i + 1]
+        pivot_index = i + 1
 
-**Time Complexity:** O(n log n)
-**Space Complexity:** O(1) if modifying original array
+        # Recursively sort
+        quick_sort(arr, low, pivot_index - 1)
+        quick_sort(arr, pivot_index + 1, high)
 
-```dart
-int removeDuplicatesInPlace(List<int> arr) {
-  if (arr.isEmpty) return 0;
+def remove_duplicates_sorted(arr):
+    """Remove duplicates after sorting"""
+    if not arr:
+        return []
 
-  // Sort the array first
-  quickSort(arr, 0, arr.length - 1);
+    # Create a copy and sort it
+    sorted_arr = arr.copy()
+    quick_sort(sorted_arr, 0, len(sorted_arr) - 1)
 
-  // Remove duplicates in-place
-  int writeIndex = 1;
+    # Remove consecutive duplicates
+    result = [sorted_arr[0]]
 
-  for (int readIndex = 1; readIndex < arr.length; readIndex++) {
-    if (arr[readIndex] != arr[readIndex - 1]) {
-      arr[writeIndex] = arr[readIndex];
-      writeIndex++;
-    }
-  }
+    for i in range(1, len(sorted_arr)):
+        if sorted_arr[i] != sorted_arr[i - 1]:
+            result.append(sorted_arr[i])
 
-  return writeIndex; // New length
-}
+    return result
 
-void main() {
-  List<int> arr = [1, 2, 3, 2, 4, 1, 5];
-  print('Original: $arr');
-
-  int newLength = removeDuplicatesInPlace(arr);
-
-  print('New length: $newLength');
-  print('Array after removal: ${arr.sublist(0, newLength)}');
-}
+# Example usage
+arr = [1, 2, 3, 2, 4, 1, 5]
+print(f"Original: {arr}")
+print(f"Without duplicates: {remove_duplicates_sorted(arr)}")
 ```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function quickSort(arr, low, high) {
+    if (low < high) {
+        // Partition
+        let pivot = arr[high];
+        let i = low - 1;
 
-### Approach 4: Using Boolean Array (For Limited Range)
+        for (let j = low; j < high; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+        }
+        [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+        let pivotIndex = i + 1;
 
-If elements are in a known range, use a boolean array to track seen elements.
-
-**Time Complexity:** O(n + range)
-**Space Complexity:** O(range)
-
-```dart
-List<int> removeDuplicatesRange(List<int> arr, int maxValue) {
-  if (arr.isEmpty) return [];
-
-  // Boolean array to track seen elements
-  List<bool> seen = List.filled(maxValue + 1, false);
-  List<int> result = [];
-
-  for (int i = 0; i < arr.length; i++) {
-    if (arr[i] >= 0 && arr[i] <= maxValue) {
-      if (!seen[arr[i]]) {
-        seen[arr[i]] = true;
-        result.add(arr[i]);
-      }
+        // Recursively sort
+        quickSort(arr, low, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, high);
     }
-  }
-
-  return result;
 }
 
-void main() {
-  List<int> arr = [1, 2, 3, 2, 4, 1, 5];
-  print('Original: $arr');
-  print('Without duplicates: ${removeDuplicatesRange(arr, 10)}');
+function removeDuplicatesSorted(arr) {
+    if (arr.length === 0) return [];
+
+    // Create a copy and sort it
+    let sortedArr = [...arr];
+    quickSort(sortedArr, 0, sortedArr.length - 1);
+
+    // Remove consecutive duplicates
+    let result = [sortedArr[0]];
+
+    for (let i = 1; i < sortedArr.length; i++) {
+        if (sortedArr[i] !== sortedArr[i - 1]) {
+            result.push(sortedArr[i]);
+        }
+    }
+
+    return result;
 }
+
+// Example usage
+let arr = [1, 2, 3, 2, 4, 1, 5];
+console.log("Original:", arr);
+console.log("Without duplicates:", removeDuplicatesSorted(arr));
 ```
+  </Tab>
+</Tabs>
 
-### Approach 5: Nested Loop with Marker
+### <TranslatedText en="Approach 3: Manual Hash Table Implementation" bn="পদ্ধতি ৩: ম্যানুয়াল হ্যাশ টেবিল বাস্তবায়ন" />
 
-Mark duplicates in the original array and then create result.
+<TranslatedText
+  en="Implement a simple hash table from scratch without using library collections. This approach provides O(n) average time complexity."
+  bn="লাইব্রেরি কালেকশন ব্যবহার না করে স্ক্র্যাচ থেকে একটি সহজ হ্যাশ টেবিল বাস্তবায়ন করুন। এই পদ্ধতি O(n) গড় সময় জটিলতা প্রদান করে।"
+/>
 
-**Time Complexity:** O(n²)
-**Space Complexity:** O(n)
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n) <TranslatedText en="average" bn="গড়" />
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n)
 
-```dart
-List<int> removeDuplicatesMarker(List<int> arr) {
-  if (arr.isEmpty) return [];
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
 
-  // Create a copy to avoid modifying original
-  List<int> temp = List.from(arr);
-
-  // Mark duplicates with a special value (assuming array doesn't contain this)
-  int marker = -999999;
-
-  for (int i = 0; i < temp.length; i++) {
-    if (temp[i] == marker) continue;
-
-    for (int j = i + 1; j < temp.length; j++) {
-      if (temp[i] == temp[j]) {
-        temp[j] = marker;
-      }
-    }
-  }
-
-  // Collect non-marked elements
-  List<int> result = [];
-  for (int i = 0; i < temp.length; i++) {
-    if (temp[i] != marker) {
-      result.add(temp[i]);
-    }
-  }
-
-  return result;
-}
-
-void main() {
-  List<int> arr = [1, 2, 3, 2, 4, 1, 5];
-  print('Original: $arr');
-  print('Without duplicates: ${removeDuplicatesMarker(arr)}');
-}
-```
-
-### Approach 6: Manual Hash Table Implementation
-
-Implement a simple hash table without using library collections.
-
-**Time Complexity:** O(n) average
-**Space Complexity:** O(n)
-
-```dart
 class SimpleHashTable {
-  late List<List<int>> buckets;
-  int size;
+private:
+    vector<vector<int>> buckets;
+    int size;
 
-  SimpleHashTable(this.size) {
-    buckets = List.generate(size, (_) => []);
-  }
-
-  int hash(int key) {
-    return key.abs() % size;
-  }
-
-  bool contains(int key) {
-    int index = hash(key);
-    for (int value in buckets[index]) {
-      if (value == key) return true;
+    int hash(int key) {
+        return abs(key) % size;
     }
-    return false;
-  }
 
-  void add(int key) {
-    if (!contains(key)) {
-      int index = hash(key);
-      buckets[index].add(key);
+public:
+    SimpleHashTable(int s) : size(s) {
+        buckets.resize(size);
     }
-  }
-}
 
-List<int> removeDuplicatesHash(List<int> arr) {
-  if (arr.isEmpty) return [];
-
-  SimpleHashTable hashTable = SimpleHashTable(arr.length);
-  List<int> result = [];
-
-  for (int i = 0; i < arr.length; i++) {
-    if (!hashTable.contains(arr[i])) {
-      hashTable.add(arr[i]);
-      result.add(arr[i]);
+    bool contains(int key) {
+        int index = hash(key);
+        for (int value : buckets[index]) {
+            if (value == key) return true;
+        }
+        return false;
     }
-  }
 
-  return result;
+    void add(int key) {
+        if (!contains(key)) {
+            int index = hash(key);
+            buckets[index].push_back(key);
+        }
+    }
+};
+
+vector<int> removeDuplicatesHash(const vector<int>& arr) {
+    if (arr.empty()) return {};
+
+    SimpleHashTable hashTable(arr.size());
+    vector<int> result;
+
+    for (int i = 0; i < arr.size(); i++) {
+        if (!hashTable.contains(arr[i])) {
+            hashTable.add(arr[i]);
+            result.push_back(arr[i]);
+        }
+    }
+
+    return result;
 }
 
-void main() {
-  List<int> arr = [1, 2, 3, 2, 4, 1, 5];
-  print('Original: $arr');
-  print('Without duplicates: ${removeDuplicatesHash(arr)}');
+int main() {
+    vector<int> arr = {1, 2, 3, 2, 4, 1, 5};
+    cout << "Original: ";
+    for (int x : arr) cout << x << " ";
+
+    vector<int> unique = removeDuplicatesHash(arr);
+    cout << "\nWithout duplicates: ";
+    for (int x : unique) cout << x << " ";
+    cout << endl;
+
+    return 0;
 }
 ```
+  </Tab>
+  <Tab value="Python">
+```python
+class SimpleHashTable:
+    """Simple hash table implementation without library collections"""
 
-## Comparison of Approaches
+    def __init__(self, size):
+        self.size = size
+        self.buckets = [[] for _ in range(size)]
 
-| Approach | Time | Space | Pros | Cons |
-|----------|------|-------|------|------|
-| Temporary Array | O(n²) | O(n) | Simple, preserves order | Slow for large arrays |
-| Sort First | O(n log n) | O(n) | Faster than nested loops | Changes order |
-| In-Place | O(n log n) | O(1) | Minimal space | Modifies original |
-| Boolean Array | O(n) | O(range) | Fast for limited range | Requires known range |
-| Marker | O(n²) | O(n) | Preserves order | Slow, needs special marker |
-| Manual Hash | O(n) | O(n) | Fast, preserves order | Complex implementation |
+    def _hash(self, key):
+        """Hash function"""
+        return abs(key) % self.size
 
-## Key Points
+    def contains(self, key):
+        """Check if key exists"""
+        index = self._hash(key)
+        for value in self.buckets[index]:
+            if value == key:
+                return True
+        return False
 
-1. **No Library Methods**: Cannot use Set, Map, or other collections
-2. **Order Preservation**: Some approaches maintain original order, others don't
-3. **In-Place vs Copy**: Trade-off between space and preserving original
-4. **Time vs Space**: Faster solutions often use more space
-5. **Range Considerations**: Boolean array approach only works for limited ranges
+    def add(self, key):
+        """Add key if not exists"""
+        if not self.contains(key):
+            index = self._hash(key)
+            self.buckets[index].append(key)
 
-## Common Pitfalls
+def remove_duplicates_hash(arr):
+    """Remove duplicates using manual hash table"""
+    if not arr:
+        return []
 
-- Not handling empty arrays
-- Assuming elements are in a specific range
-- Modifying original array unintentionally
-- Not preserving insertion order when required
-- Integer overflow in hash function
-- Using special marker values that might exist in array
+    hash_table = SimpleHashTable(len(arr))
+    result = []
 
-## Test Cases
+    for i in range(len(arr)):
+        if not hash_table.contains(arr[i]):
+            hash_table.add(arr[i])
+            result.append(arr[i])
 
-```dart
-void testRemoveDuplicates() {
-  // Test 1: Normal case with duplicates
-  List<int> arr1 = [1, 2, 3, 2, 4, 1, 5];
-  print('Test 1: ${removeDuplicates(arr1)}');
+    return result
 
-  // Test 2: All duplicates
-  List<int> arr2 = [1, 1, 1, 1];
-  print('Test 2: ${removeDuplicates(arr2)}');
+# Example usage
+arr = [1, 2, 3, 2, 4, 1, 5]
+print(f"Original: {arr}")
+print(f"Without duplicates: {remove_duplicates_hash(arr)}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class SimpleHashTable {
+    constructor(size) {
+        this.size = size;
+        this.buckets = Array.from({ length: size }, () => []);
+    }
 
-  // Test 3: No duplicates
-  List<int> arr3 = [1, 2, 3, 4, 5];
-  print('Test 3: ${removeDuplicates(arr3)}');
+    hash(key) {
+        return Math.abs(key) % this.size;
+    }
 
-  // Test 4: Empty array
-  List<int> arr4 = [];
-  print('Test 4: ${removeDuplicates(arr4)}');
+    contains(key) {
+        const index = this.hash(key);
+        for (let value of this.buckets[index]) {
+            if (value === key) return true;
+        }
+        return false;
+    }
 
-  // Test 5: Single element
-  List<int> arr5 = [1];
-  print('Test 5: ${removeDuplicates(arr5)}');
-
-  // Test 6: Two elements, same
-  List<int> arr6 = [1, 1];
-  print('Test 6: ${removeDuplicates(arr6)}');
-
-  // Test 7: Negative numbers
-  List<int> arr7 = [-1, -2, -1, 0, -2];
-  print('Test 7: ${removeDuplicates(arr7)}');
+    add(key) {
+        if (!this.contains(key)) {
+            const index = this.hash(key);
+            this.buckets[index].push(key);
+        }
+    }
 }
+
+function removeDuplicatesHash(arr) {
+    if (arr.length === 0) return [];
+
+    const hashTable = new SimpleHashTable(arr.length);
+    let result = [];
+
+    for (let i = 0; i < arr.length; i++) {
+        if (!hashTable.contains(arr[i])) {
+            hashTable.add(arr[i]);
+            result.push(arr[i]);
+        }
+    }
+
+    return result;
+}
+
+// Example usage
+let arr = [1, 2, 3, 2, 4, 1, 5];
+console.log("Original:", arr);
+console.log("Without duplicates:", removeDuplicatesHash(arr));
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Algorithm Walkthrough" bn="অ্যালগরিদম ওয়াকথ্রু" />
+
+<TranslatedText
+  en="Let's trace the **Temporary Array** approach with array `[1, 2, 3, 2, 4, 1, 5]`:"
+  bn="চলুন `[1, 2, 3, 2, 4, 1, 5]` অ্যারে দিয়ে **টেম্পোরারি অ্যারে** পদ্ধতি ট্রেস করি:"
+/>
+
+```
+Input: [1, 2, 3, 2, 4, 1, 5]
+
+Step 1: Check 1
+  result = []
+  1 not in result → add it
+  result = [1]
+
+Step 2: Check 2
+  result = [1]
+  2 not in result → add it
+  result = [1, 2]
+
+Step 3: Check 3
+  result = [1, 2]
+  3 not in result → add it
+  result = [1, 2, 3]
+
+Step 4: Check 2
+  result = [1, 2, 3]
+  2 already in result → skip
+  result = [1, 2, 3]
+
+Step 5: Check 4
+  result = [1, 2, 3]
+  4 not in result → add it
+  result = [1, 2, 3, 4]
+
+Step 6: Check 1
+  result = [1, 2, 3, 4]
+  1 already in result → skip
+  result = [1, 2, 3, 4]
+
+Step 7: Check 5
+  result = [1, 2, 3, 4]
+  5 not in result → add it
+  result = [1, 2, 3, 4, 5]
+
+Final Result: [1, 2, 3, 4, 5]
 ```
 
-## Visualization
+### <TranslatedText en="Sort First Visualization" bn="প্রথমে সর্ট ভিজুয়ালাইজেশন" />
 
-For array [1, 2, 3, 2, 4, 1, 5]:
-
-### Temporary Array Approach:
-```
-Step 1: Check 1 → result = [1]
-Step 2: Check 2 → result = [1, 2]
-Step 3: Check 3 → result = [1, 2, 3]
-Step 4: Check 2 → already in result, skip
-Step 5: Check 4 → result = [1, 2, 3, 4]
-Step 6: Check 1 → already in result, skip
-Step 7: Check 5 → result = [1, 2, 3, 4, 5]
-```
-
-### Sort First Approach:
 ```
 Original: [1, 2, 3, 2, 4, 1, 5]
-Sorted:   [1, 1, 2, 2, 3, 4, 5]
-Remove:   [1, 2, 3, 4, 5]
+↓
+After Sorting: [1, 1, 2, 2, 3, 4, 5]
+↓
+Remove Consecutive Duplicates:
+  Keep: 1 (first occurrence)
+  Skip: 1 (duplicate)
+  Keep: 2 (first occurrence)
+  Skip: 2 (duplicate)
+  Keep: 3, 4, 5 (no duplicates)
+↓
+Result: [1, 2, 3, 4, 5]
 ```
 
-## Alternative Challenge
+## <TranslatedText en="Comparison of Approaches" bn="পদ্ধতিসমূহের তুলনা" />
 
-Implement without:
-- Any collection classes (Set, Map, List except result)
-- Sorting
-- Extra space except result array
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time" bn="সময়" /> | <TranslatedText en="Space" bn="স্থান" /> | <TranslatedText en="Pros" bn="সুবিধা" /> | <TranslatedText en="Cons" bn="অসুবিধা" /> |
+|----------|------|-------|------|------|
+| Temporary Array | O(n²) | O(n) | <TranslatedText en="Simple, preserves order" bn="সহজ, ক্রম সংরক্ষণ করে" /> | <TranslatedText en="Slow for large arrays" bn="বড় অ্যারের জন্য ধীর" /> |
+| Sort First | O(n log n) | O(n) | <TranslatedText en="Faster than nested loops" bn="নেস্টেড লুপের চেয়ে দ্রুত" /> | <TranslatedText en="Changes order" bn="ক্রম পরিবর্তন করে" /> |
+| Manual Hash | O(n) | O(n) | <TranslatedText en="Fast, preserves order" bn="দ্রুত, ক্রম সংরক্ষণ করে" /> | <TranslatedText en="Complex implementation" bn="জটিল বাস্তবায়ন" /> |
 
-```dart
-List<int> removeDuplicatesHardMode(List<int> arr) {
-  if (arr.isEmpty) return [];
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
 
-  int resultSize = 0;
-  List<int> result = List.filled(arr.length, 0);
+### 1. <TranslatedText en="No Library Collections" bn="কোনো লাইব্রেরি কালেকশন নেই" />
 
-  for (int i = 0; i < arr.length; i++) {
-    bool found = false;
+<TranslatedText
+  en="The challenge is to avoid using Set, Map, or other high-level collections. We must implement duplicate detection manually using basic arrays and loops."
+  bn="চ্যালেঞ্জ হল Set, Map বা অন্যান্য উচ্চ-স্তরের কালেকশন ব্যবহার এড়ানো। আমাদের মৌলিক অ্যারে এবং লুপ ব্যবহার করে ম্যানুয়ালি ডুপ্লিকেট সনাক্তকরণ বাস্তবায়ন করতে হবে।"
+/>
 
-    // Check in result array only up to resultSize
-    for (int j = 0; j < resultSize; j++) {
-      if (arr[i] == result[j]) {
-        found = true;
-        break;
-      }
-    }
+### 2. <TranslatedText en="Order Preservation" bn="ক্রম সংরক্ষণ" />
 
-    if (!found) {
-      result[resultSize] = arr[i];
-      resultSize++;
-    }
-  }
+<TranslatedText
+  en="The **Temporary Array** and **Hash Table** approaches preserve the original insertion order. The **Sort First** approach does not preserve order but is faster."
+  bn="**টেম্পোরারি অ্যারে** এবং **হ্যাশ টেবিল** পদ্ধতি মূল ইনসার্শন অর্ডার সংরক্ষণ করে। **প্রথমে সর্ট** পদ্ধতি অর্ডার সংরক্ষণ করে না কিন্তু দ্রুততর।"
+/>
 
-  // Return only the filled portion
-  List<int> finalResult = [];
-  for (int i = 0; i < resultSize; i++) {
-    finalResult.add(result[i]);
-  }
+### 3. <TranslatedText en="Time-Space Tradeoff" bn="সময়-স্থান ট্রেডঅফ" />
 
-  return finalResult;
+<TranslatedText
+  en="Faster solutions (hash table) use more space. Simpler solutions (temporary array with nested loop) are slower but easier to understand."
+  bn="দ্রুততর সমাধান (হ্যাশ টেবিল) আরো স্পেস ব্যবহার করে। সহজ সমাধান (নেস্টেড লুপ সহ টেম্পোরারি অ্যারে) ধীর কিন্তু বোঝা সহজ।"
+/>
+
+### 4. <TranslatedText en="Hash Table Concept" bn="হ্যাশ টেবিল ধারণা" />
+
+<TranslatedText
+  en="The manual hash table uses **buckets** (arrays) and a **hash function** (modulo) to achieve O(1) average lookup time. This mimics what Set/Map do internally."
+  bn="ম্যানুয়াল হ্যাশ টেবিল **বাকেট** (অ্যারে) এবং একটি **হ্যাশ ফাংশন** (মডিউলো) ব্যবহার করে O(1) গড় লুকআপ সময় অর্জন করে। এটি Set/Map অভ্যন্তরীণভাবে যা করে তার অনুকরণ করে।"
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="1. **Clarify Constraints**: Ask if you can use library collections or must implement from scratch"
+  bn="১. **সীমাবদ্ধতা স্পষ্ট করুন**: জিজ্ঞাসা করুন আপনি লাইব্রেরি কালেকশন ব্যবহার করতে পারবেন নাকি স্ক্র্যাচ থেকে বাস্তবায়ন করতে হবে"
+/>
+
+<TranslatedText
+  en="2. **Order Matters**: Ask if the original order must be preserved"
+  bn="২. **অর্ডার গুরুত্বপূর্ণ**: জিজ্ঞাসা করুন মূল অর্ডার সংরক্ষণ করতে হবে কিনা"
+/>
+
+<TranslatedText
+  en="3. **Start Simple**: Begin with the temporary array approach, then optimize if needed"
+  bn="৩. **সহজ দিয়ে শুরু করুন**: টেম্পোরারি অ্যারে পদ্ধতি দিয়ে শুরু করুন, তারপর প্রয়োজনে অপটিমাইজ করুন"
+/>
+
+<TranslatedText
+  en="4. **Discuss Tradeoffs**: Explain time vs space complexity for each approach"
+  bn="৪. **ট্রেডঅফ আলোচনা করুন**: প্রতিটি পদ্ধতির জন্য সময় বনাম স্পেস কমপ্লেক্সিটি ব্যাখ্যা করুন"
+/>
+
+<TranslatedText
+  en="5. **Edge Cases**: Handle empty arrays, single elements, all duplicates"
+  bn="৫. **এজ কেস**: খালি অ্যারে, একক এলিমেন্ট, সব ডুপ্লিকেট হ্যান্ডেল করুন"
+/>
+
+## <TranslatedText en="Edge Cases" bn="এজ কেস" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+void testEdgeCases() {
+    // Empty array
+    vector<int> empty = {};
+    cout << "Empty: ";
+    auto r1 = removeDuplicates(empty);
+    for (int x : r1) cout << x << " ";
+    cout << endl;
+
+    // Single element
+    vector<int> single = {1};
+    cout << "Single: ";
+    auto r2 = removeDuplicates(single);
+    for (int x : r2) cout << x << " ";
+    cout << endl;
+
+    // All duplicates
+    vector<int> allDup = {1, 1, 1, 1};
+    cout << "All duplicates: ";
+    auto r3 = removeDuplicates(allDup);
+    for (int x : r3) cout << x << " ";
+    cout << endl;
+
+    // No duplicates
+    vector<int> noDup = {1, 2, 3, 4, 5};
+    cout << "No duplicates: ";
+    auto r4 = removeDuplicates(noDup);
+    for (int x : r4) cout << x << " ";
+    cout << endl;
+
+    // Negative numbers
+    vector<int> negative = {-1, -2, -1, 0, -2};
+    cout << "Negative numbers: ";
+    auto r5 = removeDuplicates(negative);
+    for (int x : r5) cout << x << " ";
+    cout << endl;
 }
 ```
+  </Tab>
+  <Tab value="Python">
+```python
+def test_edge_cases():
+    # Empty array
+    empty = []
+    print(f"Empty: {remove_duplicates(empty)}")
 
-## Reference
+    # Single element
+    single = [1]
+    print(f"Single: {remove_duplicates(single)}")
+
+    # All duplicates
+    all_dup = [1, 1, 1, 1]
+    print(f"All duplicates: {remove_duplicates(all_dup)}")
+
+    # No duplicates
+    no_dup = [1, 2, 3, 4, 5]
+    print(f"No duplicates: {remove_duplicates(no_dup)}")
+
+    # Negative numbers
+    negative = [-1, -2, -1, 0, -2]
+    print(f"Negative numbers: {remove_duplicates(negative)}")
+
+test_edge_cases()
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function testEdgeCases() {
+    // Empty array
+    let empty = [];
+    console.log("Empty:", removeDuplicates(empty));
+
+    // Single element
+    let single = [1];
+    console.log("Single:", removeDuplicates(single));
+
+    // All duplicates
+    let allDup = [1, 1, 1, 1];
+    console.log("All duplicates:", removeDuplicates(allDup));
+
+    // No duplicates
+    let noDup = [1, 2, 3, 4, 5];
+    console.log("No duplicates:", removeDuplicates(noDup));
+
+    // Negative numbers
+    let negative = [-1, -2, -1, 0, -2];
+    console.log("Negative numbers:", removeDuplicates(negative));
+}
+
+testEdgeCases();
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="- **No Library Constraint**: Must implement duplicate detection using only basic arrays and loops"
+  bn="- **কোনো লাইব্রেরি সীমাবদ্ধতা**: শুধুমাত্র মৌলিক অ্যারে এবং লুপ ব্যবহার করে ডুপ্লিকেট সনাক্তকরণ বাস্তবায়ন করতে হবে"
+/>
+
+<TranslatedText
+  en="- **Three Main Approaches**: Temporary array (O(n²)), Sort first (O(n log n)), Hash table (O(n))"
+  bn="- **তিনটি প্রধান পদ্ধতি**: টেম্পোরারি অ্যারে (O(n²)), প্রথমে সর্ট (O(n log n)), হ্যাশ টেবিল (O(n))"
+/>
+
+<TranslatedText
+  en="- **Order Preservation**: Temporary array and hash table preserve order, sorting does not"
+  bn="- **অর্ডার সংরক্ষণ**: টেম্পোরারি অ্যারে এবং হ্যাশ টেবিল অর্ডার সংরক্ষণ করে, সর্টিং করে না"
+/>
+
+<TranslatedText
+  en="- **Hash Table Power**: Manual hash table implementation shows how Set/Map work internally"
+  bn="- **হ্যাশ টেবিল শক্তি**: ম্যানুয়াল হ্যাশ টেবিল বাস্তবায়ন দেখায় Set/Map অভ্যন্তরীণভাবে কীভাবে কাজ করে"
+/>
+
+<TranslatedText
+  en="- **Practical Skill**: Understanding low-level implementations builds stronger problem-solving abilities"
+  bn="- **ব্যবহারিক দক্ষতা**: নিম্ন-স্তরের বাস্তবায়ন বোঝা শক্তিশালী সমস্যা সমাধান ক্ষমতা তৈরি করে"
+/>
+
+## <TranslatedText en="Common Pitfalls" bn="সাধারণ সমস্যা" />
+
+<TranslatedText
+  en="- Not handling empty arrays"
+  bn="- খালি অ্যারে হ্যান্ডেল না করা"
+/>
+
+<TranslatedText
+  en="- Assuming elements are in a specific range (for boolean array approach)"
+  bn="- এলিমেন্ট একটি নির্দিষ্ট রেঞ্জে আছে ধরে নেওয়া (বুলিয়ান অ্যারে পদ্ধতির জন্য)"
+/>
+
+<TranslatedText
+  en="- Modifying original array unintentionally"
+  bn="- অনিচ্ছাকৃতভাবে অরিজিনাল অ্যারে পরিবর্তন করা"
+/>
+
+<TranslatedText
+  en="- Not preserving insertion order when required"
+  bn="- প্রয়োজনীয় হলে ইনসার্শন অর্ডার সংরক্ষণ না করা"
+/>
+
+<TranslatedText
+  en="- Integer overflow in hash function"
+  bn="- হ্যাশ ফাংশনে ইন্টিজার ওভারফ্লো"
+/>
+
+## <TranslatedText en="Reference" bn="রেফারেন্স" />
 
 [JavaRevisited - Remove Duplicates Without Collection API](http://javarevisited.blogspot.sg/2014/01/how-to-remove-duplicates-from-array-java-without-collection-API.html)
