@@ -1,9 +1,9 @@
 ---
-title: Find Missing Number in Array 1 to 100
+title: 31. Find Missing Number in Array 1 to 100
 description: Find the missing number in an array containing numbers from 1 to 100
 ---
 
-import { Tabs } from 'fumadocs-ui/components/tabs';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
 
 <LanguageSwitcher />
@@ -40,8 +40,8 @@ Explanation: Numbers should be [1, 2], missing is 1
   bn="প্রথম n প্রাকৃতিক সংখ্যার যোগফলের সূত্র ব্যবহার করুন: sum = n × (n + 1) / 2। প্রত্যাশিত যোগফল গণনা করুন এবং অ্যারে উপাদানের প্রকৃত যোগফল বিয়োগ করুন। পার্থক্য হল হারিয়ে যাওয়া সংখ্যা।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -81,8 +81,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def find_missing_math(arr):
     n = len(arr) + 1  # Total numbers including missing one
@@ -106,8 +106,8 @@ print(f"Missing number: {missing}")
 arr100 = [i for i in range(1, 101) if i != 47]  # Skip 47
 print(f"Missing number in 1-100: {find_missing_math(arr100)}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function findMissingMath(arr) {
     const n = arr.length + 1;  // Total numbers including missing one
@@ -137,7 +137,7 @@ for (let i = 1; i <= 100; i++) {
 }
 console.log(`Missing number in 1-100: ${findMissingMath(arr100)}`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
@@ -153,8 +153,8 @@ console.log(`Missing number in 1-100: ${findMissingMath(arr100)}`);
   bn="XOR এর বৈশিষ্ট্য রয়েছে যে a ^ a = 0 এবং a ^ 0 = a। 1 থেকে n পর্যন্ত সমস্ত সংখ্যা এবং সমস্ত অ্যারে উপাদান XOR করুন। ফলাফল হারিয়ে যাওয়া সংখ্যা হবে কারণ সমস্ত উপস্থিত সংখ্যা বাতিল হয়ে যায়।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -187,8 +187,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def find_missing_xor(arr):
     n = len(arr) + 1
@@ -211,8 +211,8 @@ arr = [1, 2, 4, 5, 6]
 missing = find_missing_xor(arr)
 print(f"Missing number: {missing}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function findMissingXOR(arr) {
     const n = arr.length + 1;
@@ -238,7 +238,7 @@ const arr = [1, 2, 4, 5, 6];
 const missing = findMissingXOR(arr);
 console.log(`Missing number: ${missing}`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
@@ -254,8 +254,8 @@ console.log(`Missing number: ${missing}`);
   bn="সমস্ত অ্যারে উপাদান একটি হ্যাশ সেটে সংরক্ষণ করুন, তারপর 1 থেকে n পর্যন্ত পুনরাবৃত্তি করুন কোন সংখ্যা সেটে নেই তা খুঁজতে। সহজ কিন্তু অতিরিক্ত স্থান ব্যবহার করে।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -286,8 +286,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def find_missing_hash_set(arr):
     num_set = set(arr)
@@ -307,8 +307,8 @@ arr = [1, 2, 4, 5, 6]
 missing = find_missing_hash_set(arr)
 print(f"Missing number: {missing}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function findMissingHashSet(arr) {
     const numSet = new Set(arr);
@@ -331,7 +331,7 @@ const arr = [1, 2, 4, 5, 6];
 const missing = findMissingHashSet(arr);
 console.log(`Missing number: ${missing}`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
@@ -345,8 +345,8 @@ console.log(`Missing number: ${missing}`);
   bn="অ্যারে সাজান এবং এর মধ্য দিয়ে পুনরাবৃত্তি করুন কোথায় ক্রম ভাঙে তা খুঁজতে। সর্বোত্তম নয় কিন্তু সোজা।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -381,8 +381,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def find_missing_sorting(arr):
     arr_sorted = sorted(arr)
@@ -405,8 +405,8 @@ arr = [1, 2, 4, 5, 6]
 missing = find_missing_sorting(arr)
 print(f"Missing number: {missing}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function findMissingSorting(arr) {
     const sortedArr = [...arr].sort((a, b) => a - b);
@@ -433,7 +433,7 @@ const arr = [1, 2, 4, 5, 6];
 const missing = findMissingSorting(arr);
 console.log(`Missing number: ${missing}`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n log n) <TranslatedText en="due to sorting" bn="সাজানোর কারণে" />

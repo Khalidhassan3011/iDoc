@@ -1,9 +1,9 @@
 ---
-title: Search in Rotated Sorted Array
+title: 30. Search in Rotated Sorted Array
 description: Find a target value in a rotated sorted array using binary search
 ---
 
-import { Tabs } from 'fumadocs-ui/components/tabs';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
 
 <LanguageSwitcher />
@@ -49,8 +49,8 @@ After rotation:  [4, 5, 6, 7, 0, 1, 2] (rotated at index 4)
   bn="বাইনারি সার্চ ব্যবহার করুন কিন্তু প্রতিটি পদক্ষেপে নির্ধারণ করুন কোন অর্ধেক সাজানো আছে। তারপর পরীক্ষা করুন লক্ষ্য সাজানো অর্ধেকের পরিসরে আছে কিনা। যদি হ্যাঁ, সেই অর্ধেকে অনুসন্ধান করুন; অন্যথায়, অন্য অর্ধেকে অনুসন্ধান করুন।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -105,8 +105,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def search_rotated(arr, target):
     left = 0
@@ -148,8 +148,8 @@ target = 3
 result = search_rotated(arr, target)
 print(f"Index of {target}: {result}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function searchRotated(arr, target) {
     let left = 0;
@@ -197,7 +197,7 @@ target = 3;
 result = searchRotated(arr, target);
 console.log(`Index of ${target}: ${result}`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(log n)
@@ -211,8 +211,8 @@ console.log(`Index of ${target}: ${result}`);
   bn="প্রথমে পিভট পয়েন্ট খুঁজুন (যেখানে ঘূর্ণন ঘটেছে), তারপর উপযুক্ত অর্ধেকে নিয়মিত বাইনারি সার্চ করুন। এতে দুটি পাস লাগে কিন্তু বোঝা সহজ হতে পারে।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -296,8 +296,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def find_pivot(arr):
     """Find the index of the minimum element (pivot point)"""
@@ -364,8 +364,8 @@ target = 0
 result = search_rotated_two_pass(arr, target)
 print(f"Index of {target}: {result}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function findPivot(arr) {
     // Find the index of the minimum element (pivot point)
@@ -442,7 +442,7 @@ const target = 0;
 const result = searchRotatedTwoPass(arr, target);
 console.log(`Index of ${target}: ${result}`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(log n) <TranslatedText en="(two binary search passes)" bn="(দুটি বাইনারি সার্চ পাস)" />

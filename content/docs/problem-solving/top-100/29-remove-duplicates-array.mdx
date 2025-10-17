@@ -1,9 +1,9 @@
 ---
-title: Remove Duplicates from Array
+title: 29. Remove Duplicates from Array
 description: Remove duplicate elements from an array and return unique elements
 ---
 
-import { Tabs } from 'fumadocs-ui/components/tabs';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
 
 <LanguageSwitcher />
@@ -40,8 +40,8 @@ Output: []
   bn="আমরা ইতিমধ্যে দেখেছি এমন উপাদান ট্র্যাক করতে একটি হ্যাশ সেট ব্যবহার করুন। প্রতিটি উপাদান শুধুমাত্র তখনই ফলাফলে যোগ করুন যদি এটি আগে দেখা না হয়। এটি প্রথম উপস্থিতির মূল ক্রম সংরক্ষণ করে।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -86,8 +86,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def remove_duplicates_hash_set(arr):
     seen = set()
@@ -108,8 +108,8 @@ print(f"Original: {arr}")
 result = remove_duplicates_hash_set(arr)
 print(f"After removing duplicates: {result}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function removeDuplicatesHashSet(arr) {
     const seen = new Set();
@@ -133,7 +133,7 @@ console.log(`Original: [${arr}]`);
 const result = removeDuplicatesHashSet(arr);
 console.log(`After removing duplicates: [${result}]`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n) <TranslatedText en="where n is the length of the array" bn="যেখানে n হল অ্যারের দৈর্ঘ্য" />
@@ -147,8 +147,8 @@ console.log(`After removing duplicates: [${result}]`);
   bn="প্রথমে অ্যারে সাজান, তারপর এটির মাধ্যমে পুনরাবৃত্তি করুন, শুধুমাত্র সেই উপাদানগুলি যোগ করুন যা আগেরটির থেকে আলাদা। এটি মূল ক্রম সংরক্ষণ করে না কিন্তু আমরা যদি জায়গায় পরিবর্তন করি তবে কম স্থান ব্যবহার করে।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -190,8 +190,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def remove_duplicates_sorting(arr):
     if not arr:
@@ -216,8 +216,8 @@ print(f"Original: {arr}")
 result = remove_duplicates_sorting(arr)
 print(f"After removing duplicates (sorted): {result}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function removeDuplicatesSorting(arr) {
     if (arr.length === 0) return [];
@@ -244,7 +244,7 @@ console.log(`Original: [${arr}]`);
 const result = removeDuplicatesSorting(arr);
 console.log(`After removing duplicates (sorted): [${result}]`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n log n) <TranslatedText en="due to sorting" bn="সাজানোর কারণে" />
@@ -258,8 +258,8 @@ console.log(`After removing duplicates (sorted): [${result}]`);
   bn="প্রতিটি উপাদানের জন্য, পরীক্ষা করুন যে এটি ইতিমধ্যে ফলাফলে যোগ করা হয়েছে কিনা। এই পদ্ধতিতে অতিরিক্ত ডেটা স্ট্রাকচারের প্রয়োজন নেই কিন্তু বড় অ্যারের জন্য ধীর।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -304,8 +304,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def remove_duplicates_brute_force(arr):
     result = []
@@ -324,8 +324,8 @@ print(f"Original: {arr}")
 result = remove_duplicates_brute_force(arr)
 print(f"After removing duplicates: {result}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function removeDuplicatesBruteForce(arr) {
     const result = [];
@@ -347,7 +347,7 @@ console.log(`Original: [${arr}]`);
 const result = removeDuplicatesBruteForce(arr);
 console.log(`After removing duplicates: [${result}]`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n²) <TranslatedText en="due to nested iteration" bn="নেস্টেড পুনরাবৃত্তির কারণে" />
@@ -361,8 +361,8 @@ console.log(`After removing duplicates: [${result}]`);
   bn="অনেক ভাষা অ্যারেকে সেটে রূপান্তর করার জন্য বিল্ট-ইন পদ্ধতি প্রদান করে, যা স্বয়ংক্রিয়ভাবে ডুপ্লিকেট সরিয়ে দেয়। এটি সবচেয়ে সহজ পদ্ধতি কিন্তু কিছু ভাষায় ক্রম সংরক্ষণ নাও করতে পারে।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -395,8 +395,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def remove_duplicates_set(arr):
     # Convert to set (removes duplicates) then back to list
@@ -417,8 +417,8 @@ print(f"After removing duplicates (unordered): {result1}")
 result2 = remove_duplicates_set_ordered(arr)
 print(f"After removing duplicates (order preserved): {result2}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function removeDuplicatesSet(arr) {
     // Convert to Set (removes duplicates) then back to array
@@ -438,7 +438,7 @@ console.log(`Original: [${arr}]`);
 const result = removeDuplicatesSet(arr);
 console.log(`After removing duplicates: [${result}]`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)

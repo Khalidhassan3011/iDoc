@@ -1,9 +1,9 @@
 ---
-title: Find Duplicate Number in Array
+title: 32. Find Duplicate Number in Array
 description: Find the duplicate number in an array containing duplicates
 ---
 
-import { Tabs } from 'fumadocs-ui/components/tabs';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
 
 <LanguageSwitcher />
@@ -43,8 +43,8 @@ Explanation: 9 appears multiple times
   bn="আমরা দেখেছি এমন সংখ্যা ট্র্যাক করতে একটি হ্যাশ সেট ব্যবহার করুন। যখন আমরা ইতিমধ্যে সেটে থাকা একটি সংখ্যার সম্মুখীন হই, সেটি আমাদের ডুপ্লিকেট।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -95,8 +95,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def find_duplicate_hash_set(arr):
     seen = set()
@@ -131,8 +131,8 @@ arr2 = [4, 3, 2, 7, 8, 2, 3, 1]
 all_dups = find_all_duplicates(arr2)
 print(f"All duplicates: {all_dups}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function findDuplicateHashSet(arr) {
     const seen = new Set();
@@ -173,7 +173,7 @@ const arr2 = [4, 3, 2, 7, 8, 2, 3, 1];
 const allDups = findAllDuplicates(arr2);
 console.log(`All duplicates: ${allDups}`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
@@ -187,8 +187,8 @@ console.log(`All duplicates: ${allDups}`);
   bn="অ্যারে সাজান এবং সংলগ্ন উপাদান পরীক্ষা করুন। যদি দুটি সংলগ্ন উপাদান সমান হয়, আমরা আমাদের ডুপ্লিকেট খুঁজে পেয়েছি।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -217,8 +217,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def find_duplicate_sorting(arr):
     sorted_arr = sorted(arr)
@@ -235,8 +235,8 @@ arr = [1, 3, 4, 2, 2]
 duplicate = find_duplicate_sorting(arr)
 print(f"Duplicate: {duplicate}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function findDuplicateSorting(arr) {
     const sortedArr = [...arr].sort((a, b) => a - b);
@@ -256,7 +256,7 @@ const arr = [1, 3, 4, 2, 2];
 const duplicate = findDuplicateSorting(arr);
 console.log(`Duplicate: ${duplicate}`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n log n)
@@ -270,8 +270,8 @@ console.log(`Duplicate: ${duplicate}`);
   bn="যদি অ্যারেতে 1 থেকে n সংখ্যা থাকে ঠিক একটি ডুপ্লিকেট সহ, আমরা হারিয়ে যাওয়া সংখ্যা খুঁজে পাওয়ার মতো XOR ব্যবহার করতে পারি। সমস্ত অ্যারে উপাদান 1 থেকে n সংখ্যার সাথে XOR করুন।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -305,8 +305,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def find_duplicate_xor(arr):
     """Works when array has numbers 1 to n with one duplicate"""
@@ -330,8 +330,8 @@ arr = [1, 3, 4, 2, 2]
 duplicate = find_duplicate_xor(arr)
 print(f"Duplicate: {duplicate}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function findDuplicateXOR(arr) {
     // Works when array has numbers 1 to n with one duplicate
@@ -358,7 +358,7 @@ const arr = [1, 3, 4, 2, 2];
 const duplicate = findDuplicateXOR(arr);
 console.log(`Duplicate: ${duplicate}`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
@@ -374,8 +374,8 @@ console.log(`Duplicate: ${duplicate}`);
   bn="n+1 পূর্ণসংখ্যার একটি অ্যারের জন্য যেখানে প্রতিটি সংখ্যা 1 এবং n এর মধ্যে (অন্তর্ভুক্ত), আমরা অ্যারেটিকে একটি লিঙ্কড লিস্ট হিসাবে বিবেচনা করতে পারি এবং ফ্লয়েডের সাইকেল ডিটেকশন অ্যালগরিদম ব্যবহার করতে পারি। এটি অ্যারে পরিবর্তন না করে O(n) সময় এবং O(1) স্থান অর্জন করে।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -414,8 +414,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def find_duplicate_floyd(arr):
     """Floyd's Tortoise and Hare (for array with numbers 1 to n)"""
@@ -446,8 +446,8 @@ print(f"Duplicate: {duplicate}")
 arr2 = [3, 1, 3, 4, 2]
 print(f"Duplicate: {find_duplicate_floyd(arr2)}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function findDuplicateFloyd(arr) {
     // Floyd's Tortoise and Hare (for array with numbers 1 to n)
@@ -479,7 +479,7 @@ console.log(`Duplicate: ${duplicate}`);
 const arr2 = [3, 1, 3, 4, 2];
 console.log(`Duplicate: ${findDuplicateFloyd(arr2)}`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)

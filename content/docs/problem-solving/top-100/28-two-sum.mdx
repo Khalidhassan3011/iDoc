@@ -1,12 +1,19 @@
 ---
-title: Two Sum Problem
+title: 28. Two Sum Problem
 description: Find two numbers in an array that add up to a specific target value
 ---
 
-import { Tabs } from 'fumadocs-ui/components/tabs';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
 
 <LanguageSwitcher />
+
+# <TranslatedText en="Two Sum Problem" bn="টু সাম সমস্যা" />
+
+<TranslatedText
+  en="Find two numbers in an array that add up to a specific target value."
+  bn="একটি অ্যারেতে দুটি সংখ্যা খুঁজুন যা একটি নির্দিষ্ট লক্ষ্য মানে যোগ করে।"
+/>
 
 ## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
 
@@ -40,8 +47,8 @@ Explanation: nums[0] + nums[1] = 3 + 3 = 6
   bn="লক্ষ্যে যোগ হয় কিনা তা দেখতে অ্যারেতে সংখ্যার সমস্ত সম্ভাব্য জোড়া পরীক্ষা করুন। এটি সবচেয়ে সহজ পদ্ধতি কিন্তু বড় অ্যারের জন্য দুর্বল পারফরম্যান্স আছে।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -73,9 +80,9 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
-```python
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
 def two_sum_brute_force(nums, target):
     n = len(nums)
 
@@ -95,8 +102,8 @@ target = 9
 result = two_sum_brute_force(nums, target)
 print(f"Indices: {result}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```javascript
 function twoSumBruteForce(nums, target) {
     const n = nums.length;
@@ -121,7 +128,7 @@ const target = 9;
 const result = twoSumBruteForce(nums, target);
 console.log(`Indices: [${result}]`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n²) <TranslatedText en="where n is the length of the array" bn="যেখানে n হল অ্যারের দৈর্ঘ্য" />
@@ -135,8 +142,8 @@ console.log(`Indices: [${result}]`);
   bn="আমরা দেখেছি এমন সংখ্যা এবং তাদের সূচক সংরক্ষণ করতে একটি হ্যাশ ম্যাপ ব্যবহার করুন। প্রতিটি সংখ্যার জন্য, পরীক্ষা করুন যে এর পরিপূরক (target - number) হ্যাশ ম্যাপে বিদ্যমান কিনা। এটি আমাদের একটি একক পাসে সমস্যাটি সমাধান করতে দেয়।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -177,9 +184,9 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
-```python
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
 def two_sum_hash_map(nums, target):
     num_map = {}  # value -> index
 
@@ -208,8 +215,8 @@ target2 = 6
 result2 = two_sum_hash_map(nums2, target2)
 print(f"Test case [3,3], target=6: {result2}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```javascript
 function twoSumHashMap(nums, target) {
     const numMap = new Map(); // value -> index
@@ -242,7 +249,7 @@ const target2 = 6;
 const result2 = twoSumHashMap(nums2, target2);
 console.log(`Test case [3,3], target=6: [${result2}]`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
@@ -256,8 +263,8 @@ console.log(`Test case [3,3], target=6: [${result2}]`);
   bn="যদি অ্যারে সাজানো থাকে (বা আমরা প্রথমে এটি সাজাই), আমরা উভয় প্রান্ত থেকে দুটি পয়েন্টার ব্যবহার করতে পারি। যদি যোগফল খুব ছোট হয় তাহলে বাম পয়েন্টার ডানে সরান, যদি যোগফল খুব বড় হয় তাহলে ডান পয়েন্টার বামে সরান। দ্রষ্টব্য: এই পদ্ধতিতে মান ফেরত দিতে হয়, সূচক নয়, অথবা সাজানোর সময় মূল সূচক ট্র্যাক করতে হয়।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -303,9 +310,9 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
-```python
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
 def two_sum_two_pointers(nums, target):
     # Create pairs of (value, original_index)
     pairs = [(num, i) for i, num in enumerate(nums)]
@@ -336,8 +343,8 @@ target = 9
 result = two_sum_two_pointers(nums, target)
 print(f"Indices: {result}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```javascript
 function twoSumTwoPointers(nums, target) {
     // Create pairs of [value, original_index]
@@ -372,7 +379,7 @@ const target = 9;
 const result = twoSumTwoPointers(nums, target);
 console.log(`Indices: [${result}]`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n log n) <TranslatedText en="due to sorting" bn="সাজানোর কারণে" />

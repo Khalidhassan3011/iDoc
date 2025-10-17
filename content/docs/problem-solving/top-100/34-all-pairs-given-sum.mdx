@@ -1,9 +1,9 @@
 ---
-title: Find All Pairs with Given Sum
+title: 34. Find All Pairs with Given Sum
 description: Find all pairs of integers in an array whose sum equals a given target value
 ---
 
-import { Tabs } from 'fumadocs-ui/components/tabs';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
 
 <LanguageSwitcher />
@@ -43,8 +43,8 @@ Output: [(3, 3)]
   bn="দেখা সংখ্যা ট্র্যাক করতে একটি হ্যাশ সেট ব্যবহার করুন। প্রতিটি সংখ্যার জন্য, পরীক্ষা করুন যে এর পরিপূরক (target - number) সেটে বিদ্যমান কিনা। ডুপ্লিকেট এড়াতে অনন্য জোড়া সংরক্ষণ করতে একটি সেট ব্যবহার করুন।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -88,8 +88,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def find_pairs_hash_set(arr, target):
     seen = set()
@@ -117,8 +117,8 @@ print(f"Pairs with sum {target}:")
 for a, b in pairs:
     print(f"({a}, {b})")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function findPairsHashSet(arr, target) {
     const seen = new Set();
@@ -152,7 +152,7 @@ const pairs = findPairsHashSet(arr, target);
 console.log(`Pairs with sum ${target}:`);
 pairs.forEach(([a, b]) => console.log(`(${a}, ${b})`));
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
@@ -166,8 +166,8 @@ pairs.forEach(([a, b]) => console.log(`(${a}, ${b})`));
   bn="প্রথমে অ্যারে সাজান, তারপর উভয় প্রান্ত থেকে দুটি পয়েন্টার ব্যবহার করুন। যদি যোগফল খুব ছোট হয় তাহলে বাম পয়েন্টার ডানে সরান, যদি যোগফল খুব বড় হয় তাহলে ডান পয়েন্টার বামে সরান। অনন্য জোড়া খুঁজতে ডুপ্লিকেট এড়িয়ে যান।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -221,8 +221,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def find_pairs_two_pointers(arr, target):
     pairs = []
@@ -265,8 +265,8 @@ print(f"Pairs with sum {target}:")
 for a, b in pairs:
     print(f"({a}, {b})")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function findPairsTwoPointers(arr, target) {
     const pairs = [];
@@ -309,7 +309,7 @@ const pairs = findPairsTwoPointers(arr, target);
 console.log(`Pairs with sum ${target}:`);
 pairs.forEach(([a, b]) => console.log(`(${a}, ${b})`));
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n log n) <TranslatedText en="due to sorting" bn="সাজানোর কারণে" />
@@ -323,8 +323,8 @@ pairs.forEach(([a, b]) => console.log(`(${a}, ${b})`));
   bn="নেস্টেড লুপ ব্যবহার করে সমস্ত সম্ভাব্য জোড়া পরীক্ষা করুন। সহজ কিন্তু বড় অ্যারের জন্য অদক্ষ।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -362,8 +362,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def find_pairs_brute_force(arr, target):
     unique_pairs = set()
@@ -386,8 +386,8 @@ print(f"Pairs with sum {target}:")
 for a, b in pairs:
     print(f"({a}, {b})")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function findPairsBruteForce(arr, target) {
     const uniquePairs = new Set();
@@ -416,7 +416,7 @@ const pairs = findPairsBruteForce(arr, target);
 console.log(`Pairs with sum ${target}:`);
 pairs.forEach(([a, b]) => console.log(`(${a}, ${b})`));
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n²)

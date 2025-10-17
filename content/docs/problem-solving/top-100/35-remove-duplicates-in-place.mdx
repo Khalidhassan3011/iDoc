@@ -1,9 +1,9 @@
 ---
-title: Remove Duplicates from Array In Place
+title: 35. Remove Duplicates from Array In Place
 description: Remove duplicates from a sorted array in place without using extra space
 ---
 
-import { Tabs } from 'fumadocs-ui/components/tabs';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
 
 <LanguageSwitcher />
@@ -40,8 +40,8 @@ Output: 0
   bn="দুটি পয়েন্টার ব্যবহার করুন: একটি উপাদান পড়ার জন্য (দ্রুত) এবং একটি অনন্য উপাদান লেখার জন্য (ধীর)। যখন একটি নতুন অনন্য উপাদান পাওয়া যায়, এটি ধীর পয়েন্টার অবস্থানে লিখুন এবং ধীর বৃদ্ধি করুন।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -82,8 +82,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def remove_duplicates(nums):
     if not nums:
@@ -109,8 +109,8 @@ new_length = remove_duplicates(nums)
 print(f"New length: {new_length}")
 print(f"Array after removing duplicates: {nums[:new_length]}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function removeDuplicates(nums) {
     if (nums.length === 0) return 0;
@@ -138,7 +138,7 @@ const newLength = removeDuplicates(nums);
 console.log(`New length: ${newLength}`);
 console.log(`Array after removing duplicates: [${nums.slice(0, newLength)}]`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
@@ -152,8 +152,8 @@ console.log(`Array after removing duplicates: [${nums.slice(0, newLength)}]`);
   bn="পদ্ধতি 1 এর মতো, কিন্তু সরাসরি অ্যাসাইনমেন্টের পরিবর্তে সোয়াপিং ব্যবহার করুন। এটি কিছু ক্ষেত্রে লজিক আরও পরিষ্কার করে।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -195,8 +195,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def remove_duplicates_swap(nums):
     if not nums:
@@ -222,8 +222,8 @@ new_length = remove_duplicates_swap(nums)
 print(f"New length: {new_length}")
 print(f"Array: {nums[:new_length]}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function removeDuplicatesSwap(nums) {
     if (nums.length === 0) return 0;
@@ -252,7 +252,7 @@ const newLength = removeDuplicatesSwap(nums);
 console.log(`New length: ${newLength}`);
 console.log(`Array: [${nums.slice(0, newLength)}]`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
@@ -266,8 +266,8 @@ console.log(`Array: [${nums.slice(0, newLength)}]`);
   bn="একটি আরো সাধারণ সমাধান যা প্রতিটি উপাদানকে সর্বোচ্চ k বার উপস্থিত হতে দেয়। k=1 এর জন্য, এটি সমস্ত ডুপ্লিকেট সরানোর মতোই।"
 />
 
-<Tabs items={['C++', 'Python', 'JavaScript']}>
-  <Tabs.Tab>
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
 ```cpp
 #include <iostream>
 #include <vector>
@@ -320,8 +320,8 @@ int main() {
     return 0;
 }
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Python">
 ```python
 def remove_duplicates_allow_k(nums, k):
     if len(nums) <= k:
@@ -356,8 +356,8 @@ nums2 = [1, 1, 1, 2, 2, 3]
 len2 = remove_duplicates_allow_two(nums2)
 print(f"Allow 2 duplicates (k=2): {nums2[:len2]}")
 ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="JavaScript">
 ```javascript
 function removeDuplicatesAllowK(nums, k) {
     if (nums.length <= k) return nums.length;
@@ -396,7 +396,7 @@ const nums2 = [1, 1, 1, 2, 2, 3];
 const len2 = removeDuplicatesAllowTwo(nums2);
 console.log(`Allow 2 duplicates (k=2): [${nums2.slice(0, len2)}]`);
 ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
