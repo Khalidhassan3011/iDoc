@@ -3,208 +3,627 @@ title: 36. Rotate Array Left and Right by K
 description: How to rotate an array left and right by a given number K
 ---
 
-## Problem Statement
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
 
-Write a program to rotate an array to the left and right by a given number K positions.
+<LanguageSwitcher />
 
-## Examples
+# <TranslatedText en="Rotate Array Left and Right by K" bn="K দ্বারা অ্যারে বাম এবং ডানে ঘোরান" />
 
-### Example 1: Left Rotation
-```
-Input: arr = [1, 2, 3, 4, 5], k = 2
-Output: [3, 4, 5, 1, 2]
-Explanation: After 2 left rotations: [2,3,4,5,1] then [3,4,5,1,2]
-```
+<TranslatedText
+  en="Learn how to efficiently rotate an array to the left or right by K positions using various approaches including the optimal reversal method."
+  bn="বিভিন্ন পদ্ধতি ব্যবহার করে একটি অ্যারেকে K অবস্থানে বাম বা ডানে দক্ষভাবে ঘোরানো শিখুন, যার মধ্যে সর্বোত্তম বিপরীতকরণ পদ্ধতি রয়েছে।"
+/>
 
-### Example 2: Right Rotation
-```
-Input: arr = [1, 2, 3, 4, 5], k = 2
-Output: [4, 5, 1, 2, 3]
-Explanation: After 2 right rotations: [5,1,2,3,4] then [4,5,1,2,3]
-```
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
 
-## Solution
-
-### Approach 1: Using Array Reversal (Optimal)
-
-The most efficient approach uses array reversal:
-- For left rotation: Reverse first k elements, then remaining elements, then entire array
-- For right rotation: Reverse last k elements, then remaining elements, then entire array
-
-**Time Complexity:** O(n)
-**Space Complexity:** O(1)
-
-```dart
-void reverseArray(List<int> arr, int start, int end) {
-  while (start < end) {
-    int temp = arr[start];
-    arr[start] = arr[end];
-    arr[end] = temp;
-    start++;
-    end--;
+<TranslatedText
+  en={
+    <>
+      <p>Given an array and a number K, rotate the array to the left or right by K positions. Handle cases where K is greater than the array length.</p>
+      <p><strong>Input:</strong> arr = [1, 2, 3, 4, 5], k = 2</p>
+      <p><strong>Output (Left Rotation):</strong> [3, 4, 5, 1, 2]</p>
+      <p><strong>Output (Right Rotation):</strong> [4, 5, 1, 2, 3]</p>
+      <p><strong>Explanation:</strong></p>
+      <ul>
+        <li>Left rotation by 2: Move first 2 elements to the end</li>
+        <li>Right rotation by 2: Move last 2 elements to the beginning</li>
+      </ul>
+    </>
   }
+  bn={
+    <>
+      <p>একটি অ্যারে এবং একটি সংখ্যা K দেওয়া হয়েছে, অ্যারেটিকে K অবস্থানে বাম বা ডানে ঘোরান। K অ্যারের দৈর্ঘ্যের চেয়ে বড় হলে তা পরিচালনা করুন।</p>
+      <p><strong>ইনপুট:</strong> arr = [1, 2, 3, 4, 5], k = 2</p>
+      <p><strong>আউটপুট (বাম ঘূর্ণন):</strong> [3, 4, 5, 1, 2]</p>
+      <p><strong>আউটপুট (ডান ঘূর্ণন):</strong> [4, 5, 1, 2, 3]</p>
+      <p><strong>ব্যাখ্যা:</strong></p>
+      <ul>
+        <li>2 দ্বারা বাম ঘূর্ণন: প্রথম 2টি উপাদান শেষে সরান</li>
+        <li>2 দ্বারা ডান ঘূর্ণন: শেষ 2টি উপাদান শুরুতে সরান</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Array Reversal (Optimal)" bn="পদ্ধতি ১: অ্যারে বিপরীতকরণ (সর্বোত্তম)" />
+
+<TranslatedText
+  en={<p>The most efficient approach uses three array reversals. For left rotation by k: reverse first k elements, then remaining elements, then the entire array. For right rotation: reverse entire array first, then first k elements, then remaining elements.</p>}
+  bn={<p>সবচেয়ে দক্ষ পদ্ধতি তিনটি অ্যারে বিপরীতকরণ ব্যবহার করে। k দ্বারা বাম ঘূর্ণনের জন্য: প্রথম k উপাদান বিপরীত করুন, তারপর অবশিষ্ট উপাদান, তারপর সম্পূর্ণ অ্যারে। ডান ঘূর্ণনের জন্য: প্রথমে সম্পূর্ণ অ্যারে বিপরীত করুন, তারপর প্রথম k উপাদান, তারপর অবশিষ্ট উপাদান।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+void reverseArray(vector<int>& arr, int start, int end) {
+    while (start < end) {
+        swap(arr[start], arr[end]);
+        start++;
+        end--;
+    }
 }
 
-List<int> rotateLeft(List<int> arr, int k) {
-  int n = arr.length;
-  k = k % n; // Handle k greater than n
+vector<int> rotateLeft(vector<int> arr, int k) {
+    int n = arr.size();
+    k = k % n;  // Handle k > n
 
-  if (k == 0) return arr;
+    if (k == 0) return arr;
 
-  // Create a copy to avoid modifying original
-  List<int> result = List.from(arr);
+    // Reverse first k elements
+    reverseArray(arr, 0, k - 1);
+    // Reverse remaining elements
+    reverseArray(arr, k, n - 1);
+    // Reverse entire array
+    reverseArray(arr, 0, n - 1);
 
-  // Reverse first k elements
-  reverseArray(result, 0, k - 1);
-  // Reverse remaining elements
-  reverseArray(result, k, n - 1);
-  // Reverse entire array
-  reverseArray(result, 0, n - 1);
-
-  return result;
+    return arr;
 }
 
-List<int> rotateRight(List<int> arr, int k) {
-  int n = arr.length;
-  k = k % n; // Handle k greater than n
+vector<int> rotateRight(vector<int> arr, int k) {
+    int n = arr.size();
+    k = k % n;  // Handle k > n
 
-  if (k == 0) return arr;
+    if (k == 0) return arr;
 
-  // Create a copy to avoid modifying original
-  List<int> result = List.from(arr);
+    // Reverse entire array
+    reverseArray(arr, 0, n - 1);
+    // Reverse first k elements
+    reverseArray(arr, 0, k - 1);
+    // Reverse remaining elements
+    reverseArray(arr, k, n - 1);
 
-  // Reverse entire array
-  reverseArray(result, 0, n - 1);
-  // Reverse first k elements
-  reverseArray(result, 0, k - 1);
-  // Reverse remaining elements
-  reverseArray(result, k, n - 1);
-
-  return result;
+    return arr;
 }
 
-void main() {
-  List<int> arr = [1, 2, 3, 4, 5];
+int main() {
+    vector<int> arr = {1, 2, 3, 4, 5};
 
-  print('Original array: $arr');
-  print('Left rotation by 2: ${rotateLeft(arr, 2)}');
-  print('Right rotation by 2: ${rotateRight(arr, 2)}');
+    cout << "Original: ";
+    for (int x : arr) cout << x << " ";
+    cout << endl;
 
-  // Test with k greater than length
-  print('Left rotation by 7: ${rotateLeft(arr, 7)}');
-  print('Right rotation by 7: ${rotateRight(arr, 7)}');
+    vector<int> leftRotated = rotateLeft(arr, 2);
+    cout << "Left rotation by 2: ";
+    for (int x : leftRotated) cout << x << " ";
+    cout << endl;
+
+    vector<int> rightRotated = rotateRight(arr, 2);
+    cout << "Right rotation by 2: ";
+    for (int x : rightRotated) cout << x << " ";
+    cout << endl;
+
+    return 0;
 }
 ```
 
-### Approach 2: Using Extra Space
+**Output:**
+```
+Original: 1 2 3 4 5
+Left rotation by 2: 3 4 5 1 2
+Right rotation by 2: 4 5 1 2 3
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def reverse_array(arr, start, end):
+    while start < end:
+        arr[start], arr[end] = arr[end], arr[start]
+        start += 1
+        end -= 1
 
-A simpler approach using extra array space.
+def rotate_left(arr, k):
+    n = len(arr)
+    k = k % n  # Handle k > n
 
-**Time Complexity:** O(n)
-**Space Complexity:** O(n)
+    if k == 0:
+        return arr
 
-```dart
-List<int> rotateLeftSimple(List<int> arr, int k) {
-  int n = arr.length;
-  k = k % n;
+    arr = arr.copy()  # Create a copy
 
-  if (k == 0) return arr;
+    # Reverse first k elements
+    reverse_array(arr, 0, k - 1)
+    # Reverse remaining elements
+    reverse_array(arr, k, n - 1)
+    # Reverse entire array
+    reverse_array(arr, 0, n - 1)
 
-  List<int> result = [];
+    return arr
 
-  // Add elements from k to end
-  for (int i = k; i < n; i++) {
-    result.add(arr[i]);
-  }
+def rotate_right(arr, k):
+    n = len(arr)
+    k = k % n  # Handle k > n
 
-  // Add elements from start to k-1
-  for (int i = 0; i < k; i++) {
-    result.add(arr[i]);
-  }
+    if k == 0:
+        return arr
 
-  return result;
+    arr = arr.copy()  # Create a copy
+
+    # Reverse entire array
+    reverse_array(arr, 0, n - 1)
+    # Reverse first k elements
+    reverse_array(arr, 0, k - 1)
+    # Reverse remaining elements
+    reverse_array(arr, k, n - 1)
+
+    return arr
+
+# Test
+arr = [1, 2, 3, 4, 5]
+
+print(f"Original: {arr}")
+print(f"Left rotation by 2: {rotate_left(arr, 2)}")
+print(f"Right rotation by 2: {rotate_right(arr, 2)}")
+```
+
+**Output:**
+```
+Original: [1, 2, 3, 4, 5]
+Left rotation by 2: [3, 4, 5, 1, 2]
+Right rotation by 2: [4, 5, 1, 2, 3]
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function reverseArray(arr, start, end) {
+    while (start < end) {
+        [arr[start], arr[end]] = [arr[end], arr[start]];
+        start++;
+        end--;
+    }
 }
 
-List<int> rotateRightSimple(List<int> arr, int k) {
-  int n = arr.length;
-  k = k % n;
+function rotateLeft(arr, k) {
+    const n = arr.length;
+    k = k % n;  // Handle k > n
 
-  if (k == 0) return arr;
+    if (k === 0) return arr;
 
-  List<int> result = [];
+    arr = [...arr];  // Create a copy
 
-  // Add elements from (n-k) to end
-  for (int i = n - k; i < n; i++) {
-    result.add(arr[i]);
-  }
+    // Reverse first k elements
+    reverseArray(arr, 0, k - 1);
+    // Reverse remaining elements
+    reverseArray(arr, k, n - 1);
+    // Reverse entire array
+    reverseArray(arr, 0, n - 1);
 
-  // Add elements from start to (n-k-1)
-  for (int i = 0; i < n - k; i++) {
-    result.add(arr[i]);
-  }
-
-  return result;
+    return arr;
 }
 
-void main() {
-  List<int> arr = [1, 2, 3, 4, 5];
+function rotateRight(arr, k) {
+    const n = arr.length;
+    k = k % n;  // Handle k > n
 
-  print('Original array: $arr');
-  print('Left rotation by 2: ${rotateLeftSimple(arr, 2)}');
-  print('Right rotation by 2: ${rotateRightSimple(arr, 2)}');
+    if (k === 0) return arr;
+
+    arr = [...arr];  // Create a copy
+
+    // Reverse entire array
+    reverseArray(arr, 0, n - 1);
+    // Reverse first k elements
+    reverseArray(arr, 0, k - 1);
+    // Reverse remaining elements
+    reverseArray(arr, k, n - 1);
+
+    return arr;
+}
+
+// Test
+const arr = [1, 2, 3, 4, 5];
+
+console.log(`Original: [${arr}]`);
+console.log(`Left rotation by 2: [${rotateLeft(arr, 2)}]`);
+console.log(`Right rotation by 2: [${rotateRight(arr, 2)}]`);
+```
+
+**Output:**
+```
+Original: [1,2,3,4,5]
+Left rotation by 2: [3,4,5,1,2]
+Right rotation by 2: [4,5,1,2,3]
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n)</p>
+      <p><strong>Space Complexity:</strong> O(1) for in-place, O(n) if creating a copy</p>
+      <p><strong>Note:</strong> This is the most efficient approach with optimal space usage when done in-place.</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(1) ইন-প্লেসের জন্য, O(n) কপি তৈরি করলে</p>
+      <p><strong>নোট:</strong> ইন-প্লেস করা হলে এটি সর্বোত্তম স্থান ব্যবহারের সাথে সবচেয়ে দক্ষ পদ্ধতি।</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: Using Extra Space" bn="পদ্ধতি ২: অতিরিক্ত স্থান ব্যবহার করে" />
+
+<TranslatedText
+  en={<p>A simpler approach that creates a new array and copies elements in the rotated order. Easier to understand but uses extra space.</p>}
+  bn={<p>একটি সহজ পদ্ধতি যা একটি নতুন অ্যারে তৈরি করে এবং ঘূর্ণিত ক্রমে উপাদান অনুলিপি করে। বুঝতে সহজ কিন্তু অতিরিক্ত স্থান ব্যবহার করে।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> rotateLeftSimple(vector<int> arr, int k) {
+    int n = arr.size();
+    k = k % n;
+
+    if (k == 0) return arr;
+
+    vector<int> result;
+
+    // Add elements from k to end
+    for (int i = k; i < n; i++) {
+        result.push_back(arr[i]);
+    }
+
+    // Add elements from start to k-1
+    for (int i = 0; i < k; i++) {
+        result.push_back(arr[i]);
+    }
+
+    return result;
+}
+
+vector<int> rotateRightSimple(vector<int> arr, int k) {
+    int n = arr.size();
+    k = k % n;
+
+    if (k == 0) return arr;
+
+    vector<int> result;
+
+    // Add elements from (n-k) to end
+    for (int i = n - k; i < n; i++) {
+        result.push_back(arr[i]);
+    }
+
+    // Add elements from start to (n-k-1)
+    for (int i = 0; i < n - k; i++) {
+        result.push_back(arr[i]);
+    }
+
+    return result;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 3, 4, 5};
+
+    cout << "Original: ";
+    for (int x : arr) cout << x << " ";
+    cout << endl;
+
+    vector<int> left = rotateLeftSimple(arr, 2);
+    cout << "Left rotation by 2: ";
+    for (int x : left) cout << x << " ";
+    cout << endl;
+
+    vector<int> right = rotateRightSimple(arr, 2);
+    cout << "Right rotation by 2: ";
+    for (int x : right) cout << x << " ";
+    cout << endl;
+
+    return 0;
 }
 ```
 
-### Approach 3: Using List Methods
+**Output:**
+```
+Original: 1 2 3 4 5
+Left rotation by 2: 3 4 5 1 2
+Right rotation by 2: 4 5 1 2 3
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def rotate_left_simple(arr, k):
+    n = len(arr)
+    k = k % n
 
-Dart-specific approach using sublist and spread operator.
+    if k == 0:
+        return arr
 
-**Time Complexity:** O(n)
-**Space Complexity:** O(n)
+    # Add elements from k to end, then from start to k-1
+    return arr[k:] + arr[:k]
 
-```dart
-List<int> rotateLeftDart(List<int> arr, int k) {
-  int n = arr.length;
-  k = k % n;
+def rotate_right_simple(arr, k):
+    n = len(arr)
+    k = k % n
 
-  if (k == 0) return arr;
+    if k == 0:
+        return arr
 
-  return [...arr.sublist(k), ...arr.sublist(0, k)];
-}
+    # Add elements from (n-k) to end, then from start to (n-k-1)
+    return arr[n-k:] + arr[:n-k]
 
-List<int> rotateRightDart(List<int> arr, int k) {
-  int n = arr.length;
-  k = k % n;
+# Test
+arr = [1, 2, 3, 4, 5]
 
-  if (k == 0) return arr;
-
-  return [...arr.sublist(n - k), ...arr.sublist(0, n - k)];
-}
-
-void main() {
-  List<int> arr = [1, 2, 3, 4, 5];
-
-  print('Original array: $arr');
-  print('Left rotation by 2: ${rotateLeftDart(arr, 2)}');
-  print('Right rotation by 2: ${rotateRightDart(arr, 2)}');
-}
+print(f"Original: {arr}")
+print(f"Left rotation by 2: {rotate_left_simple(arr, 2)}")
+print(f"Right rotation by 2: {rotate_right_simple(arr, 2)}")
 ```
 
-## Key Points
+**Output:**
+```
+Original: [1, 2, 3, 4, 5]
+Left rotation by 2: [3, 4, 5, 1, 2]
+Right rotation by 2: [4, 5, 1, 2, 3]
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function rotateLeftSimple(arr, k) {
+    const n = arr.length;
+    k = k % n;
 
-1. **Modulo Operation**: Always use `k % n` to handle cases where k is greater than array length
-2. **Edge Cases**: Handle k = 0, empty array, and single element array
-3. **Left vs Right**: Right rotation by k = Left rotation by (n - k)
-4. **In-Place**: The reversal method can be done in-place without extra space
-5. **Immutability**: The examples above create new arrays to preserve the original
+    if (k === 0) return arr;
 
-## Common Pitfalls
+    // Add elements from k to end, then from start to k-1
+    return [...arr.slice(k), ...arr.slice(0, k)];
+}
 
-- Forgetting to handle k greater than array length
-- Not handling empty arrays or single elements
-- Confusing left and right rotation logic
-- Off-by-one errors in array indices
+function rotateRightSimple(arr, k) {
+    const n = arr.length;
+    k = k % n;
 
-## Reference
+    if (k === 0) return arr;
 
-[Java67 - How to Rotate Array](https://www.java67.com/2018/05/how-to-rotate-array-left-and-right-by-given-number.html)
+    // Add elements from (n-k) to end, then from start to (n-k-1)
+    return [...arr.slice(n - k), ...arr.slice(0, n - k)];
+}
+
+// Test
+const arr = [1, 2, 3, 4, 5];
+
+console.log(`Original: [${arr}]`);
+console.log(`Left rotation by 2: [${rotateLeftSimple(arr, 2)}]`);
+console.log(`Right rotation by 2: [${rotateRightSimple(arr, 2)}]`);
+```
+
+**Output:**
+```
+Original: [1,2,3,4,5]
+Left rotation by 2: [3,4,5,1,2]
+Right rotation by 2: [4,5,1,2,3]
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n)</p>
+      <p><strong>Space Complexity:</strong> O(n)</p>
+      <p><strong>Advantage:</strong> Simpler to understand and implement, no need to modify original array.</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(n)</p>
+      <p><strong>সুবিধা:</strong> বুঝতে এবং বাস্তবায়ন করা সহজ, মূল অ্যারে পরিবর্তন করার প্রয়োজন নেই।</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="How the Reversal Algorithm Works" bn="বিপরীতকরণ অ্যালগরিদম কীভাবে কাজ করে" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Key Insight:</strong> Reversing specific portions of an array in sequence achieves rotation efficiently.</p>
+      <p><strong>Step-by-step for left rotation by 2 on [1,2,3,4,5]:</strong></p>
+      <ol>
+        <li>Reverse first k (2) elements: [2,1,3,4,5]</li>
+        <li>Reverse remaining elements: [2,1,5,4,3]</li>
+        <li>Reverse entire array: [3,4,5,1,2]</li>
+      </ol>
+      <p>Result: [3,4,5,1,2] - successfully rotated left by 2!</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>মূল ধারণা:</strong> ক্রমানুসারে অ্যারের নির্দিষ্ট অংশ বিপরীত করা দক্ষভাবে ঘূর্ণন অর্জন করে।</p>
+      <p><strong>[1,2,3,4,5] এ 2 দ্বারা বাম ঘূর্ণনের জন্য ধাপে ধাপে:</strong></p>
+      <ol>
+        <li>প্রথম k (2) উপাদান বিপরীত করুন: [2,1,3,4,5]</li>
+        <li>অবশিষ্ট উপাদান বিপরীত করুন: [2,1,5,4,3]</li>
+        <li>সম্পূর্ণ অ্যারে বিপরীত করুন: [3,4,5,1,2]</li>
+      </ol>
+      <p>ফলাফল: [3,4,5,1,2] - সফলভাবে 2 দ্বারা বামে ঘোরানো হয়েছে!</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণী" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Approach</th>
+          <th>Time Complexity</th>
+          <th>Space Complexity</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Array Reversal</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>Memory-constrained environments, in-place operations</td>
+        </tr>
+        <tr>
+          <td>Extra Space</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>Simplicity, when memory is not a concern</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>পদ্ধতি</th>
+          <th>সময় জটিলতা</th>
+          <th>স্থান জটিলতা</th>
+          <th>সেরা কখন</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>অ্যারে বিপরীতকরণ</td>
+          <td>O(n)</td>
+          <td>O(1)</td>
+          <td>মেমরি-সীমাবদ্ধ পরিবেশ, ইন-প্লেস অপারেশন</td>
+        </tr>
+        <tr>
+          <td>অতিরিক্ত স্থান</td>
+          <td>O(n)</td>
+          <td>O(n)</td>
+          <td>সরলতা, যখন মেমরি একটি উদ্বেগ নয়</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Modulo Operation is Critical:</strong> Always use k % n to handle cases where k greater than array length</li>
+        <li><strong>Left vs Right Relationship:</strong> Right rotation by k equals left rotation by (n - k)</li>
+        <li><strong>Reversal Method Advantage:</strong> Achieves O(1) space complexity while maintaining O(n) time</li>
+        <li><strong>Edge Cases Matter:</strong> Handle k = 0, empty array, and single element array properly</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>মডুলো অপারেশন গুরুত্বপূর্ণ:</strong> সর্বদা k % n ব্যবহার করুন যখন k অ্যারের দৈর্ঘ্যের চেয়ে বড় হয়</li>
+        <li><strong>বাম বনাম ডান সম্পর্ক:</strong> k দ্বারা ডান ঘূর্ণন (n - k) দ্বারা বাম ঘূর্ণনের সমান</li>
+        <li><strong>বিপরীতকরণ পদ্ধতির সুবিধা:</strong> O(n) সময় বজায় রেখে O(1) স্থান জটিলতা অর্জন করে</li>
+        <li><strong>এজ কেস গুরুত্বপূর্ণ:</strong> k = 0, খালি অ্যারে এবং একক উপাদান অ্যারে সঠিকভাবে পরিচালনা করুন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Always clarify whether to modify the original array or return a new one</li>
+          <li>Ask about the range of k - can it be negative? Greater than array length?</li>
+          <li>Mention the reversal algorithm as the optimal solution for in-place rotation</li>
+          <li>Discuss the relationship between left and right rotation</li>
+          <li>Test with edge cases: k = 0, k = n, k greater than n, empty array</li>
+          <li>Consider follow-up: Can you rotate a 2D matrix? Rotate by different amounts for subarrays?</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>সর্বদা স্পষ্ট করুন মূল অ্যারে পরিবর্তন করতে হবে নাকি একটি নতুন ফেরত দিতে হবে</li>
+          <li>k এর রেঞ্জ সম্পর্কে জিজ্ঞাসা করুন - এটি কি ঋণাত্মক হতে পারে? অ্যারের দৈর্ঘ্যের চেয়ে বড়?</li>
+          <li>ইন-প্লেস ঘূর্ণনের জন্য সর্বোত্তম সমাধান হিসাবে বিপরীতকরণ অ্যালগরিদম উল্লেখ করুন</li>
+          <li>বাম এবং ডান ঘূর্ণনের মধ্যে সম্পর্ক আলোচনা করুন</li>
+          <li>এজ কেস দিয়ে পরীক্ষা করুন: k = 0, k = n, k n এর চেয়ে বড়, খালি অ্যারে</li>
+          <li>ফলো-আপ বিবেচনা করুন: আপনি কি একটি 2D ম্যাট্রিক্স ঘোরাতে পারেন? সাবঅ্যারের জন্য বিভিন্ন পরিমাণে ঘোরান?</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Key Takeaways:</strong></p>
+        <ul>
+          <li>Array reversal method is optimal with O(n) time and O(1) space</li>
+          <li>Always normalize k using modulo: k = k % n</li>
+          <li>Right rotation by k = Left rotation by (n - k)</li>
+          <li>Three reversals achieve rotation: reverse parts, then reverse whole</li>
+          <li>Slicing method is simpler but uses O(n) extra space</li>
+          <li>Edge cases are critical: handle k = 0, empty arrays, single elements</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>মূল শিক্ষা:</strong></p>
+        <ul>
+          <li>অ্যারে বিপরীতকরণ পদ্ধতি O(n) সময় এবং O(1) স্থান সহ সর্বোত্তম</li>
+          <li>সর্বদা মডুলো ব্যবহার করে k স্বাভাবিক করুন: k = k % n</li>
+          <li>k দ্বারা ডান ঘূর্ণন = (n - k) দ্বারা বাম ঘূর্ণন</li>
+          <li>তিনটি বিপরীতকরণ ঘূর্ণন অর্জন করে: অংশ বিপরীত করুন, তারপর সম্পূর্ণ বিপরীত করুন</li>
+          <li>স্লাইসিং পদ্ধতি সহজ কিন্তু O(n) অতিরিক্ত স্থান ব্যবহার করে</li>
+          <li>এজ কেস গুরুত্বপূর্ণ: k = 0, খালি অ্যারে, একক উপাদান পরিচালনা করুন</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>
