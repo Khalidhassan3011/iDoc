@@ -1,0 +1,515 @@
+---
+title: Insert Element in Middle of Linked List
+description: How to add an element in the middle of a singly linked list
+---
+
+## Problem Statement
+
+Write a program to insert a new node in the middle of a singly linked list. If the list has an even number of nodes, insert after the first middle node.
+
+## Examples
+
+### Example 1
+```
+Input: 1 -> 2 -> 4 -> 5, insert 3
+Output: 1 -> 2 -> 3 -> 4 -> 5
+```
+
+### Example 2
+```
+Input: 1 -> 2 -> 3 -> 4, insert 10
+Output: 1 -> 2 -> 10 -> 3 -> 4
+```
+
+### Example 3
+```
+Input: 1, insert 2
+Output: 1 -> 2
+```
+
+## Node Definition
+
+```dart
+class Node {
+  int data;
+  Node? next;
+
+  Node(this.data, [this.next]);
+}
+```
+
+## Solution
+
+### Approach 1: Two Pass (Find Length First)
+
+Find the middle position in the first pass, then insert in the second pass.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1)
+
+```dart
+class Node {
+  int data;
+  Node? next;
+
+  Node(this.data, [this.next]);
+}
+
+void insertInMiddle(Node? head, int data) {
+  if (head == null) return;
+
+  // Find length
+  int length = 0;
+  Node? current = head;
+  while (current != null) {
+    length++;
+    current = current.next;
+  }
+
+  // Find middle position
+  int mid = length ~/ 2;
+
+  // Traverse to middle
+  current = head;
+  for (int i = 0; i < mid; i++) {
+    current = current!.next;
+  }
+
+  // Insert new node
+  Node newNode = Node(data, current!.next);
+  current.next = newNode;
+}
+
+void printList(Node? head) {
+  Node? current = head;
+  while (current != null) {
+    stdout.write('${current.data} -> ');
+    current = current.next;
+  }
+  print('null');
+}
+
+void main() {
+  Node head = Node(1, Node(2, Node(4, Node(5))));
+
+  print('Original list:');
+  printList(head);
+
+  insertInMiddle(head, 3);
+
+  print('\nAfter inserting 3 in middle:');
+  printList(head);
+}
+```
+
+### Approach 2: Fast and Slow Pointers (One Pass - Optimal)
+
+Use Floyd's cycle detection algorithm concept to find middle in one pass.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1)
+
+```dart
+void insertInMiddleFast(Node? head, int data) {
+  if (head == null) return;
+
+  Node? slow = head;
+  Node? fast = head;
+
+  // Find middle using fast and slow pointers
+  while (fast!.next != null && fast.next!.next != null) {
+    slow = slow!.next;
+    fast = fast.next!.next;
+  }
+
+  // Insert after slow (which is at middle)
+  Node newNode = Node(data, slow!.next);
+  slow.next = newNode;
+}
+
+void main() {
+  Node head = Node(1, Node(2, Node(4, Node(5))));
+
+  print('Original list:');
+  printList(head);
+
+  insertInMiddleFast(head, 3);
+
+  print('\nAfter inserting 3 in middle:');
+  printList(head);
+}
+```
+
+### Approach 3: Insert at Specific Position
+
+Generic function to insert at any position.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1)
+
+```dart
+void insertAtPosition(Node? head, int data, int position) {
+  if (head == null) return;
+
+  if (position == 0) {
+    // Insert at beginning (special case)
+    print('Cannot insert before head with this method');
+    return;
+  }
+
+  Node? current = head;
+  int count = 0;
+
+  // Traverse to position - 1
+  while (current != null && count < position - 1) {
+    current = current.next;
+    count++;
+  }
+
+  if (current == null) {
+    print('Position out of bounds');
+    return;
+  }
+
+  // Insert new node
+  Node newNode = Node(data, current.next);
+  current.next = newNode;
+}
+
+void main() {
+  Node head = Node(1, Node(2, Node(3, Node(5))));
+
+  print('Original list:');
+  printList(head);
+
+  insertAtPosition(head, 4, 3); // Insert 4 at position 3
+
+  print('\nAfter inserting 4 at position 3:');
+  printList(head);
+}
+```
+
+### Approach 4: Complete LinkedList Class with Insert Methods
+
+Full implementation with various insert operations.
+
+```dart
+class LinkedList {
+  Node? head;
+
+  // Insert at end
+  void add(int data) {
+    if (head == null) {
+      head = Node(data);
+      return;
+    }
+
+    Node? current = head;
+    while (current!.next != null) {
+      current = current.next;
+    }
+    current.next = Node(data);
+  }
+
+  // Insert at beginning
+  void addFirst(int data) {
+    head = Node(data, head);
+  }
+
+  // Insert in middle
+  void insertInMiddle(int data) {
+    if (head == null) {
+      head = Node(data);
+      return;
+    }
+
+    Node? slow = head;
+    Node? fast = head;
+
+    while (fast!.next != null && fast.next!.next != null) {
+      slow = slow!.next;
+      fast = fast.next!.next;
+    }
+
+    Node newNode = Node(data, slow!.next);
+    slow.next = newNode;
+  }
+
+  // Insert at specific position
+  void insertAt(int data, int position) {
+    if (position == 0) {
+      addFirst(data);
+      return;
+    }
+
+    Node? current = head;
+    int count = 0;
+
+    while (current != null && count < position - 1) {
+      current = current.next;
+      count++;
+    }
+
+    if (current == null) {
+      print('Position out of bounds');
+      return;
+    }
+
+    Node newNode = Node(data, current.next);
+    current.next = newNode;
+  }
+
+  // Insert after a specific node
+  void insertAfter(Node? prevNode, int data) {
+    if (prevNode == null) {
+      print('Previous node cannot be null');
+      return;
+    }
+
+    Node newNode = Node(data, prevNode.next);
+    prevNode.next = newNode;
+  }
+
+  // Insert in sorted order
+  void insertSorted(int data) {
+    if (head == null || head!.data >= data) {
+      addFirst(data);
+      return;
+    }
+
+    Node? current = head;
+
+    while (current!.next != null && current.next!.data < data) {
+      current = current.next;
+    }
+
+    Node newNode = Node(data, current.next);
+    current.next = newNode;
+  }
+
+  void display() {
+    Node? current = head;
+    while (current != null) {
+      stdout.write('${current.data} -> ');
+      current = current.next;
+    }
+    print('null');
+  }
+
+  int get length {
+    int count = 0;
+    Node? current = head;
+
+    while (current != null) {
+      count++;
+      current = current.next;
+    }
+
+    return count;
+  }
+
+  // Get middle node
+  Node? getMiddle() {
+    if (head == null) return null;
+
+    Node? slow = head;
+    Node? fast = head;
+
+    while (fast != null && fast.next != null) {
+      slow = slow!.next;
+      fast = fast.next!.next;
+    }
+
+    return slow;
+  }
+}
+
+void main() {
+  LinkedList list = LinkedList();
+
+  // Test various insert operations
+  list.add(1);
+  list.add(2);
+  list.add(4);
+  list.add(5);
+
+  print('Original list:');
+  list.display();
+  print('Length: ${list.length}');
+  print('Middle node: ${list.getMiddle()?.data}\n');
+
+  print('Insert 3 in middle:');
+  list.insertInMiddle(3);
+  list.display();
+
+  print('\nInsert 0 at beginning:');
+  list.addFirst(0);
+  list.display();
+
+  print('\nInsert 10 at position 3:');
+  list.insertAt(10, 3);
+  list.display();
+
+  print('\n--- Sorted insertion example ---');
+  LinkedList sortedList = LinkedList();
+  sortedList.add(1);
+  sortedList.add(3);
+  sortedList.add(5);
+  sortedList.add(7);
+
+  print('Sorted list:');
+  sortedList.display();
+
+  print('\nInsert 4 in sorted order:');
+  sortedList.insertSorted(4);
+  sortedList.display();
+
+  print('\nInsert 0 in sorted order:');
+  sortedList.insertSorted(0);
+  sortedList.display();
+}
+```
+
+### Approach 5: Insert Before a Value
+
+Insert a new node before the first occurrence of a specific value.
+
+```dart
+void insertBefore(Node? head, int target, int data) {
+  if (head == null) return;
+
+  // Special case: insert before head
+  if (head.data == target) {
+    print('Cannot insert before head with this method');
+    return;
+  }
+
+  Node? current = head;
+
+  // Find the node before target
+  while (current!.next != null && current.next!.data != target) {
+    current = current.next;
+  }
+
+  if (current.next == null) {
+    print('Target not found');
+    return;
+  }
+
+  // Insert new node
+  Node newNode = Node(data, current.next);
+  current.next = newNode;
+}
+
+void main() {
+  Node head = Node(1, Node(2, Node(4, Node(5))));
+
+  print('Original list:');
+  printList(head);
+
+  insertBefore(head, 4, 3);
+
+  print('\nAfter inserting 3 before 4:');
+  printList(head);
+}
+```
+
+## Visualization
+
+### Finding Middle with Fast/Slow Pointers:
+
+```
+List: 1 -> 2 -> 3 -> 4 -> 5
+
+Initial:
+slow: 1
+fast: 1
+
+Step 1:
+slow: 2 (moves 1 step)
+fast: 3 (moves 2 steps)
+
+Step 2:
+slow: 3 (moves 1 step) ← Middle!
+fast: 5 (moves 2 steps)
+
+Step 3:
+fast.next is null, stop
+
+Insert after slow (3):
+1 -> 2 -> 3 -> NEW -> 4 -> 5
+```
+
+## Comparison of Approaches
+
+| Approach | Time | Space | Pros | Cons |
+|----------|------|-------|------|------|
+| Two Pass | O(n) | O(1) | Simple to understand | Two passes |
+| Fast/Slow | O(n) | O(1) | One pass, optimal | Slightly complex |
+| At Position | O(n) | O(1) | Flexible | Need to know position |
+| Sorted Insert | O(n) | O(1) | Maintains order | Only for sorted lists |
+| Before Value | O(n) | O(1) | Value-based | Need special handling |
+
+## Key Points
+
+1. **Fast/Slow Optimal**: Finds middle in one pass
+2. **Even Length**: Insert after first middle node
+3. **Edge Cases**: Empty list, single node
+4. **Pointer Update**: Always save next before modifying
+5. **Position Counting**: 0-indexed or 1-indexed, be consistent
+
+## Common Pitfalls
+
+- Not handling empty list
+- Not handling single node list
+- Losing reference to next node
+- Off-by-one errors in position counting
+- Not considering even vs odd length
+
+## Test Cases
+
+```dart
+void testInsertMiddle() {
+  // Test 1: Odd length list
+  Node head1 = Node(1, Node(2, Node(3)));
+  insertInMiddleFast(head1, 10);
+  assert(head1.next?.next?.data == 10);
+
+  // Test 2: Even length list
+  Node head2 = Node(1, Node(2, Node(3, Node(4))));
+  insertInMiddleFast(head2, 10);
+  assert(head2.next?.next?.data == 10);
+
+  // Test 3: Two nodes
+  Node head3 = Node(1, Node(2));
+  insertInMiddleFast(head3, 10);
+  assert(head3.next?.data == 10);
+
+  // Test 4: Single node
+  Node head4 = Node(1);
+  insertInMiddleFast(head4, 10);
+  assert(head4.next?.data == 10);
+
+  print('All tests passed!');
+}
+```
+
+## Applications
+
+- Maintaining sorted order
+- Building expression trees
+- Implementing undo/redo with middle insertion
+- Priority queue implementations
+- Edit operations in text editors
+
+## Related Problems
+
+- Find middle of linked list
+- Insert at beginning/end
+- Delete from middle
+- Rotate linked list
+- Split linked list
+
+## Reference
+
+[GeeksforGeeks - Insert Node Middle](https://www.geeksforgeeks.org/insert-node-middle-linked-list/)

@@ -50,6 +50,12 @@
     "45-array-vs-linked-list",
     "46-binary-search-array",
     "47-median-two-sorted-arrays",
-    "48-find-multiple-duplicates"
+    "48-find-multiple-duplicates",
+    "---Linked List Problems---",
+    "49-reverse-linked-list",
+    "50-insert-middle-linked-list",
+    "51-intersection-two-linked-lists",
+    "52-detect-cycle-linked-list",
+    "53-merge-sorted-linked-lists"
   ]
 }

@@ -1,0 +1,469 @@
+---
+title: Detect Cycle in Linked List
+description: How to check if a linked list contains a cycle and find the starting node of the cycle
+---
+
+## Problem Statement
+
+Given a linked list, determine if it has a cycle. A cycle exists when a node's next pointer points back to a previous node in the list. Also, find the starting node of the cycle if one exists.
+
+## Examples
+
+### Example 1
+```
+Input: 1 -> 2 -> 3 -> 4 -> 2 (points back to node 2)
+Output: true, cycle starts at node 2
+```
+
+### Example 2
+```
+Input: 1 -> 2 -> 3 -> 4 -> null
+Output: false, no cycle
+```
+
+### Example 3
+```
+Input: 1 -> 1 (points to itself)
+Output: true, cycle starts at node 1
+```
+
+## Solution
+
+### Approach 1: Floyd's Cycle Detection (Fast & Slow Pointers - Optimal)
+
+Use two pointers moving at different speeds to detect cycles.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1)
+
+```dart
+class Node {
+  int data;
+  Node? next;
+
+  Node(this.data, [this.next]);
+}
+
+bool hasCycle(Node? head) {
+  if (head == null) return false;
+
+  Node? slow = head;
+  Node? fast = head;
+
+  while (fast != null && fast.next != null) {
+    slow = slow!.next;
+    fast = fast.next!.next;
+
+    if (identical(slow, fast)) {
+      return true; // Cycle detected
+    }
+  }
+
+  return false; // No cycle
+}
+
+void main() {
+  // Create a cycle: 1 -> 2 -> 3 -> 4 -> 2
+  Node head = Node(1);
+  Node node2 = Node(2);
+  Node node3 = Node(3);
+  Node node4 = Node(4);
+
+  head.next = node2;
+  node2.next = node3;
+  node3.next = node4;
+  node4.next = node2; // Creates cycle
+
+  print('Has cycle: ${hasCycle(head)}');
+
+  // List without cycle
+  Node head2 = Node(1, Node(2, Node(3, Node(4))));
+  print('Has cycle: ${hasCycle(head2)}');
+}
+```
+
+### Approach 2: Find Cycle Starting Node
+
+Detect cycle and find where it starts.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1)
+
+```dart
+Node? detectCycleStart(Node? head) {
+  if (head == null) return null;
+
+  Node? slow = head;
+  Node? fast = head;
+
+  // Detect if cycle exists
+  while (fast != null && fast.next != null) {
+    slow = slow!.next;
+    fast = fast.next!.next;
+
+    if (identical(slow, fast)) {
+      // Cycle found, now find the start
+      slow = head;
+
+      while (!identical(slow, fast)) {
+        slow = slow!.next;
+        fast = fast!.next;
+      }
+
+      return slow; // Starting node of cycle
+    }
+  }
+
+  return null; // No cycle
+}
+
+void main() {
+  // Create a cycle: 1 -> 2 -> 3 -> 4 -> 2
+  Node head = Node(1);
+  Node node2 = Node(2);
+  Node node3 = Node(3);
+  Node node4 = Node(4);
+
+  head.next = node2;
+  node2.next = node3;
+  node3.next = node4;
+  node4.next = node2; // Creates cycle at node2
+
+  Node? cycleStart = detectCycleStart(head);
+
+  if (cycleStart != null) {
+    print('Cycle starts at node with value ${cycleStart.data}');
+  } else {
+    print('No cycle detected');
+  }
+}
+```
+
+### Approach 3: Using HashSet
+
+Store visited nodes and detect revisit.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
+
+```dart
+bool hasCycleHashSet(Node? head) {
+  if (head == null) return false;
+
+  Set<Node> visited = {};
+  Node? current = head;
+
+  while (current != null) {
+    if (visited.contains(current)) {
+      return true; // Cycle found
+    }
+
+    visited.add(current);
+    current = current.next;
+  }
+
+  return false; // No cycle
+}
+
+Node? detectCycleStartHashSet(Node? head) {
+  if (head == null) return null;
+
+  Set<Node> visited = {};
+  Node? current = head;
+
+  while (current != null) {
+    if (visited.contains(current)) {
+      return current; // First revisited node is cycle start
+    }
+
+    visited.add(current);
+    current = current.next;
+  }
+
+  return null; // No cycle
+}
+
+void main() {
+  Node head = Node(1);
+  Node node2 = Node(2);
+  Node node3 = Node(3);
+  Node node4 = Node(4);
+
+  head.next = node2;
+  node2.next = node3;
+  node3.next = node4;
+  node4.next = node2; // Creates cycle
+
+  print('Has cycle: ${hasCycleHashSet(head)}');
+
+  Node? cycleStart = detectCycleStartHashSet(head);
+  if (cycleStart != null) {
+    print('Cycle starts at node with value ${cycleStart.data}');
+  }
+}
+```
+
+### Approach 4: Find Cycle Length
+
+Detect cycle and calculate its length.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1)
+
+```dart
+class CycleInfo {
+  bool hasCycle;
+  int? length;
+  Node? startNode;
+
+  CycleInfo(this.hasCycle, {this.length, this.startNode});
+
+  @override
+  String toString() {
+    if (!hasCycle) return 'No cycle detected';
+    return 'Cycle detected: starts at ${startNode?.data}, length = $length';
+  }
+}
+
+CycleInfo detectCycleInfo(Node? head) {
+  if (head == null) return CycleInfo(false);
+
+  Node? slow = head;
+  Node? fast = head;
+
+  // Detect cycle
+  while (fast != null && fast.next != null) {
+    slow = slow!.next;
+    fast = fast.next!.next;
+
+    if (identical(slow, fast)) {
+      // Cycle found, calculate length
+      int length = 1;
+      Node? temp = slow!.next;
+
+      while (!identical(temp, slow)) {
+        length++;
+        temp = temp!.next;
+      }
+
+      // Find start node
+      slow = head;
+      while (!identical(slow, fast)) {
+        slow = slow!.next;
+        fast = fast!.next;
+      }
+
+      return CycleInfo(true, length: length, startNode: slow);
+    }
+  }
+
+  return CycleInfo(false);
+}
+
+void main() {
+  // Create cycle: 1 -> 2 -> 3 -> 4 -> 5 -> 3 (cycle of length 3)
+  Node head = Node(1);
+  Node node2 = Node(2);
+  Node node3 = Node(3);
+  Node node4 = Node(4);
+  Node node5 = Node(5);
+
+  head.next = node2;
+  node2.next = node3;
+  node3.next = node4;
+  node4.next = node5;
+  node5.next = node3; // Creates cycle
+
+  CycleInfo info = detectCycleInfo(head);
+  print(info);
+}
+```
+
+### Approach 5: Remove Cycle
+
+Detect and remove the cycle from the list.
+
+**Time Complexity:** O(n)
+**Space Complexity:** O(1)
+
+```dart
+bool removeCycle(Node? head) {
+  if (head == null) return false;
+
+  Node? slow = head;
+  Node? fast = head;
+
+  // Detect cycle
+  while (fast != null && fast.next != null) {
+    slow = slow!.next;
+    fast = fast.next!.next;
+
+    if (identical(slow, fast)) {
+      // Cycle found, now remove it
+      slow = head;
+
+      // Special case: cycle at head
+      if (identical(slow, fast)) {
+        while (!identical(fast!.next, slow)) {
+          fast = fast.next;
+        }
+      } else {
+        while (!identical(slow!.next, fast!.next)) {
+          slow = slow.next;
+          fast = fast.next;
+        }
+      }
+
+      // Remove cycle
+      fast!.next = null;
+      return true; // Cycle was removed
+    }
+  }
+
+  return false; // No cycle
+}
+
+void printList(Node? head, {int maxNodes = 10}) {
+  Node? current = head;
+  int count = 0;
+
+  while (current != null && count < maxNodes) {
+    stdout.write('${current.data} -> ');
+    current = current.next;
+    count++;
+  }
+
+  if (count >= maxNodes) {
+    print('... (cycle detected, stopping)');
+  } else {
+    print('null');
+  }
+}
+
+void main() {
+  Node head = Node(1);
+  Node node2 = Node(2);
+  Node node3 = Node(3);
+  Node node4 = Node(4);
+
+  head.next = node2;
+  node2.next = node3;
+  node3.next = node4;
+  node4.next = node2; // Creates cycle
+
+  print('Before removing cycle (first 10 nodes):');
+  printList(head);
+
+  bool hadCycle = removeCycle(head);
+
+  print('\nCycle removed: $hadCycle');
+  print('After removing cycle:');
+  printList(head);
+}
+```
+
+## Visualization
+
+### Floyd's Cycle Detection:
+
+```
+List: 1 -> 2 -> 3 -> 4 -> 5 -> 3 (cycle back)
+
+slow (1 step): 1 -> 2 -> 3 -> 4 -> 5 -> 3 -> 4 -> 5
+fast (2 steps): 1 -> 3 -> 5 -> 4 -> 3 -> 5 -> 4
+
+Step 1: slow=1, fast=1 (start)
+Step 2: slow=2, fast=3
+Step 3: slow=3, fast=5
+Step 4: slow=4, fast=4 ← They meet! Cycle detected
+
+Finding cycle start:
+Reset slow to head: slow=1, fast=4
+Move both 1 step: slow=2, fast=5
+Move both 1 step: slow=3, fast=3 ← Cycle starts here!
+```
+
+## Why Floyd's Algorithm Works
+
+**Detecting Cycle:**
+- If there's a cycle, fast will eventually lap slow
+- They will meet inside the cycle
+
+**Finding Start:**
+- Distance from head to cycle start = Distance from meeting point to cycle start
+- Moving both pointers one step at a time from these positions will meet at cycle start
+
+## Comparison of Approaches
+
+| Approach | Time | Space | Pros | Cons |
+|----------|------|-------|------|------|
+| Floyd's Algorithm | O(n) | O(1) | Optimal, elegant | Subtle logic |
+| HashSet | O(n) | O(n) | Simple, intuitive | Extra space |
+| With Cycle Info | O(n) | O(1) | Complete information | More complex |
+| Remove Cycle | O(n) | O(1) | Fixes the list | Modifies structure |
+
+## Key Points
+
+1. **Floyd's Optimal**: O(1) space, most efficient
+2. **Meeting Point**: Not necessarily the cycle start
+3. **Identity Check**: Use `identical()` not `==`
+4. **Edge Cases**: Empty, single node, no cycle
+5. **Mathematical Proof**: Why moving from head and meeting point works
+
+## Common Pitfalls
+
+- Not checking for null in fast.next.next
+- Comparing values instead of references
+- Not handling single-node cycle
+- Forgetting to reset slow pointer when finding start
+- Off-by-one errors in cycle removal
+
+## Test Cases
+
+```dart
+void testCycleDetection() {
+  // Test 1: List with cycle
+  Node head1 = Node(1);
+  Node node2 = Node(2);
+  head1.next = node2;
+  node2.next = head1; // Cycle
+  assert(hasCycle(head1) == true);
+
+  // Test 2: List without cycle
+  Node head2 = Node(1, Node(2, Node(3)));
+  assert(hasCycle(head2) == false);
+
+  // Test 3: Single node, no cycle
+  Node head3 = Node(1);
+  assert(hasCycle(head3) == false);
+
+  // Test 4: Single node with cycle
+  Node head4 = Node(1);
+  head4.next = head4; // Points to itself
+  assert(hasCycle(head4) == true);
+
+  // Test 5: Empty list
+  assert(hasCycle(null) == false);
+
+  print('All tests passed!');
+}
+```
+
+## Applications
+
+- Detecting infinite loops in programs
+- Memory leak detection
+- Finding circular dependencies
+- Graph cycle detection
+- Duplicate detection in streams
+
+## Related Problems
+
+- Find middle of linked list
+- Intersection of two linked lists
+- Happy number problem
+- Detect cycle in directed graph
+
+## Reference
+
+[JavaRevisited - Find Cycle in Linked List](http://javarevisited.blogspot.sg/2013/05/find-if-linked-list-contains-loops-cycle-cyclic-circular-check.html)

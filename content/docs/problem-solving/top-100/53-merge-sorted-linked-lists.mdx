@@ -1,0 +1,431 @@
+---
+title: Merge Two Sorted Linked Lists
+description: How to merge two sorted linked lists into one sorted linked list
+---
+
+## Problem Statement
+
+Given two sorted linked lists, merge them into a single sorted linked list. The new list should be made by splicing together the nodes of the input lists.
+
+## Examples
+
+### Example 1
+```
+Input:
+List 1: 1 -> 3 -> 5
+List 2: 2 -> 4 -> 6
+Output: 1 -> 2 -> 3 -> 4 -> 5 -> 6
+```
+
+### Example 2
+```
+Input:
+List 1: 1 -> 2 -> 4
+List 2: 1 -> 3 -> 4
+Output: 1 -> 1 -> 2 -> 3 -> 4 -> 4
+```
+
+### Example 3
+```
+Input:
+List 1:
+List 2: 1 -> 2
+Output: 1 -> 2
+```
+
+## Solution
+
+### Approach 1: Iterative (Optimal)
+
+Merge lists iteratively using a dummy node.
+
+**Time Complexity:** O(m + n)
+**Space Complexity:** O(1)
+
+```dart
+class Node {
+  int data;
+  Node? next;
+
+  Node(this.data, [this.next]);
+}
+
+Node? mergeTwoLists(Node? l1, Node? l2) {
+  // Create dummy node
+  Node dummy = Node(0);
+  Node current = dummy;
+
+  // Merge while both lists have nodes
+  while (l1 != null && l2 != null) {
+    if (l1.data <= l2.data) {
+      current.next = l1;
+      l1 = l1.next;
+    } else {
+      current.next = l2;
+      l2 = l2.next;
+    }
+    current = current.next!;
+  }
+
+  // Attach remaining nodes
+  current.next = (l1 != null) ? l1 : l2;
+
+  return dummy.next; // Skip dummy node
+}
+
+void printList(Node? head) {
+  Node? current = head;
+  while (current != null) {
+    stdout.write('${current.data} -> ');
+    current = current.next;
+  }
+  print('null');
+}
+
+void main() {
+  // List 1: 1 -> 3 -> 5
+  Node l1 = Node(1, Node(3, Node(5)));
+
+  // List 2: 2 -> 4 -> 6
+  Node l2 = Node(2, Node(4, Node(6)));
+
+  print('List 1:');
+  printList(l1);
+
+  print('\nList 2:');
+  printList(l2);
+
+  Node? merged = mergeTwoLists(l1, l2);
+
+  print('\nMerged list:');
+  printList(merged);
+}
+```
+
+### Approach 2: Recursive (Elegant)
+
+Clean recursive solution.
+
+**Time Complexity:** O(m + n)
+**Space Complexity:** O(m + n) due to recursion stack
+
+```dart
+Node? mergeTwoListsRecursive(Node? l1, Node? l2) {
+  // Base cases
+  if (l1 == null) return l2;
+  if (l2 == null) return l1;
+
+  // Recursive case
+  if (l1.data <= l2.data) {
+    l1.next = mergeTwoListsRecursive(l1.next, l2);
+    return l1;
+  } else {
+    l2.next = mergeTwoListsRecursive(l1, l2.next);
+    return l2;
+  }
+}
+
+void main() {
+  Node l1 = Node(1, Node(3, Node(5)));
+  Node l2 = Node(2, Node(4, Node(6)));
+
+  print('List 1:');
+  printList(l1);
+
+  print('\nList 2:');
+  printList(l2);
+
+  Node? merged = mergeTwoListsRecursive(l1, l2);
+
+  print('\nMerged list:');
+  printList(merged);
+}
+```
+
+### Approach 3: In-Place (Reusing Nodes)
+
+Merge without creating new nodes.
+
+**Time Complexity:** O(m + n)
+**Space Complexity:** O(1)
+
+```dart
+Node? mergeTwoListsInPlace(Node? l1, Node? l2) {
+  if (l1 == null) return l2;
+  if (l2 == null) return l1;
+
+  Node? head;
+  Node? tail;
+
+  // Initialize head
+  if (l1.data <= l2.data) {
+    head = tail = l1;
+    l1 = l1.next;
+  } else {
+    head = tail = l2;
+    l2 = l2.next;
+  }
+
+  // Merge remaining nodes
+  while (l1 != null && l2 != null) {
+    if (l1.data <= l2.data) {
+      tail!.next = l1;
+      tail = l1;
+      l1 = l1.next;
+    } else {
+      tail!.next = l2;
+      tail = l2;
+      l2 = l2.next;
+    }
+  }
+
+  // Attach remaining
+  tail!.next = (l1 != null) ? l1 : l2;
+
+  return head;
+}
+
+void main() {
+  Node l1 = Node(1, Node(3, Node(5)));
+  Node l2 = Node(2, Node(4, Node(6)));
+
+  Node? merged = mergeTwoListsInPlace(l1, l2);
+
+  print('Merged list:');
+  printList(merged);
+}
+```
+
+### Approach 4: Merge K Sorted Lists
+
+Extension to merge multiple sorted lists.
+
+**Time Complexity:** O(N log k) where N is total nodes, k is number of lists
+**Space Complexity:** O(1) for iterative, O(log k) for recursive
+
+```dart
+Node? mergeKLists(List<Node?> lists) {
+  if (lists.isEmpty) return null;
+
+  while (lists.length > 1) {
+    List<Node?> mergedLists = [];
+
+    for (int i = 0; i < lists.length; i += 2) {
+      Node? l1 = lists[i];
+      Node? l2 = (i + 1 < lists.length) ? lists[i + 1] : null;
+      mergedLists.add(mergeTwoLists(l1, l2));
+    }
+
+    lists = mergedLists;
+  }
+
+  return lists[0];
+}
+
+void main() {
+  Node l1 = Node(1, Node(4, Node(7)));
+  Node l2 = Node(2, Node(5, Node(8)));
+  Node l3 = Node(3, Node(6, Node(9)));
+
+  List<Node?> lists = [l1, l2, l3];
+
+  Node? merged = mergeKLists(lists);
+
+  print('Merged K lists:');
+  printList(merged);
+}
+```
+
+### Approach 5: Complete LinkedList Class with Merge
+
+```dart
+class LinkedList {
+  Node? head;
+
+  void add(int data) {
+    if (head == null) {
+      head = Node(data);
+      return;
+    }
+
+    Node? current = head;
+    while (current!.next != null) {
+      current = current.next;
+    }
+    current.next = Node(data);
+  }
+
+  void display() {
+    Node? current = head;
+    while (current != null) {
+      stdout.write('${current.data} -> ');
+      current = current.next;
+    }
+    print('null');
+  }
+
+  // Merge with another sorted list
+  void mergeWith(LinkedList other) {
+    head = mergeTwoLists(head, other.head);
+  }
+
+  // Static method to merge two lists
+  static LinkedList merge(LinkedList list1, LinkedList list2) {
+    LinkedList result = LinkedList();
+    result.head = mergeTwoLists(list1.head, list2.head);
+    return result;
+  }
+
+  // Create from array
+  static LinkedList fromList(List<int> values) {
+    LinkedList list = LinkedList();
+    for (int value in values) {
+      list.add(value);
+    }
+    return list;
+  }
+
+  List<int> toList() {
+    List<int> result = [];
+    Node? current = head;
+
+    while (current != null) {
+      result.add(current.data);
+      current = current.next;
+    }
+
+    return result;
+  }
+}
+
+void main() {
+  LinkedList list1 = LinkedList.fromList([1, 3, 5, 7]);
+  LinkedList list2 = LinkedList.fromList([2, 4, 6, 8]);
+
+  print('List 1:');
+  list1.display();
+
+  print('\nList 2:');
+  list2.display();
+
+  LinkedList merged = LinkedList.merge(list1, list2);
+
+  print('\nMerged list:');
+  merged.display();
+
+  print('\nAs array: ${merged.toList()}');
+}
+```
+
+## Visualization
+
+### Merge Process:
+
+```
+List 1: 1 -> 3 -> 5
+List 2: 2 -> 4 -> 6
+
+Step 1: Compare 1 and 2
+Result: 1 -> (choose 1)
+Remaining: 3->5 and 2->4->6
+
+Step 2: Compare 3 and 2
+Result: 1 -> 2 -> (choose 2)
+Remaining: 3->5 and 4->6
+
+Step 3: Compare 3 and 4
+Result: 1 -> 2 -> 3 -> (choose 3)
+Remaining: 5 and 4->6
+
+Step 4: Compare 5 and 4
+Result: 1 -> 2 -> 3 -> 4 -> (choose 4)
+Remaining: 5 and 6
+
+Step 5: Compare 5 and 6
+Result: 1 -> 2 -> 3 -> 4 -> 5 -> (choose 5)
+Remaining: empty and 6
+
+Step 6: Attach remaining
+Result: 1 -> 2 -> 3 -> 4 -> 5 -> 6
+```
+
+## Comparison of Approaches
+
+| Approach | Time | Space | Pros | Cons |
+|----------|------|-------|------|------|
+| Iterative | O(m+n) | O(1) | Optimal, clear | More code |
+| Recursive | O(m+n) | O(m+n) | Elegant, concise | Stack space |
+| In-Place | O(m+n) | O(1) | Space efficient | Similar to iterative |
+| Merge K Lists | O(N log k) | O(1) | Handles multiple | More complex |
+
+## Key Points
+
+1. **Dummy Node**: Simplifies edge case handling
+2. **Sorted Input**: Both lists must be sorted
+3. **Stable Sort**: Maintains relative order of equal elements
+4. **In-Place**: Reuses existing nodes
+5. **Edge Cases**: Empty lists, different lengths
+
+## Common Pitfalls
+
+- Not handling empty lists
+- Forgetting to attach remaining nodes
+- Creating unnecessary new nodes
+- Not preserving sorted order
+- Off-by-one errors in comparisons
+
+## Test Cases
+
+```dart
+void testMergeLists() {
+  // Test 1: Normal merge
+  Node l1a = Node(1, Node(3, Node(5)));
+  Node l2a = Node(2, Node(4, Node(6)));
+  Node? merged1 = mergeTwoLists(l1a, l2a);
+  assert(merged1?.data == 1);
+  assert(merged1?.next?.data == 2);
+
+  // Test 2: One empty list
+  Node l1b = Node(1, Node(2));
+  Node? merged2 = mergeTwoLists(l1b, null);
+  assert(merged2?.data == 1);
+
+  // Test 3: Both empty
+  Node? merged3 = mergeTwoLists(null, null);
+  assert(merged3 == null);
+
+  // Test 4: Same elements
+  Node l1d = Node(1, Node(1));
+  Node l2d = Node(1, Node(1));
+  Node? merged4 = mergeTwoLists(l1d, l2d);
+  assert(merged4?.data == 1);
+
+  // Test 5: Different lengths
+  Node l1e = Node(1);
+  Node l2e = Node(2, Node(3, Node(4)));
+  Node? merged5 = mergeTwoLists(l1e, l2e);
+  assert(merged5?.data == 1);
+
+  print('All tests passed!');
+}
+```
+
+## Applications
+
+- Merge sort for linked lists
+- Combining sorted data streams
+- External sorting
+- Database query optimization
+- Time series data merging
+
+## Related Problems
+
+- Merge sort implementation
+- Sort linked list
+- Merge K sorted lists
+- Intersection of sorted arrays
+- Union of sorted arrays
+
+## Reference
+
+[GeeksforGeeks - Merge Two Sorted Lists](https://www.geeksforgeeks.org/merge-two-sorted-linked-lists/)
