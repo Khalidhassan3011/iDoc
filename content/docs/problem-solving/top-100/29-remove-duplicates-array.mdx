@@ -1,0 +1,551 @@
+---
+title: Remove Duplicates from Array
+description: Remove duplicate elements from an array and return unique elements
+---
+
+import { Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { TranslatedText } from '@/components/TranslatedText';
+
+<LanguageSwitcher />
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given an array that may contain duplicate elements, remove all duplicates and return an array containing only unique elements. The order of elements can be maintained or not, depending on the approach."
+  bn="একটি অ্যারে দেওয়া হয়েছে যাতে ডুপ্লিকেট উপাদান থাকতে পারে, সমস্ত ডুপ্লিকেট সরিয়ে ফেলুন এবং শুধুমাত্র অনন্য উপাদান সহ একটি অ্যারে ফেরত দিন। উপাদানের ক্রম বজায় রাখা যেতে পারে বা নাও পারে, পদ্ধতির উপর নির্ভর করে।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: [1, 2, 3, 2, 4, 1, 5, 3]
+Output: [1, 2, 3, 4, 5]
+
+Input: [5, 5, 5, 5]
+Output: [5]
+
+Input: [1, 2, 3, 4, 5]
+Output: [1, 2, 3, 4, 5]
+
+Input: []
+Output: []
+```
+
+## <TranslatedText en="Approaches" bn="সমাধানের পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Using Hash Set" bn="পদ্ধতি ১: হ্যাশ সেট ব্যবহার করে" />
+
+<TranslatedText
+  en="Use a hash set to track elements we've already seen. Add each element to the result only if it hasn't been seen before. This preserves the original order of first occurrences."
+  bn="আমরা ইতিমধ্যে দেখেছি এমন উপাদান ট্র্যাক করতে একটি হ্যাশ সেট ব্যবহার করুন। প্রতিটি উপাদান শুধুমাত্র তখনই ফলাফলে যোগ করুন যদি এটি আগে দেখা না হয়। এটি প্রথম উপস্থিতির মূল ক্রম সংরক্ষণ করে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+using namespace std;
+
+vector<int> removeDuplicatesHashSet(vector<int>& arr) {
+    unordered_set<int> seen;
+    vector<int> result;
+
+    for (int num : arr) {
+        // Add to result only if not seen before
+        if (seen.find(num) == seen.end()) {
+            seen.insert(num);
+            result.push_back(num);
+        }
+    }
+
+    return result;
+}
+
+void printArray(const vector<int>& arr) {
+    cout << "[";
+    for (int i = 0; i < arr.size(); i++) {
+        cout << arr[i];
+        if (i < arr.size() - 1) cout << ", ";
+    }
+    cout << "]" << endl;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 3, 2, 4, 1, 5, 3};
+
+    cout << "Original: ";
+    printArray(arr);
+
+    vector<int> result = removeDuplicatesHashSet(arr);
+
+    cout << "After removing duplicates: ";
+    printArray(result);
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def remove_duplicates_hash_set(arr):
+    seen = set()
+    result = []
+
+    for num in arr:
+        # Add to result only if not seen before
+        if num not in seen:
+            seen.add(num)
+            result.append(num)
+
+    return result
+
+# Test
+arr = [1, 2, 3, 2, 4, 1, 5, 3]
+
+print(f"Original: {arr}")
+result = remove_duplicates_hash_set(arr)
+print(f"After removing duplicates: {result}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function removeDuplicatesHashSet(arr) {
+    const seen = new Set();
+    const result = [];
+
+    for (let num of arr) {
+        // Add to result only if not seen before
+        if (!seen.has(num)) {
+            seen.add(num);
+            result.push(num);
+        }
+    }
+
+    return result;
+}
+
+// Test
+const arr = [1, 2, 3, 2, 4, 1, 5, 3];
+
+console.log(`Original: [${arr}]`);
+const result = removeDuplicatesHashSet(arr);
+console.log(`After removing duplicates: [${result}]`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n) <TranslatedText en="where n is the length of the array" bn="যেখানে n হল অ্যারের দৈর্ঘ্য" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n) <TranslatedText en="for the hash set and result array" bn="হ্যাশ সেট এবং ফলাফল অ্যারের জন্য" />
+
+### <TranslatedText en="Approach 2: Sorting First" bn="পদ্ধতি ২: প্রথমে সাজানো" />
+
+<TranslatedText
+  en="Sort the array first, then iterate through it, adding only elements that differ from the previous one. This doesn't preserve original order but uses less space if we modify in place."
+  bn="প্রথমে অ্যারে সাজান, তারপর এটির মাধ্যমে পুনরাবৃত্তি করুন, শুধুমাত্র সেই উপাদানগুলি যোগ করুন যা আগেরটির থেকে আলাদা। এটি মূল ক্রম সংরক্ষণ করে না কিন্তু আমরা যদি জায়গায় পরিবর্তন করি তবে কম স্থান ব্যবহার করে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+vector<int> removeDuplicatesSorting(vector<int>& arr) {
+    if (arr.empty()) return {};
+
+    // Sort the array
+    sort(arr.begin(), arr.end());
+
+    vector<int> result;
+    result.push_back(arr[0]);
+
+    // Add only elements different from previous
+    for (int i = 1; i < arr.size(); i++) {
+        if (arr[i] != arr[i - 1]) {
+            result.push_back(arr[i]);
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 3, 2, 4, 1, 5, 3};
+
+    cout << "Original: ";
+    for (int num : arr) cout << num << " ";
+    cout << endl;
+
+    vector<int> result = removeDuplicatesSorting(arr);
+
+    cout << "After removing duplicates (sorted): ";
+    for (int num : result) cout << num << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def remove_duplicates_sorting(arr):
+    if not arr:
+        return []
+
+    # Sort the array
+    arr_sorted = sorted(arr)
+
+    result = [arr_sorted[0]]
+
+    # Add only elements different from previous
+    for i in range(1, len(arr_sorted)):
+        if arr_sorted[i] != arr_sorted[i - 1]:
+            result.append(arr_sorted[i])
+
+    return result
+
+# Test
+arr = [1, 2, 3, 2, 4, 1, 5, 3]
+
+print(f"Original: {arr}")
+result = remove_duplicates_sorting(arr)
+print(f"After removing duplicates (sorted): {result}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function removeDuplicatesSorting(arr) {
+    if (arr.length === 0) return [];
+
+    // Sort the array
+    const sortedArr = [...arr].sort((a, b) => a - b);
+
+    const result = [sortedArr[0]];
+
+    // Add only elements different from previous
+    for (let i = 1; i < sortedArr.length; i++) {
+        if (sortedArr[i] !== sortedArr[i - 1]) {
+            result.push(sortedArr[i]);
+        }
+    }
+
+    return result;
+}
+
+// Test
+const arr = [1, 2, 3, 2, 4, 1, 5, 3];
+
+console.log(`Original: [${arr}]`);
+const result = removeDuplicatesSorting(arr);
+console.log(`After removing duplicates (sorted): [${result}]`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n log n) <TranslatedText en="due to sorting" bn="সাজানোর কারণে" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n) <TranslatedText en="for the result array" bn="ফলাফল অ্যারের জন্য" />
+
+### <TranslatedText en="Approach 3: Brute Force (Nested Loops)" bn="পদ্ধতি ৩: ব্রুট ফোর্স (নেস্টেড লুপ)" />
+
+<TranslatedText
+  en="For each element, check if it has already been added to the result. This approach doesn't require extra data structures but is slower for large arrays."
+  bn="প্রতিটি উপাদানের জন্য, পরীক্ষা করুন যে এটি ইতিমধ্যে ফলাফলে যোগ করা হয়েছে কিনা। এই পদ্ধতিতে অতিরিক্ত ডেটা স্ট্রাকচারের প্রয়োজন নেই কিন্তু বড় অ্যারের জন্য ধীর।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> removeDuplicatesBruteForce(vector<int>& arr) {
+    vector<int> result;
+
+    for (int i = 0; i < arr.size(); i++) {
+        bool isDuplicate = false;
+
+        // Check if current element is already in result
+        for (int j = 0; j < result.size(); j++) {
+            if (arr[i] == result[j]) {
+                isDuplicate = true;
+                break;
+            }
+        }
+
+        // Add if not a duplicate
+        if (!isDuplicate) {
+            result.push_back(arr[i]);
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 3, 2, 4, 1, 5, 3};
+
+    cout << "Original: ";
+    for (int num : arr) cout << num << " ";
+    cout << endl;
+
+    vector<int> result = removeDuplicatesBruteForce(arr);
+
+    cout << "After removing duplicates: ";
+    for (int num : result) cout << num << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def remove_duplicates_brute_force(arr):
+    result = []
+
+    for num in arr:
+        # Check if current element is already in result
+        if num not in result:
+            result.append(num)
+
+    return result
+
+# Test
+arr = [1, 2, 3, 2, 4, 1, 5, 3]
+
+print(f"Original: {arr}")
+result = remove_duplicates_brute_force(arr)
+print(f"After removing duplicates: {result}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function removeDuplicatesBruteForce(arr) {
+    const result = [];
+
+    for (let num of arr) {
+        // Check if current element is already in result
+        if (!result.includes(num)) {
+            result.push(num);
+        }
+    }
+
+    return result;
+}
+
+// Test
+const arr = [1, 2, 3, 2, 4, 1, 5, 3];
+
+console.log(`Original: [${arr}]`);
+const result = removeDuplicatesBruteForce(arr);
+console.log(`After removing duplicates: [${result}]`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n²) <TranslatedText en="due to nested iteration" bn="নেস্টেড পুনরাবৃত্তির কারণে" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n) <TranslatedText en="for the result array" bn="ফলাফল অ্যারের জন্য" />
+
+### <TranslatedText en="Approach 4: Using Built-in Set Conversion" bn="পদ্ধতি ৪: বিল্ট-ইন সেট রূপান্তর ব্যবহার করে" />
+
+<TranslatedText
+  en="Many languages provide built-in methods to convert arrays to sets, which automatically removes duplicates. This is the simplest approach but may not preserve order in some languages."
+  bn="অনেক ভাষা অ্যারেকে সেটে রূপান্তর করার জন্য বিল্ট-ইন পদ্ধতি প্রদান করে, যা স্বয়ংক্রিয়ভাবে ডুপ্লিকেট সরিয়ে দেয়। এটি সবচেয়ে সহজ পদ্ধতি কিন্তু কিছু ভাষায় ক্রম সংরক্ষণ নাও করতে পারে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <set>
+using namespace std;
+
+vector<int> removeDuplicatesSet(vector<int>& arr) {
+    // Set automatically removes duplicates (but sorts elements)
+    set<int> uniqueSet(arr.begin(), arr.end());
+
+    // Convert back to vector
+    vector<int> result(uniqueSet.begin(), uniqueSet.end());
+
+    return result;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 3, 2, 4, 1, 5, 3};
+
+    cout << "Original: ";
+    for (int num : arr) cout << num << " ";
+    cout << endl;
+
+    vector<int> result = removeDuplicatesSet(arr);
+
+    cout << "After removing duplicates (sorted by set): ";
+    for (int num : result) cout << num << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def remove_duplicates_set(arr):
+    # Convert to set (removes duplicates) then back to list
+    # Note: This doesn't preserve order in Python < 3.7
+    return list(set(arr))
+
+def remove_duplicates_set_ordered(arr):
+    # Using dict.fromkeys() preserves insertion order (Python 3.7+)
+    return list(dict.fromkeys(arr))
+
+# Test
+arr = [1, 2, 3, 2, 4, 1, 5, 3]
+
+print(f"Original: {arr}")
+result1 = remove_duplicates_set(arr)
+print(f"After removing duplicates (unordered): {result1}")
+
+result2 = remove_duplicates_set_ordered(arr)
+print(f"After removing duplicates (order preserved): {result2}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function removeDuplicatesSet(arr) {
+    // Convert to Set (removes duplicates) then back to array
+    // Set preserves insertion order in JavaScript
+    return [...new Set(arr)];
+}
+
+// Alternative using Array.from
+function removeDuplicatesSetAlt(arr) {
+    return Array.from(new Set(arr));
+}
+
+// Test
+const arr = [1, 2, 3, 2, 4, 1, 5, 3];
+
+console.log(`Original: [${arr}]`);
+const result = removeDuplicatesSet(arr);
+console.log(`After removing duplicates: [${result}]`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n)
+
+## <TranslatedText en="Complexity Comparison" bn="জটিলতার তুলনা" />
+
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time Complexity" bn="সময় জটিলতা" /> | <TranslatedText en="Space Complexity" bn="স্থান জটিলতা" /> | <TranslatedText en="Preserves Order" bn="ক্রম সংরক্ষণ করে" /> |
+|---|---|---|---|
+| <TranslatedText en="Hash Set" bn="হ্যাশ সেট" /> | O(n) | O(n) | ✓ |
+| <TranslatedText en="Sorting" bn="সাজানো" /> | O(n log n) | O(n) | ✗ |
+| <TranslatedText en="Brute Force" bn="ব্রুট ফোর্স" /> | O(n²) | O(n) | ✓ |
+| <TranslatedText en="Built-in Set" bn="বিল্ট-ইন সেট" /> | O(n) | O(n) | <TranslatedText en="Language dependent" bn="ভাষা নির্ভর" /> |
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en="1. **Hash Set is optimal**: O(n) time and preserves order of first occurrences."
+  bn="1. **হ্যাশ সেট সর্বোত্তম**: O(n) সময় এবং প্রথম উপস্থিতির ক্রম সংরক্ষণ করে।"
+/>
+
+<TranslatedText
+  en="2. **Sorting trades time for less space**: If order doesn't matter and you're working with primitives, sorting can be efficient."
+  bn="2. **সাজানো কম স্থানের জন্য সময় বিনিময় করে**: যদি ক্রম গুরুত্বপূর্ণ না হয় এবং আপনি প্রিমিটিভের সাথে কাজ করছেন, সাজানো দক্ষ হতে পারে।"
+/>
+
+<TranslatedText
+  en="3. **Built-in solutions are cleanest**: Use language features when available, but understand the underlying approach."
+  bn="3. **বিল্ট-ইন সমাধান সবচেয়ে পরিষ্কার**: উপলব্ধ থাকলে ভাষা বৈশিষ্ট্য ব্যবহার করুন, কিন্তু অন্তর্নিহিত পদ্ধতি বুঝুন।"
+/>
+
+<TranslatedText
+  en="4. **Order preservation matters**: Clarify requirements - does the result need to maintain original element order?"
+  bn="4. **ক্রম সংরক্ষণ গুরুত্বপূর্ণ**: প্রয়োজনীয়তা স্পষ্ট করুন - ফলাফলে কি মূল উপাদানের ক্রম বজায় রাখা প্রয়োজন?"
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="- **Clarify requirements**: Ask if order matters, if input can be modified, and about duplicates of duplicates
+- **Start with hash set**: This is usually the best balance of time and space
+- **Mention alternatives**: Show you know multiple approaches (sorting, brute force, built-ins)
+- **Edge cases**: Empty array, all duplicates, no duplicates, single element
+- **Follow-up**: Be ready to discuss in-place removal (different problem with different constraints)"
+  bn="- **প্রয়োজনীয়তা স্পষ্ট করুন**: জিজ্ঞাসা করুন ক্রম গুরুত্বপূর্ণ কিনা, ইনপুট পরিবর্তন করা যায় কিনা, এবং ডুপ্লিকেটের ডুপ্লিকেট সম্পর্কে
+- **হ্যাশ সেট দিয়ে শুরু করুন**: এটি সাধারণত সময় এবং স্থানের সেরা ভারসাম্য
+- **বিকল্পগুলি উল্লেখ করুন**: দেখান যে আপনি একাধিক পদ্ধতি জানেন (সাজানো, ব্রুট ফোর্স, বিল্ট-ইন)
+- **এজ কেস**: খালি অ্যারে, সব ডুপ্লিকেট, কোন ডুপ্লিকেট নেই, একক উপাদান
+- **ফলো-আপ**: ইন-প্লেস অপসারণ আলোচনা করতে প্রস্তুত থাকুন (বিভিন্ন সীমাবদ্ধতা সহ ভিন্ন সমস্যা)"
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Remove Duplicates from Sorted Array (in-place with two pointers)
+- Remove Duplicates from Sorted Array II (allow up to 2 duplicates)
+- Find All Duplicates in Array
+- Contains Duplicate
+- Longest Consecutive Sequence
+
+## <TranslatedText en="Example Walkthrough" bn="উদাহরণ ওয়াকথ্রু" />
+
+<TranslatedText
+  en="Using Hash Set approach for [1, 2, 3, 2, 4, 1, 5, 3]:"
+  bn="[1, 2, 3, 2, 4, 1, 5, 3] এর জন্য হ্যাশ সেট পদ্ধতি ব্যবহার করে:"
+/>
+
+```
+Step 1: num=1, seen={}, result=[]
+  → Add 1, seen={1}, result=[1]
+
+Step 2: num=2, seen={1}, result=[1]
+  → Add 2, seen={1,2}, result=[1,2]
+
+Step 3: num=3, seen={1,2}, result=[1,2]
+  → Add 3, seen={1,2,3}, result=[1,2,3]
+
+Step 4: num=2, seen={1,2,3}, result=[1,2,3]
+  → Already in seen, skip
+
+Step 5: num=4, seen={1,2,3}, result=[1,2,3]
+  → Add 4, seen={1,2,3,4}, result=[1,2,3,4]
+
+Step 6: num=1, seen={1,2,3,4}, result=[1,2,3,4]
+  → Already in seen, skip
+
+Step 7: num=5, seen={1,2,3,4}, result=[1,2,3,4]
+  → Add 5, seen={1,2,3,4,5}, result=[1,2,3,4,5]
+
+Step 8: num=3, seen={1,2,3,4,5}, result=[1,2,3,4,5]
+  → Already in seen, skip
+
+Final Result: [1, 2, 3, 4, 5]
+```
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="✓ Hash set provides O(n) time with order preservation
+✓ Use built-in language features for cleaner code (Set, dict.fromkeys(), etc.)
+✓ Sorting is an alternative but changes element order
+✓ Always clarify if order matters and if in-place modification is allowed
+✓ This is different from in-place removal in sorted arrays (which uses two pointers)"
+  bn="✓ হ্যাশ সেট ক্রম সংরক্ষণ সহ O(n) সময় প্রদান করে
+✓ পরিষ্কার কোডের জন্য বিল্ট-ইন ভাষা বৈশিষ্ট্য ব্যবহার করুন (Set, dict.fromkeys(), ইত্যাদি)
+✓ সাজানো একটি বিকল্প কিন্তু উপাদানের ক্রম পরিবর্তন করে
+✓ সর্বদা স্পষ্ট করুন ক্রম গুরুত্বপূর্ণ কিনা এবং ইন-প্লেস পরিবর্তন অনুমোদিত কিনা
+✓ এটি সাজানো অ্যারেতে ইন-প্লেস অপসারণ থেকে আলাদা (যা দুটি পয়েন্টার ব্যবহার করে)"
+/>

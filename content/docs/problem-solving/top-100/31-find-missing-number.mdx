@@ -1,0 +1,542 @@
+---
+title: Find Missing Number in Array 1 to 100
+description: Find the missing number in an array containing numbers from 1 to 100
+---
+
+import { Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { TranslatedText } from '@/components/TranslatedText';
+
+<LanguageSwitcher />
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given an array containing n distinct numbers from the range 1 to n+1, find the one number that is missing from the array. For example, if the array should contain numbers 1 to 100 but has only 99 numbers, find which number is missing."
+  bn="1 থেকে n+1 পরিসরের n টি স্বতন্ত্র সংখ্যা সহ একটি অ্যারে দেওয়া হয়েছে, অ্যারে থেকে হারিয়ে যাওয়া একটি সংখ্যা খুঁজুন। উদাহরণস্বরূপ, যদি অ্যারেতে 1 থেকে 100 সংখ্যা থাকা উচিত কিন্তু শুধুমাত্র 99 টি সংখ্যা থাকে, কোন সংখ্যাটি হারিয়েছে তা খুঁজুন।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: [1, 2, 4, 5, 6]
+Output: 3
+Explanation: Numbers are from 1 to 6, missing number is 3
+
+Input: [1, 2, 3, 4, 5, 6, 7, 9, 10]
+Output: 8
+Explanation: Numbers are from 1 to 10, missing number is 8
+
+Input: [2]
+Output: 1
+Explanation: Numbers should be [1, 2], missing is 1
+```
+
+## <TranslatedText en="Approaches" bn="সমাধানের পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Mathematical Formula (Optimal)" bn="পদ্ধতি ১: গাণিতিক সূত্র (সর্বোত্তম)" />
+
+<TranslatedText
+  en="Use the formula for sum of first n natural numbers: sum = n × (n + 1) / 2. Calculate the expected sum and subtract the actual sum of array elements. The difference is the missing number."
+  bn="প্রথম n প্রাকৃতিক সংখ্যার যোগফলের সূত্র ব্যবহার করুন: sum = n × (n + 1) / 2। প্রত্যাশিত যোগফল গণনা করুন এবং অ্যারে উপাদানের প্রকৃত যোগফল বিয়োগ করুন। পার্থক্য হল হারিয়ে যাওয়া সংখ্যা।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int findMissingMath(vector<int>& arr) {
+    int n = arr.size() + 1;  // Total numbers including missing one
+
+    // Sum of numbers from 1 to n
+    int expectedSum = n * (n + 1) / 2;
+
+    // Sum of actual array elements
+    int actualSum = 0;
+    for (int num : arr) {
+        actualSum += num;
+    }
+
+    // Missing number is the difference
+    return expectedSum - actualSum;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 4, 5, 6};
+
+    int missing = findMissingMath(arr);
+    cout << "Missing number: " << missing << endl;
+
+    // Test with 1 to 100
+    vector<int> arr100;
+    for (int i = 1; i <= 100; i++) {
+        if (i != 47) {  // Skip 47
+            arr100.push_back(i);
+        }
+    }
+    cout << "Missing number in 1-100: " << findMissingMath(arr100) << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def find_missing_math(arr):
+    n = len(arr) + 1  # Total numbers including missing one
+
+    # Sum of numbers from 1 to n
+    expected_sum = n * (n + 1) // 2
+
+    # Sum of actual array elements
+    actual_sum = sum(arr)
+
+    # Missing number is the difference
+    return expected_sum - actual_sum
+
+# Test
+arr = [1, 2, 4, 5, 6]
+
+missing = find_missing_math(arr)
+print(f"Missing number: {missing}")
+
+# Test with 1 to 100
+arr100 = [i for i in range(1, 101) if i != 47]  # Skip 47
+print(f"Missing number in 1-100: {find_missing_math(arr100)}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function findMissingMath(arr) {
+    const n = arr.length + 1;  // Total numbers including missing one
+
+    // Sum of numbers from 1 to n
+    const expectedSum = n * (n + 1) / 2;
+
+    // Sum of actual array elements
+    const actualSum = arr.reduce((sum, num) => sum + num, 0);
+
+    // Missing number is the difference
+    return expectedSum - actualSum;
+}
+
+// Test
+const arr = [1, 2, 4, 5, 6];
+
+const missing = findMissingMath(arr);
+console.log(`Missing number: ${missing}`);
+
+// Test with 1 to 100
+const arr100 = [];
+for (let i = 1; i <= 100; i++) {
+    if (i !== 47) {  // Skip 47
+        arr100.push(i);
+    }
+}
+console.log(`Missing number in 1-100: ${findMissingMath(arr100)}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+**<TranslatedText en="Note" bn="দ্রষ্টব্য" />:** <TranslatedText en="Be careful of integer overflow for large n. For very large numbers, use the XOR approach instead." bn="বড় n এর জন্য ইন্টিজার ওভারফ্লো সম্পর্কে সতর্ক থাকুন। খুব বড় সংখ্যার জন্য, পরিবর্তে XOR পদ্ধতি ব্যবহার করুন।" />
+
+### <TranslatedText en="Approach 2: XOR Bit Manipulation" bn="পদ্ধতি ২: XOR বিট ম্যানিপুলেশন" />
+
+<TranslatedText
+  en="XOR has the property that a ^ a = 0 and a ^ 0 = a. XOR all numbers from 1 to n and all array elements. The result will be the missing number because all present numbers cancel out."
+  bn="XOR এর বৈশিষ্ট্য রয়েছে যে a ^ a = 0 এবং a ^ 0 = a। 1 থেকে n পর্যন্ত সমস্ত সংখ্যা এবং সমস্ত অ্যারে উপাদান XOR করুন। ফলাফল হারিয়ে যাওয়া সংখ্যা হবে কারণ সমস্ত উপস্থিত সংখ্যা বাতিল হয়ে যায়।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int findMissingXOR(vector<int>& arr) {
+    int n = arr.size() + 1;
+    int xorResult = 0;
+
+    // XOR all numbers from 1 to n
+    for (int i = 1; i <= n; i++) {
+        xorResult ^= i;
+    }
+
+    // XOR all array elements
+    for (int num : arr) {
+        xorResult ^= num;
+    }
+
+    // Result is the missing number
+    return xorResult;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 4, 5, 6};
+
+    int missing = findMissingXOR(arr);
+    cout << "Missing number: " << missing << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def find_missing_xor(arr):
+    n = len(arr) + 1
+    xor_result = 0
+
+    # XOR all numbers from 1 to n
+    for i in range(1, n + 1):
+        xor_result ^= i
+
+    # XOR all array elements
+    for num in arr:
+        xor_result ^= num
+
+    # Result is the missing number
+    return xor_result
+
+# Test
+arr = [1, 2, 4, 5, 6]
+
+missing = find_missing_xor(arr)
+print(f"Missing number: {missing}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function findMissingXOR(arr) {
+    const n = arr.length + 1;
+    let xorResult = 0;
+
+    // XOR all numbers from 1 to n
+    for (let i = 1; i <= n; i++) {
+        xorResult ^= i;
+    }
+
+    // XOR all array elements
+    for (let num of arr) {
+        xorResult ^= num;
+    }
+
+    // Result is the missing number
+    return xorResult;
+}
+
+// Test
+const arr = [1, 2, 4, 5, 6];
+
+const missing = findMissingXOR(arr);
+console.log(`Missing number: ${missing}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+**<TranslatedText en="Advantage" bn="সুবিধা" />:** <TranslatedText en="No risk of integer overflow, works with very large numbers" bn="ইন্টিজার ওভারফ্লোর ঝুঁকি নেই, খুব বড় সংখ্যার সাথে কাজ করে" />
+
+### <TranslatedText en="Approach 3: Hash Set" bn="পদ্ধতি ৩: হ্যাশ সেট" />
+
+<TranslatedText
+  en="Store all array elements in a hash set, then iterate from 1 to n to find which number is not in the set. Simple but uses extra space."
+  bn="সমস্ত অ্যারে উপাদান একটি হ্যাশ সেটে সংরক্ষণ করুন, তারপর 1 থেকে n পর্যন্ত পুনরাবৃত্তি করুন কোন সংখ্যা সেটে নেই তা খুঁজতে। সহজ কিন্তু অতিরিক্ত স্থান ব্যবহার করে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+using namespace std;
+
+int findMissingHashSet(vector<int>& arr) {
+    unordered_set<int> numSet(arr.begin(), arr.end());
+
+    int n = arr.size() + 1;
+
+    // Find which number from 1 to n is missing
+    for (int i = 1; i <= n; i++) {
+        if (numSet.find(i) == numSet.end()) {
+            return i;
+        }
+    }
+
+    return -1;  // Should never reach here
+}
+
+int main() {
+    vector<int> arr = {1, 2, 4, 5, 6};
+
+    int missing = findMissingHashSet(arr);
+    cout << "Missing number: " << missing << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def find_missing_hash_set(arr):
+    num_set = set(arr)
+
+    n = len(arr) + 1
+
+    # Find which number from 1 to n is missing
+    for i in range(1, n + 1):
+        if i not in num_set:
+            return i
+
+    return -1  # Should never reach here
+
+# Test
+arr = [1, 2, 4, 5, 6]
+
+missing = find_missing_hash_set(arr)
+print(f"Missing number: {missing}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function findMissingHashSet(arr) {
+    const numSet = new Set(arr);
+
+    const n = arr.length + 1;
+
+    // Find which number from 1 to n is missing
+    for (let i = 1; i <= n; i++) {
+        if (!numSet.has(i)) {
+            return i;
+        }
+    }
+
+    return -1;  // Should never reach here
+}
+
+// Test
+const arr = [1, 2, 4, 5, 6];
+
+const missing = findMissingHashSet(arr);
+console.log(`Missing number: ${missing}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n) <TranslatedText en="for the hash set" bn="হ্যাশ সেটের জন্য" />
+
+### <TranslatedText en="Approach 4: Sorting (Less Efficient)" bn="পদ্ধতি ৪: সাজানো (কম দক্ষ)" />
+
+<TranslatedText
+  en="Sort the array and iterate through it to find where the sequence breaks. Not optimal but straightforward."
+  bn="অ্যারে সাজান এবং এর মধ্য দিয়ে পুনরাবৃত্তি করুন কোথায় ক্রম ভাঙে তা খুঁজতে। সর্বোত্তম নয় কিন্তু সোজা।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int findMissingSorting(vector<int>& arr) {
+    sort(arr.begin(), arr.end());
+
+    // Check if first number is not 1
+    if (arr[0] != 1) {
+        return 1;
+    }
+
+    // Find where sequence breaks
+    for (int i = 0; i < arr.size() - 1; i++) {
+        if (arr[i + 1] - arr[i] != 1) {
+            return arr[i] + 1;
+        }
+    }
+
+    // Missing number is at the end
+    return arr[arr.size() - 1] + 1;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 4, 5, 6};
+
+    int missing = findMissingSorting(arr);
+    cout << "Missing number: " << missing << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def find_missing_sorting(arr):
+    arr_sorted = sorted(arr)
+
+    # Check if first number is not 1
+    if arr_sorted[0] != 1:
+        return 1
+
+    # Find where sequence breaks
+    for i in range(len(arr_sorted) - 1):
+        if arr_sorted[i + 1] - arr_sorted[i] != 1:
+            return arr_sorted[i] + 1
+
+    # Missing number is at the end
+    return arr_sorted[-1] + 1
+
+# Test
+arr = [1, 2, 4, 5, 6]
+
+missing = find_missing_sorting(arr)
+print(f"Missing number: {missing}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function findMissingSorting(arr) {
+    const sortedArr = [...arr].sort((a, b) => a - b);
+
+    // Check if first number is not 1
+    if (sortedArr[0] !== 1) {
+        return 1;
+    }
+
+    // Find where sequence breaks
+    for (let i = 0; i < sortedArr.length - 1; i++) {
+        if (sortedArr[i + 1] - sortedArr[i] !== 1) {
+            return sortedArr[i] + 1;
+        }
+    }
+
+    // Missing number is at the end
+    return sortedArr[sortedArr.length - 1] + 1;
+}
+
+// Test
+const arr = [1, 2, 4, 5, 6];
+
+const missing = findMissingSorting(arr);
+console.log(`Missing number: ${missing}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n log n) <TranslatedText en="due to sorting" bn="সাজানোর কারণে" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1) <TranslatedText en="if sorting in place" bn="যদি জায়গায় সাজানো হয়" />
+
+## <TranslatedText en="Complexity Comparison" bn="জটিলতার তুলনা" />
+
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time Complexity" bn="সময় জটিলতা" /> | <TranslatedText en="Space Complexity" bn="স্থান জটিলতা" /> | <TranslatedText en="Overflow Risk" bn="ওভারফ্লো ঝুঁকি" /> |
+|---|---|---|---|
+| <TranslatedText en="Math Formula" bn="গাণিতিক সূত্র" /> | O(n) | O(1) | ✓ |
+| <TranslatedText en="XOR" bn="XOR" /> | O(n) | O(1) | ✗ |
+| <TranslatedText en="Hash Set" bn="হ্যাশ সেট" /> | O(n) | O(n) | ✗ |
+| <TranslatedText en="Sorting" bn="সাজানো" /> | O(n log n) | O(1) | ✗ |
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en="1. **Gauss's formula**: Sum of 1 to n = n × (n + 1) / 2 is the foundation of the math approach."
+  bn="1. **গাউসের সূত্র**: 1 থেকে n এর যোগফল = n × (n + 1) / 2 গাণিতিক পদ্ধতির ভিত্তি।"
+/>
+
+<TranslatedText
+  en="2. **XOR properties**: a ^ a = 0 and a ^ 0 = a makes XOR perfect for finding single missing element."
+  bn="2. **XOR বৈশিষ্ট্য**: a ^ a = 0 এবং a ^ 0 = a XOR কে একক হারিয়ে যাওয়া উপাদান খুঁজতে নিখুঁত করে তোলে।"
+/>
+
+<TranslatedText
+  en="3. **Overflow consideration**: For large n, sum can overflow. XOR approach avoids this."
+  bn="3. **ওভারফ্লো বিবেচনা**: বড় n এর জন্য, যোগফল ওভারফ্লো হতে পারে। XOR পদ্ধতি এটি এড়ায়।"
+/>
+
+<TranslatedText
+  en="4. **Space-time tradeoff**: Hash set uses O(n) space but is very simple to implement."
+  bn="4. **স্থান-সময় ট্রেড-অফ**: হ্যাশ সেট O(n) স্থান ব্যবহার করে কিন্তু বাস্তবায়ন করা খুব সহজ।"
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="- **Start with math formula**: This is the most intuitive and efficient approach
+- **Mention XOR alternative**: Show you know bit manipulation techniques
+- **Discuss overflow**: Demonstrate awareness of edge cases with large numbers
+- **Clarify constraints**: Ask about the range (1 to 100, 1 to n, etc.)
+- **Follow-up variations**: Be ready for multiple missing numbers or duplicates present"
+  bn="- **গাণিতিক সূত্র দিয়ে শুরু করুন**: এটি সবচেয়ে স্বজ্ঞাত এবং দক্ষ পদ্ধতি
+- **XOR বিকল্প উল্লেখ করুন**: দেখান যে আপনি বিট ম্যানিপুলেশন কৌশল জানেন
+- **ওভারফ্লো আলোচনা করুন**: বড় সংখ্যার সাথে এজ কেসের সচেতনতা প্রদর্শন করুন
+- **সীমাবদ্ধতা স্পষ্ট করুন**: পরিসর সম্পর্কে জিজ্ঞাসা করুন (1 থেকে 100, 1 থেকে n, ইত্যাদি)
+- **ফলো-আপ ভেরিয়েশন**: একাধিক হারিয়ে যাওয়া সংখ্যা বা ডুপ্লিকেট উপস্থিত থাকার জন্য প্রস্তুত থাকুন"
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Find Two Missing Numbers
+- Missing Number in Arithmetic Progression
+- Find the Duplicate Number
+- First Missing Positive
+- Missing Element in Sorted Array
+
+## <TranslatedText en="Example Walkthrough" bn="উদাহরণ ওয়াকথ্রু" />
+
+<TranslatedText
+  en="Using Math Formula for [1, 2, 4, 5, 6]:"
+  bn="[1, 2, 4, 5, 6] এর জন্য গাণিতিক সূত্র ব্যবহার করে:"
+/>
+
+```
+n = 6 (should have numbers 1 to 6)
+
+Expected sum = 6 × 7 / 2 = 21
+
+Actual sum = 1 + 2 + 4 + 5 + 6 = 18
+
+Missing number = 21 - 18 = 3
+```
+
+<TranslatedText
+  en="Using XOR for [1, 2, 4, 5, 6]:"
+  bn="[1, 2, 4, 5, 6] এর জন্য XOR ব্যবহার করে:"
+/>
+
+```
+XOR = 1 ^ 2 ^ 3 ^ 4 ^ 5 ^ 6  (all numbers 1 to 6)
+    ^ 1 ^ 2 ^ 4 ^ 5 ^ 6      (array elements)
+
+= 3  (all others cancel out, only 3 remains)
+```
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="✓ Math formula is optimal: O(n) time, O(1) space, very intuitive
+✓ XOR avoids overflow issues and is equally efficient
+✓ Both optimal approaches work in single pass
+✓ Hash set approach trades space for simplicity
+✓ This pattern extends to finding multiple missing numbers
+✓ Always consider integer overflow for large ranges"
+  bn="✓ গাণিতিক সূত্র সর্বোত্তম: O(n) সময়, O(1) স্থান, খুব স্বজ্ঞাত
+✓ XOR ওভারফ্লো সমস্যা এড়ায় এবং সমান দক্ষ
+✓ উভয় সর্বোত্তম পদ্ধতি একক পাসে কাজ করে
+✓ হ্যাশ সেট পদ্ধতি সরলতার জন্য স্থান বিনিময় করে
+✓ এই প্যাটার্ন একাধিক হারিয়ে যাওয়া সংখ্যা খুঁজতে প্রসারিত হয়
+✓ বড় পরিসরের জন্য সর্বদা ইন্টিজার ওভারফ্লো বিবেচনা করুন"
+/>

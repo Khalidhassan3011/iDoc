@@ -1,28 +1,29 @@
 get structure from content/docs/problem-solving/top-100
 implement bellows. dont copy paste the answer
 
-Write a Program to check if a given year is a leap year.
-Answer: https://www.geeksforgeeks.org/program-check-given-year-leap-year/
-Write Program to check whether the number is Palindrome or not.
-Answer: https://www.geeksforgeeks.org/program-to-check-the-number-is-palindrome-or-not/
-Write a Program to check whether the number is a Narcissistic number or not.
-Answer: https://www.geeksforgeeks.org/narcissistic-number/
-Write a Program to print all numbers of a list in a random manner and all numbers should be only one, without using any pre-defined function.
-input :- a= [1,2,5,3,4,6,7,8,8,8,8,9,9,9];
-output :- a = [2,4,9,7,1,3,6,5,8];
-Answer: if you have Please comment below.
-Find the Fastest way to find an index of elements in a list. (ex:-binary search)
-input :- var list =[1,2,3,4,5,6,7,8,9,10,11,12,13,14];
-var numFind =2;
-output:- 1 Index
-Answer:- https://gist.github.com/shirsh94/7046b685fc24f120f203e37d8e68d3ae
-Find the sum of all natural numbers without using any regression or any loop.
-Answer:- https://www.javatpoint.com/java-program-to-find-sum-of-natural-numbers
-Find the nearest smaller numbers on the left side in an array.
-Answer:- https://www.geeksforgeeks.org/find-the-nearest-smaller-numbers-on-left-side-in-an-array/
-Find the minimum number of coins that make a given value.
-Input: V = 70
-Output: 2
-We need a 50 Rs note and a 20 Rs note.
-Answer:- https://www.geeksforgeeks.org/greedy-algorithm-to-find-minimum-number-of-coins/
-Find the index of two array elements whose sum is equal to the given value
+How to rotate an array left and right by a given number K?
+(solution) https://www.java67.com/2018/05/how-to-rotate-array-left-and-right-by-given-number.html
+How do you find duplicates from an unsorted array?
+(solution) http://java67.blogspot.com/2015/10/2-ways-to-find-duplicate-elements-in-java-array.html
+Given an array of integers sorted in ascending order, find the starting and ending position of a given value.
+(solution) https://www.chegg.com/homework-help/questions-and-answers/given-array-integers-nums-sorted-ascending-order-find-starting-ending-position-given-targe-q93277114
+Given an unsorted array of integers, find the length of the longest consecutive elements sequence.
+(solution) https://codereview.stackexchange.com/questions/212785/find-the-length-of-the-longest-consecutive-elements
+How is an integer array sorted in place using the quicksort algorithm? 
+ (solution) http://javarevisited.blogspot.com/2014/08/quicksort-sorting-algorithm-in-java-in-place-example.html
+Given an integer array, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
+(solution) https://stackoverflow.com/questions/61013256/can-anyone-explain-this-maxium-subarray-problem
+How do you reverse an array in place in Java?
+(solution) http://javarevisited.blogspot.com/2013/03/how-to-reverse-array-in-java-int-String-array-example.html
+How are duplicates removed from an array without using any library? 
+(solution) http://javarevisited.blogspot.sg/2014/01/how-to-remove-duplicates-from-array-java-without-collection-API.html
+How to convert a byte array to a String?
+(solution) https://javarevisited.blogspot.com/2014/08/2-examples-to-convert-byte-array-to-String-in-Java.html
+What is the difference between an array and a linked list?
+(solution) http://www.java67.com/2017/06/5-difference-between-array-and-linked.html
+How do you perform a binary search in a given array?
+(solution) http://javarevisited.blogspot.sg/2015/10/how-to-implement-binary-search-tree-in-java-example.html#axzz4wnEtnNB3
+How to find a median of two sorts of arrays?
+(solution) https://www.geeksforgeeks.org/median-of-two-sorted-arrays-of-different-sizes/
+How do you find duplicate numbers in an array if it contains multiple duplicates?
+(solution) http://javarevisited.blogspot.com/2014/03/3-ways-to-find-first-non-repeated-character-String-programming-problem.html

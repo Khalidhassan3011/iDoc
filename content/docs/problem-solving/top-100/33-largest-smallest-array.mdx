@@ -1,0 +1,663 @@
+---
+title: Find Largest and Smallest Number in Array
+description: Find both the largest and smallest numbers in an unsorted array efficiently
+---
+
+import { Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { TranslatedText } from '@/components/TranslatedText';
+
+<LanguageSwitcher />
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given an unsorted array of integers, find both the largest (maximum) and smallest (minimum) numbers in the array. Optimize the solution to minimize the number of comparisons."
+  bn="পূর্ণসংখ্যার একটি অসাজানো অ্যারে দেওয়া হয়েছে, অ্যারেতে সবচেয়ে বড় (সর্বোচ্চ) এবং সবচেয়ে ছোট (সর্বনিম্ন) উভয় সংখ্যা খুঁজুন। তুলনার সংখ্যা কমাতে সমাধান অপ্টিমাইজ করুন।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: [3, 5, 1, 8, 2, 9, 4]
+Output: Min = 1, Max = 9
+
+Input: [10]
+Output: Min = 10, Max = 10
+
+Input: [-5, -2, -10, -1]
+Output: Min = -10, Max = -1
+
+Input: [42, 17, 89, 3, 56]
+Output: Min = 3, Max = 89
+```
+
+## <TranslatedText en="Approaches" bn="সমাধানের পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Linear Scan (Simple)" bn="পদ্ধতি ১: লিনিয়ার স্ক্যান (সহজ)" />
+
+<TranslatedText
+  en="Iterate through the array once, keeping track of the minimum and maximum values seen so far. Update them when a smaller or larger value is found."
+  bn="একবার অ্যারের মধ্য দিয়ে পুনরাবৃত্তি করুন, এখন পর্যন্ত দেখা সর্বনিম্ন এবং সর্বোচ্চ মানগুলির ট্র্যাক রাখুন। ছোট বা বড় মান পাওয়া গেলে সেগুলি আপডেট করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+pair<int, int> findMinMaxLinear(vector<int>& arr) {
+    if (arr.empty()) {
+        return {INT_MAX, INT_MIN};
+    }
+
+    int minVal = arr[0];
+    int maxVal = arr[0];
+
+    for (int i = 1; i < arr.size(); i++) {
+        if (arr[i] < minVal) {
+            minVal = arr[i];
+        }
+        if (arr[i] > maxVal) {
+            maxVal = arr[i];
+        }
+    }
+
+    return {minVal, maxVal};
+}
+
+int main() {
+    vector<int> arr = {3, 5, 1, 8, 2, 9, 4};
+
+    auto [minVal, maxVal] = findMinMaxLinear(arr);
+    cout << "Min = " << minVal << ", Max = " << maxVal << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def find_min_max_linear(arr):
+    if not arr:
+        return None, None
+
+    min_val = arr[0]
+    max_val = arr[0]
+
+    for num in arr[1:]:
+        if num < min_val:
+            min_val = num
+        if num > max_val:
+            max_val = num
+
+    return min_val, max_val
+
+# Test
+arr = [3, 5, 1, 8, 2, 9, 4]
+
+min_val, max_val = find_min_max_linear(arr)
+print(f"Min = {min_val}, Max = {max_val}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function findMinMaxLinear(arr) {
+    if (arr.length === 0) {
+        return { min: null, max: null };
+    }
+
+    let minVal = arr[0];
+    let maxVal = arr[0];
+
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i] < minVal) {
+            minVal = arr[i];
+        }
+        if (arr[i] > maxVal) {
+            maxVal = arr[i];
+        }
+    }
+
+    return { min: minVal, max: maxVal };
+}
+
+// Test
+const arr = [3, 5, 1, 8, 2, 9, 4];
+
+const { min, max } = findMinMaxLinear(arr);
+console.log(`Min = ${min}, Max = ${max}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+**<TranslatedText en="Comparisons" bn="তুলনা" />:** <TranslatedText en="2(n-1) comparisons in worst case" bn="সবচেয়ে খারাপ ক্ষেত্রে 2(n-1) তুলনা" />
+
+### <TranslatedText en="Approach 2: Optimized Pair Comparison" bn="পদ্ধতি ২: অপ্টিমাইজড পেয়ার তুলনা" />
+
+<TranslatedText
+  en="Process elements in pairs. Compare elements in each pair with each other first, then compare the smaller with min and larger with max. This reduces the total number of comparisons."
+  bn="জোড়ায় উপাদান প্রক্রিয়া করুন। প্রথমে প্রতিটি জোড়ার উপাদানগুলি একে অপরের সাথে তুলনা করুন, তারপর ছোটটিকে min এর সাথে এবং বড়টিকে max এর সাথে তুলনা করুন। এটি মোট তুলনার সংখ্যা হ্রাস করে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+pair<int, int> findMinMaxOptimized(vector<int>& arr) {
+    if (arr.empty()) {
+        return {INT_MAX, INT_MIN};
+    }
+
+    int minVal, maxVal;
+    int i;
+
+    // If odd number of elements, initialize with first element
+    if (arr.size() % 2 == 1) {
+        minVal = maxVal = arr[0];
+        i = 1;
+    } else {
+        // If even, compare first two elements
+        if (arr[0] < arr[1]) {
+            minVal = arr[0];
+            maxVal = arr[1];
+        } else {
+            minVal = arr[1];
+            maxVal = arr[0];
+        }
+        i = 2;
+    }
+
+    // Process remaining elements in pairs
+    while (i < arr.size() - 1) {
+        int small, large;
+
+        // Compare pair elements
+        if (arr[i] < arr[i + 1]) {
+            small = arr[i];
+            large = arr[i + 1];
+        } else {
+            small = arr[i + 1];
+            large = arr[i];
+        }
+
+        // Update min and max
+        if (small < minVal) minVal = small;
+        if (large > maxVal) maxVal = large;
+
+        i += 2;
+    }
+
+    return {minVal, maxVal};
+}
+
+int main() {
+    vector<int> arr = {3, 5, 1, 8, 2, 9, 4};
+
+    auto [minVal, maxVal] = findMinMaxOptimized(arr);
+    cout << "Min = " << minVal << ", Max = " << maxVal << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def find_min_max_optimized(arr):
+    if not arr:
+        return None, None
+
+    n = len(arr)
+
+    # If odd number of elements, initialize with first element
+    if n % 2 == 1:
+        min_val = max_val = arr[0]
+        i = 1
+    else:
+        # If even, compare first two elements
+        if arr[0] < arr[1]:
+            min_val = arr[0]
+            max_val = arr[1]
+        else:
+            min_val = arr[1]
+            max_val = arr[0]
+        i = 2
+
+    # Process remaining elements in pairs
+    while i < n - 1:
+        # Compare pair elements
+        if arr[i] < arr[i + 1]:
+            small = arr[i]
+            large = arr[i + 1]
+        else:
+            small = arr[i + 1]
+            large = arr[i]
+
+        # Update min and max
+        if small < min_val:
+            min_val = small
+        if large > max_val:
+            max_val = large
+
+        i += 2
+
+    return min_val, max_val
+
+# Test
+arr = [3, 5, 1, 8, 2, 9, 4]
+
+min_val, max_val = find_min_max_optimized(arr)
+print(f"Min = {min_val}, Max = {max_val}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function findMinMaxOptimized(arr) {
+    if (arr.length === 0) {
+        return { min: null, max: null };
+    }
+
+    let minVal, maxVal;
+    let i;
+    const n = arr.length;
+
+    // If odd number of elements, initialize with first element
+    if (n % 2 === 1) {
+        minVal = maxVal = arr[0];
+        i = 1;
+    } else {
+        // If even, compare first two elements
+        if (arr[0] < arr[1]) {
+            minVal = arr[0];
+            maxVal = arr[1];
+        } else {
+            minVal = arr[1];
+            maxVal = arr[0];
+        }
+        i = 2;
+    }
+
+    // Process remaining elements in pairs
+    while (i < n - 1) {
+        let small, large;
+
+        // Compare pair elements
+        if (arr[i] < arr[i + 1]) {
+            small = arr[i];
+            large = arr[i + 1];
+        } else {
+            small = arr[i + 1];
+            large = arr[i];
+        }
+
+        // Update min and max
+        if (small < minVal) minVal = small;
+        if (large > maxVal) maxVal = large;
+
+        i += 2;
+    }
+
+    return { min: minVal, max: maxVal };
+}
+
+// Test
+const arr = [3, 5, 1, 8, 2, 9, 4];
+
+const { min, max } = findMinMaxOptimized(arr);
+console.log(`Min = ${min}, Max = ${max}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+**<TranslatedText en="Comparisons" bn="তুলনা" />:** <TranslatedText en="3n/2 - 2 comparisons (25% fewer than simple approach)" bn="3n/2 - 2 তুলনা (সহজ পদ্ধতির চেয়ে 25% কম)" />
+
+### <TranslatedText en="Approach 3: Using Built-in Functions" bn="পদ্ধতি ৩: বিল্ট-ইন ফাংশন ব্যবহার করে" />
+
+<TranslatedText
+  en="Use language built-in min and max functions. Simple and readable, but may require two passes through the array."
+  bn="ভাষা বিল্ট-ইন min এবং max ফাংশন ব্যবহার করুন। সহজ এবং পাঠযোগ্য, কিন্তু অ্যারের মধ্য দিয়ে দুটি পাস প্রয়োজন হতে পারে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+pair<int, int> findMinMaxBuiltin(vector<int>& arr) {
+    if (arr.empty()) {
+        return {INT_MAX, INT_MIN};
+    }
+
+    int minVal = *min_element(arr.begin(), arr.end());
+    int maxVal = *max_element(arr.begin(), arr.end());
+
+    return {minVal, maxVal};
+}
+
+// Using minmax_element (single pass)
+pair<int, int> findMinMaxBuiltinOptimal(vector<int>& arr) {
+    if (arr.empty()) {
+        return {INT_MAX, INT_MIN};
+    }
+
+    auto [minIt, maxIt] = minmax_element(arr.begin(), arr.end());
+    return {*minIt, *maxIt};
+}
+
+int main() {
+    vector<int> arr = {3, 5, 1, 8, 2, 9, 4};
+
+    auto [minVal, maxVal] = findMinMaxBuiltin(arr);
+    cout << "Min = " << minVal << ", Max = " << maxVal << endl;
+
+    auto [minVal2, maxVal2] = findMinMaxBuiltinOptimal(arr);
+    cout << "Using minmax_element: Min = " << minVal2 << ", Max = " << maxVal2 << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def find_min_max_builtin(arr):
+    if not arr:
+        return None, None
+
+    return min(arr), max(arr)
+
+# Test
+arr = [3, 5, 1, 8, 2, 9, 4]
+
+min_val, max_val = find_min_max_builtin(arr)
+print(f"Min = {min_val}, Max = {max_val}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function findMinMaxBuiltin(arr) {
+    if (arr.length === 0) {
+        return { min: null, max: null };
+    }
+
+    const minVal = Math.min(...arr);
+    const maxVal = Math.max(...arr);
+
+    return { min: minVal, max: maxVal };
+}
+
+// Using reduce (single pass)
+function findMinMaxReduce(arr) {
+    if (arr.length === 0) {
+        return { min: null, max: null };
+    }
+
+    return arr.reduce((acc, num) => ({
+        min: Math.min(acc.min, num),
+        max: Math.max(acc.max, num)
+    }), { min: arr[0], max: arr[0] });
+}
+
+// Test
+const arr = [3, 5, 1, 8, 2, 9, 4];
+
+const { min, max } = findMinMaxBuiltin(arr);
+console.log(`Min = ${min}, Max = ${max}`);
+
+const result = findMinMaxReduce(arr);
+console.log(`Using reduce: Min = ${result.min}, Max = ${result.max}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+### <TranslatedText en="Approach 4: Divide and Conquer" bn="পদ্ধতি ৪: ভাগ করুন এবং জয় করুন" />
+
+<TranslatedText
+  en="Recursively divide the array into halves, find min/max in each half, and combine results. More comparisons than pair method but demonstrates divide-and-conquer technique."
+  bn="পুনরাবৃত্তভাবে অ্যারেটিকে অর্ধেক ভাগ করুন, প্রতিটি অর্ধেকে min/max খুঁজুন এবং ফলাফল সংযুক্ত করুন। পেয়ার পদ্ধতির চেয়ে বেশি তুলনা কিন্তু ভাগ-করুন-এবং-জয়-করুন কৌশল প্রদর্শন করে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+pair<int, int> findMinMaxDivideConquer(vector<int>& arr, int left, int right) {
+    // Base case: only one element
+    if (left == right) {
+        return {arr[left], arr[left]};
+    }
+
+    // Base case: two elements
+    if (right == left + 1) {
+        if (arr[left] < arr[right]) {
+            return {arr[left], arr[right]};
+        } else {
+            return {arr[right], arr[left]};
+        }
+    }
+
+    // Divide
+    int mid = left + (right - left) / 2;
+
+    // Conquer
+    auto [leftMin, leftMax] = findMinMaxDivideConquer(arr, left, mid);
+    auto [rightMin, rightMax] = findMinMaxDivideConquer(arr, mid + 1, right);
+
+    // Combine
+    return {min(leftMin, rightMin), max(leftMax, rightMax)};
+}
+
+int main() {
+    vector<int> arr = {3, 5, 1, 8, 2, 9, 4};
+
+    auto [minVal, maxVal] = findMinMaxDivideConquer(arr, 0, arr.size() - 1);
+    cout << "Min = " << minVal << ", Max = " << maxVal << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def find_min_max_divide_conquer(arr, left, right):
+    # Base case: only one element
+    if left == right:
+        return arr[left], arr[left]
+
+    # Base case: two elements
+    if right == left + 1:
+        if arr[left] < arr[right]:
+            return arr[left], arr[right]
+        else:
+            return arr[right], arr[left]
+
+    # Divide
+    mid = left + (right - left) // 2
+
+    # Conquer
+    left_min, left_max = find_min_max_divide_conquer(arr, left, mid)
+    right_min, right_max = find_min_max_divide_conquer(arr, mid + 1, right)
+
+    # Combine
+    return min(left_min, right_min), max(left_max, right_max)
+
+# Test
+arr = [3, 5, 1, 8, 2, 9, 4]
+
+min_val, max_val = find_min_max_divide_conquer(arr, 0, len(arr) - 1)
+print(f"Min = {min_val}, Max = {max_val}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function findMinMaxDivideConquer(arr, left, right) {
+    // Base case: only one element
+    if (left === right) {
+        return { min: arr[left], max: arr[left] };
+    }
+
+    // Base case: two elements
+    if (right === left + 1) {
+        if (arr[left] < arr[right]) {
+            return { min: arr[left], max: arr[right] };
+        } else {
+            return { min: arr[right], max: arr[left] };
+        }
+    }
+
+    // Divide
+    const mid = Math.floor(left + (right - left) / 2);
+
+    // Conquer
+    const leftResult = findMinMaxDivideConquer(arr, left, mid);
+    const rightResult = findMinMaxDivideConquer(arr, mid + 1, right);
+
+    // Combine
+    return {
+        min: Math.min(leftResult.min, rightResult.min),
+        max: Math.max(leftResult.max, rightResult.max)
+    };
+}
+
+// Test
+const arr = [3, 5, 1, 8, 2, 9, 4];
+
+const { min, max } = findMinMaxDivideConquer(arr, 0, arr.length - 1);
+console.log(`Min = ${min}, Max = ${max}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(log n) <TranslatedText en="due to recursion stack" bn="রিকার্সন স্ট্যাকের কারণে" />
+
+**<TranslatedText en="Comparisons" bn="তুলনা" />:** <TranslatedText en="3n/2 - 2 comparisons" bn="3n/2 - 2 তুলনা" />
+
+## <TranslatedText en="Complexity Comparison" bn="জটিলতার তুলনা" />
+
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time" bn="সময়" /> | <TranslatedText en="Space" bn="স্থান" /> | <TranslatedText en="Comparisons" bn="তুলনা" /> |
+|---|---|---|---|
+| <TranslatedText en="Linear Scan" bn="লিনিয়ার স্ক্যান" /> | O(n) | O(1) | 2(n-1) |
+| <TranslatedText en="Pair Comparison" bn="পেয়ার তুলনা" /> | O(n) | O(1) | **3n/2 - 2** |
+| <TranslatedText en="Built-in" bn="বিল্ট-ইন" /> | O(n) | O(1) | 2n |
+| <TranslatedText en="Divide & Conquer" bn="ভাগ করুন ও জয় করুন" /> | O(n) | O(log n) | 3n/2 - 2 |
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en="1. **Pair comparison is optimal**: Reduces comparisons by 25% compared to simple linear scan."
+  bn="1. **পেয়ার তুলনা সর্বোত্তম**: সহজ লিনিয়ার স্ক্যানের তুলনায় 25% তুলনা হ্রাস করে।"
+/>
+
+<TranslatedText
+  en="2. **Trade simplicity for efficiency**: Linear scan is simpler to code and understand."
+  bn="2. **দক্ষতার জন্য সরলতা বিনিময় করুন**: লিনিয়ার স্ক্যান কোড এবং বোঝা সহজ।"
+/>
+
+<TranslatedText
+  en="3. **Built-in functions are readable**: But may require two passes (min and max separately)."
+  bn="3. **বিল্ট-ইন ফাংশন পাঠযোগ্য**: কিন্তু দুটি পাস প্রয়োজন হতে পারে (min এবং max আলাদাভাবে)।"
+/>
+
+<TranslatedText
+  en="4. **Comparison count matters**: In scenarios where comparisons are expensive, pair method is best."
+  bn="4. **তুলনা গণনা গুরুত্বপূর্ণ**: যেখানে তুলনা ব্যয়বহুল সেই পরিস্থিতিতে, পেয়ার পদ্ধতি সেরা।"
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="- **Start with simple approach**: Show the linear scan first, then optimize
+- **Mention comparison count**: Demonstrate understanding that pair method reduces comparisons
+- **Explain the optimization**: Walk through why processing pairs is more efficient
+- **Use built-ins when appropriate**: In production, built-in functions are often preferred
+- **Edge cases**: Empty array, single element, all same elements, negative numbers"
+  bn="- **সহজ পদ্ধতি দিয়ে শুরু করুন**: প্রথমে লিনিয়ার স্ক্যান দেখান, তারপর অপ্টিমাইজ করুন
+- **তুলনা গণনা উল্লেখ করুন**: বোঝার প্রদর্শন করুন যে পেয়ার পদ্ধতি তুলনা হ্রাস করে
+- **অপ্টিমাইজেশন ব্যাখ্যা করুন**: ওয়াকথ্রু করুন কেন পেয়ার প্রক্রিয়া করা আরও দক্ষ
+- **উপযুক্ত হলে বিল্ট-ইন ব্যবহার করুন**: প্রোডাকশনে, বিল্ট-ইন ফাংশন প্রায়শই পছন্দ করা হয়
+- **এজ কেস**: খালি অ্যারে, একক উপাদান, সব একই উপাদান, ঋণাত্মক সংখ্যা"
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Find Kth Largest/Smallest Element
+- Find Second Largest/Smallest
+- Find Local Minimum/Maximum
+- Min Max Game
+
+## <TranslatedText en="Example Walkthrough" bn="উদাহরণ ওয়াকথ্রু" />
+
+<TranslatedText
+  en="Using Pair Comparison for [3, 5, 1, 8, 2, 9, 4]:"
+  bn="[3, 5, 1, 8, 2, 9, 4] এর জন্য পেয়ার তুলনা ব্যবহার করে:"
+/>
+
+```
+n = 7 (odd), so start with min=max=3, i=1
+
+Pair 1: arr[1]=5, arr[2]=1
+  → 1 < 5, so small=1, large=5
+  → 1 < 3, update min=1
+  → 5 < 3? No
+  → min=1, max=3
+
+Pair 2: arr[3]=8, arr[4]=2
+  → 2 < 8, so small=2, large=8
+  → 2 < 1? No
+  → 8 > 3, update max=8
+  → min=1, max=8
+
+Pair 3: arr[5]=9, arr[6]=4
+  → 4 < 9, so small=4, large=9
+  → 4 < 1? No
+  → 9 > 8, update max=9
+  → min=1, max=9
+
+Final: Min = 1, Max = 9
+
+Comparisons: 1 (odd check) + 3 (pair) + 6 (with min/max) = 10
+Simple approach would need: 2 × 6 = 12 comparisons
+```
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="✓ Pair comparison method is optimal with 3n/2 comparisons
+✓ Simple linear scan is easier to implement and understand
+✓ Built-in functions provide clean, readable code
+✓ All approaches have O(n) time complexity
+✓ Choose based on priorities: simplicity vs fewer comparisons
+✓ In practice, built-in functions are often preferred for maintainability"
+  bn="✓ পেয়ার তুলনা পদ্ধতি 3n/2 তুলনা সহ সর্বোত্তম
+✓ সহজ লিনিয়ার স্ক্যান বাস্তবায়ন এবং বোঝা সহজ
+✓ বিল্ট-ইন ফাংশন পরিষ্কার, পাঠযোগ্য কোড প্রদান করে
+✓ সমস্ত পদ্ধতিতে O(n) সময় জটিলতা রয়েছে
+✓ অগ্রাধিকারের উপর ভিত্তি করে বেছে নিন: সরলতা বনাম কম তুলনা
+✓ বাস্তবে, রক্ষণাবেক্ষণযোগ্যতার জন্য বিল্ট-ইন ফাংশন প্রায়শই পছন্দ করা হয়"
+/>

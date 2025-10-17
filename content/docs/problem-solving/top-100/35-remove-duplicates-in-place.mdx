@@ -1,0 +1,527 @@
+---
+title: Remove Duplicates from Array In Place
+description: Remove duplicates from a sorted array in place without using extra space
+---
+
+import { Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { TranslatedText } from '@/components/TranslatedText';
+
+<LanguageSwitcher />
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given a sorted array, remove duplicates in place such that each element appears only once. Return the new length of the array. You must modify the array in place with O(1) extra space."
+  bn="একটি সাজানো অ্যারে দেওয়া হয়েছে, জায়গায় ডুপ্লিকেট সরান যাতে প্রতিটি উপাদান শুধুমাত্র একবার উপস্থিত হয়। অ্যারের নতুন দৈর্ঘ্য ফেরত দিন। আপনাকে অবশ্যই O(1) অতিরিক্ত স্থান সহ জায়গায় অ্যারে পরিবর্তন করতে হবে।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: [1, 1, 2]
+Output: 2, array becomes [1, 2, _]
+
+Input: [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]
+Output: 5, array becomes [0, 1, 2, 3, 4, _, _, _, _, _]
+
+Input: [1, 1, 1, 1]
+Output: 1, array becomes [1, _, _, _]
+
+Input: []
+Output: 0
+```
+
+## <TranslatedText en="Approaches" bn="সমাধানের পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Two Pointers (Optimal)" bn="পদ্ধতি ১: দুটি পয়েন্টার (সর্বোত্তম)" />
+
+<TranslatedText
+  en="Use two pointers: one for reading elements (fast) and one for writing unique elements (slow). When a new unique element is found, write it to the slow pointer position and increment slow."
+  bn="দুটি পয়েন্টার ব্যবহার করুন: একটি উপাদান পড়ার জন্য (দ্রুত) এবং একটি অনন্য উপাদান লেখার জন্য (ধীর)। যখন একটি নতুন অনন্য উপাদান পাওয়া যায়, এটি ধীর পয়েন্টার অবস্থানে লিখুন এবং ধীর বৃদ্ধি করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int removeDuplicates(vector<int>& nums) {
+    if (nums.empty()) return 0;
+
+    int slow = 0;  // Position to write next unique element
+
+    for (int fast = 1; fast < nums.size(); fast++) {
+        // Found a new unique element
+        if (nums[fast] != nums[slow]) {
+            slow++;
+            nums[slow] = nums[fast];
+        }
+    }
+
+    return slow + 1;  // Length of unique elements
+}
+
+int main() {
+    vector<int> nums = {0, 0, 1, 1, 1, 2, 2, 3, 3, 4};
+
+    cout << "Original: ";
+    for (int num : nums) cout << num << " ";
+    cout << endl;
+
+    int newLength = removeDuplicates(nums);
+
+    cout << "New length: " << newLength << endl;
+    cout << "Array after removing duplicates: ";
+    for (int i = 0; i < newLength; i++) {
+        cout << nums[i] << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def remove_duplicates(nums):
+    if not nums:
+        return 0
+
+    slow = 0  # Position to write next unique element
+
+    for fast in range(1, len(nums)):
+        # Found a new unique element
+        if nums[fast] != nums[slow]:
+            slow += 1
+            nums[slow] = nums[fast]
+
+    return slow + 1  # Length of unique elements
+
+# Test
+nums = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]
+
+print(f"Original: {nums}")
+
+new_length = remove_duplicates(nums)
+
+print(f"New length: {new_length}")
+print(f"Array after removing duplicates: {nums[:new_length]}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function removeDuplicates(nums) {
+    if (nums.length === 0) return 0;
+
+    let slow = 0;  // Position to write next unique element
+
+    for (let fast = 1; fast < nums.length; fast++) {
+        // Found a new unique element
+        if (nums[fast] !== nums[slow]) {
+            slow++;
+            nums[slow] = nums[fast];
+        }
+    }
+
+    return slow + 1;  // Length of unique elements
+}
+
+// Test
+const nums = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4];
+
+console.log(`Original: [${nums}]`);
+
+const newLength = removeDuplicates(nums);
+
+console.log(`New length: ${newLength}`);
+console.log(`Array after removing duplicates: [${nums.slice(0, newLength)}]`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+### <TranslatedText en="Approach 2: Two Pointers with Swap" bn="পদ্ধতি ২: সোয়াপ সহ দুটি পয়েন্টার" />
+
+<TranslatedText
+  en="Similar to approach 1, but use swapping instead of direct assignment. This makes the logic clearer in some cases."
+  bn="পদ্ধতি 1 এর মতো, কিন্তু সরাসরি অ্যাসাইনমেন্টের পরিবর্তে সোয়াপিং ব্যবহার করুন। এটি কিছু ক্ষেত্রে লজিক আরও পরিষ্কার করে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int removeDuplicatesSwap(vector<int>& nums) {
+    if (nums.empty()) return 0;
+
+    int writeIndex = 1;  // Next position to write
+
+    for (int i = 1; i < nums.size(); i++) {
+        if (nums[i] != nums[i - 1]) {
+            if (writeIndex != i) {
+                swap(nums[writeIndex], nums[i]);
+            }
+            writeIndex++;
+        }
+    }
+
+    return writeIndex;
+}
+
+int main() {
+    vector<int> nums = {1, 1, 2};
+
+    cout << "Original: ";
+    for (int num : nums) cout << num << " ";
+    cout << endl;
+
+    int newLength = removeDuplicatesSwap(nums);
+
+    cout << "New length: " << newLength << endl;
+    cout << "Array: ";
+    for (int i = 0; i < newLength; i++) {
+        cout << nums[i] << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def remove_duplicates_swap(nums):
+    if not nums:
+        return 0
+
+    write_index = 1  # Next position to write
+
+    for i in range(1, len(nums)):
+        if nums[i] != nums[i - 1]:
+            if write_index != i:
+                nums[write_index], nums[i] = nums[i], nums[write_index]
+            write_index += 1
+
+    return write_index
+
+# Test
+nums = [1, 1, 2]
+
+print(f"Original: {nums}")
+
+new_length = remove_duplicates_swap(nums)
+
+print(f"New length: {new_length}")
+print(f"Array: {nums[:new_length]}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function removeDuplicatesSwap(nums) {
+    if (nums.length === 0) return 0;
+
+    let writeIndex = 1;  // Next position to write
+
+    for (let i = 1; i < nums.length; i++) {
+        if (nums[i] !== nums[i - 1]) {
+            if (writeIndex !== i) {
+                [nums[writeIndex], nums[i]] = [nums[i], nums[writeIndex]];
+            }
+            writeIndex++;
+        }
+    }
+
+    return writeIndex;
+}
+
+// Test
+const nums = [1, 1, 2];
+
+console.log(`Original: [${nums}]`);
+
+const newLength = removeDuplicatesSwap(nums);
+
+console.log(`New length: ${newLength}`);
+console.log(`Array: [${nums.slice(0, newLength)}]`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+### <TranslatedText en="Approach 3: Allow Up to K Duplicates" bn="পদ্ধতি ৩: K পর্যন্ত ডুপ্লিকেট অনুমোদন করুন" />
+
+<TranslatedText
+  en="A more general solution that allows each element to appear at most k times. For k=1, it's the same as removing all duplicates."
+  bn="একটি আরো সাধারণ সমাধান যা প্রতিটি উপাদানকে সর্বোচ্চ k বার উপস্থিত হতে দেয়। k=1 এর জন্য, এটি সমস্ত ডুপ্লিকেট সরানোর মতোই।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int removeDuplicatesAllowK(vector<int>& nums, int k) {
+    if (nums.size() <= k) return nums.size();
+
+    int slow = k;  // Write position
+
+    for (int fast = k; fast < nums.size(); fast++) {
+        // Compare with element k positions back
+        if (nums[fast] != nums[slow - k]) {
+            nums[slow] = nums[fast];
+            slow++;
+        }
+    }
+
+    return slow;
+}
+
+// Remove all duplicates (k=1)
+int removeDuplicates(vector<int>& nums) {
+    return removeDuplicatesAllowK(nums, 1);
+}
+
+// Allow at most 2 duplicates
+int removeDuplicatesAllowTwo(vector<int>& nums) {
+    return removeDuplicatesAllowK(nums, 2);
+}
+
+int main() {
+    vector<int> nums1 = {1, 1, 1, 2, 2, 3};
+
+    cout << "Original: ";
+    for (int num : nums1) cout << num << " ";
+    cout << endl;
+
+    int len1 = removeDuplicates(nums1);
+    cout << "Remove all duplicates (k=1): ";
+    for (int i = 0; i < len1; i++) cout << nums1[i] << " ";
+    cout << endl;
+
+    vector<int> nums2 = {1, 1, 1, 2, 2, 3};
+    int len2 = removeDuplicatesAllowTwo(nums2);
+    cout << "Allow 2 duplicates (k=2): ";
+    for (int i = 0; i < len2; i++) cout << nums2[i] << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def remove_duplicates_allow_k(nums, k):
+    if len(nums) <= k:
+        return len(nums)
+
+    slow = k  # Write position
+
+    for fast in range(k, len(nums)):
+        # Compare with element k positions back
+        if nums[fast] != nums[slow - k]:
+            nums[slow] = nums[fast]
+            slow += 1
+
+    return slow
+
+# Remove all duplicates (k=1)
+def remove_duplicates(nums):
+    return remove_duplicates_allow_k(nums, 1)
+
+# Allow at most 2 duplicates
+def remove_duplicates_allow_two(nums):
+    return remove_duplicates_allow_k(nums, 2)
+
+# Test
+nums1 = [1, 1, 1, 2, 2, 3]
+print(f"Original: {nums1}")
+
+len1 = remove_duplicates(nums1[:])
+print(f"Remove all duplicates (k=1): {nums1[:len1]}")
+
+nums2 = [1, 1, 1, 2, 2, 3]
+len2 = remove_duplicates_allow_two(nums2)
+print(f"Allow 2 duplicates (k=2): {nums2[:len2]}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function removeDuplicatesAllowK(nums, k) {
+    if (nums.length <= k) return nums.length;
+
+    let slow = k;  // Write position
+
+    for (let fast = k; fast < nums.length; fast++) {
+        // Compare with element k positions back
+        if (nums[fast] !== nums[slow - k]) {
+            nums[slow] = nums[fast];
+            slow++;
+        }
+    }
+
+    return slow;
+}
+
+// Remove all duplicates (k=1)
+function removeDuplicates(nums) {
+    return removeDuplicatesAllowK(nums, 1);
+}
+
+// Allow at most 2 duplicates
+function removeDuplicatesAllowTwo(nums) {
+    return removeDuplicatesAllowK(nums, 2);
+}
+
+// Test
+const nums1 = [1, 1, 1, 2, 2, 3];
+console.log(`Original: [${nums1}]`);
+
+const len1 = removeDuplicates([...nums1]);
+console.log(`Remove all duplicates (k=1): [${nums1.slice(0, len1)}]`);
+
+const nums2 = [1, 1, 1, 2, 2, 3];
+const len2 = removeDuplicatesAllowTwo(nums2);
+console.log(`Allow 2 duplicates (k=2): [${nums2.slice(0, len2)}]`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+## <TranslatedText en="Algorithm Walkthrough" bn="অ্যালগরিদম ওয়াকথ্রু" />
+
+<TranslatedText
+  en="For array [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]:"
+  bn="অ্যারে [0, 0, 1, 1, 1, 2, 2, 3, 3, 4] এর জন্য:"
+/>
+
+```
+Initial: slow=0, fast=1
+Array: [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]
+        ^  ^
+     slow fast
+
+Step 1: fast=1, nums[1]=0 == nums[0]=0, skip
+
+Step 2: fast=2, nums[2]=1 != nums[0]=0
+  → slow++, slow=1
+  → nums[1] = nums[2] = 1
+  Array: [0, 1, 1, 1, 1, 2, 2, 3, 3, 4]
+           ^  ^
+        slow  fast
+
+Step 3: fast=3, nums[3]=1 == nums[1]=1, skip
+
+Step 4: fast=4, nums[4]=1 == nums[1]=1, skip
+
+Step 5: fast=5, nums[5]=2 != nums[1]=1
+  → slow++, slow=2
+  → nums[2] = nums[5] = 2
+  Array: [0, 1, 2, 1, 1, 2, 2, 3, 3, 4]
+              ^        ^
+           slow       fast
+
+Step 6: fast=6, nums[6]=2 == nums[2]=2, skip
+
+Step 7: fast=7, nums[7]=3 != nums[2]=2
+  → slow++, slow=3
+  → nums[3] = nums[7] = 3
+  Array: [0, 1, 2, 3, 1, 2, 2, 3, 3, 4]
+
+Step 8: fast=8, nums[8]=3 == nums[3]=3, skip
+
+Step 9: fast=9, nums[9]=4 != nums[3]=3
+  → slow++, slow=4
+  → nums[4] = nums[9] = 4
+  Array: [0, 1, 2, 3, 4, 2, 2, 3, 3, 4]
+
+Return slow + 1 = 5
+Result: [0, 1, 2, 3, 4]
+```
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en="1. **Two pointers are essential**: Slow pointer tracks write position, fast pointer reads elements."
+  bn="1. **দুটি পয়েন্টার অপরিহার্য**: ধীর পয়েন্টার লেখার অবস্থান ট্র্যাক করে, দ্রুত পয়েন্টার উপাদান পড়ে।"
+/>
+
+<TranslatedText
+  en="2. **Sorted array is key**: Algorithm relies on duplicates being adjacent."
+  bn="2. **সাজানো অ্যারে মূল**: অ্যালগরিদম সংলগ্ন ডুপ্লিকেটের উপর নির্ভর করে।"
+/>
+
+<TranslatedText
+  en="3. **In-place modification**: Overwrite duplicates with unique elements as we find them."
+  bn="3. **ইন-প্লেস পরিবর্তন**: যখন আমরা অনন্য উপাদান খুঁজে পাই তখন ডুপ্লিকেট ওভাররাইট করুন।"
+/>
+
+<TranslatedText
+  en="4. **General solution**: The k-duplicates approach handles many variations of this problem."
+  bn="4. **সাধারণ সমাধান**: k-ডুপ্লিকেট পদ্ধতি এই সমস্যার অনেক ভেরিয়েশন হ্যান্ডেল করে।"
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="- **Clarify in-place requirement**: Confirm that O(1) extra space is required
+- **Ask about sorted array**: This problem assumes sorted; unsorted is different
+- **Return value matters**: Usually return new length, not modified array
+- **Elements after length don't matter**: Focus on first k elements only
+- **Edge cases**: Empty array, no duplicates, all duplicates
+- **Follow-up**: Be ready for 'allow k duplicates' variation"
+  bn="- **ইন-প্লেস প্রয়োজনীয়তা স্পষ্ট করুন**: নিশ্চিত করুন যে O(1) অতিরিক্ত স্থান প্রয়োজন
+- **সাজানো অ্যারে সম্পর্কে জিজ্ঞাসা করুন**: এই সমস্যা সাজানো ধরে নেয়; অসাজানো ভিন্ন
+- **রিটার্ন মান গুরুত্বপূর্ণ**: সাধারণত নতুন দৈর্ঘ্য ফেরত দিন, পরিবর্তিত অ্যারে নয়
+- **দৈর্ঘ্যের পরে উপাদান গুরুত্বপূর্ণ নয়**: শুধুমাত্র প্রথম k উপাদানের উপর ফোকাস করুন
+- **এজ কেস**: খালি অ্যারে, কোন ডুপ্লিকেট নেই, সব ডুপ্লিকেট
+- **ফলো-আপ**: 'k ডুপ্লিকেট অনুমোদন' ভেরিয়েশনের জন্য প্রস্তুত থাকুন"
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Remove Duplicates from Sorted Array II (allow 2 duplicates)
+- Remove Element
+- Move Zeroes
+- Remove Duplicates from Unsorted Array (different approach)
+
+## <TranslatedText en="Complexity Analysis" bn="জটিলতা বিশ্লেষণ" />
+
+| <TranslatedText en="Aspect" bn="দিক" /> | <TranslatedText en="Complexity" bn="জটিলতা" /> | <TranslatedText en="Explanation" bn="ব্যাখ্যা" /> |
+|---|---|---|
+| <TranslatedText en="Time" bn="সময়" /> | O(n) | <TranslatedText en="Single pass through array" bn="অ্যারের মাধ্যমে একক পাস" /> |
+| <TranslatedText en="Space" bn="স্থান" /> | O(1) | <TranslatedText en="Only two pointers used" bn="শুধুমাত্র দুটি পয়েন্টার ব্যবহৃত" /> |
+| <TranslatedText en="In-place" bn="ইন-প্লেস" /> | ✓ | <TranslatedText en="Modifies input array" bn="ইনপুট অ্যারে পরিবর্তন করে" /> |
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="✓ Two pointers technique is optimal for in-place array modification
+✓ Sorted array allows O(n) time with O(1) space
+✓ Slow pointer tracks write position, fast pointer scans
+✓ General k-duplicates solution handles multiple variations
+✓ Return new length, elements after that don't matter
+✓ This pattern applies to many in-place array problems"
+  bn="✓ দুটি পয়েন্টার কৌশল ইন-প্লেস অ্যারে পরিবর্তনের জন্য সর্বোত্তম
+✓ সাজানো অ্যারে O(1) স্থান সহ O(n) সময় অনুমোদন করে
+✓ ধীর পয়েন্টার লেখার অবস্থান ট্র্যাক করে, দ্রুত পয়েন্টার স্ক্যান করে
+✓ সাধারণ k-ডুপ্লিকেট সমাধান একাধিক ভেরিয়েশন হ্যান্ডেল করে
+✓ নতুন দৈর্ঘ্য ফেরত দিন, এর পরে উপাদান গুরুত্বপূর্ণ নয়
+✓ এই প্যাটার্ন অনেক ইন-প্লেস অ্যারে সমস্যার ক্ষেত্রে প্রযোজ্য"
+/>

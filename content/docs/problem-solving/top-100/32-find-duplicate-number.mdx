@@ -1,0 +1,603 @@
+---
+title: Find Duplicate Number in Array
+description: Find the duplicate number in an array containing duplicates
+---
+
+import { Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { TranslatedText } from '@/components/TranslatedText';
+
+<LanguageSwitcher />
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given an array of integers where each element appears exactly once except for one element which appears twice, find the duplicate element. Variations include finding all duplicates or finding a duplicate in an array of n+1 integers containing numbers from 1 to n."
+  bn="পূর্ণসংখ্যার একটি অ্যারে দেওয়া হয়েছে যেখানে প্রতিটি উপাদান ঠিক একবার উপস্থিত হয় একটি উপাদান ছাড়া যা দুবার উপস্থিত হয়, ডুপ্লিকেট উপাদান খুঁজুন। ভেরিয়েশনের মধ্যে রয়েছে সমস্ত ডুপ্লিকেট খুঁজে পাওয়া বা 1 থেকে n সংখ্যা সহ n+1 পূর্ণসংখ্যার অ্যারেতে একটি ডুপ্লিকেট খুঁজে পাওয়া।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: [1, 3, 4, 2, 2]
+Output: 2
+Explanation: 2 appears twice
+
+Input: [3, 1, 3, 4, 2]
+Output: 3
+Explanation: 3 is the duplicate
+
+Input: [1, 1]
+Output: 1
+
+Input: [2, 5, 9, 6, 9, 3, 8, 9, 7, 1]
+Output: 9
+Explanation: 9 appears multiple times
+```
+
+## <TranslatedText en="Approaches" bn="সমাধানের পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Hash Set (Most Common)" bn="পদ্ধতি ১: হ্যাশ সেট (সবচেয়ে সাধারণ)" />
+
+<TranslatedText
+  en="Use a hash set to track numbers we've seen. When we encounter a number already in the set, that's our duplicate."
+  bn="আমরা দেখেছি এমন সংখ্যা ট্র্যাক করতে একটি হ্যাশ সেট ব্যবহার করুন। যখন আমরা ইতিমধ্যে সেটে থাকা একটি সংখ্যার সম্মুখীন হই, সেটি আমাদের ডুপ্লিকেট।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+using namespace std;
+
+int findDuplicateHashSet(vector<int>& arr) {
+    unordered_set<int> seen;
+
+    for (int num : arr) {
+        if (seen.find(num) != seen.end()) {
+            return num;  // Found duplicate
+        }
+        seen.insert(num);
+    }
+
+    return -1;  // No duplicate found
+}
+
+// Find all duplicates
+vector<int> findAllDuplicates(vector<int>& arr) {
+    unordered_set<int> seen;
+    unordered_set<int> duplicates;
+
+    for (int num : arr) {
+        if (seen.find(num) != seen.end()) {
+            duplicates.insert(num);
+        } else {
+            seen.insert(num);
+        }
+    }
+
+    return vector<int>(duplicates.begin(), duplicates.end());
+}
+
+int main() {
+    vector<int> arr = {1, 3, 4, 2, 2};
+
+    int duplicate = findDuplicateHashSet(arr);
+    cout << "Duplicate: " << duplicate << endl;
+
+    vector<int> arr2 = {4, 3, 2, 7, 8, 2, 3, 1};
+    vector<int> allDups = findAllDuplicates(arr2);
+    cout << "All duplicates: ";
+    for (int num : allDups) cout << num << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def find_duplicate_hash_set(arr):
+    seen = set()
+
+    for num in arr:
+        if num in seen:
+            return num  # Found duplicate
+        seen.add(num)
+
+    return -1  # No duplicate found
+
+# Find all duplicates
+def find_all_duplicates(arr):
+    seen = set()
+    duplicates = set()
+
+    for num in arr:
+        if num in seen:
+            duplicates.add(num)
+        else:
+            seen.add(num)
+
+    return list(duplicates)
+
+# Test
+arr = [1, 3, 4, 2, 2]
+
+duplicate = find_duplicate_hash_set(arr)
+print(f"Duplicate: {duplicate}")
+
+arr2 = [4, 3, 2, 7, 8, 2, 3, 1]
+all_dups = find_all_duplicates(arr2)
+print(f"All duplicates: {all_dups}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function findDuplicateHashSet(arr) {
+    const seen = new Set();
+
+    for (let num of arr) {
+        if (seen.has(num)) {
+            return num;  // Found duplicate
+        }
+        seen.add(num);
+    }
+
+    return -1;  // No duplicate found
+}
+
+// Find all duplicates
+function findAllDuplicates(arr) {
+    const seen = new Set();
+    const duplicates = new Set();
+
+    for (let num of arr) {
+        if (seen.has(num)) {
+            duplicates.add(num);
+        } else {
+            seen.add(num);
+        }
+    }
+
+    return Array.from(duplicates);
+}
+
+// Test
+const arr = [1, 3, 4, 2, 2];
+
+const duplicate = findDuplicateHashSet(arr);
+console.log(`Duplicate: ${duplicate}`);
+
+const arr2 = [4, 3, 2, 7, 8, 2, 3, 1];
+const allDups = findAllDuplicates(arr2);
+console.log(`All duplicates: ${allDups}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n)
+
+### <TranslatedText en="Approach 2: Sorting" bn="পদ্ধতি ২: সাজানো" />
+
+<TranslatedText
+  en="Sort the array and check adjacent elements. If two adjacent elements are equal, we found our duplicate."
+  bn="অ্যারে সাজান এবং সংলগ্ন উপাদান পরীক্ষা করুন। যদি দুটি সংলগ্ন উপাদান সমান হয়, আমরা আমাদের ডুপ্লিকেট খুঁজে পেয়েছি।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int findDuplicateSorting(vector<int>& arr) {
+    vector<int> sorted_arr = arr;  // Copy to avoid modifying original
+    sort(sorted_arr.begin(), sorted_arr.end());
+
+    for (int i = 0; i < sorted_arr.size() - 1; i++) {
+        if (sorted_arr[i] == sorted_arr[i + 1]) {
+            return sorted_arr[i];
+        }
+    }
+
+    return -1;  // No duplicate found
+}
+
+int main() {
+    vector<int> arr = {1, 3, 4, 2, 2};
+
+    int duplicate = findDuplicateSorting(arr);
+    cout << "Duplicate: " << duplicate << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def find_duplicate_sorting(arr):
+    sorted_arr = sorted(arr)
+
+    for i in range(len(sorted_arr) - 1):
+        if sorted_arr[i] == sorted_arr[i + 1]:
+            return sorted_arr[i]
+
+    return -1  # No duplicate found
+
+# Test
+arr = [1, 3, 4, 2, 2]
+
+duplicate = find_duplicate_sorting(arr)
+print(f"Duplicate: {duplicate}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function findDuplicateSorting(arr) {
+    const sortedArr = [...arr].sort((a, b) => a - b);
+
+    for (let i = 0; i < sortedArr.length - 1; i++) {
+        if (sortedArr[i] === sortedArr[i + 1]) {
+            return sortedArr[i];
+        }
+    }
+
+    return -1;  // No duplicate found
+}
+
+// Test
+const arr = [1, 3, 4, 2, 2];
+
+const duplicate = findDuplicateSorting(arr);
+console.log(`Duplicate: ${duplicate}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n log n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1) <TranslatedText en="if sorting in place" bn="যদি জায়গায় সাজানো হয়" />
+
+### <TranslatedText en="Approach 3: XOR (For exactly one duplicate appearing twice)" bn="পদ্ধতি ৩: XOR (ঠিক একবার ডুপ্লিকেট দুবার উপস্থিত হওয়ার জন্য)" />
+
+<TranslatedText
+  en="If the array contains numbers 1 to n with exactly one duplicate, we can use XOR similar to finding missing number. XOR all array elements with all numbers 1 to n."
+  bn="যদি অ্যারেতে 1 থেকে n সংখ্যা থাকে ঠিক একটি ডুপ্লিকেট সহ, আমরা হারিয়ে যাওয়া সংখ্যা খুঁজে পাওয়ার মতো XOR ব্যবহার করতে পারি। সমস্ত অ্যারে উপাদান 1 থেকে n সংখ্যার সাথে XOR করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Works when array has numbers 1 to n with one duplicate
+int findDuplicateXOR(vector<int>& arr) {
+    int xorResult = 0;
+    int n = arr.size() - 1;  // n because we have n+1 elements
+
+    // XOR all array elements
+    for (int num : arr) {
+        xorResult ^= num;
+    }
+
+    // XOR with numbers 1 to n
+    for (int i = 1; i <= n; i++) {
+        xorResult ^= i;
+    }
+
+    // Result is the duplicate (appears 3 times total, odd count)
+    return xorResult;
+}
+
+int main() {
+    vector<int> arr = {1, 3, 4, 2, 2};
+
+    int duplicate = findDuplicateXOR(arr);
+    cout << "Duplicate: " << duplicate << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def find_duplicate_xor(arr):
+    """Works when array has numbers 1 to n with one duplicate"""
+    xor_result = 0
+    n = len(arr) - 1  # n because we have n+1 elements
+
+    # XOR all array elements
+    for num in arr:
+        xor_result ^= num
+
+    # XOR with numbers 1 to n
+    for i in range(1, n + 1):
+        xor_result ^= i
+
+    # Result is the duplicate (appears 3 times total, odd count)
+    return xor_result
+
+# Test
+arr = [1, 3, 4, 2, 2]
+
+duplicate = find_duplicate_xor(arr)
+print(f"Duplicate: {duplicate}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function findDuplicateXOR(arr) {
+    // Works when array has numbers 1 to n with one duplicate
+    let xorResult = 0;
+    const n = arr.length - 1;  // n because we have n+1 elements
+
+    // XOR all array elements
+    for (let num of arr) {
+        xorResult ^= num;
+    }
+
+    // XOR with numbers 1 to n
+    for (let i = 1; i <= n; i++) {
+        xorResult ^= i;
+    }
+
+    // Result is the duplicate (appears 3 times total, odd count)
+    return xorResult;
+}
+
+// Test
+const arr = [1, 3, 4, 2, 2];
+
+const duplicate = findDuplicateXOR(arr);
+console.log(`Duplicate: ${duplicate}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+**<TranslatedText en="Limitation" bn="সীমাবদ্ধতা" />:** <TranslatedText en="Only works when array contains numbers 1 to n with exactly one duplicate appearing twice" bn="শুধুমাত্র তখনই কাজ করে যখন অ্যারেতে 1 থেকে n সংখ্যা থাকে ঠিক একটি ডুপ্লিকেট দুবার উপস্থিত হয়" />
+
+### <TranslatedText en="Approach 4: Floyd's Cycle Detection (Optimal for specific constraint)" bn="পদ্ধতি ৪: ফ্লয়েডের সাইকেল ডিটেকশন (নির্দিষ্ট সীমাবদ্ধতার জন্য সর্বোত্তম)" />
+
+<TranslatedText
+  en="For an array of n+1 integers where each number is between 1 and n (inclusive), we can treat the array as a linked list and use Floyd's cycle detection algorithm. This achieves O(n) time and O(1) space without modifying the array."
+  bn="n+1 পূর্ণসংখ্যার একটি অ্যারের জন্য যেখানে প্রতিটি সংখ্যা 1 এবং n এর মধ্যে (অন্তর্ভুক্ত), আমরা অ্যারেটিকে একটি লিঙ্কড লিস্ট হিসাবে বিবেচনা করতে পারি এবং ফ্লয়েডের সাইকেল ডিটেকশন অ্যালগরিদম ব্যবহার করতে পারি। এটি অ্যারে পরিবর্তন না করে O(n) সময় এবং O(1) স্থান অর্জন করে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Floyd's Tortoise and Hare (for array with numbers 1 to n)
+int findDuplicateFloyd(vector<int>& arr) {
+    // Phase 1: Find intersection point in cycle
+    int slow = arr[0];
+    int fast = arr[0];
+
+    do {
+        slow = arr[slow];
+        fast = arr[arr[fast]];
+    } while (slow != fast);
+
+    // Phase 2: Find entrance to cycle (duplicate number)
+    slow = arr[0];
+    while (slow != fast) {
+        slow = arr[slow];
+        fast = arr[fast];
+    }
+
+    return slow;
+}
+
+int main() {
+    vector<int> arr = {1, 3, 4, 2, 2};
+
+    int duplicate = findDuplicateFloyd(arr);
+    cout << "Duplicate: " << duplicate << endl;
+
+    vector<int> arr2 = {3, 1, 3, 4, 2};
+    cout << "Duplicate: " << findDuplicateFloyd(arr2) << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def find_duplicate_floyd(arr):
+    """Floyd's Tortoise and Hare (for array with numbers 1 to n)"""
+    # Phase 1: Find intersection point in cycle
+    slow = arr[0]
+    fast = arr[0]
+
+    while True:
+        slow = arr[slow]
+        fast = arr[arr[fast]]
+        if slow == fast:
+            break
+
+    # Phase 2: Find entrance to cycle (duplicate number)
+    slow = arr[0]
+    while slow != fast:
+        slow = arr[slow]
+        fast = arr[fast]
+
+    return slow
+
+# Test
+arr = [1, 3, 4, 2, 2]
+
+duplicate = find_duplicate_floyd(arr)
+print(f"Duplicate: {duplicate}")
+
+arr2 = [3, 1, 3, 4, 2]
+print(f"Duplicate: {find_duplicate_floyd(arr2)}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function findDuplicateFloyd(arr) {
+    // Floyd's Tortoise and Hare (for array with numbers 1 to n)
+    // Phase 1: Find intersection point in cycle
+    let slow = arr[0];
+    let fast = arr[0];
+
+    do {
+        slow = arr[slow];
+        fast = arr[arr[fast]];
+    } while (slow !== fast);
+
+    // Phase 2: Find entrance to cycle (duplicate number)
+    slow = arr[0];
+    while (slow !== fast) {
+        slow = arr[slow];
+        fast = arr[fast];
+    }
+
+    return slow;
+}
+
+// Test
+const arr = [1, 3, 4, 2, 2];
+
+const duplicate = findDuplicateFloyd(arr);
+console.log(`Duplicate: ${duplicate}`);
+
+const arr2 = [3, 1, 3, 4, 2];
+console.log(`Duplicate: ${findDuplicateFloyd(arr2)}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+**<TranslatedText en="Advantage" bn="সুবিধা" />:** <TranslatedText en="Doesn't modify the array, uses constant space" bn="অ্যারে পরিবর্তন করে না, ধ্রুবক স্থান ব্যবহার করে" />
+
+## <TranslatedText en="Complexity Comparison" bn="জটিলতার তুলনা" />
+
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time Complexity" bn="সময় জটিলতা" /> | <TranslatedText en="Space Complexity" bn="স্থান জটিলতা" /> | <TranslatedText en="Constraints" bn="সীমাবদ্ধতা" /> |
+|---|---|---|---|
+| <TranslatedText en="Hash Set" bn="হ্যাশ সেট" /> | O(n) | O(n) | <TranslatedText en="General case" bn="সাধারণ ক্ষেত্রে" /> |
+| <TranslatedText en="Sorting" bn="সাজানো" /> | O(n log n) | O(1) | <TranslatedText en="Modifies array" bn="অ্যারে পরিবর্তন করে" /> |
+| <TranslatedText en="XOR" bn="XOR" /> | O(n) | O(1) | <TranslatedText en="Numbers 1 to n only" bn="শুধুমাত্র 1 থেকে n সংখ্যা" /> |
+| <TranslatedText en="Floyd's Cycle" bn="ফ্লয়েডের সাইকেল" /> | O(n) | O(1) | <TranslatedText en="Numbers 1 to n only" bn="শুধুমাত্র 1 থেকে n সংখ্যা" /> |
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en="1. **Hash set is most versatile**: Works for any array with duplicates."
+  bn="1. **হ্যাশ সেট সবচেয়ে বহুমুখী**: ডুপ্লিকেট সহ যেকোনো অ্যারের জন্য কাজ করে।"
+/>
+
+<TranslatedText
+  en="2. **Floyd's algorithm is elegant**: Treats array indices as linked list pointers to detect cycle."
+  bn="2. **ফ্লয়েডের অ্যালগরিদম মার্জিত**: সাইকেল সনাক্ত করতে অ্যারে সূচকগুলিকে লিঙ্কড লিস্ট পয়েন্টার হিসাবে বিবেচনা করে।"
+/>
+
+<TranslatedText
+  en="3. **Constraint matters**: Different approaches work best for different constraints (general vs 1 to n)."
+  bn="3. **সীমাবদ্ধতা গুরুত্বপূর্ণ**: বিভিন্ন সীমাবদ্ধতার জন্য বিভিন্ন পদ্ধতি সবচেয়ে ভাল কাজ করে (সাধারণ বনাম 1 থেকে n)।"
+/>
+
+<TranslatedText
+  en="4. **Space-time tradeoff**: Hash set uses extra space for faster, simpler solution."
+  bn="4. **স্থান-সময় ট্রেড-অফ**: হ্যাশ সেট দ্রুত, সহজ সমাধানের জন্য অতিরিক্ত স্থান ব্যবহার করে।"
+/>
+
+## <TranslatedText en="Floyd's Cycle Detection Explanation" bn="ফ্লয়েডের সাইকেল ডিটেকশন ব্যাখ্যা" />
+
+<TranslatedText
+  en="For array [1, 3, 4, 2, 2], think of it as: index 0 points to 1, index 1 points to 3, etc."
+  bn="অ্যারে [1, 3, 4, 2, 2] এর জন্য, এটি এভাবে চিন্তা করুন: সূচক 0 পয়েন্ট করে 1, সূচক 1 পয়েন্ট করে 3, ইত্যাদি।"
+/>
+
+```
+Index:  0  1  2  3  4
+Value:  1  3  4  2  2
+
+Path: 0 → 1 → 3 → 2 → 4 → 2 → 4 → 2 (cycle at 2)
+
+The duplicate number (2) creates the cycle entrance.
+```
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="- **Clarify constraints**: Ask if array contains numbers 1 to n or arbitrary numbers
+- **Start with hash set**: Most straightforward and works for general case
+- **Show advanced knowledge**: Mention Floyd's algorithm for O(1) space solution
+- **Discuss tradeoffs**: Hash set vs sorting vs Floyd's based on requirements
+- **Handle multiple duplicates**: Ask if there's one duplicate or multiple
+- **Edge cases**: Array with 2 elements, all elements same, multiple duplicates"
+  bn="- **সীমাবদ্ধতা স্পষ্ট করুন**: জিজ্ঞাসা করুন অ্যারেতে 1 থেকে n সংখ্যা আছে নাকি স্বেচ্ছাচারী সংখ্যা
+- **হ্যাশ সেট দিয়ে শুরু করুন**: সবচেয়ে সোজা এবং সাধারণ ক্ষেত্রে কাজ করে
+- **উন্নত জ্ঞান দেখান**: O(1) স্থান সমাধানের জন্য ফ্লয়েডের অ্যালগরিদম উল্লেখ করুন
+- **ট্রেড-অফ আলোচনা করুন**: প্রয়োজনীয়তার উপর ভিত্তি করে হ্যাশ সেট বনাম সাজানো বনাম ফ্লয়েড
+- **একাধিক ডুপ্লিকেট হ্যান্ডেল করুন**: জিজ্ঞাসা করুন একটি ডুপ্লিকেট আছে নাকি একাধিক
+- **এজ কেস**: 2 উপাদান সহ অ্যারে, সব উপাদান একই, একাধিক ডুপ্লিকেট"
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Find All Duplicates in Array
+- Find All Numbers Disappeared in Array
+- Set Mismatch
+- Contains Duplicate
+- Contains Duplicate II (within distance k)
+
+## <TranslatedText en="Example Walkthrough" bn="উদাহরণ ওয়াকথ্রু" />
+
+<TranslatedText
+  en="Using Hash Set for [1, 3, 4, 2, 2]:"
+  bn="[1, 3, 4, 2, 2] এর জন্য হ্যাশ সেট ব্যবহার করে:"
+/>
+
+```
+Step 1: num=1, seen={}
+  → Add 1, seen={1}
+
+Step 2: num=3, seen={1}
+  → Add 3, seen={1,3}
+
+Step 3: num=4, seen={1,3}
+  → Add 4, seen={1,3,4}
+
+Step 4: num=2, seen={1,3,4}
+  → Add 2, seen={1,3,4,2}
+
+Step 5: num=2, seen={1,3,4,2}
+  → 2 already in set! Return 2
+```
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="✓ Hash set is the most practical solution for general case
+✓ Floyd's cycle detection is brilliant for O(1) space when numbers are 1 to n
+✓ Always clarify problem constraints before choosing approach
+✓ Sorting modifies array but uses less space
+✓ XOR works only for specific constraint (numbers 1 to n, one duplicate twice)
+✓ Different variations require different optimal solutions"
+  bn="✓ হ্যাশ সেট সাধারণ ক্ষেত্রে সবচেয়ে ব্যবহারিক সমাধান
+✓ ফ্লয়েডের সাইকেল ডিটেকশন O(1) স্থানের জন্য চমৎকার যখন সংখ্যা 1 থেকে n
+✓ পদ্ধতি বেছে নেওয়ার আগে সর্বদা সমস্যার সীমাবদ্ধতা স্পষ্ট করুন
+✓ সাজানো অ্যারে পরিবর্তন করে কিন্তু কম স্থান ব্যবহার করে
+✓ XOR শুধুমাত্র নির্দিষ্ট সীমাবদ্ধতার জন্য কাজ করে (সংখ্যা 1 থেকে n, একটি ডুপ্লিকেট দুবার)
+✓ বিভিন্ন ভেরিয়েশনের বিভিন্ন সর্বোত্তম সমাধান প্রয়োজন"
+/>

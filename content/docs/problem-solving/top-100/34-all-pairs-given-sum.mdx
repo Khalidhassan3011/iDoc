@@ -1,0 +1,531 @@
+---
+title: Find All Pairs with Given Sum
+description: Find all pairs of integers in an array whose sum equals a given target value
+---
+
+import { Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { TranslatedText } from '@/components/TranslatedText';
+
+<LanguageSwitcher />
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given an array of integers and a target sum, find all unique pairs of numbers in the array that add up to the target. Each pair should be counted once, and you cannot use the same element twice in a pair."
+  bn="পূর্ণসংখ্যার একটি অ্যারে এবং একটি লক্ষ্য যোগফল দেওয়া হয়েছে, অ্যারেতে সংখ্যার সমস্ত অনন্য জোড়া খুঁজুন যা লক্ষ্যে যোগ করে। প্রতিটি জোড়া একবার গণনা করা উচিত, এবং আপনি একটি জোড়ায় একই উপাদান দুবার ব্যবহার করতে পারবেন না।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: arr = [1, 5, 7, -1, 5], target = 6
+Output: [(1, 5), (7, -1)]
+Explanation: 1+5=6 and 7+(-1)=6
+
+Input: arr = [2, 3, 4, 1, 2, 4], target = 6
+Output: [(2, 4)]
+Explanation: 2+4=6 (count unique pairs only once)
+
+Input: arr = [1, 2, 3, 4], target = 10
+Output: []
+Explanation: No pairs sum to 10
+
+Input: arr = [3, 3, 3], target = 6
+Output: [(3, 3)]
+```
+
+## <TranslatedText en="Approaches" bn="সমাধানের পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Hash Set (Optimal)" bn="পদ্ধতি ১: হ্যাশ সেট (সর্বোত্তম)" />
+
+<TranslatedText
+  en="Use a hash set to track seen numbers. For each number, check if its complement (target - number) exists in the set. Use a set to store unique pairs to avoid duplicates."
+  bn="দেখা সংখ্যা ট্র্যাক করতে একটি হ্যাশ সেট ব্যবহার করুন। প্রতিটি সংখ্যার জন্য, পরীক্ষা করুন যে এর পরিপূরক (target - number) সেটে বিদ্যমান কিনা। ডুপ্লিকেট এড়াতে অনন্য জোড়া সংরক্ষণ করতে একটি সেট ব্যবহার করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+#include <set>
+#include <algorithm>
+using namespace std;
+
+vector<pair<int, int>> findPairsHashSet(vector<int>& arr, int target) {
+    unordered_set<int> seen;
+    set<pair<int, int>> uniquePairs;  // Use set to avoid duplicate pairs
+
+    for (int num : arr) {
+        int complement = target - num;
+
+        if (seen.find(complement) != seen.end()) {
+            // Found a pair, store in sorted order to avoid duplicates
+            int first = min(num, complement);
+            int second = max(num, complement);
+            uniquePairs.insert({first, second});
+        }
+
+        seen.insert(num);
+    }
+
+    // Convert set to vector
+    return vector<pair<int, int>>(uniquePairs.begin(), uniquePairs.end());
+}
+
+int main() {
+    vector<int> arr = {1, 5, 7, -1, 5};
+    int target = 6;
+
+    auto pairs = findPairsHashSet(arr, target);
+
+    cout << "Pairs with sum " << target << ":" << endl;
+    for (auto [a, b] : pairs) {
+        cout << "(" << a << ", " << b << ")" << endl;
+    }
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def find_pairs_hash_set(arr, target):
+    seen = set()
+    unique_pairs = set()
+
+    for num in arr:
+        complement = target - num
+
+        if complement in seen:
+            # Found a pair, store in sorted order to avoid duplicates
+            pair = tuple(sorted([num, complement]))
+            unique_pairs.add(pair)
+
+        seen.add(num)
+
+    return list(unique_pairs)
+
+# Test
+arr = [1, 5, 7, -1, 5]
+target = 6
+
+pairs = find_pairs_hash_set(arr, target)
+
+print(f"Pairs with sum {target}:")
+for a, b in pairs:
+    print(f"({a}, {b})")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function findPairsHashSet(arr, target) {
+    const seen = new Set();
+    const uniquePairs = new Set();
+
+    for (let num of arr) {
+        const complement = target - num;
+
+        if (seen.has(complement)) {
+            // Found a pair, store in sorted order to avoid duplicates
+            const pair = [Math.min(num, complement), Math.max(num, complement)].join(',');
+            uniquePairs.add(pair);
+        }
+
+        seen.add(num);
+    }
+
+    // Convert set strings back to arrays
+    return Array.from(uniquePairs).map(pair => {
+        const [a, b] = pair.split(',').map(Number);
+        return [a, b];
+    });
+}
+
+// Test
+const arr = [1, 5, 7, -1, 5];
+const target = 6;
+
+const pairs = findPairsHashSet(arr, target);
+
+console.log(`Pairs with sum ${target}:`);
+pairs.forEach(([a, b]) => console.log(`(${a}, ${b})`));
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n)
+
+### <TranslatedText en="Approach 2: Two Pointers (Requires Sorting)" bn="পদ্ধতি ২: দুটি পয়েন্টার (সাজানো প্রয়োজন)" />
+
+<TranslatedText
+  en="Sort the array first, then use two pointers from both ends. Move left pointer right if sum is too small, move right pointer left if sum is too large. Skip duplicates to find unique pairs."
+  bn="প্রথমে অ্যারে সাজান, তারপর উভয় প্রান্ত থেকে দুটি পয়েন্টার ব্যবহার করুন। যদি যোগফল খুব ছোট হয় তাহলে বাম পয়েন্টার ডানে সরান, যদি যোগফল খুব বড় হয় তাহলে ডান পয়েন্টার বামে সরান। অনন্য জোড়া খুঁজতে ডুপ্লিকেট এড়িয়ে যান।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+vector<pair<int, int>> findPairsTwoPointers(vector<int>& arr, int target) {
+    vector<pair<int, int>> pairs;
+
+    // Sort the array
+    vector<int> sorted_arr = arr;
+    sort(sorted_arr.begin(), sorted_arr.end());
+
+    int left = 0;
+    int right = sorted_arr.size() - 1;
+
+    while (left < right) {
+        int sum = sorted_arr[left] + sorted_arr[right];
+
+        if (sum == target) {
+            pairs.push_back({sorted_arr[left], sorted_arr[right]});
+
+            // Skip duplicates
+            int leftVal = sorted_arr[left];
+            int rightVal = sorted_arr[right];
+
+            while (left < right && sorted_arr[left] == leftVal) left++;
+            while (left < right && sorted_arr[right] == rightVal) right--;
+
+        } else if (sum < target) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+
+    return pairs;
+}
+
+int main() {
+    vector<int> arr = {1, 5, 7, -1, 5};
+    int target = 6;
+
+    auto pairs = findPairsTwoPointers(arr, target);
+
+    cout << "Pairs with sum " << target << ":" << endl;
+    for (auto [a, b] : pairs) {
+        cout << "(" << a << ", " << b << ")" << endl;
+    }
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def find_pairs_two_pointers(arr, target):
+    pairs = []
+
+    # Sort the array
+    sorted_arr = sorted(arr)
+
+    left = 0
+    right = len(sorted_arr) - 1
+
+    while left < right:
+        current_sum = sorted_arr[left] + sorted_arr[right]
+
+        if current_sum == target:
+            pairs.append((sorted_arr[left], sorted_arr[right]))
+
+            # Skip duplicates
+            left_val = sorted_arr[left]
+            right_val = sorted_arr[right]
+
+            while left < right and sorted_arr[left] == left_val:
+                left += 1
+            while left < right and sorted_arr[right] == right_val:
+                right -= 1
+
+        elif current_sum < target:
+            left += 1
+        else:
+            right -= 1
+
+    return pairs
+
+# Test
+arr = [1, 5, 7, -1, 5]
+target = 6
+
+pairs = find_pairs_two_pointers(arr, target)
+
+print(f"Pairs with sum {target}:")
+for a, b in pairs:
+    print(f"({a}, {b})")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function findPairsTwoPointers(arr, target) {
+    const pairs = [];
+
+    // Sort the array
+    const sortedArr = [...arr].sort((a, b) => a - b);
+
+    let left = 0;
+    let right = sortedArr.length - 1;
+
+    while (left < right) {
+        const sum = sortedArr[left] + sortedArr[right];
+
+        if (sum === target) {
+            pairs.push([sortedArr[left], sortedArr[right]]);
+
+            // Skip duplicates
+            const leftVal = sortedArr[left];
+            const rightVal = sortedArr[right];
+
+            while (left < right && sortedArr[left] === leftVal) left++;
+            while (left < right && sortedArr[right] === rightVal) right--;
+
+        } else if (sum < target) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+
+    return pairs;
+}
+
+// Test
+const arr = [1, 5, 7, -1, 5];
+const target = 6;
+
+const pairs = findPairsTwoPointers(arr, target);
+
+console.log(`Pairs with sum ${target}:`);
+pairs.forEach(([a, b]) => console.log(`(${a}, ${b})`));
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n log n) <TranslatedText en="due to sorting" bn="সাজানোর কারণে" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1) <TranslatedText en="excluding output" bn="আউটপুট বাদ দিয়ে" />
+
+### <TranslatedText en="Approach 3: Brute Force" bn="পদ্ধতি ৩: ব্রুট ফোর্স" />
+
+<TranslatedText
+  en="Check all possible pairs using nested loops. Simple but inefficient for large arrays."
+  bn="নেস্টেড লুপ ব্যবহার করে সমস্ত সম্ভাব্য জোড়া পরীক্ষা করুন। সহজ কিন্তু বড় অ্যারের জন্য অদক্ষ।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+#include <set>
+#include <algorithm>
+using namespace std;
+
+vector<pair<int, int>> findPairsBruteForce(vector<int>& arr, int target) {
+    set<pair<int, int>> uniquePairs;
+
+    for (int i = 0; i < arr.size(); i++) {
+        for (int j = i + 1; j < arr.size(); j++) {
+            if (arr[i] + arr[j] == target) {
+                int first = min(arr[i], arr[j]);
+                int second = max(arr[i], arr[j]);
+                uniquePairs.insert({first, second});
+            }
+        }
+    }
+
+    return vector<pair<int, int>>(uniquePairs.begin(), uniquePairs.end());
+}
+
+int main() {
+    vector<int> arr = {1, 5, 7, -1, 5};
+    int target = 6;
+
+    auto pairs = findPairsBruteForce(arr, target);
+
+    cout << "Pairs with sum " << target << ":" << endl;
+    for (auto [a, b] : pairs) {
+        cout << "(" << a << ", " << b << ")" << endl;
+    }
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def find_pairs_brute_force(arr, target):
+    unique_pairs = set()
+
+    for i in range(len(arr)):
+        for j in range(i + 1, len(arr)):
+            if arr[i] + arr[j] == target:
+                pair = tuple(sorted([arr[i], arr[j]]))
+                unique_pairs.add(pair)
+
+    return list(unique_pairs)
+
+# Test
+arr = [1, 5, 7, -1, 5]
+target = 6
+
+pairs = find_pairs_brute_force(arr, target)
+
+print(f"Pairs with sum {target}:")
+for a, b in pairs:
+    print(f"({a}, {b})")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function findPairsBruteForce(arr, target) {
+    const uniquePairs = new Set();
+
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = i + 1; j < arr.length; j++) {
+            if (arr[i] + arr[j] === target) {
+                const pair = [Math.min(arr[i], arr[j]), Math.max(arr[i], arr[j])].join(',');
+                uniquePairs.add(pair);
+            }
+        }
+    }
+
+    return Array.from(uniquePairs).map(pair => {
+        const [a, b] = pair.split(',').map(Number);
+        return [a, b];
+    });
+}
+
+// Test
+const arr = [1, 5, 7, -1, 5];
+const target = 6;
+
+const pairs = findPairsBruteForce(arr, target);
+
+console.log(`Pairs with sum ${target}:`);
+pairs.forEach(([a, b]) => console.log(`(${a}, ${b})`));
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n²)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(k) <TranslatedText en="where k is the number of unique pairs" bn="যেখানে k হল অনন্য জোড়ার সংখ্যা" />
+
+## <TranslatedText en="Complexity Comparison" bn="জটিলতার তুলনা" />
+
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time Complexity" bn="সময় জটিলতা" /> | <TranslatedText en="Space Complexity" bn="স্থান জটিলতা" /> | <TranslatedText en="Best For" bn="সেরা জন্য" /> |
+|---|---|---|---|
+| <TranslatedText en="Hash Set" bn="হ্যাশ সেট" /> | O(n) | O(n) | <TranslatedText en="Unsorted arrays" bn="অসাজানো অ্যারে" /> |
+| <TranslatedText en="Two Pointers" bn="দুটি পয়েন্টার" /> | O(n log n) | O(1) | <TranslatedText en="Memory-constrained" bn="মেমরি-সীমাবদ্ধ" /> |
+| <TranslatedText en="Brute Force" bn="ব্রুট ফোর্স" /> | O(n²) | O(k) | <TranslatedText en="Very small arrays" bn="খুব ছোট অ্যারে" /> |
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en="1. **Hash set is optimal for unsorted arrays**: O(n) time with single pass."
+  bn="1. **হ্যাশ সেট অসাজানো অ্যারের জন্য সর্বোত্তম**: একক পাস সহ O(n) সময়।"
+/>
+
+<TranslatedText
+  en="2. **Two pointers saves space**: If array is already sorted or memory is limited."
+  bn="2. **দুটি পয়েন্টার স্থান সংরক্ষণ করে**: যদি অ্যারে ইতিমধ্যে সাজানো থাকে বা মেমরি সীমিত থাকে।"
+/>
+
+<TranslatedText
+  en="3. **Handle duplicates carefully**: Store pairs in sorted order and use sets to avoid duplicate pairs."
+  bn="3. **ডুপ্লিকেট সাবধানে হ্যান্ডেল করুন**: সাজানো ক্রমে জোড়া সংরক্ষণ করুন এবং ডুপ্লিকেট জোড়া এড়াতে সেট ব্যবহার করুন।"
+/>
+
+<TranslatedText
+  en="4. **Complement pattern**: For each number x, look for (target - x)."
+  bn="4. **পরিপূরক প্যাটার্ন**: প্রতিটি সংখ্যা x এর জন্য, (target - x) খুঁজুন।"
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="- **Clarify uniqueness requirement**: Ask if [1,5] and [5,1] should be counted as one pair or two
+- **Start with hash set**: Most efficient for unsorted arrays
+- **Mention two-pointers alternative**: Shows knowledge of space optimization
+- **Handle edge cases**: Empty array, no pairs found, all elements same
+- **Discuss duplicate handling**: Explain how you ensure each unique pair is counted once
+- **Follow-up variations**: Be ready for 3Sum, 4Sum, or pairs with specific difference"
+  bn="- **অনন্যতার প্রয়োজনীয়তা স্পষ্ট করুন**: জিজ্ঞাসা করুন [1,5] এবং [5,1] কি একটি জোড়া না দুটি হিসাবে গণনা করা উচিত
+- **হ্যাশ সেট দিয়ে শুরু করুন**: অসাজানো অ্যারের জন্য সবচেয়ে দক্ষ
+- **দুই-পয়েন্টার বিকল্প উল্লেখ করুন**: স্থান অপ্টিমাইজেশনের জ্ঞান দেখায়
+- **এজ কেস হ্যান্ডেল করুন**: খালি অ্যারে, কোন জোড়া পাওয়া যায়নি, সমস্ত উপাদান একই
+- **ডুপ্লিকেট হ্যান্ডলিং আলোচনা করুন**: ব্যাখ্যা করুন কিভাবে আপনি নিশ্চিত করেন যে প্রতিটি অনন্য জোড়া একবার গণনা করা হয়
+- **ফলো-আপ ভেরিয়েশন**: 3Sum, 4Sum, বা নির্দিষ্ট পার্থক্য সহ জোড়ার জন্য প্রস্তুত থাকুন"
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Two Sum (return indices instead of values)
+- 3Sum (find three numbers that sum to target)
+- 4Sum
+- Two Sum Less Than K
+- Count Pairs with Given Sum
+
+## <TranslatedText en="Example Walkthrough" bn="উদাহরণ ওয়াকথ্রু" />
+
+<TranslatedText
+  en="Using Hash Set for arr = [1, 5, 7, -1, 5], target = 6:"
+  bn="arr = [1, 5, 7, -1, 5], target = 6 এর জন্য হ্যাশ সেট ব্যবহার করে:"
+/>
+
+```
+Step 1: num=1, complement=5
+  seen={}, 5 not in seen
+  Add 1, seen={1}
+
+Step 2: num=5, complement=1
+  seen={1}, 1 found!
+  Add pair (1,5), pairs={(1,5)}
+  Add 5, seen={1,5}
+
+Step 3: num=7, complement=-1
+  seen={1,5}, -1 not in seen
+  Add 7, seen={1,5,7}
+
+Step 4: num=-1, complement=7
+  seen={1,5,7}, 7 found!
+  Add pair (-1,7), pairs={(1,5), (-1,7)}
+  Add -1, seen={1,5,7,-1}
+
+Step 5: num=5, complement=1
+  seen={1,5,7,-1}, 1 found!
+  Pair (1,5) already exists, skip
+  Add 5, seen={1,5,7,-1} (5 already there)
+
+Result: [(1,5), (-1,7)] or [(-1,7), (1,5)]
+```
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="✓ Hash set provides O(n) solution for unsorted arrays
+✓ Two pointers is space-efficient but requires sorting
+✓ Store pairs in canonical form (sorted) to avoid duplicates
+✓ Use set to automatically handle duplicate pairs
+✓ This pattern extends to multi-sum problems (3Sum, 4Sum)
+✓ Always clarify if order matters in pairs"
+  bn="✓ হ্যাশ সেট অসাজানো অ্যারের জন্য O(n) সমাধান প্রদান করে
+✓ দুটি পয়েন্টার স্থান-দক্ষ কিন্তু সাজানো প্রয়োজন
+✓ ডুপ্লিকেট এড়াতে ক্যানোনিকাল ফর্মে (সাজানো) জোড়া সংরক্ষণ করুন
+✓ ডুপ্লিকেট জোড়া স্বয়ংক্রিয়ভাবে হ্যান্ডেল করতে সেট ব্যবহার করুন
+✓ এই প্যাটার্ন মাল্টি-সাম সমস্যায় প্রসারিত হয় (3Sum, 4Sum)
+✓ সর্বদা স্পষ্ট করুন জোড়ায় ক্রম গুরুত্বপূর্ণ কিনা"
+/>

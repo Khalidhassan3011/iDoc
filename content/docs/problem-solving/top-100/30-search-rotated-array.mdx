@@ -1,0 +1,564 @@
+---
+title: Search in Rotated Sorted Array
+description: Find a target value in a rotated sorted array using binary search
+---
+
+import { Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { TranslatedText } from '@/components/TranslatedText';
+
+<LanguageSwitcher />
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given a sorted array that has been rotated at some unknown pivot point, search for a target value. The array was originally sorted in ascending order, then rotated. Return the index of the target if found, otherwise return -1. You must achieve O(log n) time complexity."
+  bn="একটি সাজানো অ্যারে দেওয়া হয়েছে যা কিছু অজানা পিভট পয়েন্টে ঘোরানো হয়েছে, একটি লক্ষ্য মান অনুসন্ধান করুন। অ্যারেটি মূলত আরোহী ক্রমে সাজানো ছিল, তারপর ঘোরানো হয়েছিল। লক্ষ্য পাওয়া গেলে সূচক ফেরত দিন, অন্যথায় -1 ফেরত দিন। আপনাকে অবশ্যই O(log n) সময় জটিলতা অর্জন করতে হবে।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: arr = [4, 5, 6, 7, 0, 1, 2], target = 0
+Output: 4
+Explanation: 0 is at index 4
+
+Input: arr = [4, 5, 6, 7, 0, 1, 2], target = 3
+Output: -1
+Explanation: 3 is not in the array
+
+Input: arr = [1], target = 0
+Output: -1
+
+Original sorted: [0, 1, 2, 4, 5, 6, 7]
+After rotation:  [4, 5, 6, 7, 0, 1, 2] (rotated at index 4)
+```
+
+## <TranslatedText en="Key Insight" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en="A rotated sorted array has two sorted portions. At any midpoint, at least one half of the array is guaranteed to be sorted. We can determine which half is sorted, then decide whether to search in that half or the other half."
+  bn="একটি ঘোরানো সাজানো অ্যারেতে দুটি সাজানো অংশ রয়েছে। যেকোনো মধ্যবিন্দুতে, অ্যারের অন্তত একটি অর্ধেক সাজানো থাকার গ্যারান্টি রয়েছে। আমরা নির্ধারণ করতে পারি কোন অর্ধেক সাজানো আছে, তারপর সিদ্ধান্ত নিতে পারি সেই অর্ধেকে অনুসন্ধান করব নাকি অন্য অর্ধেকে।"
+/>
+
+## <TranslatedText en="Approaches" bn="সমাধানের পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Modified Binary Search (Optimal)" bn="পদ্ধতি ১: পরিবর্তিত বাইনারি সার্চ (সর্বোত্তম)" />
+
+<TranslatedText
+  en="Use binary search but determine which half is sorted at each step. Then check if the target lies in the sorted half's range. If yes, search that half; otherwise, search the other half."
+  bn="বাইনারি সার্চ ব্যবহার করুন কিন্তু প্রতিটি পদক্ষেপে নির্ধারণ করুন কোন অর্ধেক সাজানো আছে। তারপর পরীক্ষা করুন লক্ষ্য সাজানো অর্ধেকের পরিসরে আছে কিনা। যদি হ্যাঁ, সেই অর্ধেকে অনুসন্ধান করুন; অন্যথায়, অন্য অর্ধেকে অনুসন্ধান করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int searchRotated(vector<int>& arr, int target) {
+    int left = 0;
+    int right = arr.size() - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        // Found target
+        if (arr[mid] == target) {
+            return mid;
+        }
+
+        // Determine which half is sorted
+        if (arr[left] <= arr[mid]) {
+            // Left half is sorted
+            // Check if target is in left half's range
+            if (arr[left] <= target && target < arr[mid]) {
+                right = mid - 1;  // Search left half
+            } else {
+                left = mid + 1;   // Search right half
+            }
+        } else {
+            // Right half is sorted
+            // Check if target is in right half's range
+            if (arr[mid] < target && target <= arr[right]) {
+                left = mid + 1;   // Search right half
+            } else {
+                right = mid - 1;  // Search left half
+            }
+        }
+    }
+
+    return -1; // Not found
+}
+
+int main() {
+    vector<int> arr = {4, 5, 6, 7, 0, 1, 2};
+    int target = 0;
+
+    int result = searchRotated(arr, target);
+    cout << "Index of " << target << ": " << result << endl;
+
+    target = 3;
+    result = searchRotated(arr, target);
+    cout << "Index of " << target << ": " << result << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def search_rotated(arr, target):
+    left = 0
+    right = len(arr) - 1
+
+    while left <= right:
+        mid = left + (right - left) // 2
+
+        # Found target
+        if arr[mid] == target:
+            return mid
+
+        # Determine which half is sorted
+        if arr[left] <= arr[mid]:
+            # Left half is sorted
+            # Check if target is in left half's range
+            if arr[left] <= target < arr[mid]:
+                right = mid - 1  # Search left half
+            else:
+                left = mid + 1   # Search right half
+        else:
+            # Right half is sorted
+            # Check if target is in right half's range
+            if arr[mid] < target <= arr[right]:
+                left = mid + 1   # Search right half
+            else:
+                right = mid - 1  # Search left half
+
+    return -1  # Not found
+
+# Test
+arr = [4, 5, 6, 7, 0, 1, 2]
+target = 0
+
+result = search_rotated(arr, target)
+print(f"Index of {target}: {result}")
+
+target = 3
+result = search_rotated(arr, target)
+print(f"Index of {target}: {result}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function searchRotated(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+
+    while (left <= right) {
+        const mid = Math.floor(left + (right - left) / 2);
+
+        // Found target
+        if (arr[mid] === target) {
+            return mid;
+        }
+
+        // Determine which half is sorted
+        if (arr[left] <= arr[mid]) {
+            // Left half is sorted
+            // Check if target is in left half's range
+            if (arr[left] <= target && target < arr[mid]) {
+                right = mid - 1;  // Search left half
+            } else {
+                left = mid + 1;   // Search right half
+            }
+        } else {
+            // Right half is sorted
+            // Check if target is in right half's range
+            if (arr[mid] < target && target <= arr[right]) {
+                left = mid + 1;   // Search right half
+            } else {
+                right = mid - 1;  // Search left half
+            }
+        }
+    }
+
+    return -1; // Not found
+}
+
+// Test
+const arr = [4, 5, 6, 7, 0, 1, 2];
+let target = 0;
+
+let result = searchRotated(arr, target);
+console.log(`Index of ${target}: ${result}`);
+
+target = 3;
+result = searchRotated(arr, target);
+console.log(`Index of ${target}: ${result}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(log n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+### <TranslatedText en="Approach 2: Find Pivot Then Binary Search" bn="পদ্ধতি ২: পিভট খুঁজুন তারপর বাইনারি সার্চ" />
+
+<TranslatedText
+  en="First find the pivot point (where rotation occurred), then perform regular binary search on the appropriate half. This takes two passes but may be easier to understand."
+  bn="প্রথমে পিভট পয়েন্ট খুঁজুন (যেখানে ঘূর্ণন ঘটেছে), তারপর উপযুক্ত অর্ধেকে নিয়মিত বাইনারি সার্চ করুন। এতে দুটি পাস লাগে কিন্তু বোঝা সহজ হতে পারে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']}>
+  <Tabs.Tab>
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Find the index of the minimum element (pivot point)
+int findPivot(vector<int>& arr) {
+    int left = 0;
+    int right = arr.size() - 1;
+
+    // If array is not rotated
+    if (arr[left] < arr[right]) {
+        return 0;
+    }
+
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+
+        // Pivot is in the right half
+        if (arr[mid] > arr[right]) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+
+    return left;
+}
+
+// Standard binary search
+int binarySearch(vector<int>& arr, int left, int right, int target) {
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return -1;
+}
+
+int searchRotatedTwoPass(vector<int>& arr, int target) {
+    int n = arr.size();
+    if (n == 0) return -1;
+
+    // Find pivot point
+    int pivot = findPivot(arr);
+
+    // If target is at pivot
+    if (arr[pivot] == target) {
+        return pivot;
+    }
+
+    // Determine which half to search
+    if (pivot == 0) {
+        // Array is not rotated
+        return binarySearch(arr, 0, n - 1, target);
+    }
+
+    // Search in left sorted portion
+    if (arr[0] <= target) {
+        return binarySearch(arr, 0, pivot - 1, target);
+    }
+
+    // Search in right sorted portion
+    return binarySearch(arr, pivot, n - 1, target);
+}
+
+int main() {
+    vector<int> arr = {4, 5, 6, 7, 0, 1, 2};
+    int target = 0;
+
+    int result = searchRotatedTwoPass(arr, target);
+    cout << "Index of " << target << ": " << result << endl;
+
+    return 0;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def find_pivot(arr):
+    """Find the index of the minimum element (pivot point)"""
+    left = 0
+    right = len(arr) - 1
+
+    # If array is not rotated
+    if arr[left] < arr[right]:
+        return 0
+
+    while left < right:
+        mid = left + (right - left) // 2
+
+        # Pivot is in the right half
+        if arr[mid] > arr[right]:
+            left = mid + 1
+        else:
+            right = mid
+
+    return left
+
+def binary_search(arr, left, right, target):
+    """Standard binary search"""
+    while left <= right:
+        mid = left + (right - left) // 2
+
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return -1
+
+def search_rotated_two_pass(arr, target):
+    n = len(arr)
+    if n == 0:
+        return -1
+
+    # Find pivot point
+    pivot = find_pivot(arr)
+
+    # If target is at pivot
+    if arr[pivot] == target:
+        return pivot
+
+    # Determine which half to search
+    if pivot == 0:
+        # Array is not rotated
+        return binary_search(arr, 0, n - 1, target)
+
+    # Search in left sorted portion
+    if arr[0] <= target:
+        return binary_search(arr, 0, pivot - 1, target)
+
+    # Search in right sorted portion
+    return binary_search(arr, pivot, n - 1, target)
+
+# Test
+arr = [4, 5, 6, 7, 0, 1, 2]
+target = 0
+
+result = search_rotated_two_pass(arr, target)
+print(f"Index of {target}: {result}")
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```javascript
+function findPivot(arr) {
+    // Find the index of the minimum element (pivot point)
+    let left = 0;
+    let right = arr.length - 1;
+
+    // If array is not rotated
+    if (arr[left] < arr[right]) {
+        return 0;
+    }
+
+    while (left < right) {
+        const mid = Math.floor(left + (right - left) / 2);
+
+        // Pivot is in the right half
+        if (arr[mid] > arr[right]) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+
+    return left;
+}
+
+function binarySearch(arr, left, right, target) {
+    // Standard binary search
+    while (left <= right) {
+        const mid = Math.floor(left + (right - left) / 2);
+
+        if (arr[mid] === target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return -1;
+}
+
+function searchRotatedTwoPass(arr, target) {
+    const n = arr.length;
+    if (n === 0) return -1;
+
+    // Find pivot point
+    const pivot = findPivot(arr);
+
+    // If target is at pivot
+    if (arr[pivot] === target) {
+        return pivot;
+    }
+
+    // Determine which half to search
+    if (pivot === 0) {
+        // Array is not rotated
+        return binarySearch(arr, 0, n - 1, target);
+    }
+
+    // Search in left sorted portion
+    if (arr[0] <= target) {
+        return binarySearch(arr, 0, pivot - 1, target);
+    }
+
+    // Search in right sorted portion
+    return binarySearch(arr, pivot, n - 1, target);
+}
+
+// Test
+const arr = [4, 5, 6, 7, 0, 1, 2];
+const target = 0;
+
+const result = searchRotatedTwoPass(arr, target);
+console.log(`Index of ${target}: ${result}`);
+```
+  </Tabs.Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(log n) <TranslatedText en="(two binary search passes)" bn="(দুটি বাইনারি সার্চ পাস)" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+## <TranslatedText en="Algorithm Walkthrough" bn="অ্যালগরিদম ওয়াকথ্রু" />
+
+<TranslatedText
+  en="For array [4, 5, 6, 7, 0, 1, 2], searching for target = 0:"
+  bn="অ্যারে [4, 5, 6, 7, 0, 1, 2] এর জন্য, target = 0 অনুসন্ধান করা হচ্ছে:"
+/>
+
+```
+Step 1: left=0, right=6, mid=3
+  arr[mid] = 7, target = 0
+  arr[left]=4 <= arr[mid]=7 → left half is sorted
+  Is 0 in range [4, 7)? No
+  Search right half → left = 4
+
+Step 2: left=4, right=6, mid=5
+  arr[mid] = 1, target = 0
+  arr[left]=0 > arr[mid]=1 → right half is sorted
+  Is 0 in range (1, 2]? No
+  Search left half → right = 4
+
+Step 3: left=4, right=4, mid=4
+  arr[mid] = 0, target = 0
+  Found! Return 4
+```
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en="1. **At least one half is always sorted**: After rotation, one portion maintains sorted order."
+  bn="1. **অন্তত একটি অর্ধেক সর্বদা সাজানো থাকে**: ঘূর্ণনের পরে, একটি অংশ সাজানো ক্রম বজায় রাখে।"
+/>
+
+<TranslatedText
+  en="2. **Identify sorted half by comparing endpoints**: If arr[left] ≤ arr[mid], left half is sorted."
+  bn="2. **এন্ডপয়েন্ট তুলনা করে সাজানো অর্ধেক চিহ্নিত করুন**: যদি arr[left] ≤ arr[mid], বাম অর্ধেক সাজানো।"
+/>
+
+<TranslatedText
+  en="3. **Use range check on sorted half**: Once you know which half is sorted, check if target falls in that range."
+  bn="3. **সাজানো অর্ধেকে রেঞ্জ চেক ব্যবহার করুন**: একবার আপনি জানেন কোন অর্ধেক সাজানো, পরীক্ষা করুন লক্ষ্য সেই পরিসরে পড়ে কিনা।"
+/>
+
+<TranslatedText
+  en="4. **Modified binary search is elegant**: Single pass solution that adapts standard binary search."
+  bn="4. **পরিবর্তিত বাইনারি সার্চ মার্জিত**: একক পাস সমাধান যা স্ট্যান্ডার্ড বাইনারি সার্চ অভিযোজিত করে।"
+/>
+
+## <TranslatedText en="Edge Cases" bn="এজ কেস" />
+
+<TranslatedText
+  en="- **Empty array**: Return -1
+- **Single element**: Check if it matches target
+- **No rotation**: Array is already sorted (arr[0] < arr[n-1])
+- **Complete rotation**: Same as no rotation
+- **Target at pivot**: Handle separately
+- **Duplicates**: Problem becomes harder (requires linear time in worst case)"
+  bn="- **খালি অ্যারে**: -1 ফেরত দিন
+- **একক উপাদান**: এটি লক্ষ্যের সাথে মেলে কিনা পরীক্ষা করুন
+- **কোন ঘূর্ণন নেই**: অ্যারে ইতিমধ্যে সাজানো (arr[0] < arr[n-1])
+- **সম্পূর্ণ ঘূর্ণন**: কোন ঘূর্ণনের মতোই
+- **পিভটে লক্ষ্য**: আলাদাভাবে হ্যান্ডেল করুন
+- **ডুপ্লিকেট**: সমস্যা কঠিন হয়ে যায় (সবচেয়ে খারাপ ক্ষেত্রে রৈখিক সময় প্রয়োজন)"
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="- **Draw the array**: Visualize the two sorted portions to understand the problem
+- **Explain the insight**: Emphasize that one half is always sorted
+- **Start with simple binary search**: Then modify it for rotation
+- **Handle equality carefully**: Use ≤ and < correctly in comparisons
+- **Test with examples**: Walk through with [4,5,6,7,0,1,2] to verify logic
+- **Mention duplicates variant**: Show awareness that duplicates make it O(n) worst case"
+  bn="- **অ্যারে আঁকুন**: সমস্যা বুঝতে দুটি সাজানো অংশ ভিজ্যুয়ালাইজ করুন
+- **অন্তর্দৃষ্টি ব্যাখ্যা করুন**: জোর দিন যে একটি অর্ধেক সর্বদা সাজানো থাকে
+- **সরল বাইনারি সার্চ দিয়ে শুরু করুন**: তারপর ঘূর্ণনের জন্য এটি পরিবর্তন করুন
+- **সমতা সাবধানে হ্যান্ডেল করুন**: তুলনায় ≤ এবং < সঠিকভাবে ব্যবহার করুন
+- **উদাহরণ দিয়ে পরীক্ষা করুন**: লজিক যাচাই করতে [4,5,6,7,0,1,2] দিয়ে ওয়াকথ্রু করুন
+- **ডুপ্লিকেট ভেরিয়েন্ট উল্লেখ করুন**: সচেতনতা দেখান যে ডুপ্লিকেট এটিকে O(n) সবচেয়ে খারাপ ক্ষেত্রে করে"
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Search in Rotated Sorted Array II (with duplicates)
+- Find Minimum in Rotated Sorted Array
+- Find Peak Element
+- Search a 2D Matrix II
+
+## <TranslatedText en="Complexity Comparison" bn="জটিলতার তুলনা" />
+
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time Complexity" bn="সময় জটিলতা" /> | <TranslatedText en="Space Complexity" bn="স্থান জটিলতা" /> | <TranslatedText en="Passes" bn="পাস" /> |
+|---|---|---|---|
+| <TranslatedText en="Modified Binary Search" bn="পরিবর্তিত বাইনারি সার্চ" /> | O(log n) | O(1) | 1 |
+| <TranslatedText en="Find Pivot + Search" bn="পিভট খুঁজুন + সার্চ" /> | O(log n) | O(1) | 2 |
+| <TranslatedText en="Linear Search" bn="লিনিয়ার সার্চ" /> | O(n) | O(1) | 1 |
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="✓ Rotated sorted array has two sorted portions
+✓ Modified binary search achieves O(log n) in single pass
+✓ Always identify which half is sorted first
+✓ Check if target is in sorted half's range before deciding direction
+✓ This pattern applies to many rotation-related problems
+✓ With duplicates, worst case becomes O(n)"
+  bn="✓ ঘোরানো সাজানো অ্যারেতে দুটি সাজানো অংশ রয়েছে
+✓ পরিবর্তিত বাইনারি সার্চ একক পাসে O(log n) অর্জন করে
+✓ সর্বদা প্রথমে কোন অর্ধেক সাজানো তা চিহ্নিত করুন
+✓ দিক নির্ধারণের আগে লক্ষ্য সাজানো অর্ধেকের পরিসরে আছে কিনা পরীক্ষা করুন
+✓ এই প্যাটার্ন অনেক ঘূর্ণন-সম্পর্কিত সমস্যার ক্ষেত্রে প্রযোজ্য
+✓ ডুপ্লিকেটের সাথে, সবচেয়ে খারাপ ক্ষেত্রে O(n) হয়ে যায়"
+/>
