@@ -48,13 +48,17 @@ export default function TestCasePanel({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-200">Test Cases</h3>
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
+          <span className="text-xl">🧪</span>
+          <h3 className="text-lg font-bold text-gray-200">Test Cases</h3>
+        </div>
         <button
           onClick={handleAddTestCase}
-          className="px-3 py-1 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+          className="px-3 py-1.5 text-sm bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium rounded-md transition-all shadow-lg hover:shadow-blue-500/50 flex items-center gap-1"
         >
-          + Add Test Case
+          <span className="text-base">+</span>
+          Add
         </button>
       </div>
 

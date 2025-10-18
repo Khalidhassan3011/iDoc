@@ -14,12 +14,15 @@ export default function OutputPanel({
   executionTime,
 }: OutputPanelProps) {
   return (
-    <div className="h-full flex flex-col bg-gray-900 border border-gray-700 rounded-lg">
-      <div className="flex items-center justify-between px-4 py-2 border-b border-gray-700">
-        <h3 className="text-sm font-semibold text-gray-200">Console Output</h3>
+    <div className="h-full flex flex-col bg-gray-900 border border-gray-700 rounded-lg shadow-xl">
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-700 bg-gray-800/50">
+        <div className="flex items-center gap-2">
+          <span className="text-lg">📟</span>
+          <h3 className="text-sm font-bold text-gray-200">Console Output</h3>
+        </div>
         {executionTime !== undefined && (
-          <span className="text-xs text-gray-400">
-            Execution time: {executionTime}ms
+          <span className="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded font-mono">
+            ⏱ {executionTime}ms
           </span>
         )}
       </div>

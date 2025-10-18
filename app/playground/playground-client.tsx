@@ -136,13 +136,23 @@ export default function PlaygroundClient({ problems }: PlaygroundClientProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-200">
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-gray-200">
       <div className="container mx-auto p-6">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold mb-2">Code Playground</h1>
-          <p className="text-gray-400">
-            Write, test, and execute code for interview problems
-          </p>
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-2xl">
+              💻
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                Code Playground
+              </h1>
+              <p className="text-gray-400 text-sm">
+                Write, test, and execute code for interview problems
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Problem Selector */}
@@ -153,28 +163,49 @@ export default function PlaygroundClient({ problems }: PlaygroundClientProps) {
             onProblemChange={handleProblemChange}
           />
           {selectedProblem && (
-            <div className="mt-3 p-3 bg-gray-800 rounded-lg border border-gray-700">
-              <a
-                href={selectedProblem.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-400 hover:text-blue-300 text-sm"
-              >
-                View Problem Details →
-              </a>
+            <div className="mt-4 p-4 bg-gradient-to-r from-gray-800/50 to-gray-900/50 rounded-lg border border-gray-700/50 backdrop-blur-sm">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">🎯</span>
+                  <div>
+                    <p className="text-sm text-gray-400">Selected Problem</p>
+                    <p className="font-semibold text-gray-200">{selectedProblem.title}</p>
+                  </div>
+                </div>
+                <a
+                  href={selectedProblem.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2 shadow-lg"
+                >
+                  View Details
+                  <span>→</span>
+                </a>
+              </div>
             </div>
           )}
         </div>
 
         {/* Main Layout: Editor + Test Cases */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Code Editor Section */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="bg-gray-900 border border-gray-700 rounded-lg overflow-hidden">
-              <LanguageSelector
-                selectedLanguage={selectedLanguage}
-                onLanguageChange={setSelectedLanguage}
-              />
+            <div className="bg-gray-900 border border-gray-700 rounded-lg overflow-hidden shadow-xl">
+              {/* Language Selector + Control Buttons */}
+              <div className="flex items-center justify-between border-b border-gray-700 bg-gray-800/50">
+                <LanguageSelector
+                  selectedLanguage={selectedLanguage}
+                  onLanguageChange={setSelectedLanguage}
+                />
+                <ControlPanel
+                  onRunCode={handleRunCode}
+                  onRunTests={handleRunTests}
+                  onReset={handleReset}
+                  isLoading={isLoading}
+                  hasTestCases={testCases.length > 0}
+                />
+              </div>
+
               <div style={{ height: '500px' }}>
                 <CodeEditor
                   code={code}
@@ -197,7 +228,7 @@ export default function PlaygroundClient({ problems }: PlaygroundClientProps) {
 
           {/* Test Cases Section */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-900 border border-gray-700 rounded-lg p-4 max-h-[780px] overflow-y-auto">
+            <div className="bg-gray-900 border border-gray-700 rounded-lg p-4 max-h-[780px] overflow-y-auto shadow-xl">
               <TestCasePanel
                 testCases={testCases}
                 testResults={testResults}
@@ -206,15 +237,6 @@ export default function PlaygroundClient({ problems }: PlaygroundClientProps) {
             </div>
           </div>
         </div>
-
-        {/* Control Panel */}
-        <ControlPanel
-          onRunCode={handleRunCode}
-          onRunTests={handleRunTests}
-          onReset={handleReset}
-          isLoading={isLoading}
-          hasTestCases={testCases.length > 0}
-        />
       </div>
     </div>
   );

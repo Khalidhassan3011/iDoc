@@ -14,9 +14,9 @@ export default function ProblemSelector({
   onProblemChange,
 }: ProblemSelectorProps) {
   return (
-    <div className="flex items-center gap-3">
-      <label htmlFor="problem-select" className="text-sm font-medium text-gray-300">
-        Select Problem:
+    <div className="flex items-center gap-4">
+      <label htmlFor="problem-select" className="text-sm font-semibold text-gray-300 whitespace-nowrap">
+        📚 Problem:
       </label>
       <select
         id="problem-select"
@@ -25,9 +25,9 @@ export default function ProblemSelector({
           const problem = problems.find((p) => p.id === e.target.value);
           if (problem) onProblemChange(problem);
         }}
-        className="flex-1 max-w-md px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        className="flex-1 max-w-2xl px-4 py-2.5 bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-600 rounded-lg text-sm text-gray-200 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-lg cursor-pointer hover:border-gray-500 transition-all"
       >
-        <option value="">Choose a problem...</option>
+        <option value="">Choose a problem to solve...</option>
         {problems.map((problem) => (
           <option key={problem.id} value={problem.id}>
             {problem.title}

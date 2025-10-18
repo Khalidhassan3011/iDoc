@@ -16,36 +16,43 @@ export default function ControlPanel({
   hasTestCases,
 }: ControlPanelProps) {
   return (
-    <div className="flex items-center gap-3 px-4 py-3 bg-gray-800 border-t border-gray-700">
+    <div className="flex items-center gap-2 px-4 py-2">
       <button
         onClick={onRunCode}
         disabled={isLoading}
-        className="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white text-sm font-medium rounded-md transition-colors"
+        className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-md transition-all shadow-lg hover:shadow-green-500/50 flex items-center gap-2"
       >
-        {isLoading ? 'Running...' : '▶ Run Code'}
+        {isLoading ? (
+          <>
+            <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+            Running...
+          </>
+        ) : (
+          <>
+            <span>▶</span>
+            Run
+          </>
+        )}
       </button>
 
       <button
         onClick={onRunTests}
         disabled={isLoading || !hasTestCases}
-        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white text-sm font-medium rounded-md transition-colors"
+        title={!hasTestCases ? 'Add test cases to enable' : 'Run all test cases'}
+        className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-md transition-all shadow-lg hover:shadow-blue-500/50 flex items-center gap-2"
       >
-        ✓ Run Tests
+        <span>✓</span>
+        Test
       </button>
 
       <button
         onClick={onReset}
         disabled={isLoading}
-        className="px-4 py-2 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-600 disabled:cursor-not-allowed text-white text-sm font-medium rounded-md transition-colors"
+        className="px-3 py-2 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-600 disabled:cursor-not-allowed text-gray-300 text-sm font-medium rounded-md transition-colors flex items-center gap-1"
       >
-        ↻ Reset
+        <span className="text-base">↻</span>
+        Reset
       </button>
-
-      {!hasTestCases && (
-        <span className="text-xs text-gray-500 italic ml-2">
-          Add test cases to enable test validation
-        </span>
-      )}
     </div>
   );
 }
