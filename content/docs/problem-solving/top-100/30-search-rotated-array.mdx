@@ -499,35 +499,59 @@ Step 3: left=4, right=4, mid=4
 ## <TranslatedText en="Edge Cases" bn="এজ কেস" />
 
 <TranslatedText
-  en="- **Empty array**: Return -1
-- **Single element**: Check if it matches target
-- **No rotation**: Array is already sorted (arr[0] < arr[n-1])
-- **Complete rotation**: Same as no rotation
-- **Target at pivot**: Handle separately
-- **Duplicates**: Problem becomes harder (requires linear time in worst case)"
-  bn="- **খালি অ্যারে**: -1 ফেরত দিন
-- **একক উপাদান**: এটি লক্ষ্যের সাথে মেলে কিনা পরীক্ষা করুন
-- **কোন ঘূর্ণন নেই**: অ্যারে ইতিমধ্যে সাজানো (arr[0] < arr[n-1])
-- **সম্পূর্ণ ঘূর্ণন**: কোন ঘূর্ণনের মতোই
-- **পিভটে লক্ষ্য**: আলাদাভাবে হ্যান্ডেল করুন
-- **ডুপ্লিকেট**: সমস্যা কঠিন হয়ে যায় (সবচেয়ে খারাপ ক্ষেত্রে রৈখিক সময় প্রয়োজন)"
+  en={
+    <>
+      <ul>
+        <li><strong>Empty array</strong>: Return -1</li>
+        <li><strong>Single element</strong>: Check if it matches target</li>
+        <li><strong>No rotation</strong>: Array is already sorted (arr[0] less than arr[n-1])</li>
+        <li><strong>Complete rotation</strong>: Same as no rotation</li>
+        <li><strong>Target at pivot</strong>: Handle separately</li>
+        <li><strong>Duplicates</strong>: Problem becomes harder (requires linear time in worst case)</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>খালি অ্যারে</strong>: -1 ফেরত দিন</li>
+        <li><strong>একক উপাদান</strong>: এটি লক্ষ্যের সাথে মেলে কিনা পরীক্ষা করুন</li>
+        <li><strong>কোন ঘূর্ণন নেই</strong>: অ্যারে ইতিমধ্যে সাজানো (arr[0] less than arr[n-1])</li>
+        <li><strong>সম্পূর্ণ ঘূর্ণন</strong>: কোন ঘূর্ণনের মতোই</li>
+        <li><strong>পিভটে লক্ষ্য</strong>: আলাদাভাবে হ্যান্ডেল করুন</li>
+        <li><strong>ডুপ্লিকেট</strong>: সমস্যা কঠিন হয়ে যায় (সবচেয়ে খারাপ ক্ষেত্রে রৈখিক সময় প্রয়োজন)</li>
+      </ul>
+    </>
+  }
 />
 
 ## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
 
 <TranslatedText
-  en="- **Draw the array**: Visualize the two sorted portions to understand the problem
-- **Explain the insight**: Emphasize that one half is always sorted
-- **Start with simple binary search**: Then modify it for rotation
-- **Handle equality carefully**: Use ≤ and < correctly in comparisons
-- **Test with examples**: Walk through with [4,5,6,7,0,1,2] to verify logic
-- **Mention duplicates variant**: Show awareness that duplicates make it O(n) worst case"
-  bn="- **অ্যারে আঁকুন**: সমস্যা বুঝতে দুটি সাজানো অংশ ভিজ্যুয়ালাইজ করুন
-- **অন্তর্দৃষ্টি ব্যাখ্যা করুন**: জোর দিন যে একটি অর্ধেক সর্বদা সাজানো থাকে
-- **সরল বাইনারি সার্চ দিয়ে শুরু করুন**: তারপর ঘূর্ণনের জন্য এটি পরিবর্তন করুন
-- **সমতা সাবধানে হ্যান্ডেল করুন**: তুলনায় ≤ এবং < সঠিকভাবে ব্যবহার করুন
-- **উদাহরণ দিয়ে পরীক্ষা করুন**: লজিক যাচাই করতে [4,5,6,7,0,1,2] দিয়ে ওয়াকথ্রু করুন
-- **ডুপ্লিকেট ভেরিয়েন্ট উল্লেখ করুন**: সচেতনতা দেখান যে ডুপ্লিকেট এটিকে O(n) সবচেয়ে খারাপ ক্ষেত্রে করে"
+  en={
+    <>
+      <ul>
+        <li><strong>Draw the array</strong>: Visualize the two sorted portions to understand the problem</li>
+        <li><strong>Explain the insight</strong>: Emphasize that one half is always sorted</li>
+        <li><strong>Start with simple binary search</strong>: Then modify it for rotation</li>
+        <li><strong>Handle equality carefully</strong>: Use proper comparisons</li>
+        <li><strong>Test with examples</strong>: Walk through with [4,5,6,7,0,1,2] to verify logic</li>
+        <li><strong>Mention duplicates variant</strong>: Show awareness that duplicates make it O(n) worst case</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>অ্যারে আঁকুন</strong>: সমস্যা বুঝতে দুটি সাজানো অংশ ভিজ্যুয়ালাইজ করুন</li>
+        <li><strong>অন্তর্দৃষ্টি ব্যাখ্যা করুন</strong>: জোর দিন যে একটি অর্ধেক সর্বদা সাজানো থাকে</li>
+        <li><strong>সরল বাইনারি সার্চ দিয়ে শুরু করুন</strong>: তারপর ঘূর্ণনের জন্য এটি পরিবর্তন করুন</li>
+        <li><strong>সমতা সাবধানে হ্যান্ডেল করুন</strong>: তুলনায় সঠিক তুলনা ব্যবহার করুন</li>
+        <li><strong>উদাহরণ দিয়ে পরীক্ষা করুন</strong>: লজিক যাচাই করতে [4,5,6,7,0,1,2] দিয়ে ওয়াকথ্রু করুন</li>
+        <li><strong>ডুপ্লিকেট ভেরিয়েন্ট উল্লেখ করুন</strong>: সচেতনতা দেখান যে ডুপ্লিকেট এটিকে O(n) সবচেয়ে খারাপ ক্ষেত্রে করে</li>
+      </ul>
+    </>
+  }
 />
 
 ## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />

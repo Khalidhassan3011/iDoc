@@ -475,28 +475,28 @@ console.log(result.join(" "));
 ## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
 
 <TranslatedText
-  en="- **Arrays**: Fast access (O(1)), slow insertion (O(n)), contiguous memory, fixed size"
-  bn="- **অ্যারে**: দ্রুত অ্যাক্সেস (O(1)), ধীর সন্নিবেশ (O(n)), সংলগ্ন মেমরি, স্থির আকার"
-/>
-
-<TranslatedText
-  en="- **Linked Lists**: Slow access (O(n)), fast insertion at known position (O(1)), scattered memory, dynamic size"
-  bn="- **লিঙ্কড লিস্ট**: ধীর অ্যাক্সেস (O(n)), জানা অবস্থানে দ্রুত সন্নিবেশ (O(1)), ছড়িয়ে থাকা মেমরি, ডাইনামিক আকার"
-/>
-
-<TranslatedText
-  en="- **Choose Based on Operations**: If you need frequent access, use arrays. If you need frequent insertions/deletions, use linked lists"
-  bn="- **অপারেশনের উপর ভিত্তি করে চয়ন করুন**: যদি আপনার ঘন ঘন অ্যাক্সেস প্রয়োজন, অ্যারে ব্যবহার করুন। যদি আপনার ঘন ঘন সন্নিবেশ/মুছে ফেলা প্রয়োজন, লিঙ্কড লিস্ট ব্যবহার করুন"
-/>
-
-<TranslatedText
-  en="- **Memory Matters**: Arrays use less memory per element, but may waste space. Linked lists use more memory (pointers) but no waste"
-  bn="- **মেমরি গুরুত্বপূর্ণ**: অ্যারে প্রতি এলিমেন্টে কম মেমরি ব্যবহার করে, কিন্তু স্পেস নষ্ট করতে পারে। লিঙ্কড লিস্ট আরো মেমরি (পয়েন্টার) ব্যবহার করে কিন্তু কোনো নষ্ট নেই"
-/>
-
-<TranslatedText
-  en="- **Cache Performance**: Arrays have better cache locality, making them faster in practice for sequential access"
-  bn="- **ক্যাশে পারফরম্যান্স**: অ্যারের ভালো ক্যাশে লোকালিটি আছে, ক্রমিক অ্যাক্সেসের জন্য ব্যবহারিকভাবে তাদের দ্রুততর করে"
+  en={
+    <>
+      <ul>
+        <li><strong>Arrays:</strong> Fast access (O(1)), slow insertion (O(n)), contiguous memory, fixed size</li>
+        <li><strong>Linked Lists:</strong> Slow access (O(n)), fast insertion at known position (O(1)), scattered memory, dynamic size</li>
+        <li><strong>Choose Based on Operations:</strong> If you need frequent access, use arrays. If you need frequent insertions/deletions, use linked lists</li>
+        <li><strong>Memory Matters:</strong> Arrays use less memory per element, but may waste space. Linked lists use more memory (pointers) but no waste</li>
+        <li><strong>Cache Performance:</strong> Arrays have better cache locality, making them faster in practice for sequential access</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>অ্যারে:</strong> দ্রুত অ্যাক্সেস (O(1)), ধীর সন্নিবেশ (O(n)), সংলগ্ন মেমরি, স্থির আকার</li>
+        <li><strong>লিঙ্কড লিস্ট:</strong> ধীর অ্যাক্সেস (O(n)), জানা অবস্থানে দ্রুত সন্নিবেশ (O(1)), ছড়িয়ে থাকা মেমরি, ডাইনামিক আকার</li>
+        <li><strong>অপারেশনের উপর ভিত্তি করে চয়ন করুন:</strong> যদি আপনার ঘন ঘন অ্যাক্সেস প্রয়োজন, অ্যারে ব্যবহার করুন। যদি আপনার ঘন ঘন সন্নিবেশ/মুছে ফেলা প্রয়োজন, লিঙ্কড লিস্ট ব্যবহার করুন</li>
+        <li><strong>মেমরি গুরুত্বপূর্ণ:</strong> অ্যারে প্রতি এলিমেন্টে কম মেমরি ব্যবহার করে, কিন্তু স্পেস নষ্ট করতে পারে। লিঙ্কড লিস্ট আরো মেমরি (পয়েন্টার) ব্যবহার করে কিন্তু কোনো নষ্ট নেই</li>
+        <li><strong>ক্যাশে পারফরম্যান্স:</strong> অ্যারের ভালো ক্যাশে লোকালিটি আছে, ক্রমিক অ্যাক্সেসের জন্য ব্যবহারিকভাবে তাদের দ্রুততর করে</li>
+      </ul>
+    </>
+  }
 />
 
 ## <TranslatedText en="Reference" bn="রেফারেন্স" />

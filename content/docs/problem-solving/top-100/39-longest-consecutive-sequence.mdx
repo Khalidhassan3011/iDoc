@@ -440,18 +440,24 @@ Longest consecutive sequence: [1, 2, 3, 4]
 />
 
 <TranslatedText
-  en="- **Key Question:** How do we identify the start of a sequence?"
-  bn="- **মূল প্রশ্ন:** আমরা কিভাবে একটি সিকোয়েন্সের শুরু চিহ্নিত করব?"
-/>
-
-<TranslatedText
-  en="- **Answer:** A number `num` is the start of a sequence if `num - 1` does NOT exist in the set"
-  bn="- **উত্তর:** একটি নম্বর `num` একটি সিকোয়েন্সের শুরু যদি `num - 1` সেটে না থাকে"
-/>
-
-<TranslatedText
-  en="- **Why This Works:** If `num - 1` exists, then `num` is in the middle or end of a sequence, not the beginning"
-  bn="- **কেন এটি কাজ করে:** যদি `num - 1` থাকে, তাহলে `num` একটি সিকোয়েন্সের মাঝখানে বা শেষে, শুরুতে নয়"
+  en={
+    <>
+      <ul>
+        <li><strong>Key Question:</strong> How do we identify the start of a sequence?</li>
+        <li><strong>Answer:</strong> A number `num` is the start of a sequence if `num - 1` does NOT exist in the set</li>
+        <li><strong>Why This Works:</strong> If `num - 1` exists, then `num` is in the middle or end of a sequence, not the beginning</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>মূল প্রশ্ন:</strong> আমরা কিভাবে একটি সিকোয়েন্সের শুরু চিহ্নিত করব?</li>
+        <li><strong>উত্তর:</strong> একটি নম্বর `num` একটি সিকোয়েন্সের শুরু যদি `num - 1` সেটে না থাকে</li>
+        <li><strong>কেন এটি কাজ করে:</strong> যদি `num - 1` থাকে, তাহলে `num` একটি সিকোয়েন্সের মাঝখানে বা শেষে, শুরুতে নয়</li>
+      </ul>
+    </>
+  }
 />
 
 <TranslatedText
