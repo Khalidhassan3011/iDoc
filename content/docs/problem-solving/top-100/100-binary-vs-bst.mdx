@@ -1,0 +1,247 @@
+---
+title: 100. Difference Between Binary Tree and BST
+description: Understand the key differences between Binary Tree and Binary Search Tree
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Binary Tree vs Binary Search Tree" bn="বাইনারি ট্রি বনাম বাইনারি সার্চ ট্রি" />
+
+<TranslatedText en="Understand the key differences between Binary Tree and Binary Search Tree." bn="বাইনারি ট্রি এবং বাইনারি সার্চ ট্রির মধ্যে মূল পার্থক্য বুঝুন।" />
+
+## <TranslatedText en="Key Differences" bn="মূল পার্থক্য" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Binary Tree</th>
+          <th>Binary Search Tree (BST)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Structure</td>
+          <td>Each node has at most 2 children</td>
+          <td>Each node has at most 2 children</td>
+        </tr>
+        <tr>
+          <td>Ordering</td>
+          <td>No specific order</td>
+          <td>Left subtree &lt; Node &lt; Right subtree</td>
+        </tr>
+        <tr>
+          <td>Search Time</td>
+          <td>O(n)</td>
+          <td>O(log n) on average, O(n) worst case</td>
+        </tr>
+        <tr>
+          <td>Insert Time</td>
+          <td>O(1) if position known</td>
+          <td>O(log n) on average</td>
+        </tr>
+        <tr>
+          <td>Use Case</td>
+          <td>Hierarchical data, expression trees</td>
+          <td>Fast search, insertion, deletion</td>
+        </tr>
+        <tr>
+          <td>Duplicate Values</td>
+          <td>Allowed</td>
+          <td>Usually not allowed</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>বৈশিষ্ট্য</th>
+          <th>বাইনারি ট্রি</th>
+          <th>বাইনারি সার্চ ট্রি (BST)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>গঠন</td>
+          <td>প্রতিটি নোডের সর্বোচ্চ 2 চিলড্রেন</td>
+          <td>প্রতিটি নোডের সর্বোচ্চ 2 চিলড্রেন</td>
+        </tr>
+        <tr>
+          <td>ক্রম</td>
+          <td>কোন নির্দিষ্ট ক্রম নেই</td>
+          <td>বাম সাবট্রি &lt; নোড &lt; ডান সাবট্রি</td>
+        </tr>
+        <tr>
+          <td>সার্চ সময়</td>
+          <td>O(n)</td>
+          <td>O(log n) গড়ে, O(n) সবচেয়ে খারাপ ক্ষেত্রে</td>
+        </tr>
+        <tr>
+          <td>ইনসার্ট সময়</td>
+          <td>O(1) যদি অবস্থান জানা থাকে</td>
+          <td>O(log n) গড়ে</td>
+        </tr>
+        <tr>
+          <td>ব্যবহার ক্ষেত্র</td>
+          <td>হায়ারার্কিক্যাল ডেটা, এক্সপ্রেশন ট্রি</td>
+          <td>দ্রুত সার্চ, ইনসার্শন, ডিলিশন</td>
+        </tr>
+        <tr>
+          <td>ডুপ্লিকেট মান</td>
+          <td>অনুমোদিত</td>
+          <td>সাধারণত অনুমোদিত নয়</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Example Code" bn="উদাহরণ কোড" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+// Check if a binary tree is a BST
+bool isBST(TreeNode* root, TreeNode* minNode, TreeNode* maxNode) {
+    if (!root) return true;
+
+    if ((minNode && root->val <= minNode->val) ||
+        (maxNode && root->val >= maxNode->val))
+        return false;
+
+    return isBST(root->left, minNode, root) &&
+           isBST(root->right, root, maxNode);
+}
+
+bool isBinarySearchTree(TreeNode* root) {
+    return isBST(root, nullptr, nullptr);
+}
+
+int main() {
+    // Binary Search Tree
+    TreeNode* bst = new TreeNode(4);
+    bst->left = new TreeNode(2);
+    bst->right = new TreeNode(6);
+    bst->left->left = new TreeNode(1);
+    bst->left->right = new TreeNode(3);
+
+    // Not a BST
+    TreeNode* bt = new TreeNode(4);
+    bt->left = new TreeNode(6);
+    bt->right = new TreeNode(2);
+
+    cout << "Is BST: " << (isBinarySearchTree(bst) ? "Yes" : "No") << endl;
+    cout << "Is BT a BST: " << (isBinarySearchTree(bt) ? "Yes" : "No") << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Is BST: Yes
+Is BT a BST: No
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def is_bst(root, min_node=None, max_node=None):
+    if not root:
+        return True
+
+    if (min_node and root.val <= min_node.val) or \
+       (max_node and root.val >= max_node.val):
+        return False
+
+    return is_bst(root.left, min_node, root) and \
+           is_bst(root.right, root, max_node)
+
+# Binary Search Tree
+bst = TreeNode(4)
+bst.left = TreeNode(2)
+bst.right = TreeNode(6)
+bst.left.left = TreeNode(1)
+bst.left.right = TreeNode(3)
+
+# Not a BST
+bt = TreeNode(4)
+bt.left = TreeNode(6)
+bt.right = TreeNode(2)
+
+print("Is BST:", "Yes" if is_bst(bst) else "No")
+print("Is BT a BST:", "Yes" if is_bst(bt) else "No")
+```
+
+**Output:**
+```
+Is BST: Yes
+Is BT a BST: No
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function isBST(root, minNode = null, maxNode = null) {
+    if (!root) return true;
+
+    if ((minNode && root.val <= minNode.val) ||
+        (maxNode && root.val >= maxNode.val))
+        return false;
+
+    return isBST(root.left, minNode, root) &&
+           isBST(root.right, root, maxNode);
+}
+
+// Binary Search Tree
+const bst = new TreeNode(4);
+bst.left = new TreeNode(2);
+bst.right = new TreeNode(6);
+bst.left.left = new TreeNode(1);
+bst.left.right = new TreeNode(3);
+
+// Not a BST
+const bt = new TreeNode(4);
+bt.left = new TreeNode(6);
+bt.right = new TreeNode(2);
+
+console.log("Is BST:", isBST(bst) ? "Yes" : "No");
+console.log("Is BT a BST:", isBST(bt) ? "Yes" : "No");
+```
+
+**Output:**
+```
+Is BST: Yes
+Is BT a BST: No
+```
+  </Tab>
+</Tabs>

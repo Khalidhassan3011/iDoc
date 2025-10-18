@@ -1,0 +1,218 @@
+---
+title: 95. Connect Nodes at Same Level
+description: Connect nodes at the same level in a binary tree
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Connect Nodes at Same Level" bn="একই লেভেলে নোড সংযুক্ত করুন" />
+
+<TranslatedText en="Connect all nodes at the same level in a binary tree using a next pointer." bn="একটি next পয়েন্টার ব্যবহার করে বাইনারি ট্রিতে একই লেভেলের সব নোড সংযুক্ত করুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <queue>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+    Node(int x) : val(x), left(nullptr), right(nullptr), next(nullptr) {}
+};
+
+Node* connect(Node* root) {
+    if (!root) return nullptr;
+
+    queue<Node*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        int size = q.size();
+
+        for (int i = 0; i < size; i++) {
+            Node* node = q.front();
+            q.pop();
+
+            // Connect to next node at same level
+            if (i < size - 1) {
+                node->next = q.front();
+            }
+
+            if (node->left) q.push(node->left);
+            if (node->right) q.push(node->right);
+        }
+    }
+
+    return root;
+}
+
+void printLevelOrder(Node* root) {
+    Node* level = root;
+    while (level) {
+        Node* current = level;
+        while (current) {
+            cout << current->val << " ";
+            current = current->next;
+        }
+        cout << "# ";
+        level = level->left;
+    }
+    cout << endl;
+}
+
+int main() {
+    Node* root = new Node(1);
+    root->left = new Node(2);
+    root->right = new Node(3);
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+    root->right->right = new Node(7);
+
+    connect(root);
+    printLevelOrder(root);
+
+    return 0;
+}
+```
+
+**Output:**
+```
+1 # 2 3 # 4 5 7 #
+```
+  </Tab>
+  <Tab value="Python">
+```python
+from collections import deque
+
+class Node:
+    def __init__(self, val=0, left=None, right=None, next=None):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+
+def connect(root):
+    if not root:
+        return None
+
+    queue = deque([root])
+
+    while queue:
+        size = len(queue)
+
+        for i in range(size):
+            node = queue.popleft()
+
+            if i < size - 1:
+                node.next = queue[0]
+
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+
+    return root
+
+def print_level_order(root):
+    level = root
+    while level:
+        current = level
+        while current:
+            print(current.val, end=" ")
+            current = current.next
+        print("#", end=" ")
+        level = level.left
+    print()
+
+root = Node(1)
+root.left = Node(2)
+root.right = Node(3)
+root.left.left = Node(4)
+root.left.right = Node(5)
+root.right.right = Node(7)
+
+connect(root)
+print_level_order(root)
+```
+
+**Output:**
+```
+1 # 2 3 # 4 5 7 #
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(val, left = null, right = null, next = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+        this.next = next;
+    }
+}
+
+function connect(root) {
+    if (!root) return null;
+
+    const queue = [root];
+
+    while (queue.length > 0) {
+        const size = queue.length;
+
+        for (let i = 0; i < size; i++) {
+            const node = queue.shift();
+
+            if (i < size - 1) {
+                node.next = queue[0];
+            }
+
+            if (node.left) queue.push(node.left);
+            if (node.right) queue.push(node.right);
+        }
+    }
+
+    return root;
+}
+
+function printLevelOrder(root) {
+    let level = root;
+    while (level) {
+        let current = level;
+        while (current) {
+            process.stdout.write(current.val + " ");
+            current = current.next;
+        }
+        process.stdout.write("# ");
+        level = level.left;
+    }
+    console.log();
+}
+
+const root = new Node(1);
+root.left = new Node(2);
+root.right = new Node(3);
+root.left.left = new Node(4);
+root.left.right = new Node(5);
+root.right.right = new Node(7);
+
+connect(root);
+printLevelOrder(root);
+```
+
+**Output:**
+```
+1 # 2 3 # 4 5 7 #
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(n)</p><p><strong>Space Complexity:</strong> O(w) where w is max width</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(n)</p><p><strong>স্থান জটিলতা:</strong> O(w) যেখানে w হল সর্বোচ্চ প্রস্থ</p></>} />

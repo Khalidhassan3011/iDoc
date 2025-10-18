@@ -1,0 +1,215 @@
+---
+title: 93. Convert Binary Tree to BST
+description: Convert a binary tree to binary search tree
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Convert Binary Tree to BST" bn="বাইনারি ট্রিকে BST তে রূপান্তর করুন" />
+
+<TranslatedText en="Convert a binary tree to a binary search tree while maintaining the same structure." bn="একই গঠন বজায় রেখে একটি বাইনারি ট্রিকে বাইনারি সার্চ ট্রিতে রূপান্তর করুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<TranslatedText en={<p>Strategy: Extract values via inorder, sort them, then fill back via inorder.</p>} bn={<p>কৌশল: ইনঅর্ডারের মাধ্যমে মান বের করুন, সাজান, তারপর ইনঅর্ডারের মাধ্যমে ফিরে পূরণ করুন।</p>} />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+void extractInorder(TreeNode* root, vector<int>& values) {
+    if (!root) return;
+    extractInorder(root->left, values);
+    values.push_back(root->val);
+    extractInorder(root->right, values);
+}
+
+void fillInorder(TreeNode* root, vector<int>& values, int& index) {
+    if (!root) return;
+    fillInorder(root->left, values, index);
+    root->val = values[index++];
+    fillInorder(root->right, values, index);
+}
+
+void binaryTreeToBST(TreeNode* root) {
+    vector<int> values;
+    extractInorder(root, values);
+    sort(values.begin(), values.end());
+    int index = 0;
+    fillInorder(root, values, index);
+}
+
+void printInorder(TreeNode* root) {
+    if (!root) return;
+    printInorder(root->left);
+    cout << root->val << " ";
+    printInorder(root->right);
+}
+
+int main() {
+    TreeNode* root = new TreeNode(10);
+    root->left = new TreeNode(30);
+    root->right = new TreeNode(15);
+    root->left->left = new TreeNode(20);
+    root->right->right = new TreeNode(5);
+
+    cout << "Before conversion: ";
+    printInorder(root);
+    cout << endl;
+
+    binaryTreeToBST(root);
+
+    cout << "After conversion: ";
+    printInorder(root);
+    cout << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Before conversion: 20 30 10 15 5
+After conversion: 5 10 15 20 30
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def extract_inorder(root, values):
+    if not root:
+        return
+    extract_inorder(root.left, values)
+    values.append(root.val)
+    extract_inorder(root.right, values)
+
+def fill_inorder(root, values, index):
+    if not root:
+        return index
+    index = fill_inorder(root.left, values, index)
+    root.val = values[index]
+    index += 1
+    index = fill_inorder(root.right, values, index)
+    return index
+
+def binary_tree_to_bst(root):
+    values = []
+    extract_inorder(root, values)
+    values.sort()
+    fill_inorder(root, values, 0)
+
+def print_inorder(root):
+    if not root:
+        return
+    print_inorder(root.left)
+    print(root.val, end=" ")
+    print_inorder(root.right)
+
+root = TreeNode(10)
+root.left = TreeNode(30)
+root.right = TreeNode(15)
+root.left.left = TreeNode(20)
+root.right.right = TreeNode(5)
+
+print("Before conversion:", end=" ")
+print_inorder(root)
+print()
+
+binary_tree_to_bst(root)
+
+print("After conversion:", end=" ")
+print_inorder(root)
+print()
+```
+
+**Output:**
+```
+Before conversion: 20 30 10 15 5
+After conversion: 5 10 15 20 30
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function extractInorder(root, values) {
+    if (!root) return;
+    extractInorder(root.left, values);
+    values.push(root.val);
+    extractInorder(root.right, values);
+}
+
+function fillInorder(root, values, index) {
+    if (!root) return index;
+    index = fillInorder(root.left, values, index);
+    root.val = values[index.value];
+    index.value++;
+    index = fillInorder(root.right, values, index);
+    return index;
+}
+
+function binaryTreeToBST(root) {
+    const values = [];
+    extractInorder(root, values);
+    values.sort((a, b) => a - b);
+    fillInorder(root, values, { value: 0 });
+}
+
+function printInorder(root) {
+    if (!root) return;
+    printInorder(root.left);
+    process.stdout.write(root.val + " ");
+    printInorder(root.right);
+}
+
+const root = new TreeNode(10);
+root.left = new TreeNode(30);
+root.right = new TreeNode(15);
+root.left.left = new TreeNode(20);
+root.right.right = new TreeNode(5);
+
+process.stdout.write("Before conversion: ");
+printInorder(root);
+console.log();
+
+binaryTreeToBST(root);
+
+process.stdout.write("After conversion: ");
+printInorder(root);
+console.log();
+```
+
+**Output:**
+```
+Before conversion: 20 30 10 15 5
+After conversion: 5 10 15 20 30
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(n log n)</p><p><strong>Space Complexity:</strong> O(n)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(n log n)</p><p><strong>স্থান জটিলতা:</strong> O(n)</p></>} />

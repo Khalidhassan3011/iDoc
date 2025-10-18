@@ -1,0 +1,132 @@
+---
+title: 91. Inorder Traversal
+description: Perform inorder traversal in a binary tree
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Inorder Traversal" bn="ইনঅর্ডার ট্রাভার্সাল" />
+
+<TranslatedText en="Implement inorder traversal (left-root-right) in a binary tree." bn="একটি বাইনারি ট্রিতে ইনঅর্ডার ট্রাভার্সাল (বাম-রুট-ডান) বাস্তবায়ন করুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+void inorderTraversal(TreeNode* root, vector<int>& result) {
+    if (!root) return;
+    inorderTraversal(root->left, result);
+    result.push_back(root->val);
+    inorderTraversal(root->right, result);
+}
+
+int main() {
+    TreeNode* root = new TreeNode(4);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(6);
+    root->left->left = new TreeNode(1);
+    root->left->right = new TreeNode(3);
+    root->right->left = new TreeNode(5);
+    root->right->right = new TreeNode(7);
+
+    vector<int> result;
+    inorderTraversal(root, result);
+    cout << "Inorder: ";
+    for (int val : result) cout << val << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Inorder: 1 2 3 4 5 6 7
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def inorder_traversal(root, result):
+    if not root:
+        return
+    inorder_traversal(root.left, result)
+    result.append(root.val)
+    inorder_traversal(root.right, result)
+
+root = TreeNode(4)
+root.left = TreeNode(2)
+root.right = TreeNode(6)
+root.left.left = TreeNode(1)
+root.left.right = TreeNode(3)
+root.right.left = TreeNode(5)
+root.right.right = TreeNode(7)
+
+result = []
+inorder_traversal(root, result)
+print("Inorder:", result)
+```
+
+**Output:**
+```
+Inorder: [1, 2, 3, 4, 5, 6, 7]
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function inorderTraversal(root, result) {
+    if (!root) return;
+    inorderTraversal(root.left, result);
+    result.push(root.val);
+    inorderTraversal(root.right, result);
+}
+
+const root = new TreeNode(4);
+root.left = new TreeNode(2);
+root.right = new TreeNode(6);
+root.left.left = new TreeNode(1);
+root.left.right = new TreeNode(3);
+root.right.left = new TreeNode(5);
+root.right.right = new TreeNode(7);
+
+const result = [];
+inorderTraversal(root, result);
+console.log("Inorder:", result);
+```
+
+**Output:**
+```
+Inorder: [1, 2, 3, 4, 5, 6, 7]
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(n)</p><p><strong>Space Complexity:</strong> O(h)</p><p><strong>Note:</strong> Inorder traversal of BST gives sorted order.</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(n)</p><p><strong>স্থান জটিলতা:</strong> O(h)</p><p><strong>নোট:</strong> BST এর ইনঅর্ডার ট্রাভার্সাল সাজানো ক্রম দেয়।</p></>} />

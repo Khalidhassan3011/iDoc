@@ -1,0 +1,477 @@
+---
+title: 83. Postorder Traversal Algorithm
+description: Implement postorder traversal (left-right-root) in a binary tree
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Postorder Traversal Algorithm" bn="পোস্টঅর্ডার ট্রাভার্সাল অ্যালগরিদম" />
+
+<TranslatedText
+  en="Implement postorder traversal in a binary tree. Postorder traversal visits nodes in the order: left subtree, right subtree, then root node."
+  bn="একটি বাইনারি ট্রিতে পোস্টঅর্ডার ট্রাভার্সাল বাস্তবায়ন করুন। পোস্টঅর্ডার ট্রাভার্সাল নোডগুলি এই ক্রমে দেখে: বাম সাবট্রি, ডান সাবট্রি, তারপর রুট নোড।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> Binary tree root node</p>
+      <p><strong>Output:</strong> List of node values in postorder sequence</p>
+      <p><strong>Example:</strong></p>
+      <pre>
+{`     1
+    / \\
+   2   3
+  / \\
+ 4   5`}
+      </pre>
+      <p><strong>Postorder Output:</strong> [4, 5, 2, 3, 1]</p>
+      <p><strong>Explanation:</strong></p>
+      <ul>
+        <li>Visit left subtree: 4, 5, 2</li>
+        <li>Visit right subtree: 3</li>
+        <li>Visit root: 1</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> বাইনারি ট্রি রুট নোড</p>
+      <p><strong>আউটপুট:</strong> পোস্টঅর্ডার সিকোয়েন্সে নোড মানের তালিকা</p>
+      <p><strong>উদাহরণ:</strong></p>
+      <pre>
+{`     1
+    / \\
+   2   3
+  / \\
+ 4   5`}
+      </pre>
+      <p><strong>পোস্টঅর্ডার আউটপুট:</strong> [4, 5, 2, 3, 1]</p>
+      <p><strong>ব্যাখ্যা:</strong></p>
+      <ul>
+        <li>বাম সাবট্রি দেখুন: 4, 5, 2</li>
+        <li>ডান সাবট্রি দেখুন: 3</li>
+        <li>রুট দেখুন: 1</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach 1: Recursive Postorder Traversal" bn="পদ্ধতি ১: রিকার্সিভ পোস্টঅর্ডার ট্রাভার্সাল" />
+
+<TranslatedText
+  en={<p>Use recursion to visit left subtree, then right subtree, then process the root node.</p>}
+  bn={<p>বাম সাবট্রি, তারপর ডান সাবট্রি দেখতে এবং তারপর রুট নোড প্রসেস করতে রিকার্শন ব্যবহার করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+void postorderHelper(TreeNode* node, vector<int>& result) {
+    if (node == nullptr) return;
+
+    postorderHelper(node->left, result);   // Left
+    postorderHelper(node->right, result);  // Right
+    result.push_back(node->val);           // Root
+}
+
+vector<int> postorderTraversal(TreeNode* root) {
+    vector<int> result;
+    postorderHelper(root, result);
+    return result;
+}
+
+int main() {
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->left->left = new TreeNode(4);
+    root->left->right = new TreeNode(5);
+
+    vector<int> result = postorderTraversal(root);
+
+    cout << "Postorder: ";
+    for (int val : result) {
+        cout << val << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Postorder: 4 5 2 3 1
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def postorder_traversal(root):
+    result = []
+
+    def postorder_helper(node):
+        if not node:
+            return
+
+        postorder_helper(node.left)   # Left
+        postorder_helper(node.right)  # Right
+        result.append(node.val)       # Root
+
+    postorder_helper(root)
+    return result
+
+# Example usage
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.left.right = TreeNode(5)
+
+result = postorder_traversal(root)
+print("Postorder:", result)
+```
+
+**Output:**
+```
+Postorder: [4, 5, 2, 3, 1]
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function postorderTraversal(root) {
+    const result = [];
+
+    function postorderHelper(node) {
+        if (!node) return;
+
+        postorderHelper(node.left);   // Left
+        postorderHelper(node.right);  // Right
+        result.push(node.val);        // Root
+    }
+
+    postorderHelper(root);
+    return result;
+}
+
+// Example usage
+const root = new TreeNode(1);
+root.left = new TreeNode(2);
+root.right = new TreeNode(3);
+root.left.left = new TreeNode(4);
+root.left.right = new TreeNode(5);
+
+const result = postorderTraversal(root);
+console.log("Postorder:", result);
+```
+
+**Output:**
+```
+Postorder: [4, 5, 2, 3, 1]
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) where n is the number of nodes</p>
+      <p><strong>Space Complexity:</strong> O(h) where h is the height (recursion stack)</p>
+      <p><strong>Note:</strong> Simple and intuitive recursive approach.</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) যেখানে n হল নোডের সংখ্যা</p>
+      <p><strong>স্থান জটিলতা:</strong> O(h) যেখানে h হল উচ্চতা (রিকার্শন স্ট্যাক)</p>
+      <p><strong>নোট:</strong> সহজ এবং স্বজ্ঞাত রিকার্সিভ পদ্ধতি।</p>
+    </>
+  }
+/>
+
+### <TranslatedText en="Approach 2: Iterative Using Two Stacks" bn="পদ্ধতি ২: দুটি স্ট্যাক ব্যবহার করে পুনরাবৃত্তিমূলক" />
+
+<TranslatedText
+  en={<p>Use two stacks to simulate the postorder traversal iteratively.</p>}
+  bn={<p>পোস্টঅর্ডার ট্রাভার্সাল পুনরাবৃত্তিমূলকভাবে অনুকরণ করতে দুটি স্ট্যাক ব্যবহার করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+vector<int> postorderTraversalIterative(TreeNode* root) {
+    vector<int> result;
+    if (root == nullptr) return result;
+
+    stack<TreeNode*> s1, s2;
+    s1.push(root);
+
+    while (!s1.empty()) {
+        TreeNode* node = s1.top();
+        s1.pop();
+        s2.push(node);
+
+        if (node->left) s1.push(node->left);
+        if (node->right) s1.push(node->right);
+    }
+
+    while (!s2.empty()) {
+        result.push_back(s2.top()->val);
+        s2.pop();
+    }
+
+    return result;
+}
+```
+
+**Output:**
+```
+Postorder: 4 5 2 3 1
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def postorder_traversal_iterative(root):
+    if not root:
+        return []
+
+    result = []
+    s1, s2 = [root], []
+
+    while s1:
+        node = s1.pop()
+        s2.append(node)
+
+        if node.left:
+            s1.append(node.left)
+        if node.right:
+            s1.append(node.right)
+
+    while s2:
+        result.append(s2.pop().val)
+
+    return result
+```
+
+**Output:**
+```
+Postorder: [4, 5, 2, 3, 1]
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function postorderTraversalIterative(root) {
+    if (!root) return [];
+
+    const result = [];
+    const s1 = [root];
+    const s2 = [];
+
+    while (s1.length > 0) {
+        const node = s1.pop();
+        s2.push(node);
+
+        if (node.left) s1.push(node.left);
+        if (node.right) s1.push(node.right);
+    }
+
+    while (s2.length > 0) {
+        result.push(s2.pop().val);
+    }
+
+    return result;
+}
+```
+
+**Output:**
+```
+Postorder: [4, 5, 2, 3, 1]
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n)</p>
+      <p><strong>Space Complexity:</strong> O(n)</p>
+      <p><strong>Advantage:</strong> No recursion stack, explicit stack control.</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(n)</p>
+      <p><strong>সুবিধা:</strong> রিকার্শন স্ট্যাক নেই, স্পষ্ট স্ট্যাক নিয়ন্ত্রণ।</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="How Postorder Traversal Works" bn="পোস্টঅর্ডার ট্রাভার্সাল কীভাবে কাজ করে" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Key Insight:</strong> Process children before parent (bottom-up approach).</p>
+      <p><strong>Step-by-step for tree [1,2,3,4,5]:</strong></p>
+      <ol>
+        <li>Start at root 1, go to leftmost node 4</li>
+        <li>Node 4 has no children → process 4</li>
+        <li>Backtrack to 2, go to right child 5</li>
+        <li>Node 5 has no children → process 5</li>
+        <li>Both children of 2 processed → process 2</li>
+        <li>Backtrack to 1, go to right child 3</li>
+        <li>Node 3 has no children → process 3</li>
+        <li>Both children of 1 processed → process 1</li>
+      </ol>
+      <p>Result: [4, 5, 2, 3, 1]</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>মূল ধারণা:</strong> প্যারেন্টের আগে চিলড্রেন প্রসেস করুন (নিচ থেকে উপরে পদ্ধতি)।</p>
+      <p><strong>ট্রি [1,2,3,4,5] এর জন্য ধাপে ধাপে:</strong></p>
+      <ol>
+        <li>রুট 1 থেকে শুরু করুন, সবচেয়ে বাম নোড 4 এ যান</li>
+        <li>নোড 4 এর কোনো চিলড্রেন নেই → 4 প্রসেস করুন</li>
+        <li>2 তে ব্যাকট্র্যাক করুন, ডান চিলড্রেন 5 এ যান</li>
+        <li>নোড 5 এর কোনো চিলড্রেন নেই → 5 প্রসেস করুন</li>
+        <li>2 এর উভয় চিলড্রেন প্রসেস করা হয়েছে → 2 প্রসেস করুন</li>
+        <li>1 এ ব্যাকট্র্যাক করুন, ডান চিলড্রেন 3 এ যান</li>
+        <li>নোড 3 এর কোনো চিলড্রেন নেই → 3 প্রসেস করুন</li>
+        <li>1 এর উভয় চিলড্রেন প্রসেস করা হয়েছে → 1 প্রসেস করুন</li>
+      </ol>
+      <p>ফলাফল: [4, 5, 2, 3, 1]</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Processing Order:</strong> Left → Right → Root (LRN)</li>
+        <li><strong>Use Cases:</strong> Tree deletion, postfix expression evaluation</li>
+        <li><strong>Parent After Children:</strong> Always process children before parent</li>
+        <li><strong>Stack Behavior:</strong> Two stacks reverse the traversal order</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>প্রসেসিং অর্ডার:</strong> বাম → ডান → রুট (LRN)</li>
+        <li><strong>ব্যবহার ক্ষেত্র:</strong> ট্রি ডিলিশন, পোস্টফিক্স এক্সপ্রেশন ইভালুয়েশন</li>
+        <li><strong>চিলড্রেনের পর প্যারেন্ট:</strong> সবসময় প্যারেন্টের আগে চিলড্রেন প্রসেস করুন</li>
+        <li><strong>স্ট্যাক আচরণ:</strong> দুটি স্ট্যাক ট্রাভার্সাল অর্ডার বিপরীত করে</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Mention both recursive and iterative approaches</li>
+          <li>Explain the LRN (Left-Right-Node) traversal order</li>
+          <li>Discuss use cases like tree deletion</li>
+          <li>Compare with preorder and inorder traversals</li>
+          <li>Handle edge cases: empty tree, single node</li>
+          <li>Be ready to implement without recursion</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>রিকার্সিভ এবং পুনরাবৃত্তিমূলক উভয় পদ্ধতি উল্লেখ করুন</li>
+          <li>LRN (বাম-ডান-নোড) ট্রাভার্সাল অর্ডার ব্যাখ্যা করুন</li>
+          <li>ট্রি ডিলিশনের মতো ব্যবহার ক্ষেত্র আলোচনা করুন</li>
+          <li>প্রিঅর্ডার এবং ইনঅর্ডার ট্রাভার্সালের সাথে তুলনা করুন</li>
+          <li>এজ কেস পরিচালনা করুন: খালি ট্রি, একক নোড</li>
+          <li>রিকার্শন ছাড়া বাস্তবায়ন করতে প্রস্তুত থাকুন</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Key Takeaways:</strong></p>
+        <ul>
+          <li>Postorder = Left → Right → Root traversal</li>
+          <li>Recursive solution is simpler, O(h) space</li>
+          <li>Iterative uses two stacks, O(n) space</li>
+          <li>Essential for tree deletion and cleanup</li>
+          <li>Children always processed before parent</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>মূল শিক্ষা:</strong></p>
+        <ul>
+          <li>পোস্টঅর্ডার = বাম → ডান → রুট ট্রাভার্সাল</li>
+          <li>রিকার্সিভ সমাধান সহজ, O(h) স্পেস</li>
+          <li>পুনরাবৃত্তিমূলক দুটি স্ট্যাক ব্যবহার করে, O(n) স্পেস</li>
+          <li>ট্রি ডিলিশন এবং ক্লিনআপের জন্য প্রয়োজনীয়</li>
+          <li>চিলড্রেন সবসময় প্যারেন্টের আগে প্রসেস করা হয়</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

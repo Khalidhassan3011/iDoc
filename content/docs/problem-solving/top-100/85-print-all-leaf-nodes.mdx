@@ -1,0 +1,227 @@
+---
+title: 85. Print All Leaf Nodes of Binary Search Tree
+description: Print all leaf nodes of a BST in order
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Print All Leaf Nodes of BST" bn="BST এর সব লিফ নোড প্রিন্ট করুন" />
+
+<TranslatedText
+  en="Print all leaf nodes (nodes with no children) of a binary search tree."
+  bn="একটি বাইনারি সার্চ ট্রির সব লিফ নোড (যে নোডগুলির কোনো চিলড্রেন নেই) প্রিন্ট করুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> Root of a binary search tree</p>
+      <p><strong>Output:</strong> All leaf node values</p>
+      <p><strong>Example:</strong></p>
+      <pre>
+{`     4
+    / \\
+   2   6
+  / \\ / \\
+ 1  3 5  7`}
+      </pre>
+      <p><strong>Output:</strong> 1 3 5 7</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> বাইনারি সার্চ ট্রির রুট</p>
+      <p><strong>আউটপুট:</strong> সব লিফ নোড মান</p>
+      <p><strong>উদাহরণ:</strong></p>
+      <pre>
+{`     4
+    / \\
+   2   6
+  / \\ / \\
+ 1  3 5  7`}
+      </pre>
+      <p><strong>আউটপুট:</strong> 1 3 5 7</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+void printLeafNodes(TreeNode* root) {
+    if (root == nullptr) return;
+
+    // If it's a leaf node
+    if (root->left == nullptr && root->right == nullptr) {
+        cout << root->val << " ";
+        return;
+    }
+
+    // Recurse on left and right subtrees
+    if (root->left) printLeafNodes(root->left);
+    if (root->right) printLeafNodes(root->right);
+}
+
+int main() {
+    TreeNode* root = new TreeNode(4);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(6);
+    root->left->left = new TreeNode(1);
+    root->left->right = new TreeNode(3);
+    root->right->left = new TreeNode(5);
+    root->right->right = new TreeNode(7);
+
+    cout << "Leaf nodes: ";
+    printLeafNodes(root);
+    cout << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Leaf nodes: 1 3 5 7
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def print_leaf_nodes(root):
+    if not root:
+        return
+
+    # If it's a leaf node
+    if not root.left and not root.right:
+        print(root.val, end=" ")
+        return
+
+    # Recurse on left and right subtrees
+    if root.left:
+        print_leaf_nodes(root.left)
+    if root.right:
+        print_leaf_nodes(root.right)
+
+# Example
+root = TreeNode(4)
+root.left = TreeNode(2)
+root.right = TreeNode(6)
+root.left.left = TreeNode(1)
+root.left.right = TreeNode(3)
+root.right.left = TreeNode(5)
+root.right.right = TreeNode(7)
+
+print("Leaf nodes:", end=" ")
+print_leaf_nodes(root)
+print()
+```
+
+**Output:**
+```
+Leaf nodes: 1 3 5 7
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function printLeafNodes(root) {
+    if (!root) return;
+
+    // If it's a leaf node
+    if (!root.left && !root.right) {
+        process.stdout.write(root.val + " ");
+        return;
+    }
+
+    // Recurse on left and right subtrees
+    if (root.left) printLeafNodes(root.left);
+    if (root.right) printLeafNodes(root.right);
+}
+
+// Example
+const root = new TreeNode(4);
+root.left = new TreeNode(2);
+root.right = new TreeNode(6);
+root.left.left = new TreeNode(1);
+root.left.right = new TreeNode(3);
+root.right.left = new TreeNode(5);
+root.right.right = new TreeNode(7);
+
+process.stdout.write("Leaf nodes: ");
+printLeafNodes(root);
+console.log();
+```
+
+**Output:**
+```
+Leaf nodes: 1 3 5 7
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n)</p>
+      <p><strong>Space Complexity:</strong> O(h) recursion stack</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(h) রিকার্শন স্ট্যাক</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Leaf Definition:</strong> Node with no left and right children</li>
+        <li><strong>Traversal:</strong> Any traversal works (preorder used here)</li>
+        <li><strong>Check Condition:</strong> Both left and right must be null</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>লিফ সংজ্ঞা:</strong> যে নোডের বাম এবং ডান চিলড্রেন নেই</li>
+        <li><strong>ট্রাভার্সাল:</strong> যেকোনো ট্রাভার্সাল কাজ করে (এখানে প্রিঅর্ডার ব্যবহৃত)</li>
+        <li><strong>চেক শর্ত:</strong> বাম এবং ডান উভয়ই null হতে হবে</li>
+      </ul>
+    </>
+  }
+/>

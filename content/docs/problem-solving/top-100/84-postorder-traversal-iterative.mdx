@@ -1,0 +1,288 @@
+---
+title: 84. Postorder Traversal Without Recursion
+description: Traverse a binary tree in postorder without using recursion
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Postorder Traversal Without Recursion" bn="রিকার্শন ছাড়া পোস্টঅর্ডার ট্রাভার্সাল" />
+
+<TranslatedText
+  en="Implement postorder traversal iteratively without using recursion, using a single stack."
+  bn="একটি একক স্ট্যাক ব্যবহার করে রিকার্শন ছাড়াই পোস্টঅর্ডার ট্রাভার্সাল পুনরাবৃত্তিমূলকভাবে বাস্তবায়ন করুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> Binary tree root node</p>
+      <p><strong>Output:</strong> Postorder sequence using iterative approach</p>
+      <p><strong>Constraint:</strong> Do not use recursion</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> বাইনারি ট্রি রুট নোড</p>
+      <p><strong>আউটপুট:</strong> পুনরাবৃত্তিমূলক পদ্ধতি ব্যবহার করে পোস্টঅর্ডার সিকোয়েন্স</p>
+      <p><strong>সীমাবদ্ধতা:</strong> রিকার্শন ব্যবহার করবেন না</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতি" />
+
+### <TranslatedText en="Approach: Single Stack with Visited Tracking" bn="পদ্ধতি: ভিজিটেড ট্র্যাকিং সহ একক স্ট্যাক" />
+
+<TranslatedText
+  en={<p>Use one stack and track the last visited node to determine when to process the current node.</p>}
+  bn={<p>কখন বর্তমান নোড প্রসেস করতে হবে তা নির্ধারণ করতে একটি স্ট্যাক এবং শেষ ভিজিট করা নোড ট্র্যাক করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+vector<int> postorderTraversal(TreeNode* root) {
+    vector<int> result;
+    if (!root) return result;
+
+    stack<TreeNode*> st;
+    TreeNode* current = root;
+    TreeNode* lastVisited = nullptr;
+
+    while (!st.empty() || current) {
+        if (current) {
+            st.push(current);
+            current = current->left;
+        } else {
+            TreeNode* peekNode = st.top();
+
+            // If right child exists and not visited yet
+            if (peekNode->right && lastVisited != peekNode->right) {
+                current = peekNode->right;
+            } else {
+                result.push_back(peekNode->val);
+                lastVisited = st.top();
+                st.pop();
+            }
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->left->left = new TreeNode(4);
+    root->left->right = new TreeNode(5);
+
+    vector<int> result = postorderTraversal(root);
+
+    cout << "Postorder: ";
+    for (int val : result) cout << val << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Postorder: 4 5 2 3 1
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def postorder_traversal(root):
+    if not root:
+        return []
+
+    result = []
+    stack = []
+    current = root
+    last_visited = None
+
+    while stack or current:
+        if current:
+            stack.append(current)
+            current = current.left
+        else:
+            peek_node = stack[-1]
+
+            # If right child exists and not visited yet
+            if peek_node.right and last_visited != peek_node.right:
+                current = peek_node.right
+            else:
+                result.append(peek_node.val)
+                last_visited = stack.pop()
+
+    return result
+
+# Example
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.left.right = TreeNode(5)
+
+print("Postorder:", postorder_traversal(root))
+```
+
+**Output:**
+```
+Postorder: [4, 5, 2, 3, 1]
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function postorderTraversal(root) {
+    if (!root) return [];
+
+    const result = [];
+    const stack = [];
+    let current = root;
+    let lastVisited = null;
+
+    while (stack.length > 0 || current) {
+        if (current) {
+            stack.push(current);
+            current = current.left;
+        } else {
+            const peekNode = stack[stack.length - 1];
+
+            // If right child exists and not visited yet
+            if (peekNode.right && lastVisited !== peekNode.right) {
+                current = peekNode.right;
+            } else {
+                result.push(peekNode.val);
+                lastVisited = stack.pop();
+            }
+        }
+    }
+
+    return result;
+}
+
+// Example
+const root = new TreeNode(1);
+root.left = new TreeNode(2);
+root.right = new TreeNode(3);
+root.left.left = new TreeNode(4);
+root.left.right = new TreeNode(5);
+
+console.log("Postorder:", postorderTraversal(root));
+```
+
+**Output:**
+```
+Postorder: [4, 5, 2, 3, 1]
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n)</p>
+      <p><strong>Space Complexity:</strong> O(h) for stack</p>
+      <p><strong>Advantage:</strong> Single stack, no recursion overhead.</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(h) স্ট্যাকের জন্য</p>
+      <p><strong>সুবিধা:</strong> একক স্ট্যাক, রিকার্শন ওভারহেড নেই।</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Last Visited Tracking:</strong> Determines when to process current node</li>
+        <li><strong>Right Child Check:</strong> Only process after right subtree is done</li>
+        <li><strong>No Recursion:</strong> Uses explicit stack for traversal</li>
+        <li><strong>Memory Efficient:</strong> Single stack vs two stacks approach</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>শেষ ভিজিটেড ট্র্যাকিং:</strong> কখন বর্তমান নোড প্রসেস করতে হবে নির্ধারণ করে</li>
+        <li><strong>ডান চিলড্রেন চেক:</strong> ডান সাবট্রি শেষ হওয়ার পরেই প্রসেস করুন</li>
+        <li><strong>রিকার্শন নেই:</strong> ট্রাভার্সালের জন্য স্পষ্ট স্ট্যাক ব্যবহার করে</li>
+        <li><strong>মেমরি দক্ষ:</strong> দুটি স্ট্যাক পদ্ধতির তুলনায় একক স্ট্যাক</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <blockquote>
+        <p><strong>Interview Tips:</strong></p>
+        <ul>
+          <li>Explain why tracking last visited node is necessary</li>
+          <li>Compare single stack vs two stacks approach</li>
+          <li>Discuss space complexity advantages</li>
+          <li>Handle edge cases properly</li>
+          <li>Mention real-world applications</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+  bn={
+    <>
+      <blockquote>
+        <p><strong>ইন্টারভিউ টিপস:</strong></p>
+        <ul>
+          <li>শেষ ভিজিট করা নোড ট্র্যাক করা কেন প্রয়োজনীয় ব্যাখ্যা করুন</li>
+          <li>একক স্ট্যাক বনাম দুটি স্ট্যাক পদ্ধতি তুলনা করুন</li>
+          <li>স্পেস কমপ্লেক্সিটি সুবিধা আলোচনা করুন</li>
+          <li>এজ কেস সঠিকভাবে পরিচালনা করুন</li>
+          <li>বাস্তব-বিশ্ব অ্যাপ্লিকেশন উল্লেখ করুন</li>
+        </ul>
+      </blockquote>
+    </>
+  }
+/>

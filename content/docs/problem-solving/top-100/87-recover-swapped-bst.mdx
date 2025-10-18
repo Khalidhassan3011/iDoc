@@ -1,0 +1,263 @@
+---
+title: 87. Recover Binary Search Tree with Swapped Nodes
+description: Find and fix two swapped nodes in a BST
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Recover BST with Swapped Nodes" bn="সোয়াপ করা নোড সহ BST পুনরুদ্ধার করুন" />
+
+<TranslatedText
+  en="In a BST, two nodes have been swapped by mistake. Recover the tree without changing its structure."
+  bn="একটি BST-তে, ভুলবশত দুটি নোড সোয়াপ করা হয়েছে। এর গঠন পরিবর্তন না করে ট্রি পুনরুদ্ধার করুন।"
+/>
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<TranslatedText
+  en={<p>Use inorder traversal to find two nodes that violate BST property, then swap their values.</p>}
+  bn={<p>BST প্রপার্টি লঙ্ঘন করে এমন দুটি নোড খুঁজতে ইনঅর্ডার ট্রাভার্সাল ব্যবহার করুন, তারপর তাদের মান সোয়াপ করুন।</p>}
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+private:
+    TreeNode* first = nullptr;
+    TreeNode* second = nullptr;
+    TreeNode* prev = nullptr;
+
+    void inorder(TreeNode* root) {
+        if (!root) return;
+
+        inorder(root->left);
+
+        // Find violations
+        if (prev && root->val < prev->val) {
+            if (!first) {
+                first = prev;
+            }
+            second = root;
+        }
+        prev = root;
+
+        inorder(root->right);
+    }
+
+public:
+    void recoverTree(TreeNode* root) {
+        inorder(root);
+
+        // Swap the values
+        if (first && second) {
+            swap(first->val, second->val);
+        }
+    }
+};
+
+void printInorder(TreeNode* root) {
+    if (!root) return;
+    printInorder(root->left);
+    cout << root->val << " ";
+    printInorder(root->right);
+}
+
+int main() {
+    TreeNode* root = new TreeNode(3);
+    root->left = new TreeNode(1);
+    root->right = new TreeNode(4);
+    root->right->left = new TreeNode(2);
+
+    cout << "Before recovery: ";
+    printInorder(root);
+    cout << endl;
+
+    Solution sol;
+    sol.recoverTree(root);
+
+    cout << "After recovery: ";
+    printInorder(root);
+    cout << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Before recovery: 1 3 2 4
+After recovery: 1 2 3 4
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def __init__(self):
+        self.first = None
+        self.second = None
+        self.prev = None
+
+    def inorder(self, root):
+        if not root:
+            return
+
+        self.inorder(root.left)
+
+        # Find violations
+        if self.prev and root.val < self.prev.val:
+            if not self.first:
+                self.first = self.prev
+            self.second = root
+        self.prev = root
+
+        self.inorder(root.right)
+
+    def recover_tree(self, root):
+        self.inorder(root)
+
+        # Swap the values
+        if self.first and self.second:
+            self.first.val, self.second.val = self.second.val, self.first.val
+
+def print_inorder(root):
+    if not root:
+        return
+    print_inorder(root.left)
+    print(root.val, end=" ")
+    print_inorder(root.right)
+
+# Example
+root = TreeNode(3)
+root.left = TreeNode(1)
+root.right = TreeNode(4)
+root.right.left = TreeNode(2)
+
+print("Before recovery:", end=" ")
+print_inorder(root)
+print()
+
+sol = Solution()
+sol.recover_tree(root)
+
+print("After recovery:", end=" ")
+print_inorder(root)
+print()
+```
+
+**Output:**
+```
+Before recovery: 1 3 2 4
+After recovery: 1 2 3 4
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+class Solution {
+    constructor() {
+        this.first = null;
+        this.second = null;
+        this.prev = null;
+    }
+
+    inorder(root) {
+        if (!root) return;
+
+        this.inorder(root.left);
+
+        // Find violations
+        if (this.prev && root.val < this.prev.val) {
+            if (!this.first) {
+                this.first = this.prev;
+            }
+            this.second = root;
+        }
+        this.prev = root;
+
+        this.inorder(root.right);
+    }
+
+    recoverTree(root) {
+        this.inorder(root);
+
+        // Swap the values
+        if (this.first && this.second) {
+            [this.first.val, this.second.val] = [this.second.val, this.first.val];
+        }
+    }
+}
+
+function printInorder(root) {
+    if (!root) return;
+    printInorder(root.left);
+    process.stdout.write(root.val + " ");
+    printInorder(root.right);
+}
+
+// Example
+const root = new TreeNode(3);
+root.left = new TreeNode(1);
+root.right = new TreeNode(4);
+root.right.left = new TreeNode(2);
+
+process.stdout.write("Before recovery: ");
+printInorder(root);
+console.log();
+
+const sol = new Solution();
+sol.recoverTree(root);
+
+process.stdout.write("After recovery: ");
+printInorder(root);
+console.log();
+```
+
+**Output:**
+```
+Before recovery: 1 3 2 4
+After recovery: 1 2 3 4
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n)</p>
+      <p><strong>Space Complexity:</strong> O(h)</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(h)</p>
+    </>
+  }
+/>

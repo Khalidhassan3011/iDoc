@@ -1,0 +1,118 @@
+---
+title: 99. Maximum Depth or Height of Tree
+description: Find the maximum depth or height of a binary tree
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Maximum Depth or Height of Tree" bn="ট্রির সর্বোচ্চ গভীরতা বা উচ্চতা" />
+
+<TranslatedText en="Find the maximum depth (height) of a binary tree." bn="একটি বাইনারি ট্রির সর্বোচ্চ গভীরতা (উচ্চতা) খুঁজুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+int maxDepth(TreeNode* root) {
+    if (root == nullptr) return 0;
+    int leftDepth = maxDepth(root->left);
+    int rightDepth = maxDepth(root->right);
+    return max(leftDepth, rightDepth) + 1;
+}
+
+int main() {
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->left->left = new TreeNode(4);
+    root->left->right = new TreeNode(5);
+
+    cout << "Maximum depth: " << maxDepth(root) << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Maximum depth: 3
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def max_depth(root):
+    if not root:
+        return 0
+    left_depth = max_depth(root.left)
+    right_depth = max_depth(root.right)
+    return max(left_depth, right_depth) + 1
+
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.left.right = TreeNode(5)
+
+print("Maximum depth:", max_depth(root))
+```
+
+**Output:**
+```
+Maximum depth: 3
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function maxDepth(root) {
+    if (!root) return 0;
+    const leftDepth = maxDepth(root.left);
+    const rightDepth = maxDepth(root.right);
+    return Math.max(leftDepth, rightDepth) + 1;
+}
+
+const root = new TreeNode(1);
+root.left = new TreeNode(2);
+root.right = new TreeNode(3);
+root.left.left = new TreeNode(4);
+root.left.right = new TreeNode(5);
+
+console.log("Maximum depth:", maxDepth(root));
+```
+
+**Output:**
+```
+Maximum depth: 3
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(n)</p><p><strong>Space Complexity:</strong> O(h)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(n)</p><p><strong>স্থান জটিলতা:</strong> O(h)</p></>} />

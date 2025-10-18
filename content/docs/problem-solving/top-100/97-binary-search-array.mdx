@@ -1,0 +1,137 @@
+---
+title: 97. Binary Search in Array
+description: Perform binary search in a sorted array
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Binary Search in Array" bn="অ্যারেতে বাইনারি সার্চ" />
+
+<TranslatedText en="Implement binary search to find an element in a sorted array." bn="একটি সাজানো অ্যারেতে একটি উপাদান খুঁজতে বাইনারি সার্চ বাস্তবায়ন করুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int binarySearch(vector<int>& arr, int target) {
+    int left = 0;
+    int right = arr.size() - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return -1;
+}
+
+int main() {
+    vector<int> arr = {2, 5, 8, 12, 16, 23, 38, 45, 56, 67, 78};
+    int target = 23;
+
+    int result = binarySearch(arr, target);
+
+    if (result != -1) {
+        cout << "Element found at index " << result << endl;
+    } else {
+        cout << "Element not found" << endl;
+    }
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Element found at index 5
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def binary_search(arr, target):
+    left, right = 0, len(arr) - 1
+
+    while left <= right:
+        mid = left + (right - left) // 2
+
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return -1
+
+arr = [2, 5, 8, 12, 16, 23, 38, 45, 56, 67, 78]
+target = 23
+
+result = binary_search(arr, target)
+
+if result != -1:
+    print(f"Element found at index {result}")
+else:
+    print("Element not found")
+```
+
+**Output:**
+```
+Element found at index 5
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function binarySearch(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+
+    while (left <= right) {
+        const mid = Math.floor(left + (right - left) / 2);
+
+        if (arr[mid] === target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return -1;
+}
+
+const arr = [2, 5, 8, 12, 16, 23, 38, 45, 56, 67, 78];
+const target = 23;
+
+const result = binarySearch(arr, target);
+
+if (result !== -1) {
+    console.log(`Element found at index ${result}`);
+} else {
+    console.log("Element not found");
+}
+```
+
+**Output:**
+```
+Element found at index 5
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(log n)</p><p><strong>Space Complexity:</strong> O(1)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(log n)</p><p><strong>স্থান জটিলতা:</strong> O(1)</p></>} />

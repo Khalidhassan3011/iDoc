@@ -86,6 +86,27 @@
     "79-byte-array-to-string",
     "80-remove-duplicate-characters",
     "81-maximum-occurring-character",
-    "82-remove-given-character"
+    "82-remove-given-character",
+    "---Binary Tree Problems---",
+    "83-postorder-traversal",
+    "84-postorder-traversal-iterative",
+    "85-print-all-leaf-nodes",
+    "86-count-leaf-nodes",
+    "87-recover-swapped-bst",
+    "88-implement-bst",
+    "89-preorder-traversal",
+    "90-preorder-traversal-iterative",
+    "91-inorder-traversal",
+    "92-inorder-traversal-iterative",
+    "93-binary-tree-to-bst",
+    "94-largest-bst-subtree",
+    "95-connect-nodes-same-level",
+    "96-trie-data-structure",
+    "97-binary-search-array",
+    "98-binary-tree-to-dll",
+    "99-tree-max-depth",
+    "100-binary-vs-bst",
+    "101-self-balancing-bst",
+    "102-avl-tree"
   ]
 }

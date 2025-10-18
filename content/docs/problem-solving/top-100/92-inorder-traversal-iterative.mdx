@@ -1,0 +1,156 @@
+---
+title: 92. Inorder Traversal Without Recursion
+description: Traverse binary tree in inorder without recursion
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Inorder Traversal Without Recursion" bn="রিকার্শন ছাড়া ইনঅর্ডার ট্রাভার্সাল" />
+
+<TranslatedText en="Implement inorder traversal iteratively using a stack." bn="একটি স্ট্যাক ব্যবহার করে ইনঅর্ডার ট্রাভার্সাল পুনরাবৃত্তিমূলকভাবে বাস্তবায়ন করুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> result;
+    stack<TreeNode*> st;
+    TreeNode* current = root;
+
+    while (current != nullptr || !st.empty()) {
+        while (current != nullptr) {
+            st.push(current);
+            current = current->left;
+        }
+
+        current = st.top();
+        st.pop();
+        result.push_back(current->val);
+        current = current->right;
+    }
+
+    return result;
+}
+
+int main() {
+    TreeNode* root = new TreeNode(4);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(6);
+    root->left->left = new TreeNode(1);
+    root->left->right = new TreeNode(3);
+
+    vector<int> result = inorderTraversal(root);
+    cout << "Inorder: ";
+    for (int val : result) cout << val << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Inorder: 1 2 3 4 6
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def inorder_traversal(root):
+    result = []
+    stack = []
+    current = root
+
+    while current or stack:
+        while current:
+            stack.append(current)
+            current = current.left
+
+        current = stack.pop()
+        result.append(current.val)
+        current = current.right
+
+    return result
+
+root = TreeNode(4)
+root.left = TreeNode(2)
+root.right = TreeNode(6)
+root.left.left = TreeNode(1)
+root.left.right = TreeNode(3)
+
+print("Inorder:", inorder_traversal(root))
+```
+
+**Output:**
+```
+Inorder: [1, 2, 3, 4, 6]
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function inorderTraversal(root) {
+    const result = [];
+    const stack = [];
+    let current = root;
+
+    while (current || stack.length > 0) {
+        while (current) {
+            stack.push(current);
+            current = current.left;
+        }
+
+        current = stack.pop();
+        result.push(current.val);
+        current = current.right;
+    }
+
+    return result;
+}
+
+const root = new TreeNode(4);
+root.left = new TreeNode(2);
+root.right = new TreeNode(6);
+root.left.left = new TreeNode(1);
+root.left.right = new TreeNode(3);
+
+console.log("Inorder:", inorderTraversal(root));
+```
+
+**Output:**
+```
+Inorder: [1, 2, 3, 4, 6]
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(n)</p><p><strong>Space Complexity:</strong> O(h)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(n)</p><p><strong>স্থান জটিলতা:</strong> O(h)</p></>} />

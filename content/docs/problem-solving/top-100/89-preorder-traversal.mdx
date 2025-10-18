@@ -1,0 +1,213 @@
+---
+title: 89. Preorder Traversal
+description: Perform preorder traversal in a binary tree
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Preorder Traversal" bn="প্রিঅর্ডার ট্রাভার্সাল" />
+
+<TranslatedText
+  en="Implement preorder traversal (root-left-right) in a binary tree."
+  bn="একটি বাইনারি ট্রিতে প্রিঅর্ডার ট্রাভার্সাল (রুট-বাম-ডান) বাস্তবায়ন করুন।"
+/>
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+// Recursive
+void preorderRecursive(TreeNode* root, vector<int>& result) {
+    if (!root) return;
+    result.push_back(root->val);
+    preorderRecursive(root->left, result);
+    preorderRecursive(root->right, result);
+}
+
+// Iterative
+vector<int> preorderIterative(TreeNode* root) {
+    vector<int> result;
+    if (!root) return result;
+
+    stack<TreeNode*> st;
+    st.push(root);
+
+    while (!st.empty()) {
+        TreeNode* node = st.top();
+        st.pop();
+        result.push_back(node->val);
+
+        if (node->right) st.push(node->right);
+        if (node->left) st.push(node->left);
+    }
+
+    return result;
+}
+
+int main() {
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->left->left = new TreeNode(4);
+    root->left->right = new TreeNode(5);
+
+    vector<int> result;
+    preorderRecursive(root, result);
+    cout << "Preorder (recursive): ";
+    for (int val : result) cout << val << " ";
+    cout << endl;
+
+    result = preorderIterative(root);
+    cout << "Preorder (iterative): ";
+    for (int val : result) cout << val << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Preorder (recursive): 1 2 4 5 3
+Preorder (iterative): 1 2 4 5 3
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def preorder_recursive(root, result):
+    if not root:
+        return
+    result.append(root.val)
+    preorder_recursive(root.left, result)
+    preorder_recursive(root.right, result)
+
+def preorder_iterative(root):
+    if not root:
+        return []
+
+    result = []
+    stack = [root]
+
+    while stack:
+        node = stack.pop()
+        result.append(node.val)
+
+        if node.right:
+            stack.append(node.right)
+        if node.left:
+            stack.append(node.left)
+
+    return result
+
+# Example
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.left.right = TreeNode(5)
+
+result = []
+preorder_recursive(root, result)
+print("Preorder (recursive):", result)
+
+print("Preorder (iterative):", preorder_iterative(root))
+```
+
+**Output:**
+```
+Preorder (recursive): [1, 2, 4, 5, 3]
+Preorder (iterative): [1, 2, 4, 5, 3]
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function preorderRecursive(root, result) {
+    if (!root) return;
+    result.push(root.val);
+    preorderRecursive(root.left, result);
+    preorderRecursive(root.right, result);
+}
+
+function preorderIterative(root) {
+    if (!root) return [];
+
+    const result = [];
+    const stack = [root];
+
+    while (stack.length > 0) {
+        const node = stack.pop();
+        result.push(node.val);
+
+        if (node.right) stack.push(node.right);
+        if (node.left) stack.push(node.left);
+    }
+
+    return result;
+}
+
+// Example
+const root = new TreeNode(1);
+root.left = new TreeNode(2);
+root.right = new TreeNode(3);
+root.left.left = new TreeNode(4);
+root.left.right = new TreeNode(5);
+
+const result = [];
+preorderRecursive(root, result);
+console.log("Preorder (recursive):", result);
+
+console.log("Preorder (iterative):", preorderIterative(root));
+```
+
+**Output:**
+```
+Preorder (recursive): [1, 2, 4, 5, 3]
+Preorder (iterative): [1, 2, 4, 5, 3]
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n)</p>
+      <p><strong>Space Complexity:</strong> O(h)</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n)</p>
+      <p><strong>স্থান জটিলতা:</strong> O(h)</p>
+    </>
+  }
+/>

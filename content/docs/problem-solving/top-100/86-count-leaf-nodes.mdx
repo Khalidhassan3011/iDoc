@@ -1,0 +1,213 @@
+---
+title: 86. Count Number of Leaf Nodes
+description: Count the total number of leaf nodes in a binary tree
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Count Number of Leaf Nodes" bn="লিফ নোডের সংখ্যা গণনা করুন" />
+
+<TranslatedText
+  en="Count the total number of leaf nodes in a binary tree using recursive and iterative approaches."
+  bn="রিকার্সিভ এবং পুনরাবৃত্তিমূলক পদ্ধতি ব্যবহার করে একটি বাইনারি ট্রিতে লিফ নোডের মোট সংখ্যা গণনা করুন।"
+/>
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <queue>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+// Recursive approach
+int countLeafNodes(TreeNode* root) {
+    if (root == nullptr) return 0;
+
+    if (root->left == nullptr && root->right == nullptr)
+        return 1;
+
+    return countLeafNodes(root->left) + countLeafNodes(root->right);
+}
+
+// Iterative approach using level order traversal
+int countLeafNodesIterative(TreeNode* root) {
+    if (root == nullptr) return 0;
+
+    int count = 0;
+    queue<TreeNode*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        TreeNode* node = q.front();
+        q.pop();
+
+        if (node->left == nullptr && node->right == nullptr) {
+            count++;
+        }
+
+        if (node->left) q.push(node->left);
+        if (node->right) q.push(node->right);
+    }
+
+    return count;
+}
+
+int main() {
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->left->left = new TreeNode(4);
+    root->left->right = new TreeNode(5);
+
+    cout << "Leaf count (recursive): " << countLeafNodes(root) << endl;
+    cout << "Leaf count (iterative): " << countLeafNodesIterative(root) << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Leaf count (recursive): 3
+Leaf count (iterative): 3
+```
+  </Tab>
+  <Tab value="Python">
+```python
+from collections import deque
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def count_leaf_nodes(root):
+    if not root:
+        return 0
+
+    if not root.left and not root.right:
+        return 1
+
+    return count_leaf_nodes(root.left) + count_leaf_nodes(root.right)
+
+def count_leaf_nodes_iterative(root):
+    if not root:
+        return 0
+
+    count = 0
+    queue = deque([root])
+
+    while queue:
+        node = queue.popleft()
+
+        if not node.left and not node.right:
+            count += 1
+
+        if node.left:
+            queue.append(node.left)
+        if node.right:
+            queue.append(node.right)
+
+    return count
+
+# Example
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.left.right = TreeNode(5)
+
+print("Leaf count (recursive):", count_leaf_nodes(root))
+print("Leaf count (iterative):", count_leaf_nodes_iterative(root))
+```
+
+**Output:**
+```
+Leaf count (recursive): 3
+Leaf count (iterative): 3
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function countLeafNodes(root) {
+    if (!root) return 0;
+
+    if (!root.left && !root.right) return 1;
+
+    return countLeafNodes(root.left) + countLeafNodes(root.right);
+}
+
+function countLeafNodesIterative(root) {
+    if (!root) return 0;
+
+    let count = 0;
+    const queue = [root];
+
+    while (queue.length > 0) {
+        const node = queue.shift();
+
+        if (!node.left && !node.right) {
+            count++;
+        }
+
+        if (node.left) queue.push(node.left);
+        if (node.right) queue.push(node.right);
+    }
+
+    return count;
+}
+
+// Example
+const root = new TreeNode(1);
+root.left = new TreeNode(2);
+root.right = new TreeNode(3);
+root.left.left = new TreeNode(4);
+root.left.right = new TreeNode(5);
+
+console.log("Leaf count (recursive):", countLeafNodes(root));
+console.log("Leaf count (iterative):", countLeafNodesIterative(root));
+```
+
+**Output:**
+```
+Leaf count (recursive): 3
+Leaf count (iterative): 3
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(n) for both approaches</p>
+      <p><strong>Space Complexity:</strong> O(h) recursive, O(w) iterative (w = max width)</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(n) উভয় পদ্ধতির জন্য</p>
+      <p><strong>স্থান জটিলতা:</strong> O(h) রিকার্সিভ, O(w) পুনরাবৃত্তিমূলক (w = সর্বোচ্চ প্রস্থ)</p>
+    </>
+  }
+/>

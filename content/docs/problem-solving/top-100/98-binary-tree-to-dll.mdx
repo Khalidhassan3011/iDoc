@@ -1,0 +1,234 @@
+---
+title: 98. Convert Binary Tree to Doubly Linked List
+description: Convert a binary tree to a doubly linked list in-place
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Convert Binary Tree to Doubly Linked List" bn="বাইনারি ট্রিকে ডাবলি লিংকড লিস্টে রূপান্তর করুন" />
+
+<TranslatedText en="Convert a binary tree to a circular doubly linked list in-place." bn="একটি বাইনারি ট্রিকে ইন-প্লেস একটি সার্কুলার ডাবলি লিংকড লিস্টে রূপান্তর করুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+Node* prev = nullptr;
+Node* head = nullptr;
+
+void convertToDLL(Node* root) {
+    if (!root) return;
+
+    convertToDLL(root->left);
+
+    if (prev == nullptr) {
+        head = root;
+    } else {
+        root->left = prev;
+        prev->right = root;
+    }
+    prev = root;
+
+    convertToDLL(root->right);
+}
+
+Node* treeToDoublyList(Node* root) {
+    if (!root) return nullptr;
+
+    prev = nullptr;
+    head = nullptr;
+    convertToDLL(root);
+
+    // Make it circular
+    head->left = prev;
+    prev->right = head;
+
+    return head;
+}
+
+void printDLL(Node* head) {
+    if (!head) return;
+    Node* current = head;
+    do {
+        cout << current->val << " ";
+        current = current->right;
+    } while (current != head);
+    cout << endl;
+}
+
+int main() {
+    Node* root = new Node(4);
+    root->left = new Node(2);
+    root->right = new Node(5);
+    root->left->left = new Node(1);
+    root->left->right = new Node(3);
+
+    Node* dll = treeToDoublyList(root);
+    printDLL(dll);
+
+    return 0;
+}
+```
+
+**Output:**
+```
+1 2 3 4 5
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def __init__(self):
+        self.prev = None
+        self.head = None
+
+    def convert_to_dll(self, root):
+        if not root:
+            return
+
+        self.convert_to_dll(root.left)
+
+        if not self.prev:
+            self.head = root
+        else:
+            root.left = self.prev
+            self.prev.right = root
+        self.prev = root
+
+        self.convert_to_dll(root.right)
+
+    def tree_to_doubly_list(self, root):
+        if not root:
+            return None
+
+        self.prev = None
+        self.head = None
+        self.convert_to_dll(root)
+
+        self.head.left = self.prev
+        self.prev.right = self.head
+
+        return self.head
+
+def print_dll(head):
+    if not head:
+        return
+    current = head
+    while True:
+        print(current.val, end=" ")
+        current = current.right
+        if current == head:
+            break
+    print()
+
+root = Node(4)
+root.left = Node(2)
+root.right = Node(5)
+root.left.left = Node(1)
+root.left.right = Node(3)
+
+sol = Solution()
+dll = sol.tree_to_doubly_list(root)
+print_dll(dll)
+```
+
+**Output:**
+```
+1 2 3 4 5
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+class Solution {
+    constructor() {
+        this.prev = null;
+        this.head = null;
+    }
+
+    convertToDLL(root) {
+        if (!root) return;
+
+        this.convertToDLL(root.left);
+
+        if (!this.prev) {
+            this.head = root;
+        } else {
+            root.left = this.prev;
+            this.prev.right = root;
+        }
+        this.prev = root;
+
+        this.convertToDLL(root.right);
+    }
+
+    treeToDoublyList(root) {
+        if (!root) return null;
+
+        this.prev = null;
+        this.head = null;
+        this.convertToDLL(root);
+
+        this.head.left = this.prev;
+        this.prev.right = this.head;
+
+        return this.head;
+    }
+}
+
+function printDLL(head) {
+    if (!head) return;
+    let current = head;
+    do {
+        process.stdout.write(current.val + " ");
+        current = current.right;
+    } while (current !== head);
+    console.log();
+}
+
+const root = new Node(4);
+root.left = new Node(2);
+root.right = new Node(5);
+root.left.left = new Node(1);
+root.left.right = new Node(3);
+
+const sol = new Solution();
+const dll = sol.treeToDoublyList(root);
+printDLL(dll);
+```
+
+**Output:**
+```
+1 2 3 4 5
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(n)</p><p><strong>Space Complexity:</strong> O(h)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(n)</p><p><strong>স্থান জটিলতা:</strong> O(h)</p></>} />

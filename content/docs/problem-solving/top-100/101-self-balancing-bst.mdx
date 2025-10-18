@@ -1,0 +1,140 @@
+---
+title: 101. Self-Balancing Binary Search Trees
+description: Understanding self-balancing BSTs and their importance
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Self-Balancing Binary Search Trees" bn="স্ব-ভারসাম্যপূর্ণ বাইনারি সার্চ ট্রি" />
+
+<TranslatedText en="Self-balancing BSTs maintain O(log n) height by automatically rebalancing during insertions and deletions." bn="স্ব-ভারসাম্যপূর্ণ BST গুলি ইনসার্শন এবং ডিলিশনের সময় স্বয়ংক্রিয়ভাবে পুনর্ভারসাম্য করে O(log n) উচ্চতা বজায় রাখে।" />
+
+## <TranslatedText en="Types of Self-Balancing BSTs" bn="স্ব-ভারসাম্যপূর্ণ BST এর ধরন" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>AVL Trees:</strong> Strictly balanced, height difference between left and right subtrees is at most 1</li>
+        <li><strong>Red-Black Trees:</strong> Less strictly balanced, uses coloring and rotation rules</li>
+        <li><strong>Splay Trees:</strong> Self-adjusting, recently accessed elements near root</li>
+        <li><strong>B-Trees:</strong> Multi-way search trees, commonly used in databases</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>AVL ট্রি:</strong> কঠোরভাবে ভারসাম্যপূর্ণ, বাম এবং ডান সাবট্রির উচ্চতার পার্থক্য সর্বোচ্চ 1</li>
+        <li><strong>রেড-ব্ল্যাক ট্রি:</strong> কম কঠোরভাবে ভারসাম্যপূর্ণ, রঙ এবং ঘূর্ণন নিয়ম ব্যবহার করে</li>
+        <li><strong>স্প্লে ট্রি:</strong> স্ব-সমন্বয়কারী, সম্প্রতি অ্যাক্সেস করা উপাদানগুলি রুটের কাছাকাছি</li>
+        <li><strong>B-ট্রি:</strong> মাল্টি-ওয়ে সার্চ ট্রি, সাধারণত ডেটাবেসে ব্যবহৃত</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Comparison Table" bn="তুলনা সারণী" />
+
+<TranslatedText
+  en={
+    <table>
+      <thead>
+        <tr>
+          <th>Tree Type</th>
+          <th>Search</th>
+          <th>Insert</th>
+          <th>Delete</th>
+          <th>Balance Factor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>AVL Tree</td>
+          <td>O(log n)</td>
+          <td>O(log n)</td>
+          <td>O(log n)</td>
+          <td>Strict: -1, 0, 1</td>
+        </tr>
+        <tr>
+          <td>Red-Black Tree</td>
+          <td>O(log n)</td>
+          <td>O(log n)</td>
+          <td>O(log n)</td>
+          <td>Relaxed</td>
+        </tr>
+        <tr>
+          <td>Splay Tree</td>
+          <td>O(log n) amortized</td>
+          <td>O(log n) amortized</td>
+          <td>O(log n) amortized</td>
+          <td>Not guaranteed</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+  bn={
+    <table>
+      <thead>
+        <tr>
+          <th>ট্রির ধরন</th>
+          <th>সার্চ</th>
+          <th>ইনসার্ট</th>
+          <th>ডিলিট</th>
+          <th>ভারসাম্য ফ্যাক্টর</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>AVL ট্রি</td>
+          <td>O(log n)</td>
+          <td>O(log n)</td>
+          <td>O(log n)</td>
+          <td>কঠোর: -1, 0, 1</td>
+        </tr>
+        <tr>
+          <td>রেড-ব্ল্যাক ট্রি</td>
+          <td>O(log n)</td>
+          <td>O(log n)</td>
+          <td>O(log n)</td>
+          <td>শিথিল</td>
+        </tr>
+        <tr>
+          <td>স্প্লে ট্রি</td>
+          <td>O(log n) সাময়িক</td>
+          <td>O(log n) সাময়িক</td>
+          <td>O(log n) সাময়িক</td>
+          <td>গ্যারান্টিড নয়</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+/>
+
+## <TranslatedText en="Why Self-Balancing?" bn="কেন স্ব-ভারসাম্যপূর্ণ?" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Worst Case Prevention:</strong> Regular BST can degrade to O(n) in worst case (skewed tree)</li>
+        <li><strong>Guaranteed Performance:</strong> Self-balancing trees guarantee O(log n) operations</li>
+        <li><strong>Real-World Applications:</strong> Used in databases, file systems, and memory management</li>
+        <li><strong>Automatic Rebalancing:</strong> No manual intervention needed to maintain balance</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>সবচেয়ে খারাপ ক্ষেত্র প্রতিরোধ:</strong> সাধারণ BST সবচেয়ে খারাপ ক্ষেত্রে O(n) তে অবনতি হতে পারে (তির্যক ট্রি)</li>
+        <li><strong>গ্যারান্টিড পারফরম্যান্স:</strong> স্ব-ভারসাম্যপূর্ণ ট্রি O(log n) অপারেশন গ্যারান্টি দেয়</li>
+        <li><strong>বাস্তব-বিশ্ব অ্যাপ্লিকেশন:</strong> ডেটাবেস, ফাইল সিস্টেম এবং মেমরি ম্যানেজমেন্টে ব্যবহৃত</li>
+        <li><strong>স্বয়ংক্রিয় পুনর্ভারসাম্য:</strong> ভারসাম্য বজায় রাখতে কোন ম্যানুয়াল হস্তক্ষেপ প্রয়োজন নেই</li>
+      </ul>
+    </>
+  }
+/>
