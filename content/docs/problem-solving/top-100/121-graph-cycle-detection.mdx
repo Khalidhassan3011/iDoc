@@ -1,0 +1,80 @@
+---
+title: 121. Graph Cycle Detection
+description: Detect cycle in directed and undirected graphs
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Graph Cycle Detection" bn="গ্রাফ সাইকেল সনাক্তকরণ" />
+
+<TranslatedText en="Detect if a cycle exists in directed or undirected graphs." bn="ডিরেক্টেড বা আনডিরেক্টেড গ্রাফে একটি সাইকেল বিদ্যমান কিনা সনাক্ত করুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['Python']} groupId="language">
+  <Tab value="Python">
+```python
+def has_cycle_directed(graph, n):
+    WHITE, GRAY, BLACK = 0, 1, 2
+    color = [WHITE] * n
+
+    def dfs(v):
+        color[v] = GRAY
+
+        for neighbor in graph[v]:
+            if color[neighbor] == GRAY:
+                return True
+            if color[neighbor] == WHITE and dfs(neighbor):
+                return True
+
+        color[v] = BLACK
+        return False
+
+    for i in range(n):
+        if color[i] == WHITE:
+            if dfs(i):
+                return True
+    return False
+
+def has_cycle_undirected(graph, n):
+    visited = [False] * n
+
+    def dfs(v, parent):
+        visited[v] = True
+
+        for neighbor in graph[v]:
+            if not visited[neighbor]:
+                if dfs(neighbor, v):
+                    return True
+            elif neighbor != parent:
+                return True
+
+        return False
+
+    for i in range(n):
+        if not visited[i]:
+            if dfs(i, -1):
+                return True
+    return False
+
+# Example - Directed
+graph_dir = {0: [1], 1: [2], 2: [0]}
+print("Directed has cycle:", has_cycle_directed(graph_dir, 3))
+
+# Example - Undirected
+graph_undir = {0: [1, 2], 1: [0], 2: [0, 3], 3: [2]}
+print("Undirected has cycle:", has_cycle_undirected(graph_undir, 4))
+```
+
+**Output:**
+```
+Directed has cycle: True
+Undirected has cycle: True
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(V + E)</p><p><strong>Space Complexity:</strong> O(V)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(V + E)</p><p><strong>স্থান জটিলতা:</strong> O(V)</p></>} />

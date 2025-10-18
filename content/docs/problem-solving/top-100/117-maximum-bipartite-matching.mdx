@@ -1,0 +1,53 @@
+---
+title: 117. Maximum Bipartite Matching
+description: Find maximum matching in a bipartite graph
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Maximum Bipartite Matching" bn="সর্বোচ্চ বাইপারটাইট ম্যাচিং" />
+
+<TranslatedText en="Find the maximum number of edges with no common vertices in a bipartite graph." bn="একটি বাইপারটাইট গ্রাফে কোন সাধারণ শীর্ষবিন্দু ছাড়া প্রান্তের সর্বোচ্চ সংখ্যা খুঁজুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['Python']} groupId="language">
+  <Tab value="Python">
+```python
+def max_matching(graph, m, n):
+    match = [-1] * n
+
+    def dfs(u, seen):
+        for v in range(n):
+            if graph[u][v] and not seen[v]:
+                seen[v] = True
+
+                if match[v] == -1 or dfs(match[v], seen):
+                    match[v] = u
+                    return True
+        return False
+
+    result = 0
+    for u in range(m):
+        seen = [False] * n
+        if dfs(u, seen):
+            result += 1
+
+    return result
+
+# Example: m applicants, n jobs
+graph = [[0, 1, 1, 0], [1, 0, 0, 1], [0, 0, 1, 0]]
+print("Maximum matching:", max_matching(graph, 3, 4))
+```
+
+**Output:**
+```
+Maximum matching: 3
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(V × E)</p><p><strong>Space Complexity:</strong> O(V)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(V × E)</p><p><strong>স্থান জটিলতা:</strong> O(V)</p></>} />

@@ -1,0 +1,199 @@
+---
+title: 110. Find Mother Vertex in Graph
+description: Find a mother vertex in a directed graph (vertex from which all vertices are reachable)
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Find Mother Vertex in Graph" bn="গ্রাফে মাদার ভার্টেক্স খুঁজুন" />
+
+<TranslatedText en="A mother vertex is a vertex from which all other vertices are reachable in a directed graph." bn="একটি মাদার ভার্টেক্স হল এমন একটি শীর্ষবিন্দু যেখান থেকে ডিরেক্টেড গ্রাফে অন্য সব শীর্ষবিন্দুতে পৌঁছানো যায়।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Graph {
+    int V;
+    vector<vector<int>> adj;
+
+    void DFS(int v, vector<bool>& visited) {
+        visited[v] = true;
+        for (int i : adj[v])
+            if (!visited[i])
+                DFS(i, visited);
+    }
+
+public:
+    Graph(int vertices) : V(vertices) {
+        adj.resize(V);
+    }
+
+    void addEdge(int u, int v) {
+        adj[u].push_back(v);
+    }
+
+    int findMotherVertex() {
+        vector<bool> visited(V, false);
+        int lastV = 0;
+
+        for (int i = 0; i < V; i++) {
+            if (!visited[i]) {
+                DFS(i, visited);
+                lastV = i;
+            }
+        }
+
+        fill(visited.begin(), visited.end(), false);
+        DFS(lastV, visited);
+
+        for (bool v : visited)
+            if (!v)
+                return -1;
+
+        return lastV;
+    }
+};
+
+int main() {
+    Graph g(7);
+    g.addEdge(0, 1);
+    g.addEdge(0, 2);
+    g.addEdge(1, 3);
+    g.addEdge(4, 1);
+    g.addEdge(6, 4);
+    g.addEdge(5, 6);
+    g.addEdge(5, 2);
+    g.addEdge(6, 0);
+
+    cout << "Mother vertex: " << g.findMotherVertex() << endl;
+    return 0;
+}
+```
+
+**Output:**
+```
+Mother vertex: 5
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Graph:
+    def __init__(self, vertices):
+        self.V = vertices
+        self.adj = [[] for _ in range(vertices)]
+
+    def add_edge(self, u, v):
+        self.adj[u].append(v)
+
+    def DFS(self, v, visited):
+        visited[v] = True
+        for i in self.adj[v]:
+            if not visited[i]:
+                self.DFS(i, visited)
+
+    def find_mother_vertex(self):
+        visited = [False] * self.V
+        last_v = 0
+
+        for i in range(self.V):
+            if not visited[i]:
+                self.DFS(i, visited)
+                last_v = i
+
+        visited = [False] * self.V
+        self.DFS(last_v, visited)
+
+        if all(visited):
+            return last_v
+        return -1
+
+# Example
+g = Graph(7)
+g.add_edge(0, 1)
+g.add_edge(0, 2)
+g.add_edge(1, 3)
+g.add_edge(4, 1)
+g.add_edge(6, 4)
+g.add_edge(5, 6)
+g.add_edge(5, 2)
+g.add_edge(6, 0)
+
+print("Mother vertex:", g.find_mother_vertex())
+```
+
+**Output:**
+```
+Mother vertex: 5
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Graph {
+    constructor(vertices) {
+        this.V = vertices;
+        this.adj = Array.from({ length: vertices }, () => []);
+    }
+
+    addEdge(u, v) {
+        this.adj[u].push(v);
+    }
+
+    DFS(v, visited) {
+        visited[v] = true;
+        for (const i of this.adj[v]) {
+            if (!visited[i]) {
+                this.DFS(i, visited);
+            }
+        }
+    }
+
+    findMotherVertex() {
+        let visited = new Array(this.V).fill(false);
+        let lastV = 0;
+
+        for (let i = 0; i < this.V; i++) {
+            if (!visited[i]) {
+                this.DFS(i, visited);
+                lastV = i;
+            }
+        }
+
+        visited = new Array(this.V).fill(false);
+        this.DFS(lastV, visited);
+
+        if (visited.every(v => v)) return lastV;
+        return -1;
+    }
+}
+
+// Example
+const g = new Graph(7);
+g.addEdge(0, 1);
+g.addEdge(0, 2);
+g.addEdge(1, 3);
+g.addEdge(4, 1);
+g.addEdge(6, 4);
+g.addEdge(5, 6);
+g.addEdge(5, 2);
+g.addEdge(6, 0);
+
+console.log("Mother vertex:", g.findMotherVertex());
+```
+
+**Output:**
+```
+Mother vertex: 5
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(V + E)</p><p><strong>Space Complexity:</strong> O(V)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(V + E)</p><p><strong>স্থান জটিলতা:</strong> O(V)</p></>} />

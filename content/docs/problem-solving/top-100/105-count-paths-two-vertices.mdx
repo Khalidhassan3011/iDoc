@@ -1,0 +1,181 @@
+---
+title: 105. Count All Possible Paths Between Two Vertices
+description: Count all possible paths from source to destination in a directed graph
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Count All Possible Paths Between Two Vertices" bn="দুটি শীর্ষবিন্দুর মধ্যে সব সম্ভাব্য পথ গণনা করুন" />
+
+<TranslatedText en="Count all possible paths from source to destination vertex in a directed graph." bn="একটি ডিরেক্টেড গ্রাফে সোর্স থেকে ডেস্টিনেশন শীর্ষবিন্দুতে সব সম্ভাব্য পথ গণনা করুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Graph {
+    int V;
+    vector<vector<int>> adj;
+
+    void countPathsUtil(int u, int d, vector<bool>& visited, int& pathCount) {
+        visited[u] = true;
+
+        if (u == d) {
+            pathCount++;
+        } else {
+            for (int neighbor : adj[u]) {
+                if (!visited[neighbor]) {
+                    countPathsUtil(neighbor, d, visited, pathCount);
+                }
+            }
+        }
+
+        visited[u] = false;
+    }
+
+public:
+    Graph(int vertices) : V(vertices) {
+        adj.resize(V);
+    }
+
+    void addEdge(int u, int v) {
+        adj[u].push_back(v);
+    }
+
+    int countPaths(int s, int d) {
+        vector<bool> visited(V, false);
+        int pathCount = 0;
+        countPathsUtil(s, d, visited, pathCount);
+        return pathCount;
+    }
+};
+
+int main() {
+    Graph g(4);
+    g.addEdge(0, 1);
+    g.addEdge(0, 2);
+    g.addEdge(0, 3);
+    g.addEdge(1, 3);
+    g.addEdge(2, 3);
+
+    int s = 0, d = 3;
+    cout << "Total paths from " << s << " to " << d << ": " << g.countPaths(s, d) << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Total paths from 0 to 3: 3
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Graph:
+    def __init__(self, vertices):
+        self.V = vertices
+        self.adj = [[] for _ in range(vertices)]
+
+    def add_edge(self, u, v):
+        self.adj[u].append(v)
+
+    def count_paths_util(self, u, d, visited, path_count):
+        visited[u] = True
+
+        if u == d:
+            path_count[0] += 1
+        else:
+            for neighbor in self.adj[u]:
+                if not visited[neighbor]:
+                    self.count_paths_util(neighbor, d, visited, path_count)
+
+        visited[u] = False
+
+    def count_paths(self, s, d):
+        visited = [False] * self.V
+        path_count = [0]
+        self.count_paths_util(s, d, visited, path_count)
+        return path_count[0]
+
+# Example
+g = Graph(4)
+g.add_edge(0, 1)
+g.add_edge(0, 2)
+g.add_edge(0, 3)
+g.add_edge(1, 3)
+g.add_edge(2, 3)
+
+s, d = 0, 3
+print(f"Total paths from {s} to {d}: {g.count_paths(s, d)}")
+```
+
+**Output:**
+```
+Total paths from 0 to 3: 3
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Graph {
+    constructor(vertices) {
+        this.V = vertices;
+        this.adj = Array.from({ length: vertices }, () => []);
+    }
+
+    addEdge(u, v) {
+        this.adj[u].push(v);
+    }
+
+    countPathsUtil(u, d, visited, pathCount) {
+        visited[u] = true;
+
+        if (u === d) {
+            pathCount.value++;
+        } else {
+            for (const neighbor of this.adj[u]) {
+                if (!visited[neighbor]) {
+                    this.countPathsUtil(neighbor, d, visited, pathCount);
+                }
+            }
+        }
+
+        visited[u] = false;
+    }
+
+    countPaths(s, d) {
+        const visited = new Array(this.V).fill(false);
+        const pathCount = { value: 0 };
+        this.countPathsUtil(s, d, visited, pathCount);
+        return pathCount.value;
+    }
+}
+
+// Example
+const g = new Graph(4);
+g.addEdge(0, 1);
+g.addEdge(0, 2);
+g.addEdge(0, 3);
+g.addEdge(1, 3);
+g.addEdge(2, 3);
+
+const s = 0, d = 3;
+console.log(`Total paths from ${s} to ${d}: ${g.countPaths(s, d)}`);
+```
+
+**Output:**
+```
+Total paths from 0 to 3: 3
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(V!) worst case</p><p><strong>Space Complexity:</strong> O(V)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(V!) সবচেয়ে খারাপ ক্ষেত্রে</p><p><strong>স্থান জটিলতা:</strong> O(V)</p></>} />

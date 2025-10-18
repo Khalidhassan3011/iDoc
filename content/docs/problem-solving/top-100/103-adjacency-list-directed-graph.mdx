@@ -1,0 +1,243 @@
+---
+title: 103. Print Adjacency List for Directed Graph
+description: Create and print adjacency list representation of a directed graph
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Print Adjacency List for Directed Graph" bn="ডিরেক্টেড গ্রাফের জন্য অ্যাডজেসেন্সি লিস্ট প্রিন্ট করুন" />
+
+<TranslatedText
+  en="Create and print the adjacency list representation of a directed graph."
+  bn="একটি ডিরেক্টেড গ্রাফের অ্যাডজেসেন্সি লিস্ট রিপ্রেজেন্টেশন তৈরি এবং প্রিন্ট করুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যা বিবৃতি" />
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Input:</strong> Number of vertices and edges with edge pairs</p>
+      <p><strong>Output:</strong> Adjacency list for each vertex</p>
+      <p><strong>Example:</strong></p>
+      <p>Graph with 5 vertices and edges: (0,1), (0,4), (1,2), (1,3), (1,4), (2,3), (3,4)</p>
+      <p><strong>Adjacency List:</strong></p>
+      <pre>
+{`0 -> 1 4
+1 -> 2 3 4
+2 -> 3
+3 -> 4
+4 ->`}
+      </pre>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>ইনপুট:</strong> শীর্ষবিন্দু এবং প্রান্তের সংখ্যা এজ পেয়ার সহ</p>
+      <p><strong>আউটপুট:</strong> প্রতিটি শীর্ষবিন্দুর জন্য অ্যাডজেসেন্সি লিস্ট</p>
+      <p><strong>উদাহরণ:</strong></p>
+      <p>5টি শীর্ষবিন্দু এবং প্রান্ত সহ গ্রাফ: (0,1), (0,4), (1,2), (1,3), (1,4), (2,3), (3,4)</p>
+      <p><strong>অ্যাডজেসেন্সি লিস্ট:</strong></p>
+      <pre>
+{`0 -> 1 4
+1 -> 2 3 4
+2 -> 3
+3 -> 4
+4 ->`}
+      </pre>
+    </>
+  }
+/>
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Graph {
+    int V;
+    vector<vector<int>> adjList;
+
+public:
+    Graph(int vertices) : V(vertices) {
+        adjList.resize(V);
+    }
+
+    void addEdge(int u, int v) {
+        adjList[u].push_back(v);
+    }
+
+    void printAdjList() {
+        for (int i = 0; i < V; i++) {
+            cout << i << " -> ";
+            for (int neighbor : adjList[i]) {
+                cout << neighbor << " ";
+            }
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    Graph g(5);
+    g.addEdge(0, 1);
+    g.addEdge(0, 4);
+    g.addEdge(1, 2);
+    g.addEdge(1, 3);
+    g.addEdge(1, 4);
+    g.addEdge(2, 3);
+    g.addEdge(3, 4);
+
+    cout << "Adjacency List:" << endl;
+    g.printAdjList();
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Adjacency List:
+0 -> 1 4
+1 -> 2 3 4
+2 -> 3
+3 -> 4
+4 ->
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Graph:
+    def __init__(self, vertices):
+        self.V = vertices
+        self.adj_list = [[] for _ in range(vertices)]
+
+    def add_edge(self, u, v):
+        self.adj_list[u].append(v)
+
+    def print_adj_list(self):
+        for i in range(self.V):
+            print(f"{i} ->", end=" ")
+            for neighbor in self.adj_list[i]:
+                print(neighbor, end=" ")
+            print()
+
+# Example
+g = Graph(5)
+g.add_edge(0, 1)
+g.add_edge(0, 4)
+g.add_edge(1, 2)
+g.add_edge(1, 3)
+g.add_edge(1, 4)
+g.add_edge(2, 3)
+g.add_edge(3, 4)
+
+print("Adjacency List:")
+g.print_adj_list()
+```
+
+**Output:**
+```
+Adjacency List:
+0 -> 1 4
+1 -> 2 3 4
+2 -> 3
+3 -> 4
+4 ->
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Graph {
+    constructor(vertices) {
+        this.V = vertices;
+        this.adjList = Array.from({ length: vertices }, () => []);
+    }
+
+    addEdge(u, v) {
+        this.adjList[u].push(v);
+    }
+
+    printAdjList() {
+        for (let i = 0; i < this.V; i++) {
+            process.stdout.write(`${i} -> `);
+            for (const neighbor of this.adjList[i]) {
+                process.stdout.write(`${neighbor} `);
+            }
+            console.log();
+        }
+    }
+}
+
+// Example
+const g = new Graph(5);
+g.addEdge(0, 1);
+g.addEdge(0, 4);
+g.addEdge(1, 2);
+g.addEdge(1, 3);
+g.addEdge(1, 4);
+g.addEdge(2, 3);
+g.addEdge(3, 4);
+
+console.log("Adjacency List:");
+g.printAdjList();
+```
+
+**Output:**
+```
+Adjacency List:
+0 -> 1 4
+1 -> 2 3 4
+2 -> 3
+3 -> 4
+4 ->
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText
+  en={
+    <>
+      <p><strong>Time Complexity:</strong> O(V + E) where V is vertices, E is edges</p>
+      <p><strong>Space Complexity:</strong> O(V + E)</p>
+    </>
+  }
+  bn={
+    <>
+      <p><strong>সময় জটিলতা:</strong> O(V + E) যেখানে V হল শীর্ষবিন্দু, E হল প্রান্ত</p>
+      <p><strong>স্থান জটিলতা:</strong> O(V + E)</p>
+    </>
+  }
+/>
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Adjacency List:</strong> Array of lists where each index represents a vertex</li>
+        <li><strong>Directed Graph:</strong> Edge (u,v) only added to u's list, not v's</li>
+        <li><strong>Space Efficient:</strong> Only stores actual edges, better than matrix for sparse graphs</li>
+        <li><strong>Easy Traversal:</strong> Neighbors of a vertex can be accessed directly</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>অ্যাডজেসেন্সি লিস্ট:</strong> লিস্টের অ্যারে যেখানে প্রতিটি ইনডেক্স একটি শীর্ষবিন্দু প্রতিনিধিত্ব করে</li>
+        <li><strong>ডিরেক্টেড গ্রাফ:</strong> এজ (u,v) শুধুমাত্র u এর লিস্টে যোগ করা হয়, v এর নয়</li>
+        <li><strong>স্পেস দক্ষ:</strong> শুধুমাত্র প্রকৃত প্রান্ত সংরক্ষণ করে, স্পার্স গ্রাফের জন্য ম্যাট্রিক্সের চেয়ে ভাল</li>
+        <li><strong>সহজ ট্রাভার্সাল:</strong> একটি শীর্ষবিন্দুর প্রতিবেশীদের সরাসরি অ্যাক্সেস করা যায়</li>
+      </ul>
+    </>
+  }
+/>

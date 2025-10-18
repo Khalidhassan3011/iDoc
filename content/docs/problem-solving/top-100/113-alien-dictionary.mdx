@@ -1,0 +1,63 @@
+---
+title: 113. Alien Dictionary - Character Order
+description: Find character order from sorted alien dictionary
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Alien Dictionary Character Order" bn="এলিয়েন ডিকশনারি অক্ষর ক্রম" />
+
+<TranslatedText en="Given a sorted dictionary of an alien language, find the order of characters." bn="একটি এলিয়েন ভাষার সাজানো অভিধান দেওয়া, অক্ষরের ক্রম খুঁজুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['Python']} groupId="language">
+  <Tab value="Python">
+```python
+from collections import defaultdict, deque
+
+def alien_order(words):
+    graph = defaultdict(set)
+    in_degree = {char: 0 for word in words for char in word}
+
+    for i in range(len(words) - 1):
+        w1, w2 = words[i], words[i + 1]
+        min_len = min(len(w1), len(w2))
+
+        for j in range(min_len):
+            if w1[j] != w2[j]:
+                if w2[j] not in graph[w1[j]]:
+                    graph[w1[j]].add(w2[j])
+                    in_degree[w2[j]] += 1
+                break
+
+    queue = deque([char for char in in_degree if in_degree[char] == 0])
+    result = []
+
+    while queue:
+        char = queue.popleft()
+        result.append(char)
+
+        for neighbor in graph[char]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                queue.append(neighbor)
+
+    return ''.join(result) if len(result) == len(in_degree) else ""
+
+# Example
+words = ["wrt", "wrf", "er", "ett", "rftt"]
+print("Character order:", alien_order(words))
+```
+
+**Output:**
+```
+Character order: wertf
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(N × L) where N is words, L is max length</p><p><strong>Space Complexity:</strong> O(1) - at most 26 characters</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(N × L) যেখানে N হল শব্দ, L হল সর্বোচ্চ দৈর্ঘ্য</p><p><strong>স্থান জটিলতা:</strong> O(1) - সর্বোচ্চ 26 অক্ষর</p></>} />

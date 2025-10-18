@@ -1,0 +1,201 @@
+---
+title: 108. Distance of Nearest Cell Having 1
+description: Find distance to nearest 1 for each cell in binary matrix
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Distance of Nearest Cell Having 1" bn="1 থাকা নিকটতম সেলের দূরত্ব" />
+
+<TranslatedText en="Find the distance of the nearest cell having 1 in a binary matrix for each cell." bn="প্রতিটি সেলের জন্য বাইনারি ম্যাট্রিক্সে 1 থাকা নিকটতম সেলের দূরত্ব খুঁজুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+    int m = mat.size();
+    int n = mat[0].size();
+    vector<vector<int>> dist(m, vector<int>(n, INT_MAX));
+    queue<pair<int, int>> q;
+
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (mat[i][j] == 1) {
+                dist[i][j] = 0;
+                q.push({i, j});
+            }
+        }
+    }
+
+    int dirs[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    while (!q.empty()) {
+        auto [x, y] = q.front();
+        q.pop();
+
+        for (auto& dir : dirs) {
+            int nx = x + dir[0];
+            int ny = y + dir[1];
+
+            if (nx >= 0 && nx < m && ny >= 0 && ny < n &&
+                dist[nx][ny] > dist[x][y] + 1) {
+                dist[nx][ny] = dist[x][y] + 1;
+                q.push({nx, ny});
+            }
+        }
+    }
+
+    return dist;
+}
+
+int main() {
+    vector<vector<int>> mat = {
+        {0, 0, 0},
+        {0, 1, 0},
+        {1, 1, 1}
+    };
+
+    vector<vector<int>> result = updateMatrix(mat);
+
+    cout << "Distance matrix:" << endl;
+    for (auto& row : result) {
+        for (int val : row) {
+            cout << val << " ";
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Distance matrix:
+2 1 2
+1 0 1
+0 0 0
+```
+  </Tab>
+  <Tab value="Python">
+```python
+from collections import deque
+
+def update_matrix(mat):
+    m, n = len(mat), len(mat[0])
+    dist = [[float('inf')] * n for _ in range(m)]
+    queue = deque()
+
+    for i in range(m):
+        for j in range(n):
+            if mat[i][j] == 1:
+                dist[i][j] = 0
+                queue.append((i, j))
+
+    dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
+    while queue:
+        x, y = queue.popleft()
+
+        for dx, dy in dirs:
+            nx, ny = x + dx, y + dy
+
+            if 0 <= nx < m and 0 <= ny < n and dist[nx][ny] > dist[x][y] + 1:
+                dist[nx][ny] = dist[x][y] + 1
+                queue.append((nx, ny))
+
+    return dist
+
+# Example
+mat = [
+    [0, 0, 0],
+    [0, 1, 0],
+    [1, 1, 1]
+]
+
+result = update_matrix(mat)
+print("Distance matrix:")
+for row in result:
+    print(' '.join(map(str, row)))
+```
+
+**Output:**
+```
+Distance matrix:
+2 1 2
+1 0 1
+0 0 0
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function updateMatrix(mat) {
+    const m = mat.length;
+    const n = mat[0].length;
+    const dist = Array.from({ length: m }, () => Array(n).fill(Infinity));
+    const queue = [];
+
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            if (mat[i][j] === 1) {
+                dist[i][j] = 0;
+                queue.push([i, j]);
+            }
+        }
+    }
+
+    const dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+
+    while (queue.length > 0) {
+        const [x, y] = queue.shift();
+
+        for (const [dx, dy] of dirs) {
+            const nx = x + dx;
+            const ny = y + dy;
+
+            if (nx >= 0 && nx < m && ny >= 0 && ny < n &&
+                dist[nx][ny] > dist[x][y] + 1) {
+                dist[nx][ny] = dist[x][y] + 1;
+                queue.push([nx, ny]);
+            }
+        }
+    }
+
+    return dist;
+}
+
+// Example
+const mat = [
+    [0, 0, 0],
+    [0, 1, 0],
+    [1, 1, 1]
+];
+
+const result = updateMatrix(mat);
+console.log("Distance matrix:");
+for (const row of result) {
+    console.log(row.join(' '));
+}
+```
+
+**Output:**
+```
+Distance matrix:
+2 1 2
+1 0 1
+0 0 0
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(m × n)</p><p><strong>Space Complexity:</strong> O(m × n)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(m × n)</p><p><strong>স্থান জটিলতা:</strong> O(m × n)</p></>} />

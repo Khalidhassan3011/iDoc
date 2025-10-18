@@ -1,0 +1,69 @@
+---
+title: 119. Replace O with X if Surrounded
+description: Replace all O's surrounded by X's in a matrix
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Replace O with X if Surrounded" bn="ঘেরা থাকলে O কে X দিয়ে প্রতিস্থাপন করুন" />
+
+<TranslatedText en="Replace all O's that are surrounded by X's with X's." bn="X দ্বারা ঘেরা সব O গুলিকে X দিয়ে প্রতিস্থাপন করুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['Python']} groupId="language">
+  <Tab value="Python">
+```python
+def solve(board):
+    if not board:
+        return
+
+    m, n = len(board), len(board[0])
+
+    def dfs(i, j):
+        if i < 0 or i >= m or j < 0 or j >= n or board[i][j] != 'O':
+            return
+        board[i][j] = '#'
+        dfs(i+1, j)
+        dfs(i-1, j)
+        dfs(i, j+1)
+        dfs(i, j-1)
+
+    # Mark border O's and connected O's
+    for i in range(m):
+        dfs(i, 0)
+        dfs(i, n-1)
+
+    for j in range(n):
+        dfs(0, j)
+        dfs(m-1, j)
+
+    # Replace remaining O's with X and # back to O
+    for i in range(m):
+        for j in range(n):
+            if board[i][j] == 'O':
+                board[i][j] = 'X'
+            elif board[i][j] == '#':
+                board[i][j] = 'O'
+
+# Example
+board = [['X','X','X','X'],['X','O','O','X'],['X','X','O','X'],['X','O','X','X']]
+solve(board)
+for row in board:
+    print(row)
+```
+
+**Output:**
+```
+['X', 'X', 'X', 'X']
+['X', 'X', 'X', 'X']
+['X', 'X', 'X', 'X']
+['X', 'O', 'X', 'X']
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(m × n)</p><p><strong>Space Complexity:</strong> O(m × n)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(m × n)</p><p><strong>স্থান জটিলতা:</strong> O(m × n)</p></>} />

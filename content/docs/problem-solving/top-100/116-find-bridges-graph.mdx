@@ -1,0 +1,63 @@
+---
+title: 116. Find All Bridges in Graph
+description: Find all bridges (critical edges) in an undirected graph
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Find All Bridges in Graph" bn="গ্রাফে সব ব্রিজ খুঁজুন" />
+
+<TranslatedText en="A bridge is an edge whose removal increases the number of connected components." bn="একটি ব্রিজ হল এমন একটি প্রান্ত যার অপসারণ সংযুক্ত উপাদানের সংখ্যা বৃদ্ধি করে।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['Python']} groupId="language">
+  <Tab value="Python">
+```python
+def find_bridges(graph, n):
+    visited = [False] * n
+    disc = [0] * n
+    low = [0] * n
+    parent = [-1] * n
+    bridges = []
+    time = [0]
+
+    def dfs(u):
+        visited[u] = True
+        disc[u] = low[u] = time[0]
+        time[0] += 1
+
+        for v in graph[u]:
+            if not visited[v]:
+                parent[v] = u
+                dfs(v)
+                low[u] = min(low[u], low[v])
+
+                if low[v] > disc[u]:
+                    bridges.append((u, v))
+
+            elif v != parent[u]:
+                low[u] = min(low[u], disc[v])
+
+    for i in range(n):
+        if not visited[i]:
+            dfs(i)
+
+    return bridges
+
+# Example
+graph = {0: [1, 2], 1: [0, 2], 2: [0, 1, 3], 3: [2]}
+print("Bridges:", find_bridges(graph, 4))
+```
+
+**Output:**
+```
+Bridges: [(2, 3)]
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(V + E)</p><p><strong>Space Complexity:</strong> O(V)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(V + E)</p><p><strong>স্থান জটিলতা:</strong> O(V)</p></>} />

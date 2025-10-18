@@ -1,0 +1,61 @@
+---
+title: 111. Dijkstra's Algorithm
+description: Find shortest paths from source to all vertices using Dijkstra's algorithm
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Dijkstra's Algorithm" bn="ডিজকস্ট্রার অ্যালগরিদম" />
+
+<TranslatedText en="Find shortest paths from a source vertex to all other vertices in a weighted graph." bn="একটি ওজনযুক্ত গ্রাফে একটি সোর্স শীর্ষবিন্দু থেকে অন্য সব শীর্ষবিন্দুতে ক্ষুদ্রতম পথ খুঁজুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['Python']} groupId="language">
+  <Tab value="Python">
+```python
+import heapq
+
+def dijkstra(graph, start):
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    pq = [(0, start)]
+    
+    while pq:
+        current_dist, current = heapq.heappop(pq)
+        
+        if current_dist > distances[current]:
+            continue
+        
+        for neighbor, weight in graph[current]:
+            distance = current_dist + weight
+            
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(pq, (distance, neighbor))
+    
+    return distances
+
+# Example
+graph = {
+    'A': [('B', 4), ('C', 2)],
+    'B': [('C', 1), ('D', 5)],
+    'C': [('D', 8), ('E', 10)],
+    'D': [('E', 2)],
+    'E': []
+}
+
+print("Shortest distances:", dijkstra(graph, 'A'))
+```
+
+**Output:**
+```
+Shortest distances: {'A': 0, 'B': 4, 'C': 2, 'D': 9, 'E': 11}
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O((V + E) log V)</p><p><strong>Space Complexity:</strong> O(V)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O((V + E) log V)</p><p><strong>স্থান জটিলতা:</strong> O(V)</p></>} />

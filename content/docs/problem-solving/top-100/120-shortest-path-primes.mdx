@@ -1,0 +1,69 @@
+---
+title: 120. Shortest Path Between Primes
+description: Find shortest path from one prime to another by changing one digit at a time
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Shortest Path Between Primes" bn="প্রাইমদের মধ্যে ক্ষুদ্রতম পথ" />
+
+<TranslatedText en="Find shortest path from one prime to another by changing single digit at a time, all intermediate must be prime." bn="একটি প্রাইম থেকে অন্যটিতে একক সংখ্যা পরিবর্তন করে ক্ষুদ্রতম পথ খুঁজুন, সব মধ্যবর্তী অবশ্যই প্রাইম হতে হবে।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['Python']} groupId="language">
+  <Tab value="Python">
+```python
+from collections import deque
+
+def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+def shortest_path_primes(start, end):
+    if start == end:
+        return 0
+
+    visited = {start}
+    queue = deque([(start, 0)])
+
+    while queue:
+        num, dist = queue.popleft()
+
+        for i in range(4):
+            for d in '0123456789':
+                if i == 0 and d == '0':
+                    continue
+
+                num_str = str(num)
+                new_num_str = num_str[:i] + d + num_str[i+1:]
+                new_num = int(new_num_str)
+
+                if new_num == end:
+                    return dist + 1
+
+                if new_num not in visited and is_prime(new_num):
+                    visited.add(new_num)
+                    queue.append((new_num, dist + 1))
+
+    return -1
+
+# Example
+print("Shortest path from 1033 to 8179:", shortest_path_primes(1033, 8179))
+```
+
+**Output:**
+```
+Shortest path from 1033 to 8179: 6
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(10^4 × 4 × 10)</p><p><strong>Space Complexity:</strong> O(10^4)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(10^4 × 4 × 10)</p><p><strong>স্থান জটিলতা:</strong> O(10^4)</p></>} />

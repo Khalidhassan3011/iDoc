@@ -1,0 +1,71 @@
+---
+title: 115. Tarjan's Algorithm - Strongly Connected Components
+description: Find strongly connected components using Tarjan's algorithm
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Tarjan's Algorithm - SCC" bn="টারজানের অ্যালগরিদম - SCC" />
+
+<TranslatedText en="Find all strongly connected components in a directed graph using Tarjan's algorithm." bn="টারজানের অ্যালগরিদম ব্যবহার করে একটি ডিরেক্টেড গ্রাফে সব দৃঢ়ভাবে সংযুক্ত উপাদান খুঁজুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['Python']} groupId="language">
+  <Tab value="Python">
+```python
+def tarjan_scc(graph, n):
+    index = 0
+    stack = []
+    indices = [-1] * n
+    lowlinks = [-1] * n
+    on_stack = [False] * n
+    sccs = []
+
+    def strongconnect(v):
+        nonlocal index
+        indices[v] = index
+        lowlinks[v] = index
+        index += 1
+        stack.append(v)
+        on_stack[v] = True
+
+        for w in graph[v]:
+            if indices[w] == -1:
+                strongconnect(w)
+                lowlinks[v] = min(lowlinks[v], lowlinks[w])
+            elif on_stack[w]:
+                lowlinks[v] = min(lowlinks[v], indices[w])
+
+        if lowlinks[v] == indices[v]:
+            scc = []
+            while True:
+                w = stack.pop()
+                on_stack[w] = False
+                scc.append(w)
+                if w == v:
+                    break
+            sccs.append(scc)
+
+    for v in range(n):
+        if indices[v] == -1:
+            strongconnect(v)
+
+    return sccs
+
+# Example
+graph = {0: [1], 1: [2], 2: [0], 3: [4], 4: [5], 5: [3]}
+print("SCCs:", tarjan_scc(graph, 6))
+```
+
+**Output:**
+```
+SCCs: [[5, 4, 3], [2, 1, 0]]
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(V + E)</p><p><strong>Space Complexity:</strong> O(V)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(V + E)</p><p><strong>স্থান জটিলতা:</strong> O(V)</p></>} />

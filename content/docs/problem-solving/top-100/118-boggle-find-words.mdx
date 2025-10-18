@@ -1,0 +1,67 @@
+---
+title: 118. Boggle - Find All Words in Board
+description: Find all dictionary words in a Boggle board
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Boggle - Find All Words" bn="বগল - সব শব্দ খুঁজুন" />
+
+<TranslatedText en="Find all valid dictionary words in a Boggle board by moving to adjacent cells." bn="পার্শ্ববর্তী সেলগুলিতে চলে একটি বগল বোর্ডে সব বৈধ অভিধান শব্দ খুঁজুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['Python']} groupId="language">
+  <Tab value="Python">
+```python
+def find_words(board, words):
+    def dfs(i, j, node, word):
+        if '#' in node:
+            result.add(word)
+
+        if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]):
+            return
+
+        char = board[i][j]
+        if char not in node:
+            return
+
+        board[i][j] = '#'
+
+        for di, dj in [(0,1), (1,0), (0,-1), (-1,0), (1,1), (-1,-1), (1,-1), (-1,1)]:
+            dfs(i+di, j+dj, node[char], word+char)
+
+        board[i][j] = char
+
+    # Build Trie
+    trie = {}
+    for word in words:
+        node = trie
+        for char in word:
+            node = node.setdefault(char, {})
+        node['#'] = '#'
+
+    result = set()
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            dfs(i, j, trie, "")
+
+    return list(result)
+
+# Example
+board = [['G','I','Z'],['U','E','K'],['Q','S','E']]
+words = ["GEEKS", "FOR", "QUIZ", "GUQ", "EE"]
+print("Found words:", find_words(board, words))
+```
+
+**Output:**
+```
+Found words: ['GEEKS', 'QUIZ', 'GUQ', 'EE']
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(m × n × 4^L)</p><p><strong>Space Complexity:</strong> O(W × L)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(m × n × 4^L)</p><p><strong>স্থান জটিলতা:</strong> O(W × L)</p></>} />

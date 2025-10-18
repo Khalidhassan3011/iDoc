@@ -1,0 +1,79 @@
+---
+title: 122. Topological Sort
+description: Perform topological sort on a directed acyclic graph (DAG)
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Topological Sort" bn="টপোলজিক্যাল সর্ট" />
+
+<TranslatedText en="Linear ordering of vertices in a DAG such that for every edge (u,v), u comes before v." bn="একটি DAG-এ শীর্ষবিন্দুগুলির রৈখিক ক্রম যেখানে প্রতিটি প্রান্ত (u,v) এর জন্য, u, v এর আগে আসে।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['Python']} groupId="language">
+  <Tab value="Python">
+```python
+from collections import deque, defaultdict
+
+def topological_sort_dfs(graph, n):
+    visited = [False] * n
+    stack = []
+
+    def dfs(v):
+        visited[v] = True
+
+        for neighbor in graph[v]:
+            if not visited[neighbor]:
+                dfs(neighbor)
+
+        stack.append(v)
+
+    for i in range(n):
+        if not visited[i]:
+            dfs(i)
+
+    return stack[::-1]
+
+def topological_sort_kahn(graph, n):
+    in_degree = [0] * n
+
+    for u in range(n):
+        for v in graph[u]:
+            in_degree[v] += 1
+
+    queue = deque([i for i in range(n) if in_degree[i] == 0])
+    result = []
+
+    while queue:
+        u = queue.popleft()
+        result.append(u)
+
+        for v in graph[u]:
+            in_degree[v] -= 1
+            if in_degree[v] == 0:
+                queue.append(v)
+
+    if len(result) != n:
+        return []  # Cycle detected
+
+    return result
+
+# Example
+graph = {0: [1, 2], 1: [3], 2: [3], 3: []}
+print("Topological Sort (DFS):", topological_sort_dfs(graph, 4))
+print("Topological Sort (Kahn):", topological_sort_kahn(graph, 4))
+```
+
+**Output:**
+```
+Topological Sort (DFS): [0, 2, 1, 3]
+Topological Sort (Kahn): [0, 1, 2, 3]
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(V + E)</p><p><strong>Space Complexity:</strong> O(V)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(V + E)</p><p><strong>স্থান জটিলতা:</strong> O(V)</p></>} />

@@ -1,0 +1,171 @@
+---
+title: 107. Find Word in 2D Grid of Characters
+description: Search for a word in a 2D grid using DFS and backtracking
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Find Word in 2D Grid" bn="2D গ্রিডে শব্দ খুঁজুন" />
+
+<TranslatedText en="Search for a given word in a 2D grid of characters moving horizontally or vertically." bn="অনুভূমিক বা উল্লম্বভাবে চলমান অক্ষরের 2D গ্রিডে একটি প্রদত্ত শব্দ অনুসন্ধান করুন।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+bool searchWord(vector<vector<char>>& grid, string word, int row, int col, int index) {
+    if (index == word.length())
+        return true;
+
+    int m = grid.size();
+    int n = grid[0].size();
+
+    if (row < 0 || row >= m || col < 0 || col >= n || grid[row][col] != word[index])
+        return false;
+
+    char temp = grid[row][col];
+    grid[row][col] = '#';
+
+    bool found = searchWord(grid, word, row + 1, col, index + 1) ||
+                 searchWord(grid, word, row - 1, col, index + 1) ||
+                 searchWord(grid, word, row, col + 1, index + 1) ||
+                 searchWord(grid, word, row, col - 1, index + 1);
+
+    grid[row][col] = temp;
+    return found;
+}
+
+bool exist(vector<vector<char>>& grid, string word) {
+    for (int i = 0; i < grid.size(); i++) {
+        for (int j = 0; j < grid[0].size(); j++) {
+            if (searchWord(grid, word, i, j, 0))
+                return true;
+        }
+    }
+    return false;
+}
+
+int main() {
+    vector<vector<char>> grid = {
+        {'A', 'B', 'C', 'E'},
+        {'S', 'F', 'C', 'S'},
+        {'A', 'D', 'E', 'E'}
+    };
+
+    string word = "ABCCED";
+    cout << "Word '" << word << "' found: " << (exist(grid, word) ? "Yes" : "No") << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Word 'ABCCED' found: Yes
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def search_word(grid, word, row, col, index):
+    if index == len(word):
+        return True
+
+    m, n = len(grid), len(grid[0])
+
+    if row < 0 or row >= m or col < 0 or col >= n or grid[row][col] != word[index]:
+        return False
+
+    temp = grid[row][col]
+    grid[row][col] = '#'
+
+    found = (search_word(grid, word, row + 1, col, index + 1) or
+             search_word(grid, word, row - 1, col, index + 1) or
+             search_word(grid, word, row, col + 1, index + 1) or
+             search_word(grid, word, row, col - 1, index + 1))
+
+    grid[row][col] = temp
+    return found
+
+def exist(grid, word):
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if search_word(grid, word, i, j, 0):
+                return True
+    return False
+
+# Example
+grid = [
+    ['A', 'B', 'C', 'E'],
+    ['S', 'F', 'C', 'S'],
+    ['A', 'D', 'E', 'E']
+]
+
+word = "ABCCED"
+print(f"Word '{word}' found: {'Yes' if exist(grid, word) else 'No'}")
+```
+
+**Output:**
+```
+Word 'ABCCED' found: Yes
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function searchWord(grid, word, row, col, index) {
+    if (index === word.length) return true;
+
+    const m = grid.length;
+    const n = grid[0].length;
+
+    if (row < 0 || row >= m || col < 0 || col >= n || grid[row][col] !== word[index])
+        return false;
+
+    const temp = grid[row][col];
+    grid[row][col] = '#';
+
+    const found = searchWord(grid, word, row + 1, col, index + 1) ||
+                  searchWord(grid, word, row - 1, col, index + 1) ||
+                  searchWord(grid, word, row, col + 1, index + 1) ||
+                  searchWord(grid, word, row, col - 1, index + 1);
+
+    grid[row][col] = temp;
+    return found;
+}
+
+function exist(grid, word) {
+    for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[0].length; j++) {
+            if (searchWord(grid, word, i, j, 0))
+                return true;
+        }
+    }
+    return false;
+}
+
+// Example
+const grid = [
+    ['A', 'B', 'C', 'E'],
+    ['S', 'F', 'C', 'S'],
+    ['A', 'D', 'E', 'E']
+];
+
+const word = "ABCCED";
+console.log(`Word '${word}' found: ${exist(grid, word) ? 'Yes' : 'No'}`);
+```
+
+**Output:**
+```
+Word 'ABCCED' found: Yes
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(m × n × 4^L) where L is word length</p><p><strong>Space Complexity:</strong> O(L)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(m × n × 4^L) যেখানে L হল শব্দ দৈর্ঘ্য</p><p><strong>স্থান জটিলতা:</strong> O(L)</p></>} />

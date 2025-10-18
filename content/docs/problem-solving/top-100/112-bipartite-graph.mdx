@@ -1,0 +1,55 @@
+---
+title: 112. Check if Graph is Bipartite
+description: Check whether a graph is bipartite using graph coloring
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Check if Graph is Bipartite" bn="গ্রাফ বাইপারটাইট কিনা চেক করুন" />
+
+<TranslatedText en="A graph is bipartite if vertices can be divided into two sets with no edges within a set." bn="একটি গ্রাফ বাইপারটাইট যদি শীর্ষবিন্দুগুলি দুটি সেটে ভাগ করা যায় যেখানে কোন সেটের ভিতরে কোন প্রান্ত নেই।" />
+
+## <TranslatedText en="Solution" bn="সমাধান" />
+
+<Tabs items={['Python']} groupId="language">
+  <Tab value="Python">
+```python
+from collections import deque
+
+def is_bipartite(graph):
+    n = len(graph)
+    color = [-1] * n
+
+    for start in range(n):
+        if color[start] == -1:
+            queue = deque([start])
+            color[start] = 0
+
+            while queue:
+                node = queue.popleft()
+
+                for neighbor in graph[node]:
+                    if color[neighbor] == -1:
+                        color[neighbor] = 1 - color[node]
+                        queue.append(neighbor)
+                    elif color[neighbor] == color[node]:
+                        return False
+
+    return True
+
+# Example
+graph = [[1, 3], [0, 2], [1, 3], [0, 2]]
+print("Is bipartite:", is_bipartite(graph))
+```
+
+**Output:**
+```
+Is bipartite: True
+```
+  </Tab>
+</Tabs>
+
+<TranslatedText en={<><p><strong>Time Complexity:</strong> O(V + E)</p><p><strong>Space Complexity:</strong> O(V)</p></>} bn={<><p><strong>সময় জটিলতা:</strong> O(V + E)</p><p><strong>স্থান জটিলতা:</strong> O(V)</p></>} />
