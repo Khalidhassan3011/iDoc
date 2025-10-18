@@ -7,6 +7,7 @@ import ProblemSelector from '@/components/playground/ProblemSelector';
 import TestCasePanel from '@/components/playground/TestCasePanel';
 import OutputPanel from '@/components/playground/OutputPanel';
 import ControlPanel from '@/components/playground/ControlPanel';
+import ApproachSelector from '@/components/playground/ApproachSelector';
 import { Problem } from '@/lib/get-problems';
 import { codeTemplates } from '@/lib/code-templates';
 
@@ -24,6 +25,12 @@ interface TestResult {
   error?: string;
 }
 
+interface CodeBlock {
+  language: string;
+  code: string;
+  approach?: string;
+}
+
 interface PlaygroundClientProps {
   problems: Problem[];
 }
@@ -39,16 +46,18 @@ export default function PlaygroundClient({ problems }: PlaygroundClientProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [executionTime, setExecutionTime] = useState<number | undefined>();
 
+  // Code loading states
+  const [availableApproaches, setAvailableApproaches] = useState<string[]>([]);
+  const [selectedApproach, setSelectedApproach] = useState<number>(0);
+  const [problemCodeBlocks, setProblemCodeBlocks] = useState<{
+    cpp: CodeBlock[];
+    python: CodeBlock[];
+    javascript: CodeBlock[];
+  } | null>(null);
+  const [isLoadingCode, setIsLoadingCode] = useState<boolean>(false);
+
   // Ref for the console output panel
   const outputPanelRef = useRef<HTMLDivElement>(null);
-
-  // Update code when language changes
-  useEffect(() => {
-    setCode(codeTemplates[selectedLanguage as keyof typeof codeTemplates]);
-    setOutput('');
-    setError('');
-    setTestResults(null);
-  }, [selectedLanguage]);
 
   const handleRunCode = async () => {
     setIsLoading(true);
@@ -139,6 +148,64 @@ export default function PlaygroundClient({ problems }: PlaygroundClientProps) {
     setExecutionTime(undefined);
   };
 
+  // Fetch code blocks from selected problem
+  const fetchProblemCode = async (problem: Problem) => {
+    setIsLoadingCode(true);
+    try {
+      const response = await fetch(`/api/problem-code?slug=${problem.slug}`);
+      const data = await response.json();
+
+      if (data.success && data.codeBlocks) {
+        setProblemCodeBlocks(data.codeBlocks);
+
+        // Get available approaches from the current language
+        const langKey = selectedLanguage as 'cpp' | 'python' | 'javascript';
+        const approaches = data.codeBlocks[langKey]?.map((block: CodeBlock) => block.approach || 'Approach 1') || [];
+        setAvailableApproaches(approaches);
+
+        // Set first approach code by default
+        if (data.codeBlocks[langKey]?.length > 0) {
+          setCode(data.codeBlocks[langKey][0].code);
+          setSelectedApproach(0);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to fetch problem code:', err);
+    } finally {
+      setIsLoadingCode(false);
+    }
+  };
+
+  // Update code when approach changes
+  useEffect(() => {
+    if (problemCodeBlocks && selectedApproach >= 0) {
+      const langKey = selectedLanguage as 'cpp' | 'python' | 'javascript';
+      const blocks = problemCodeBlocks[langKey];
+      if (blocks && blocks[selectedApproach]) {
+        setCode(blocks[selectedApproach].code);
+      }
+    }
+  }, [selectedApproach, problemCodeBlocks, selectedLanguage]);
+
+  // Update available approaches when language changes
+  useEffect(() => {
+    if (problemCodeBlocks) {
+      const langKey = selectedLanguage as 'cpp' | 'python' | 'javascript';
+      const blocks = problemCodeBlocks[langKey];
+      if (blocks && blocks.length > 0) {
+        const approaches = blocks.map((block) => block.approach || 'Approach 1');
+        setAvailableApproaches(approaches);
+        // Reset to first approach when changing language
+        setSelectedApproach(0);
+        setCode(blocks[0].code);
+      } else {
+        // No code available for this language, use template
+        setCode(codeTemplates[selectedLanguage as keyof typeof codeTemplates]);
+        setAvailableApproaches([]);
+      }
+    }
+  }, [selectedLanguage, problemCodeBlocks]);
+
   const handleProblemChange = (problem: Problem) => {
     setSelectedProblem(problem);
     // Reset test cases when problem changes
@@ -146,6 +213,9 @@ export default function PlaygroundClient({ problems }: PlaygroundClientProps) {
     setTestResults(null);
     setOutput('');
     setError('');
+
+    // Fetch code blocks from the problem
+    fetchProblemCode(problem);
   };
 
   return (
@@ -176,25 +246,41 @@ export default function PlaygroundClient({ problems }: PlaygroundClientProps) {
             onProblemChange={handleProblemChange}
           />
           {selectedProblem && (
-            <div className="mt-4 p-4 bg-gradient-to-r from-gray-800/50 to-gray-900/50 rounded-lg border border-gray-700/50 backdrop-blur-sm">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">🎯</span>
-                  <div>
-                    <p className="text-sm text-gray-400">Selected Problem</p>
-                    <p className="font-semibold text-gray-200">{selectedProblem.title}</p>
+            <div className="mt-4 space-y-3">
+              <div className="p-4 bg-gradient-to-r from-gray-800/50 to-gray-900/50 rounded-lg border border-gray-700/50 backdrop-blur-sm">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">🎯</span>
+                    <div>
+                      <p className="text-sm text-gray-400">Selected Problem</p>
+                      <p className="font-semibold text-gray-200">{selectedProblem.title}</p>
+                    </div>
                   </div>
+                  <a
+                    href={selectedProblem.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2 shadow-lg"
+                  >
+                    View Details
+                    <span>→</span>
+                  </a>
                 </div>
-                <a
-                  href={selectedProblem.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2 shadow-lg"
-                >
-                  View Details
-                  <span>→</span>
-                </a>
               </div>
+
+              {/* Approach Selector */}
+              {isLoadingCode ? (
+                <div className="p-3 bg-gray-800/50 rounded-lg border border-gray-700/50 flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-500 border-t-transparent"></div>
+                  <span className="text-sm text-gray-400">Loading code examples...</span>
+                </div>
+              ) : (
+                <ApproachSelector
+                  approaches={availableApproaches}
+                  selectedApproach={selectedApproach}
+                  onApproachChange={setSelectedApproach}
+                />
+              )}
             </div>
           )}
         </div>
