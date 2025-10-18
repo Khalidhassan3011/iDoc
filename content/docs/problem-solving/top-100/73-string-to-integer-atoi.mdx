@@ -1,0 +1,224 @@
+---
+title: 73. String to Integer (atoi)
+description: Convert a string to a 32-bit signed integer similar to C's atoi function
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="String to Integer (atoi)" bn="স্ট্রিং টু ইন্টিজার (atoi)" />
+
+<TranslatedText
+  en="Implement the atoi function which converts a string to a 32-bit signed integer, handling whitespace, signs, and overflow."
+  bn="atoi ফাংশন বাস্তবায়ন করুন যা একটি স্ট্রিংকে 32-বিট সাইনড ইন্টিজারে রূপান্তর করে, হোয়াইটস্পেস, চিহ্ন এবং ওভারফ্লো হ্যান্ডেল করে।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Implement atoi which converts a string to an integer. The function discards leading whitespace, reads an optional sign, then reads digits until a non-digit is encountered. Handle integer overflow by clamping to [-2³¹, 2³¹ - 1]."
+  bn="atoi বাস্তবায়ন করুন যা একটি স্ট্রিংকে একটি ইন্টিজারে রূপান্তর করে। ফাংশনটি শীর্ষস্থ হোয়াইটস্পেস বাতিল করে, একটি ঐচ্ছিক চিহ্ন পড়ে, তারপর একটি নন-ডিজিট পাওয়া না যাওয়া পর্যন্ত ডিজিট পড়ে। [-2³¹, 2³¹ - 1] তে ক্ল্যাম্প করে ইন্টিজার ওভারফ্লো হ্যান্ডেল করুন।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: "42"
+Output: 42
+
+Input: "   -42"
+Output: -42
+
+Input: "4193 with words"
+Output: 4193
+
+Input: "words and 987"
+Output: 0
+
+Input: "-91283472332"
+Output: -2147483648 (clamped to INT_MIN)
+```
+
+## <TranslatedText en="Approach: State Machine" bn="পদ্ধতি: স্টেট মেশিন" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <climits>
+using namespace std;
+
+int myAtoi(string s) {
+    int i = 0;
+    int n = s.length();
+    long result = 0;
+    int sign = 1;
+
+    // Step 1: Skip leading whitespace
+    while (i < n && s[i] == ' ') {
+        i++;
+    }
+
+    // Step 2: Handle optional sign
+    if (i < n && (s[i] == '+' || s[i] == '-')) {
+        sign = (s[i] == '-') ? -1 : 1;
+        i++;
+    }
+
+    // Step 3: Read digits
+    while (i < n && isdigit(s[i])) {
+        result = result * 10 + (s[i] - '0');
+
+        // Check for overflow
+        if (sign * result > INT_MAX) {
+            return INT_MAX;
+        }
+        if (sign * result < INT_MIN) {
+            return INT_MIN;
+        }
+
+        i++;
+    }
+
+    return sign * result;
+}
+
+int main() {
+    cout << myAtoi("42") << endl;
+    cout << myAtoi("   -42") << endl;
+    cout << myAtoi("4193 with words") << endl;
+    cout << myAtoi("words and 987") << endl;
+    cout << myAtoi("-91283472332") << endl;
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def my_atoi(s):
+    INT_MAX = 2**31 - 1
+    INT_MIN = -2**31
+
+    i = 0
+    n = len(s)
+    result = 0
+    sign = 1
+
+    # Skip whitespace
+    while i < n and s[i] == ' ':
+        i += 1
+
+    # Handle sign
+    if i < n and s[i] in ['+', '-']:
+        sign = -1 if s[i] == '-' else 1
+        i += 1
+
+    # Read digits
+    while i < n and s[i].isdigit():
+        result = result * 10 + int(s[i])
+
+        # Check overflow
+        if sign * result > INT_MAX:
+            return INT_MAX
+        if sign * result < INT_MIN:
+            return INT_MIN
+
+        i += 1
+
+    return sign * result
+
+print(my_atoi("42"))
+print(my_atoi("   -42"))
+print(my_atoi("4193 with words"))
+print(my_atoi("words and 987"))
+print(my_atoi("-91283472332"))
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function myAtoi(s) {
+    const INT_MAX = 2**31 - 1;
+    const INT_MIN = -(2**31);
+
+    let i = 0;
+    const n = s.length;
+    let result = 0;
+    let sign = 1;
+
+    // Skip whitespace
+    while (i < n && s[i] === ' ') {
+        i++;
+    }
+
+    // Handle sign
+    if (i < n && (s[i] === '+' || s[i] === '-')) {
+        sign = s[i] === '-' ? -1 : 1;
+        i++;
+    }
+
+    // Read digits
+    while (i < n && s[i] >= '0' && s[i] <= '9') {
+        result = result * 10 + (s[i].charCodeAt(0) - '0'.charCodeAt(0));
+
+        // Check overflow
+        if (sign * result > INT_MAX) {
+            return INT_MAX;
+        }
+        if (sign * result < INT_MIN) {
+            return INT_MIN;
+        }
+
+        i++;
+    }
+
+    return sign * result;
+}
+
+console.log(myAtoi("42"));
+console.log(myAtoi("   -42"));
+console.log(myAtoi("4193 with words"));
+console.log(myAtoi("words and 987"));
+console.log(myAtoi("-91283472332"));
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+## <TranslatedText en="Key Points" bn="মূল পয়েন্ট" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Handle leading whitespace</li>
+        <li>Optional '+' or '-' sign</li>
+        <li>Stop at first non-digit</li>
+        <li>Clamp to 32-bit integer range</li>
+        <li>Return 0 if no digits found</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>শীর্ষস্থ হোয়াইটস্পেস হ্যান্ডেল করুন</li>
+        <li>ঐচ্ছিক '+' বা '-' চিহ্ন</li>
+        <li>প্রথম নন-ডিজিটে থামুন</li>
+        <li>32-বিট ইন্টিজার রেঞ্জে ক্ল্যাম্প করুন</li>
+        <li>কোনো ডিজিট না পাওয়া গেলে 0 ফেরত দিন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- String to double
+- Valid number
+- Integer to Roman
+- Roman to integer

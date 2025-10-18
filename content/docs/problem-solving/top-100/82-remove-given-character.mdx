@@ -1,0 +1,97 @@
+---
+title: 82. Remove Given Character
+description: Remove all occurrences of a specific character from a string
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Remove Given Character" bn="প্রদত্ত অক্ষর সরান" />
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: "hello world", 'l'
+Output: "heo word"
+
+Input: "programming", 'g'
+Output: "prorammin"
+```
+
+## <TranslatedText en="Approach" bn="পদ্ধতি" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+string removeCharacter(string s, char ch) {
+    string result;
+    for (char c : s) {
+        if (c != ch) {
+            result += c;
+        }
+    }
+    return result;
+}
+
+// Using erase-remove idiom
+string removeCharacterSTL(string s, char ch) {
+    s.erase(remove(s.begin(), s.end(), ch), s.end());
+    return s;
+}
+
+int main() {
+    cout << removeCharacter("hello world", 'l') << endl;
+    cout << removeCharacter("programming", 'g') << endl;
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def remove_character(s, ch):
+    return ''.join(c for c in s if c != ch)
+
+# Using replace
+def remove_character2(s, ch):
+    return s.replace(ch, '')
+
+# Using filter
+def remove_character3(s, ch):
+    return ''.join(filter(lambda c: c != ch, s))
+
+print(remove_character("hello world", 'l'))
+print(remove_character("programming", 'g'))
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function removeCharacter(s, ch) {
+    return s.split('').filter(c => c !== ch).join('');
+}
+
+// Using replace with regex
+function removeCharacter2(s, ch) {
+    const escaped = ch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return s.replace(new RegExp(escaped, 'g'), '');
+}
+
+// Using replaceAll (ES2021)
+function removeCharacter3(s, ch) {
+    return s.replaceAll(ch, '');
+}
+
+console.log(removeCharacter("hello world", 'l'));
+console.log(removeCharacter("programming", 'g'));
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n)

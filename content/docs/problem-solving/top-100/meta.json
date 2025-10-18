@@ -68,6 +68,24 @@
     "62-remove-duplicates-sorted-list",
     "63-remove-duplicates-unsorted-list",
     "64-find-length-linked-list",
-    "---String Problems---"
+    "---String Problems---",
+    "65-reverse-string-in-place",
+    "66-print-duplicate-characters",
+    "67-check-anagrams",
+    "68-find-all-permutations",
+    "69-reverse-string-recursion",
+    "70-check-only-digits",
+    "71-count-character-occurrence",
+    "72-first-non-repeated-character",
+    "73-string-to-integer-atoi",
+    "74-reverse-words-sentence",
+    "75-check-string-rotation",
+    "76-check-palindrome",
+    "77-longest-substring-without-repeating",
+    "78-longest-palindromic-substring",
+    "79-byte-array-to-string",
+    "80-remove-duplicate-characters",
+    "81-maximum-occurring-character",
+    "82-remove-given-character"
   ]
 }

@@ -1,0 +1,295 @@
+---
+title: 70. Check if String Contains Only Digits
+description: Verify if a string contains only numeric digits
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Check if String Contains Only Digits" bn="স্ট্রিং শুধুমাত্র ডিজিট ধারণ করে কিনা চেক করুন" />
+
+<TranslatedText
+  en="Verify if a given string contains only numeric digits (0-9) using regular expressions or character validation."
+  bn="রেগুলার এক্সপ্রেশন বা অক্ষর যাচাইকরণ ব্যবহার করে একটি প্রদত্ত স্ট্রিং শুধুমাত্র সংখ্যাসূচক ডিজিট (0-9) ধারণ করে কিনা যাচাই করুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given a string, check if it contains only numeric digits. Return true if all characters are digits (0-9), false otherwise."
+  bn="একটি স্ট্রিং দেওয়া হলে, এটি শুধুমাত্র সংখ্যাসূচক ডিজিট ধারণ করে কিনা তা চেক করুন। যদি সমস্ত অক্ষর ডিজিট (0-9) হয় তবে true ফেরত দিন, অন্যথায় false।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: "12345"
+Output: true
+
+Input: "123a45"
+Output: false
+
+Input: "123.45"
+Output: false
+
+Input: ""
+Output: false
+
+Input: "0"
+Output: true
+```
+
+## <TranslatedText en="Approach 1: Character Validation" bn="পদ্ধতি ১: অক্ষর যাচাইকরণ" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+bool isAllDigits(const string& str) {
+    // Empty string is not all digits
+    if (str.empty()) {
+        return false;
+    }
+
+    // Check each character
+    for (char ch : str) {
+        if (!isdigit(ch)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// Alternative using all_of
+#include <algorithm>
+
+bool isAllDigits2(const string& str) {
+    if (str.empty()) {
+        return false;
+    }
+
+    return all_of(str.begin(), str.end(), ::isdigit);
+}
+
+int main() {
+    cout << boolalpha;
+    cout << "\"12345\": " << isAllDigits("12345") << endl;
+    cout << "\"123a45\": " << isAllDigits("123a45") << endl;
+    cout << "\"123.45\": " << isAllDigits("123.45") << endl;
+    cout << "\"\": " << isAllDigits("") << endl;
+    cout << "\"0\": " << isAllDigits("0") << endl;
+    cout << "\"-123\": " << isAllDigits("-123") << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def is_all_digits(s):
+    # Empty string is not all digits
+    if not s:
+        return False
+
+    # Check each character
+    for ch in s:
+        if not ch.isdigit():
+            return False
+
+    return True
+
+# Using built-in method
+def is_all_digits2(s):
+    return bool(s) and s.isdigit()
+
+# Using all() with generator
+def is_all_digits3(s):
+    return bool(s) and all(ch.isdigit() for ch in s)
+
+# Test cases
+print(f'"12345": {is_all_digits("12345")}')
+print(f'"123a45": {is_all_digits("123a45")}')
+print(f'"123.45": {is_all_digits("123.45")}')
+print(f'"": {is_all_digits("")}')
+print(f'"0": {is_all_digits("0")}')
+print(f'"-123": {is_all_digits("-123")}')
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function isAllDigits(str) {
+    // Empty string is not all digits
+    if (!str) {
+        return false;
+    }
+
+    // Check each character
+    for (const ch of str) {
+        if (ch < '0' || ch > '9') {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// Using every method
+function isAllDigits2(str) {
+    return Boolean(str) && [...str].every(ch => ch >= '0' && ch <= '9');
+}
+
+// Test cases
+console.log(`"12345": ${isAllDigits("12345")}`);
+console.log(`"123a45": ${isAllDigits("123a45")}`);
+console.log(`"123.45": ${isAllDigits("123.45")}`);
+console.log(`"": ${isAllDigits("")}`);
+console.log(`"0": ${isAllDigits("0")}`);
+console.log(`"-123": ${isAllDigits("-123")}`);
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+## <TranslatedText en="Approach 2: Regular Expression" bn="পদ্ধতি ২: রেগুলার এক্সপ্রেশন" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <regex>
+
+bool isAllDigitsRegex(const string& str) {
+    if (str.empty()) {
+        return false;
+    }
+
+    // Pattern: one or more digits
+    regex pattern("^[0-9]+$");
+    return regex_match(str, pattern);
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+import re
+
+def is_all_digits_regex(s):
+    if not s:
+        return False
+
+    # Pattern: one or more digits
+    return bool(re.match(r'^\d+$', s))
+
+# Alternative
+def is_all_digits_regex2(s):
+    return bool(s) and bool(re.fullmatch(r'\d+', s))
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function isAllDigitsRegex(str) {
+    if (!str) {
+        return false;
+    }
+
+    // Pattern: one or more digits
+    return /^\d+$/.test(str);
+}
+
+// Alternative
+function isAllDigitsRegex2(str) {
+    return Boolean(str) && /^[0-9]+$/.test(str);
+}
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Empty string handling</strong>: Typically considered false</li>
+        <li><strong>Character check</strong>: Compare with '0' and '9' or use built-in functions</li>
+        <li><strong>Regular expressions</strong>: Concise but potentially slower</li>
+        <li><strong>Negative numbers</strong>: "-123" contains non-digit character '-'</li>
+        <li><strong>Decimal points</strong>: "12.34" contains non-digit character '.'</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>খালি স্ট্রিং হ্যান্ডলিং</strong>: সাধারণত false বলে গণ্য হয়</li>
+        <li><strong>অক্ষর চেক</strong>: '0' এবং '9' এর সাথে তুলনা করুন বা বিল্ট-ইন ফাংশন ব্যবহার করুন</li>
+        <li><strong>রেগুলার এক্সপ্রেশন</strong>: সংক্ষিপ্ত কিন্তু সম্ভাব্য ধীর</li>
+        <li><strong>নেগেটিভ সংখ্যা</strong>: "-123" এ নন-ডিজিট অক্ষর '-' আছে</li>
+        <li><strong>দশমিক বিন্দু</strong>: "12.34" এ নন-ডিজিট অক্ষর '.' আছে</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Clarify requirements</strong>: Should empty string return true or false?</li>
+        <li><strong>Discuss edge cases</strong>: Negative signs, decimal points, spaces</li>
+        <li><strong>Mention alternatives</strong>: Character check vs regex</li>
+        <li><strong>Built-in methods</strong>: Show knowledge of language-specific functions</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>প্রয়োজনীয়তা স্পষ্ট করুন</strong>: খালি স্ট্রিং true না false ফেরত দেবে?</li>
+        <li><strong>এজ কেস আলোচনা করুন</strong>: নেগেটিভ চিহ্ন, দশমিক বিন্দু, স্থান</li>
+        <li><strong>বিকল্প উল্লেখ করুন</strong>: অক্ষর চেক বনাম regex</li>
+        <li><strong>বিল্ট-ইন মেথড</strong>: ভাষা-নির্দিষ্ট ফাংশনের জ্ঞান দেখান</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Character-by-character validation is straightforward and efficient</li>
+        <li>Regular expressions provide concise solution</li>
+        <li>Always handle empty string edge case</li>
+        <li>Be clear about what constitutes a "digit-only" string</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>অক্ষর-দ্বারা-অক্ষর যাচাইকরণ সরল এবং দক্ষ</li>
+        <li>রেগুলার এক্সপ্রেশন সংক্ষিপ্ত সমাধান প্রদান করে</li>
+        <li>সবসময় খালি স্ট্রিং এজ কেস হ্যান্ডেল করুন</li>
+        <li>"ডিজিট-শুধুমাত্র" স্ট্রিং কী গঠন করে তা স্পষ্ট হন</li>
+      </ul>
+    </>
+  }
+/>

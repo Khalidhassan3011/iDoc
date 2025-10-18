@@ -1,0 +1,103 @@
+---
+title: 80. Remove Duplicate Characters
+description: Remove duplicate characters from a string keeping only first occurrence
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Remove Duplicate Characters" bn="ডুপ্লিকেট অক্ষর সরান" />
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: "programming"
+Output: "progamin"
+
+Input: "aabbcc"
+Output: "abc"
+```
+
+## <TranslatedText en="Approach: Hash Set" bn="পদ্ধতি: হ্যাশ সেট" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <unordered_set>
+using namespace std;
+
+string removeDuplicates(const string& s) {
+    unordered_set<char> seen;
+    string result;
+
+    for (char ch : s) {
+        if (seen.find(ch) == seen.end()) {
+            seen.insert(ch);
+            result += ch;
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    cout << removeDuplicates("programming") << endl;
+    cout << removeDuplicates("aabbcc") << endl;
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def remove_duplicates(s):
+    seen = set()
+    result = []
+
+    for ch in s:
+        if ch not in seen:
+            seen.add(ch)
+            result.append(ch)
+
+    return ''.join(result)
+
+# Using dict.fromkeys (preserves order in Python 3.7+)
+def remove_duplicates2(s):
+    return ''.join(dict.fromkeys(s))
+
+print(remove_duplicates("programming"))
+print(remove_duplicates("aabbcc"))
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function removeDuplicates(s) {
+    const seen = new Set();
+    let result = '';
+
+    for (const ch of s) {
+        if (!seen.has(ch)) {
+            seen.add(ch);
+            result += ch;
+        }
+    }
+
+    return result;
+}
+
+// Using Set and join
+function removeDuplicates2(s) {
+    return [...new Set(s)].join('');
+}
+
+console.log(removeDuplicates("programming"));
+console.log(removeDuplicates("aabbcc"));
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(k) <TranslatedText en="where k is unique characters" bn="যেখানে k হল অনন্য অক্ষর" />

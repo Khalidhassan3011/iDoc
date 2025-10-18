@@ -1,0 +1,370 @@
+---
+title: 72. First Non-Repeated Character
+description: Find the first non-repeating character in a string
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="First Non-Repeated Character" bn="প্রথম অপুনরাবৃত্ত অক্ষর" />
+
+<TranslatedText
+  en="Find the first character in a string that does not repeat anywhere else in the string."
+  bn="একটি স্ট্রিংয়ে প্রথম অক্ষরটি খুঁজুন যা স্ট্রিংয়ের অন্য কোথাও পুনরাবৃত্তি হয় না।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given a string, find and return the first character that appears exactly once. If no such character exists, return null or a special indicator."
+  bn="একটি স্ট্রিং দেওয়া হলে, ঠিক একবার প্রদর্শিত প্রথম অক্ষরটি খুঁজুন এবং ফেরত দিন। যদি এমন কোনো অক্ষর না থাকে, null বা একটি বিশেষ নির্দেশক ফেরত দিন।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: "leetcode"
+Output: 'l'
+
+Input: "loveleetcode"
+Output: 'v'
+
+Input: "aabb"
+Output: null (no non-repeating character)
+
+Input: "programming"
+Output: 'p'
+```
+
+## <TranslatedText en="Approach: Frequency Count + First Pass" bn="পদ্ধতি: ফ্রিকোয়েন্সি গণনা + প্রথম পাস" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+char firstNonRepeating(const string& str) {
+    if (str.empty()) {
+        return '\0';
+    }
+
+    // First pass: count frequency
+    unordered_map<char, int> freq;
+    for (char ch : str) {
+        freq[ch]++;
+    }
+
+    // Second pass: find first with count 1
+    for (char ch : str) {
+        if (freq[ch] == 1) {
+            return ch;
+        }
+    }
+
+    return '\0'; // No non-repeating character
+}
+
+// Using array for ASCII
+char firstNonRepeatingArray(const string& str) {
+    if (str.empty()) {
+        return '\0';
+    }
+
+    int count[256] = {0};
+
+    // Count frequencies
+    for (char ch : str) {
+        count[(unsigned char)ch]++;
+    }
+
+    // Find first with count 1
+    for (char ch : str) {
+        if (count[(unsigned char)ch] == 1) {
+            return ch;
+        }
+    }
+
+    return '\0';
+}
+
+int main() {
+    string s1 = "leetcode";
+    char result1 = firstNonRepeating(s1);
+    cout << "\"" << s1 << "\": ";
+    if (result1 != '\0') cout << result1 << endl;
+    else cout << "null" << endl;
+
+    string s2 = "loveleetcode";
+    char result2 = firstNonRepeating(s2);
+    cout << "\"" << s2 << "\": ";
+    if (result2 != '\0') cout << result2 << endl;
+    else cout << "null" << endl;
+
+    string s3 = "aabb";
+    char result3 = firstNonRepeating(s3);
+    cout << "\"" << s3 << "\": ";
+    if (result3 != '\0') cout << result3 << endl;
+    else cout << "null" << endl;
+
+    string s4 = "programming";
+    char result4 = firstNonRepeating(s4);
+    cout << "\"" << s4 << "\": ";
+    if (result4 != '\0') cout << result4 << endl;
+    else cout << "null" << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+from collections import Counter, OrderedDict
+
+def first_non_repeating(s):
+    if not s:
+        return None
+
+    # First pass: count frequency
+    freq = {}
+    for ch in s:
+        freq[ch] = freq.get(ch, 0) + 1
+
+    # Second pass: find first with count 1
+    for ch in s:
+        if freq[ch] == 1:
+            return ch
+
+    return None
+
+# Using Counter
+def first_non_repeating_counter(s):
+    if not s:
+        return None
+
+    freq = Counter(s)
+
+    for ch in s:
+        if freq[ch] == 1:
+            return ch
+
+    return None
+
+# Using OrderedDict (maintains insertion order)
+def first_non_repeating_ordered(s):
+    if not s:
+        return None
+
+    freq = OrderedDict()
+
+    for ch in s:
+        freq[ch] = freq.get(ch, 0) + 1
+
+    for ch, count in freq.items():
+        if count == 1:
+            return ch
+
+    return None
+
+# Test cases
+s1 = "leetcode"
+print(f'"{s1}": {first_non_repeating(s1)}')
+
+s2 = "loveleetcode"
+print(f'"{s2}": {first_non_repeating(s2)}')
+
+s3 = "aabb"
+print(f'"{s3}": {first_non_repeating(s3)}')
+
+s4 = "programming"
+print(f'"{s4}": {first_non_repeating(s4)}')
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function firstNonRepeating(str) {
+    if (!str) {
+        return null;
+    }
+
+    // First pass: count frequency
+    const freq = new Map();
+    for (const ch of str) {
+        freq.set(ch, (freq.get(ch) || 0) + 1);
+    }
+
+    // Second pass: find first with count 1
+    for (const ch of str) {
+        if (freq.get(ch) === 1) {
+            return ch;
+        }
+    }
+
+    return null;
+}
+
+// Using object
+function firstNonRepeatingObject(str) {
+    if (!str) {
+        return null;
+    }
+
+    const freq = {};
+
+    // Count frequencies
+    for (const ch of str) {
+        freq[ch] = (freq[ch] || 0) + 1;
+    }
+
+    // Find first with count 1
+    for (const ch of str) {
+        if (freq[ch] === 1) {
+            return ch;
+        }
+    }
+
+    return null;
+}
+
+// Test cases
+const s1 = "leetcode";
+console.log(`"${s1}": ${firstNonRepeating(s1)}`);
+
+const s2 = "loveleetcode";
+console.log(`"${s2}": ${firstNonRepeating(s2)}`);
+
+const s3 = "aabb";
+console.log(`"${s3}": ${firstNonRepeating(s3)}`);
+
+const s4 = "programming";
+console.log(`"${s4}": ${firstNonRepeating(s4)}`);
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(k) <TranslatedText en="where k is the number of unique characters" bn="যেখানে k হল অনন্য অক্ষরের সংখ্যা" />
+
+## <TranslatedText en="How It Works" bn="এটি কীভাবে কাজ করে" />
+
+```
+Example: Find first non-repeating in "leetcode"
+
+Step 1: Count frequencies
+l: 1
+e: 3
+t: 1
+c: 1
+o: 1
+d: 1
+
+Step 2: Traverse string again, find first with count 1
+l → count is 1 ✓
+
+Result: 'l'
+
+Example: "loveleetcode"
+
+Step 1: Count frequencies
+l: 2
+o: 2
+v: 1
+e: 3
+t: 1
+c: 1
+d: 1
+
+Step 2: Traverse string
+l → count is 2 ✗
+o → count is 2 ✗
+v → count is 1 ✓
+
+Result: 'v'
+```
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Two-pass solution</strong>: First count, then find</li>
+        <li><strong>Order matters</strong>: Must traverse string again to maintain order</li>
+        <li><strong>Hash map vs array</strong>: Map for any char, array for limited charset</li>
+        <li><strong>Return value</strong>: Handle "no result" case appropriately</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>টু-পাস সমাধান</strong>: প্রথমে গণনা করুন, তারপর খুঁজুন</li>
+        <li><strong>ক্রম গুরুত্বপূর্ণ</strong>: ক্রম বজায় রাখতে আবার স্ট্রিং ট্রাভার্স করতে হবে</li>
+        <li><strong>হ্যাশ ম্যাপ বনাম অ্যারে</strong>: যেকোনো অক্ষরের জন্য ম্যাপ, সীমিত চারসেটের জন্য অ্যারে</li>
+        <li><strong>রিটার্ন মান</strong>: "কোনো ফলাফল নেই" কেস যথাযথভাবে হ্যান্ডেল করুন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Clarify return value</strong>: What to return if no non-repeating char exists?</li>
+        <li><strong>Explain two passes</strong>: Why we can't do it in one pass efficiently</li>
+        <li><strong>Discuss optimization</strong>: Array vs hash map for different charsets</li>
+        <li><strong>Case sensitivity</strong>: Are 'A' and 'a' different?</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>রিটার্ন মান স্পষ্ট করুন</strong>: কোনো অপুনরাবৃত্ত অক্ষর না থাকলে কী ফেরত দেবেন?</li>
+        <li><strong>দুই পাস ব্যাখ্যা করুন</strong>: কেন আমরা দক্ষতার সাথে এক পাসে করতে পারি না</li>
+        <li><strong>অপটিমাইজেশন আলোচনা করুন</strong>: বিভিন্ন চারসেটের জন্য অ্যারে বনাম হ্যাশ ম্যাপ</li>
+        <li><strong>কেস সংবেদনশীলতা</strong>: 'A' এবং 'a' কি ভিন্ন?</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- First unique character in stream
+- Find all non-repeating characters
+- Remove duplicate characters
+- Character frequency analysis
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Two-pass approach: count frequencies, then find first</li>
+        <li>O(n) time complexity with O(k) space for character counts</li>
+        <li>Order preservation requires second pass through original string</li>
+        <li>Common interview question testing hash map usage</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>টু-পাস পদ্ধতি: ফ্রিকোয়েন্সি গণনা করুন, তারপর প্রথম খুঁজুন</li>
+        <li>অক্ষর গণনার জন্য O(k) স্থান সহ O(n) সময় জটিলতা</li>
+        <li>ক্রম সংরক্ষণের জন্য মূল স্ট্রিংয়ের মাধ্যমে দ্বিতীয় পাস প্রয়োজন</li>
+        <li>হ্যাশ ম্যাপ ব্যবহার পরীক্ষা করে সাধারণ ইন্টারভিউ প্রশ্ন</li>
+      </ul>
+    </>
+  }
+/>

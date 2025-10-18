@@ -1,0 +1,324 @@
+---
+title: 71. Count Occurrence of Character
+description: Count how many times a specific character appears in a string
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Count Occurrence of Character" bn="অক্ষরের ঘটনা গণনা করুন" />
+
+<TranslatedText
+  en="Count the number of times a specific character appears in a given string."
+  bn="একটি প্রদত্ত স্ট্রিংয়ে একটি নির্দিষ্ট অক্ষর কতবার প্রদর্শিত হয় তা গণনা করুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given a string and a character, count how many times the character appears in the string. The search can be case-sensitive or case-insensitive."
+  bn="একটি স্ট্রিং এবং একটি অক্ষর দেওয়া হলে, অক্ষরটি স্ট্রিংয়ে কতবার প্রদর্শিত হয় তা গণনা করুন। অনুসন্ধান কেস-সংবেদনশীল বা কেস-অসংবেদনশীল হতে পারে।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: "hello world", 'l'
+Output: 3
+
+Input: "programming", 'g'
+Output: 2
+
+Input: "Java", 'a'
+Output: 2 (case-sensitive)
+
+Input: "Java", 'A'
+Output: 1 (case-sensitive)
+
+Input: "hello", 'x'
+Output: 0
+```
+
+## <TranslatedText en="Approach 1: Iterative Count" bn="পদ্ধতি ১: পুনরাবৃত্তিমূলক গণনা" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <cctype>
+using namespace std;
+
+int countOccurrence(const string& str, char ch) {
+    int count = 0;
+
+    for (char c : str) {
+        if (c == ch) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+// Case-insensitive version
+int countOccurrenceIgnoreCase(const string& str, char ch) {
+    int count = 0;
+    char lowerCh = tolower(ch);
+
+    for (char c : str) {
+        if (tolower(c) == lowerCh) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+// Using STL count
+int countOccurrenceSTL(const string& str, char ch) {
+    return count(str.begin(), str.end(), ch);
+}
+
+int main() {
+    string s1 = "hello world";
+    cout << "Count of 'l' in \"" << s1 << "\": "
+         << countOccurrence(s1, 'l') << endl;
+
+    string s2 = "programming";
+    cout << "Count of 'g' in \"" << s2 << "\": "
+         << countOccurrence(s2, 'g') << endl;
+
+    string s3 = "Java";
+    cout << "Count of 'a' in \"" << s3 << "\" (case-sensitive): "
+         << countOccurrence(s3, 'a') << endl;
+    cout << "Count of 'A' in \"" << s3 << "\" (case-insensitive): "
+         << countOccurrenceIgnoreCase(s3, 'A') << endl;
+
+    string s4 = "hello";
+    cout << "Count of 'x' in \"" << s4 << "\": "
+         << countOccurrence(s4, 'x') << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def count_occurrence(s, ch):
+    count = 0
+
+    for c in s:
+        if c == ch:
+            count += 1
+
+    return count
+
+# Case-insensitive version
+def count_occurrence_ignore_case(s, ch):
+    count = 0
+    ch_lower = ch.lower()
+
+    for c in s:
+        if c.lower() == ch_lower:
+            count += 1
+
+    return count
+
+# Using built-in count method
+def count_occurrence_builtin(s, ch):
+    return s.count(ch)
+
+# Using sum with generator
+def count_occurrence_sum(s, ch):
+    return sum(1 for c in s if c == ch)
+
+# Test cases
+s1 = "hello world"
+print(f"Count of 'l' in \"{s1}\": {count_occurrence(s1, 'l')}")
+
+s2 = "programming"
+print(f"Count of 'g' in \"{s2}\": {count_occurrence(s2, 'g')}")
+
+s3 = "Java"
+print(f"Count of 'a' in \"{s3}\" (case-sensitive): {count_occurrence(s3, 'a')}")
+print(f"Count of 'A' in \"{s3}\" (case-insensitive): {count_occurrence_ignore_case(s3, 'A')}")
+
+s4 = "hello"
+print(f"Count of 'x' in \"{s4}\": {count_occurrence(s4, 'x')}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function countOccurrence(str, ch) {
+    let count = 0;
+
+    for (const c of str) {
+        if (c === ch) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+// Case-insensitive version
+function countOccurrenceIgnoreCase(str, ch) {
+    let count = 0;
+    const chLower = ch.toLowerCase();
+
+    for (const c of str) {
+        if (c.toLowerCase() === chLower) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+// Using split method
+function countOccurrenceSplit(str, ch) {
+    return str.split(ch).length - 1;
+}
+
+// Using filter
+function countOccurrenceFilter(str, ch) {
+    return [...str].filter(c => c === ch).length;
+}
+
+// Using reduce
+function countOccurrenceReduce(str, ch) {
+    return [...str].reduce((count, c) => count + (c === ch ? 1 : 0), 0);
+}
+
+// Test cases
+const s1 = "hello world";
+console.log(`Count of 'l' in "${s1}": ${countOccurrence(s1, 'l')}`);
+
+const s2 = "programming";
+console.log(`Count of 'g' in "${s2}": ${countOccurrence(s2, 'g')}`);
+
+const s3 = "Java";
+console.log(`Count of 'a' in "${s3}" (case-sensitive): ${countOccurrence(s3, 'a')}`);
+console.log(`Count of 'A' in "${s3}" (case-insensitive): ${countOccurrenceIgnoreCase(s3, 'A')}`);
+
+const s4 = "hello";
+console.log(`Count of 'x' in "${s4}": ${countOccurrence(s4, 'x')}`);
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+## <TranslatedText en="Approach 2: Using Regular Expression" bn="পদ্ধতি ২: রেগুলার এক্সপ্রেশন ব্যবহার করে" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <regex>
+
+int countOccurrenceRegex(const string& str, char ch) {
+    string pattern(1, ch);
+    regex re(pattern);
+
+    auto begin = sregex_iterator(str.begin(), str.end(), re);
+    auto end = sregex_iterator();
+
+    return distance(begin, end);
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+import re
+
+def count_occurrence_regex(s, ch):
+    return len(re.findall(re.escape(ch), s))
+
+# Case-insensitive with regex
+def count_occurrence_regex_ignore_case(s, ch):
+    return len(re.findall(re.escape(ch), s, re.IGNORECASE))
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function countOccurrenceRegex(str, ch) {
+    // Escape special regex characters
+    const escaped = ch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escaped, 'g');
+    const matches = str.match(regex);
+    return matches ? matches.length : 0;
+}
+
+// Case-insensitive
+function countOccurrenceRegexIgnoreCase(str, ch) {
+    const escaped = ch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escaped, 'gi');
+    const matches = str.match(regex);
+    return matches ? matches.length : 0;
+}
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Simple iteration</strong>: Most straightforward and efficient</li>
+        <li><strong>Built-in methods</strong>: Many languages provide count() methods</li>
+        <li><strong>Case sensitivity</strong>: Convert to same case for case-insensitive search</li>
+        <li><strong>Special characters</strong>: Be careful with regex special characters</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>সরল পুনরাবৃত্তি</strong>: সবচেয়ে সরল এবং দক্ষ</li>
+        <li><strong>বিল্ট-ইন মেথড</strong>: অনেক ভাষা count() মেথড প্রদান করে</li>
+        <li><strong>কেস সংবেদনশীলতা</strong>: কেস-অসংবেদনশীল অনুসন্ধানের জন্য একই কেসে রূপান্তর করুন</li>
+        <li><strong>বিশেষ অক্ষর</strong>: regex বিশেষ অক্ষর সতর্ক থাকুন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Count vowels and consonants
+- Find most frequent character
+- Character frequency map
+- First non-repeating character
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Simple loop is most efficient: O(n) time, O(1) space</li>
+        <li>Built-in methods provide cleaner code</li>
+        <li>Handle case sensitivity based on requirements</li>
+        <li>This is a fundamental string processing operation</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>সরল লুপ সবচেয়ে দক্ষ: O(n) সময়, O(1) স্থান</li>
+        <li>বিল্ট-ইন মেথড পরিষ্কার কোড প্রদান করে</li>
+        <li>প্রয়োজনীয়তার উপর ভিত্তি করে কেস সংবেদনশীলতা হ্যান্ডেল করুন</li>
+        <li>এটি একটি মৌলিক স্ট্রিং প্রক্রিয়াকরণ অপারেশন</li>
+      </ul>
+    </>
+  }
+/>

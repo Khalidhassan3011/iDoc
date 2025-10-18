@@ -1,0 +1,508 @@
+---
+title: 67. Check if Two Strings are Anagrams
+description: Determine if two strings are anagrams of each other
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Check if Two Strings are Anagrams" bn="দুটি স্ট্রিং অ্যানাগ্রাম কিনা চেক করুন" />
+
+<TranslatedText
+  en="Determine if two strings are anagrams of each other - containing the same characters with the same frequencies."
+  bn="দুটি স্ট্রিং একে অপরের অ্যানাগ্রাম কিনা তা নির্ধারণ করুন - একই ফ্রিকোয়েন্সি সহ একই অক্ষর ধারণ করে।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Two strings are anagrams if they contain the same characters with the same frequency, regardless of order. For example, 'listen' and 'silent' are anagrams. Write a function to check if two strings are anagrams."
+  bn="দুটি স্ট্রিং অ্যানাগ্রাম যদি তারা ক্রম নির্বিশেষে একই ফ্রিকোয়েন্সি সহ একই অক্ষর ধারণ করে। উদাহরণস্বরূপ, 'listen' এবং 'silent' অ্যানাগ্রাম। দুটি স্ট্রিং অ্যানাগ্রাম কিনা তা চেক করার জন্য একটি ফাংশন লিখুন।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: "listen", "silent"
+Output: true
+
+Input: "anagram", "nagaram"
+Output: true
+
+Input: "rat", "car"
+Output: false
+
+Input: "hello", "world"
+Output: false
+
+Input: "a", "a"
+Output: true
+```
+
+## <TranslatedText en="Approach 1: Sorting (Simple)" bn="পদ্ধতি ১: সাজানো (সরল)" />
+
+<TranslatedText
+  en="Sort both strings and compare. If they are equal after sorting, they are anagrams."
+  bn="উভয় স্ট্রিং সাজান এবং তুলনা করুন। যদি সাজানোর পরে তারা সমান হয়, তারা অ্যানাগ্রাম।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+bool isAnagram(string s1, string s2) {
+    // Different lengths cannot be anagrams
+    if (s1.length() != s2.length()) {
+        return false;
+    }
+
+    // Sort both strings
+    sort(s1.begin(), s1.end());
+    sort(s2.begin(), s2.end());
+
+    // Compare sorted strings
+    return s1 == s2;
+}
+
+int main() {
+    cout << boolalpha; // Print true/false instead of 1/0
+
+    cout << "\"listen\" and \"silent\": " << isAnagram("listen", "silent") << endl;
+    cout << "\"anagram\" and \"nagaram\": " << isAnagram("anagram", "nagaram") << endl;
+    cout << "\"rat\" and \"car\": " << isAnagram("rat", "car") << endl;
+    cout << "\"hello\" and \"world\": " << isAnagram("hello", "world") << endl;
+    cout << "\"a\" and \"a\": " << isAnagram("a", "a") << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+"listen" and "silent": true
+"anagram" and "nagaram": true
+"rat" and "car": false
+"hello" and "world": false
+"a" and "a": true
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def is_anagram(s1, s2):
+    # Different lengths cannot be anagrams
+    if len(s1) != len(s2):
+        return False
+
+    # Sort and compare
+    return sorted(s1) == sorted(s2)
+
+# More Pythonic using Counter
+from collections import Counter
+
+def is_anagram_counter(s1, s2):
+    return Counter(s1) == Counter(s2)
+
+# Test cases
+print(f'"listen" and "silent": {is_anagram("listen", "silent")}')
+print(f'"anagram" and "nagaram": {is_anagram("anagram", "nagaram")}')
+print(f'"rat" and "car": {is_anagram("rat", "car")}')
+print(f'"hello" and "world": {is_anagram("hello", "world")}')
+print(f'"a" and "a": {is_anagram("a", "a")}')
+```
+
+**Output:**
+```
+"listen" and "silent": True
+"anagram" and "nagaram": True
+"rat" and "car": False
+"hello" and "world": False
+"a" and "a": True
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function isAnagram(s1, s2) {
+    // Different lengths cannot be anagrams
+    if (s1.length !== s2.length) {
+        return false;
+    }
+
+    // Sort and compare
+    const sorted1 = s1.split('').sort().join('');
+    const sorted2 = s2.split('').sort().join('');
+
+    return sorted1 === sorted2;
+}
+
+// Test cases
+console.log(`"listen" and "silent": ${isAnagram("listen", "silent")}`);
+console.log(`"anagram" and "nagaram": ${isAnagram("anagram", "nagaram")}`);
+console.log(`"rat" and "car": ${isAnagram("rat", "car")}`);
+console.log(`"hello" and "world": ${isAnagram("hello", "world")}`);
+console.log(`"a" and "a": ${isAnagram("a", "a")}`);
+```
+
+**Output:**
+```
+"listen" and "silent": true
+"anagram" and "nagaram": true
+"rat" and "car": false
+"hello" and "world": false
+"a" and "a": true
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n log n) <TranslatedText en="due to sorting" bn="সাজানোর কারণে" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1) <TranslatedText en="or O(n) depending on sorting algorithm" bn="বা O(n) সাজানোর অ্যালগরিদমের উপর নির্ভর করে" />
+
+## <TranslatedText en="Approach 2: Character Count (Optimal)" bn="পদ্ধতি ২: অক্ষর গণনা (সর্বোত্তম)" />
+
+<TranslatedText
+  en="Count character frequencies and compare. More efficient than sorting."
+  bn="অক্ষর ফ্রিকোয়েন্সি গণনা করুন এবং তুলনা করুন। সাজানোর চেয়ে আরও দক্ষ।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <unordered_map>
+
+bool isAnagramCount(const string& s1, const string& s2) {
+    // Different lengths cannot be anagrams
+    if (s1.length() != s2.length()) {
+        return false;
+    }
+
+    unordered_map<char, int> charCount;
+
+    // Count characters in first string
+    for (char ch : s1) {
+        charCount[ch]++;
+    }
+
+    // Decrement count for characters in second string
+    for (char ch : s2) {
+        charCount[ch]--;
+        if (charCount[ch] < 0) {
+            return false;
+        }
+    }
+
+    // Check if all counts are zero
+    for (const auto& pair : charCount) {
+        if (pair.second != 0) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// Using array for ASCII characters
+bool isAnagramArray(const string& s1, const string& s2) {
+    if (s1.length() != s2.length()) {
+        return false;
+    }
+
+    int count[256] = {0};
+
+    // Count characters
+    for (int i = 0; i < s1.length(); i++) {
+        count[(unsigned char)s1[i]]++;
+        count[(unsigned char)s2[i]]--;
+    }
+
+    // Check if all counts are zero
+    for (int i = 0; i < 256; i++) {
+        if (count[i] != 0) {
+            return false;
+        }
+    }
+
+    return true;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def is_anagram_count(s1, s2):
+    # Different lengths cannot be anagrams
+    if len(s1) != len(s2):
+        return False
+
+    char_count = {}
+
+    # Count characters in first string
+    for ch in s1:
+        char_count[ch] = char_count.get(ch, 0) + 1
+
+    # Decrement count for characters in second string
+    for ch in s2:
+        if ch not in char_count:
+            return False
+        char_count[ch] -= 1
+        if char_count[ch] < 0:
+            return False
+
+    # All counts should be zero
+    return all(count == 0 for count in char_count.values())
+
+# Using array for limited character set
+def is_anagram_array(s1, s2):
+    if len(s1) != len(s2):
+        return False
+
+    count = [0] * 26  # For lowercase a-z
+
+    for i in range(len(s1)):
+        count[ord(s1[i]) - ord('a')] += 1
+        count[ord(s2[i]) - ord('a')] -= 1
+
+    return all(c == 0 for c in count)
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function isAnagramCount(s1, s2) {
+    // Different lengths cannot be anagrams
+    if (s1.length !== s2.length) {
+        return false;
+    }
+
+    const charCount = new Map();
+
+    // Count characters in first string
+    for (const ch of s1) {
+        charCount.set(ch, (charCount.get(ch) || 0) + 1);
+    }
+
+    // Decrement count for characters in second string
+    for (const ch of s2) {
+        if (!charCount.has(ch)) {
+            return false;
+        }
+        charCount.set(ch, charCount.get(ch) - 1);
+        if (charCount.get(ch) < 0) {
+            return false;
+        }
+    }
+
+    // Check if all counts are zero
+    for (const count of charCount.values()) {
+        if (count !== 0) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// Using object
+function isAnagramObject(s1, s2) {
+    if (s1.length !== s2.length) {
+        return false;
+    }
+
+    const charCount = {};
+
+    for (const ch of s1) {
+        charCount[ch] = (charCount[ch] || 0) + 1;
+    }
+
+    for (const ch of s2) {
+        if (!charCount[ch]) {
+            return false;
+        }
+        charCount[ch]--;
+    }
+
+    return Object.values(charCount).every(count => count === 0);
+}
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n) <TranslatedText en="where n is the length of the strings" bn="যেখানে n হল স্ট্রিংগুলির দৈর্ঘ্য" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(k) <TranslatedText en="where k is the number of unique characters" bn="যেখানে k হল অনন্য অক্ষরের সংখ্যা" />
+
+## <TranslatedText en="How It Works" bn="এটি কীভাবে কাজ করে" />
+
+```
+Example: Check if "listen" and "silent" are anagrams
+
+Method 1: Sorting
+listen → eilnst
+silent → eilnst
+Result: eilnst == eilnst → true
+
+Method 2: Character Count
+Count in "listen": {l:1, i:1, s:1, t:1, e:1, n:1}
+Check "silent":
+  s: 1-1=0 ✓
+  i: 1-1=0 ✓
+  l: 1-1=0 ✓
+  e: 1-1=0 ✓
+  n: 1-1=0 ✓
+  t: 1-1=0 ✓
+All counts zero → true
+```
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Length check first</strong>: Different lengths cannot be anagrams</li>
+        <li><strong>Sorting approach</strong>: Simple but O(n log n) time</li>
+        <li><strong>Counting approach</strong>: Optimal O(n) time complexity</li>
+        <li><strong>Single pass optimization</strong>: Can increment for s1 and decrement for s2 simultaneously</li>
+        <li><strong>Early termination</strong>: Return false immediately if count goes negative</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>প্রথমে দৈর্ঘ্য চেক করুন</strong>: বিভিন্ন দৈর্ঘ্য অ্যানাগ্রাম হতে পারে না</li>
+        <li><strong>সাজানোর পদ্ধতি</strong>: সরল কিন্তু O(n log n) সময়</li>
+        <li><strong>গণনা পদ্ধতি</strong>: সর্বোত্তম O(n) সময় জটিলতা</li>
+        <li><strong>একক পাস অপটিমাইজেশন</strong>: s1 এর জন্য বৃদ্ধি এবং s2 এর জন্য হ্রাস একযোগে করতে পারে</li>
+        <li><strong>প্রাথমিক সমাপ্তি</strong>: গণনা নেগেটিভ হলে অবিলম্বে false ফেরত দিন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Edge Cases to Consider" bn="বিবেচনা করার জন্য এজ কেস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Empty strings</strong>: Two empty strings are anagrams</li>
+        <li><strong>Different lengths</strong>: Cannot be anagrams</li>
+        <li><strong>Case sensitivity</strong>: "Listen" and "Silent" - decide if case matters</li>
+        <li><strong>Spaces/special chars</strong>: Should they be considered or ignored?</li>
+        <li><strong>Unicode characters</strong>: Ensure algorithm handles all character sets</li>
+        <li><strong>Single character</strong>: Same character is anagram of itself</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>খালি স্ট্রিং</strong>: দুটি খালি স্ট্রিং অ্যানাগ্রাম</li>
+        <li><strong>বিভিন্ন দৈর্ঘ্য</strong>: অ্যানাগ্রাম হতে পারে না</li>
+        <li><strong>কেস সংবেদনশীলতা</strong>: "Listen" এবং "Silent" - কেস গুরুত্বপূর্ণ কিনা তা সিদ্ধান্ত নিন</li>
+        <li><strong>স্থান/বিশেষ অক্ষর</strong>: সেগুলি বিবেচনা করা বা উপেক্ষা করা উচিত?</li>
+        <li><strong>ইউনিকোড অক্ষর</strong>: নিশ্চিত করুন অ্যালগরিদম সমস্ত অক্ষর সেট হ্যান্ডেল করে</li>
+        <li><strong>একক অক্ষর</strong>: একই অক্ষর নিজেরই অ্যানাগ্রাম</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Start simple</strong>: Mention sorting approach first, then optimize</li>
+        <li><strong>Discuss tradeoffs</strong>: Sorting vs counting (time vs code simplicity)</li>
+        <li><strong>Clarify requirements</strong>: Case sensitivity, spaces, special characters</li>
+        <li><strong>Optimize incrementally</strong>: Show you can think of multiple solutions</li>
+        <li><strong>Mention variations</strong>: Group anagrams, find all anagrams in array</li>
+        <li><strong>Handle edge cases</strong>: Empty strings, null inputs, different lengths</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>সরল দিয়ে শুরু করুন</strong>: প্রথমে সাজানোর পদ্ধতি উল্লেখ করুন, তারপর অপটিমাইজ করুন</li>
+        <li><strong>ট্রেড-অফ আলোচনা করুন</strong>: সাজানো বনাম গণনা (সময় বনাম কোড সরলতা)</li>
+        <li><strong>প্রয়োজনীয়তা স্পষ্ট করুন</strong>: কেস সংবেদনশীলতা, স্থান, বিশেষ অক্ষর</li>
+        <li><strong>ক্রমবর্ধমান অপটিমাইজ করুন</strong>: দেখান আপনি একাধিক সমাধান ভাবতে পারেন</li>
+        <li><strong>বৈচিত্র্য উল্লেখ করুন</strong>: গ্রুপ অ্যানাগ্রাম, অ্যারেতে সমস্ত অ্যানাগ্রাম খুঁজুন</li>
+        <li><strong>এজ কেস হ্যান্ডেল করুন</strong>: খালি স্ট্রিং, null ইনপুট, বিভিন্ন দৈর্ঘ্য</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Common Mistakes to Avoid" bn="এড়ানোর জন্য সাধারণ ভুল" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Not checking if lengths are equal first</li>
+        <li>Forgetting to handle case sensitivity</li>
+        <li>Not considering spaces and special characters</li>
+        <li>Using inefficient nested loops (O(n²))</li>
+        <li>Modifying original strings when not necessary</li>
+        <li>Not handling null or empty string inputs</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>প্রথমে দৈর্ঘ্য সমান কিনা চেক না করা</li>
+        <li>কেস সংবেদনশীলতা হ্যান্ডেল করতে ভুলে যাওয়া</li>
+        <li>স্থান এবং বিশেষ অক্ষর বিবেচনা না করা</li>
+        <li>অদক্ষ নেস্টেড লুপ ব্যবহার করা (O(n²))</li>
+        <li>প্রয়োজন না থাকলে মূল স্ট্রিং পরিবর্তন করা</li>
+        <li>null বা খালি স্ট্রিং ইনপুট হ্যান্ডেল না করা</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Group anagrams together from an array
+- Find all anagrams in a string
+- Valid palindrome (similar character counting)
+- Minimum window substring
+- Permutation in string
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Sorting approach is simple: O(n log n) time, easy to implement</li>
+        <li>Character counting is optimal: O(n) time, O(k) space</li>
+        <li>Always check length equality first for early termination</li>
+        <li>Hash map works for any character set, array for limited sets</li>
+        <li>Can optimize to single pass by counting simultaneously</li>
+        <li>This pattern applies to many string comparison problems</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>সাজানোর পদ্ধতি সরল: O(n log n) সময়, বাস্তবায়ন সহজ</li>
+        <li>অক্ষর গণনা সর্বোত্তম: O(n) সময়, O(k) স্থান</li>
+        <li>প্রাথমিক সমাপ্তির জন্য সবসময় প্রথমে দৈর্ঘ্য সমতা চেক করুন</li>
+        <li>হ্যাশ ম্যাপ যেকোনো অক্ষর সেটের জন্য কাজ করে, সীমিত সেটের জন্য অ্যারে</li>
+        <li>একযোগে গণনা করে একক পাসে অপটিমাইজ করতে পারে</li>
+        <li>এই প্যাটার্ন অনেক স্ট্রিং তুলনা সমস্যায় প্রযোজ্য</li>
+      </ul>
+    </>
+  }
+/>

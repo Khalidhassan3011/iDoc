@@ -1,0 +1,135 @@
+---
+title: 74. Reverse Words in Sentence
+description: Reverse the order of words in a sentence without using library methods
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Reverse Words in Sentence" bn="বাক্যে শব্দগুলি রিভার্স করুন" />
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: "the sky is blue"
+Output: "blue is sky the"
+
+Input: "  hello world  "
+Output: "world hello"
+
+Input: "a good   example"
+Output: "example good a"
+```
+
+## <TranslatedText en="Approach" bn="পদ্ধতি" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+string reverseWords(string s) {
+    vector<string> words;
+    stringstream ss(s);
+    string word;
+
+    while (ss >> word) {
+        words.push_back(word);
+    }
+
+    reverse(words.begin(), words.end());
+
+    string result;
+    for (int i = 0; i < words.size(); i++) {
+        if (i > 0) result += " ";
+        result += words[i];
+    }
+
+    return result;
+}
+
+// In-place: reverse entire string, then reverse each word
+string reverseWordsInPlace(string s) {
+    // Implement two-step reversal
+    reverse(s.begin(), s.end());
+    // Then reverse each word individually
+    return s;
+}
+
+int main() {
+    cout << "\"" << reverseWords("the sky is blue") << "\"" << endl;
+    cout << "\"" << reverseWords("  hello world  ") << "\"" << endl;
+    cout << "\"" << reverseWords("a good   example") << "\"" << endl;
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def reverse_words(s):
+    words = s.split()
+    return ' '.join(reversed(words))
+
+# Without library methods
+def reverse_words_manual(s):
+    words = []
+    word = []
+
+    for ch in s:
+        if ch != ' ':
+            word.append(ch)
+        elif word:
+            words.append(''.join(word))
+            word = []
+
+    if word:
+        words.append(''.join(word))
+
+    return ' '.join(reversed(words))
+
+print(f'"{reverse_words("the sky is blue")}"')
+print(f'"{reverse_words("  hello world  ")}"')
+print(f'"{reverse_words("a good   example")}"')
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function reverseWords(s) {
+    return s.trim().split(/\s+/).reverse().join(' ');
+}
+
+// Without library methods
+function reverseWordsManual(s) {
+    const words = [];
+    let word = '';
+
+    for (const ch of s) {
+        if (ch !== ' ') {
+            word += ch;
+        } else if (word) {
+            words.push(word);
+            word = '';
+        }
+    }
+
+    if (word) words.push(word);
+
+    return words.reverse().join(' ');
+}
+
+console.log(`"${reverseWords("the sky is blue")}"`);
+console.log(`"${reverseWords("  hello world  ")}"`);
+console.log(`"${reverseWords("a good   example")}"`);
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n)

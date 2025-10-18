@@ -1,0 +1,109 @@
+---
+title: 81. Maximum Occurring Character
+description: Find the character that appears most frequently in a string
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Maximum Occurring Character" bn="সর্বাধিক ঘটমান অক্ষর" />
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: "programming"
+Output: 'g' or 'r' or 'm' (all appear twice)
+
+Input: "aabbbbcc"
+Output: 'b' (appears 4 times)
+```
+
+## <TranslatedText en="Approach" bn="পদ্ধতি" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+
+char maxOccurring(const string& s) {
+    unordered_map<char, int> freq;
+
+    for (char ch : s) {
+        freq[ch]++;
+    }
+
+    char maxChar = s[0];
+    int maxCount = 0;
+
+    for (const auto& pair : freq) {
+        if (pair.second > maxCount) {
+            maxCount = pair.second;
+            maxChar = pair.first;
+        }
+    }
+
+    return maxChar;
+}
+
+int main() {
+    cout << maxOccurring("programming") << endl;
+    cout << maxOccurring("aabbbbcc") << endl;
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+from collections import Counter
+
+def max_occurring(s):
+    freq = Counter(s)
+    return freq.most_common(1)[0][0]
+
+# Manual approach
+def max_occurring2(s):
+    freq = {}
+    for ch in s:
+        freq[ch] = freq.get(ch, 0) + 1
+
+    return max(freq, key=freq.get)
+
+print(max_occurring("programming"))
+print(max_occurring("aabbbbcc"))
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function maxOccurring(s) {
+    const freq = {};
+
+    for (const ch of s) {
+        freq[ch] = (freq[ch] || 0) + 1;
+    }
+
+    let maxChar = s[0];
+    let maxCount = 0;
+
+    for (const [ch, count] of Object.entries(freq)) {
+        if (count > maxCount) {
+            maxCount = count;
+            maxChar = ch;
+        }
+    }
+
+    return maxChar;
+}
+
+console.log(maxOccurring("programming"));
+console.log(maxOccurring("aabbbbcc"));
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(k)

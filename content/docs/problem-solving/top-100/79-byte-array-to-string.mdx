@@ -1,0 +1,84 @@
+---
+title: 79. Byte Array to String
+description: Convert a byte array to a string using proper encoding
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Byte Array to String" bn="বাইট অ্যারে টু স্ট্রিং" />
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: [72, 101, 108, 108, 111]
+Output: "Hello"
+
+Input: [65, 66, 67]
+Output: "ABC"
+```
+
+## <TranslatedText en="Approach" bn="পদ্ধতি" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+string byteArrayToString(const vector<int>& bytes) {
+    string result;
+    for (int byte : bytes) {
+        result += static_cast<char>(byte);
+    }
+    return result;
+}
+
+int main() {
+    vector<int> bytes1 = {72, 101, 108, 108, 111};
+    cout << byteArrayToString(bytes1) << endl;
+
+    vector<int> bytes2 = {65, 66, 67};
+    cout << byteArrayToString(bytes2) << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def byte_array_to_string(byte_array):
+    return ''.join(chr(byte) for byte in byte_array)
+
+# Using bytes
+def byte_array_to_string2(byte_array):
+    return bytes(byte_array).decode('utf-8')
+
+print(byte_array_to_string([72, 101, 108, 108, 111]))
+print(byte_array_to_string([65, 66, 67]))
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function byteArrayToString(byteArray) {
+    return String.fromCharCode(...byteArray);
+}
+
+// Using TextDecoder
+function byteArrayToString2(byteArray) {
+    const uint8Array = new Uint8Array(byteArray);
+    return new TextDecoder().decode(uint8Array);
+}
+
+console.log(byteArrayToString([72, 101, 108, 108, 111]));
+console.log(byteArrayToString([65, 66, 67]));
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n)

@@ -1,0 +1,560 @@
+---
+title: 68. Find All Permutations of String
+description: Generate all possible permutations of a given string using backtracking
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Find All Permutations of String" bn="স্ট্রিংয়ের সমস্ত পারমিউটেশন খুঁজুন" />
+
+<TranslatedText
+  en="Generate and print all possible permutations of a given string using backtracking and recursion."
+  bn="ব্যাকট্র্যাকিং এবং পুনরাবৃত্তি ব্যবহার করে একটি প্রদত্ত স্ট্রিংয়ের সমস্ত সম্ভাব্য পারমিউটেশন তৈরি এবং প্রিন্ট করুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given a string, generate all possible permutations of its characters. For example, permutations of 'abc' are: abc, acb, bac, bca, cab, cba."
+  bn="একটি স্ট্রিং দেওয়া হলে, এর অক্ষরের সমস্ত সম্ভাব্য পারমিউটেশন তৈরি করুন। উদাহরণস্বরূপ, 'abc' এর পারমিউটেশন হল: abc, acb, bac, bca, cab, cba।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: "abc"
+Output: ["abc", "acb", "bac", "bca", "cab", "cba"]
+
+Input: "ab"
+Output: ["ab", "ba"]
+
+Input: "a"
+Output: ["a"]
+
+Input: "aab"
+Output: ["aab", "aba", "baa"]
+```
+
+## <TranslatedText en="Approach 1: Backtracking (Recommended)" bn="পদ্ধতি ১: ব্যাকট্র্যাকিং (প্রস্তাবিত)" />
+
+<TranslatedText
+  en="Use backtracking to generate permutations by swapping characters at each position and recursively generating permutations for the remaining string."
+  bn="প্রতিটি অবস্থানে অক্ষর অদলবদল করে এবং অবশিষ্ট স্ট্রিংয়ের জন্য পুনরাবৃত্তভাবে পারমিউটেশন তৈরি করে পারমিউটেশন তৈরি করতে ব্যাকট্র্যাকিং ব্যবহার করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+void permuteHelper(string& str, int left, int right, vector<string>& result) {
+    // Base case: reached end of string
+    if (left == right) {
+        result.push_back(str);
+        return;
+    }
+
+    // Recursively generate permutations
+    for (int i = left; i <= right; i++) {
+        // Swap current position with i
+        swap(str[left], str[i]);
+
+        // Recurse for remaining string
+        permuteHelper(str, left + 1, right, result);
+
+        // Backtrack: restore original string
+        swap(str[left], str[i]);
+    }
+}
+
+vector<string> findPermutations(string str) {
+    vector<string> result;
+    if (str.empty()) return result;
+
+    permuteHelper(str, 0, str.length() - 1, result);
+    return result;
+}
+
+// Version that handles duplicates
+void permuteUniqueHelper(string& str, int left, int right, vector<string>& result) {
+    if (left == right) {
+        result.push_back(str);
+        return;
+    }
+
+    for (int i = left; i <= right; i++) {
+        // Skip duplicates
+        bool shouldSwap = true;
+        for (int j = left; j < i; j++) {
+            if (str[j] == str[i]) {
+                shouldSwap = false;
+                break;
+            }
+        }
+
+        if (shouldSwap) {
+            swap(str[left], str[i]);
+            permuteUniqueHelper(str, left + 1, right, result);
+            swap(str[left], str[i]);
+        }
+    }
+}
+
+vector<string> findUniquePermutations(string str) {
+    vector<string> result;
+    if (str.empty()) return result;
+
+    sort(str.begin(), str.end()); // Sort to group duplicates
+    permuteUniqueHelper(str, 0, str.length() - 1, result);
+    return result;
+}
+
+int main() {
+    // Test case 1
+    string s1 = "abc";
+    cout << "Permutations of \"" << s1 << "\":" << endl;
+    vector<string> perms1 = findPermutations(s1);
+    for (const string& p : perms1) {
+        cout << p << " ";
+    }
+    cout << "\nTotal: " << perms1.size() << endl;
+
+    // Test case 2
+    string s2 = "ab";
+    cout << "\nPermutations of \"" << s2 << "\":" << endl;
+    vector<string> perms2 = findPermutations(s2);
+    for (const string& p : perms2) {
+        cout << p << " ";
+    }
+    cout << "\nTotal: " << perms2.size() << endl;
+
+    // Test case 3: with duplicates
+    string s3 = "aab";
+    cout << "\nUnique permutations of \"" << s3 << "\":" << endl;
+    vector<string> perms3 = findUniquePermutations(s3);
+    for (const string& p : perms3) {
+        cout << p << " ";
+    }
+    cout << "\nTotal: " << perms3.size() << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Permutations of "abc":
+abc acb bac bca cab cba
+Total: 6
+
+Permutations of "ab":
+ab ba
+Total: 2
+
+Unique permutations of "aab":
+aab aba baa
+Total: 3
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def find_permutations(s):
+    result = []
+
+    def permute_helper(chars, left, right):
+        # Base case
+        if left == right:
+            result.append(''.join(chars))
+            return
+
+        # Generate permutations
+        for i in range(left, right + 1):
+            # Swap
+            chars[left], chars[i] = chars[i], chars[left]
+
+            # Recurse
+            permute_helper(chars, left + 1, right)
+
+            # Backtrack
+            chars[left], chars[i] = chars[i], chars[left]
+
+    if not s:
+        return result
+
+    chars = list(s)
+    permute_helper(chars, 0, len(chars) - 1)
+    return result
+
+# Version with duplicates handling
+def find_unique_permutations(s):
+    result = []
+
+    def permute_unique_helper(chars, left, right):
+        if left == right:
+            result.append(''.join(chars))
+            return
+
+        # Track which characters we've used at this position
+        used = set()
+
+        for i in range(left, right + 1):
+            # Skip if we've already used this character at this position
+            if chars[i] in used:
+                continue
+
+            used.add(chars[i])
+
+            # Swap
+            chars[left], chars[i] = chars[i], chars[left]
+
+            # Recurse
+            permute_unique_helper(chars, left + 1, right)
+
+            # Backtrack
+            chars[left], chars[i] = chars[i], chars[left]
+
+    if not s:
+        return result
+
+    chars = sorted(list(s))  # Sort to group duplicates
+    permute_unique_helper(chars, 0, len(chars) - 1)
+    return result
+
+# Using itertools (Pythonic way)
+from itertools import permutations
+
+def find_permutations_itertools(s):
+    return [''.join(p) for p in permutations(s)]
+
+# Test cases
+s1 = "abc"
+print(f'Permutations of "{s1}":')
+perms1 = find_permutations(s1)
+print(' '.join(perms1))
+print(f'Total: {len(perms1)}')
+
+s2 = "ab"
+print(f'\nPermutations of "{s2}":')
+perms2 = find_permutations(s2)
+print(' '.join(perms2))
+print(f'Total: {len(perms2)}')
+
+s3 = "aab"
+print(f'\nUnique permutations of "{s3}":')
+perms3 = find_unique_permutations(s3)
+print(' '.join(perms3))
+print(f'Total: {len(perms3)}')
+```
+
+**Output:**
+```
+Permutations of "abc":
+abc acb bac bca cab cba
+Total: 6
+
+Permutations of "ab":
+ab ba
+Total: 2
+
+Unique permutations of "aab":
+aab aba baa
+Total: 3
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function findPermutations(str) {
+    const result = [];
+
+    function permuteHelper(chars, left, right) {
+        // Base case
+        if (left === right) {
+            result.push(chars.join(''));
+            return;
+        }
+
+        // Generate permutations
+        for (let i = left; i <= right; i++) {
+            // Swap
+            [chars[left], chars[i]] = [chars[i], chars[left]];
+
+            // Recurse
+            permuteHelper(chars, left + 1, right);
+
+            // Backtrack
+            [chars[left], chars[i]] = [chars[i], chars[left]];
+        }
+    }
+
+    if (!str) return result;
+
+    const chars = str.split('');
+    permuteHelper(chars, 0, chars.length - 1);
+    return result;
+}
+
+// Version with duplicate handling
+function findUniquePermutations(str) {
+    const result = [];
+
+    function permuteUniqueHelper(chars, left, right) {
+        if (left === right) {
+            result.push(chars.join(''));
+            return;
+        }
+
+        // Track which characters we've used at this position
+        const used = new Set();
+
+        for (let i = left; i <= right; i++) {
+            // Skip if already used
+            if (used.has(chars[i])) {
+                continue;
+            }
+
+            used.add(chars[i]);
+
+            // Swap
+            [chars[left], chars[i]] = [chars[i], chars[left]];
+
+            // Recurse
+            permuteUniqueHelper(chars, left + 1, right);
+
+            // Backtrack
+            [chars[left], chars[i]] = [chars[i], chars[left]];
+        }
+    }
+
+    if (!str) return result;
+
+    const chars = str.split('').sort(); // Sort to group duplicates
+    permuteUniqueHelper(chars, 0, chars.length - 1);
+    return result;
+}
+
+// Test cases
+const s1 = "abc";
+console.log(`Permutations of "${s1}":`);
+const perms1 = findPermutations(s1);
+console.log(perms1.join(' '));
+console.log(`Total: ${perms1.length}`);
+
+const s2 = "ab";
+console.log(`\nPermutations of "${s2}":`);
+const perms2 = findPermutations(s2);
+console.log(perms2.join(' '));
+console.log(`Total: ${perms2.length}`);
+
+const s3 = "aab";
+console.log(`\nUnique permutations of "${s3}":`);
+const perms3 = findUniquePermutations(s3);
+console.log(perms3.join(' '));
+console.log(`Total: ${perms3.length}`);
+```
+
+**Output:**
+```
+Permutations of "abc":
+abc acb bac bca cab cba
+Total: 6
+
+Permutations of "ab":
+ab ba
+Total: 2
+
+Unique permutations of "aab":
+aab aba baa
+Total: 3
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n × n!) <TranslatedText en="where n is string length (n! permutations, each taking O(n) to create)" bn="যেখানে n হল স্ট্রিং দৈর্ঘ্য (n! পারমিউটেশন, প্রতিটি তৈরি করতে O(n))" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n × n!) <TranslatedText en="for storing all permutations" bn="সমস্ত পারমিউটেশন সংরক্ষণের জন্য" />
+
+## <TranslatedText en="How It Works" bn="এটি কীভাবে কাজ করে" />
+
+```
+Example: Generate permutations of "abc"
+
+                       abc
+                      / | \
+           Swap(0,0) /  |  \ Swap(0,2)
+                    /   |   \
+                  abc  bac   cba
+                  / \  / \   / \
+    Swap(1,1)    /   \/   \ /   \  Swap(1,2)
+               abc acb bac bca cab cba
+
+Backtracking Process:
+1. Fix 'a' at position 0
+   - Permute "bc" → bc, cb
+   - Results: abc, acb
+
+2. Fix 'b' at position 0 (swap a,b)
+   - Permute "ac" → ac, ca
+   - Results: bac, bca
+
+3. Fix 'c' at position 0 (swap a,c)
+   - Permute "ab" → ab, ba
+   - Results: cab, cba
+
+Total: 6 permutations (3! = 6)
+```
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Backtracking pattern</strong>: Fix one character, permute the rest recursively</li>
+        <li><strong>Swap and restore</strong>: Swap to explore, backtrack to restore original state</li>
+        <li><strong>Base case</strong>: When we've fixed all positions, add to result</li>
+        <li><strong>Duplicate handling</strong>: Track used characters at each level to avoid duplicates</li>
+        <li><strong>Factorial growth</strong>: n characters produce n! permutations</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>ব্যাকট্র্যাকিং প্যাটার্ন</strong>: একটি অক্ষর ঠিক করুন, বাকিগুলি পুনরাবৃত্তভাবে পারমিউট করুন</li>
+        <li><strong>অদলবদল এবং পুনরুদ্ধার</strong>: অন্বেষণ করতে অদলবদল করুন, মূল অবস্থায় ফিরে যেতে ব্যাকট্র্যাক করুন</li>
+        <li><strong>বেস কেস</strong>: যখন আমরা সমস্ত অবস্থান ঠিক করেছি, ফলাফলে যোগ করুন</li>
+        <li><strong>ডুপ্লিকেট হ্যান্ডলিং</strong>: ডুপ্লিকেট এড়াতে প্রতিটি স্তরে ব্যবহৃত অক্ষর ট্র্যাক করুন</li>
+        <li><strong>ফ্যাক্টোরিয়াল বৃদ্ধি</strong>: n অক্ষর n! পারমিউটেশন তৈরি করে</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Edge Cases to Consider" bn="বিবেচনা করার জন্য এজ কেস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Empty string</strong>: Return empty array</li>
+        <li><strong>Single character</strong>: Return array with one element</li>
+        <li><strong>Duplicate characters</strong>: Need special handling to avoid duplicate permutations</li>
+        <li><strong>Large strings</strong>: Factorial growth makes this infeasible for n greater than 10</li>
+        <li><strong>Case sensitivity</strong>: "Ab" and "aB" are different</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>খালি স্ট্রিং</strong>: খালি অ্যারে ফেরত দিন</li>
+        <li><strong>একক অক্ষর</strong>: একটি উপাদান সহ অ্যারে ফেরত দিন</li>
+        <li><strong>ডুপ্লিকেট অক্ষর</strong>: ডুপ্লিকেট পারমিউটেশন এড়াতে বিশেষ হ্যান্ডলিং প্রয়োজন</li>
+        <li><strong>বড় স্ট্রিং</strong>: ফ্যাক্টোরিয়াল বৃদ্ধি 10 এর বেশি n এর জন্য এটি অসম্ভব করে তোলে</li>
+        <li><strong>কেস সংবেদনশীলতা</strong>: "Ab" এবং "aB" ভিন্ন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Start with example</strong>: Draw the recursion tree for small input like "abc"</li>
+        <li><strong>Explain backtracking</strong>: Emphasize swap, recurse, backtrack pattern</li>
+        <li><strong>Discuss complexity</strong>: Explain why it's factorial (n! permutations)</li>
+        <li><strong>Handle duplicates</strong>: Show you can optimize for strings with duplicate characters</li>
+        <li><strong>Mention alternatives</strong>: Iterative approach using next permutation algorithm</li>
+        <li><strong>Practical limits</strong>: Mention that n greater than 10-12 is usually impractical</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>উদাহরণ দিয়ে শুরু করুন</strong>: "abc" এর মতো ছোট ইনপুটের জন্য পুনরাবৃত্তি ট্রি আঁকুন</li>
+        <li><strong>ব্যাকট্র্যাকিং ব্যাখ্যা করুন</strong>: অদলবদল, পুনরাবৃত্তি, ব্যাকট্র্যাক প্যাটার্ন জোর দিন</li>
+        <li><strong>জটিলতা আলোচনা করুন</strong>: ব্যাখ্যা করুন কেন এটি ফ্যাক্টোরিয়াল (n! পারমিউটেশন)</li>
+        <li><strong>ডুপ্লিকেট হ্যান্ডেল করুন</strong>: দেখান আপনি ডুপ্লিকেট অক্ষর সহ স্ট্রিংয়ের জন্য অপটিমাইজ করতে পারেন</li>
+        <li><strong>বিকল্প উল্লেখ করুন</strong>: নেক্সট পারমিউটেশন অ্যালগরিদম ব্যবহার করে পুনরাবৃত্তিমূলক পদ্ধতি</li>
+        <li><strong>ব্যবহারিক সীমা</strong>: উল্লেখ করুন যে 10-12 এর বেশি n সাধারণত অব্যবহারিক</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Common Mistakes to Avoid" bn="এড়ানোর জন্য সাধারণ ভুল" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Forgetting to backtrack (not restoring the swap)</li>
+        <li>Not handling duplicate characters properly</li>
+        <li>Using inefficient string concatenation instead of swapping</li>
+        <li>Not considering the base case properly</li>
+        <li>Trying to handle large inputs (greater than 10 characters)</li>
+        <li>Modifying the original string without permission</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>ব্যাকট্র্যাক করতে ভুলে যাওয়া (অদলবদল পুনরুদ্ধার না করা)</li>
+        <li>ডুপ্লিকেট অক্ষর সঠিকভাবে হ্যান্ডেল না করা</li>
+        <li>অদলবদলের পরিবর্তে অদক্ষ স্ট্রিং সংযুক্তি ব্যবহার করা</li>
+        <li>বেস কেস সঠিকভাবে বিবেচনা না করা</li>
+        <li>বড় ইনপুট (10 অক্ষরের বেশি) হ্যান্ডেল করার চেষ্টা করা</li>
+        <li>অনুমতি ছাড়া মূল স্ট্রিং পরিবর্তন করা</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Next permutation
+- Permutations II (with duplicates)
+- Combinations
+- Subsets
+- Letter case permutation
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Backtracking is the standard approach for generating permutations</li>
+        <li>Time complexity is O(n × n!) - factorial growth</li>
+        <li>Swap-recurse-backtrack is the core pattern</li>
+        <li>Handling duplicates requires tracking used characters at each level</li>
+        <li>Practical only for small inputs (n less than or equal to 10)</li>
+        <li>This pattern applies to many combinatorial problems</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>ব্যাকট্র্যাকিং পারমিউটেশন তৈরির জন্য স্ট্যান্ডার্ড পদ্ধতি</li>
+        <li>সময় জটিলতা O(n × n!) - ফ্যাক্টোরিয়াল বৃদ্ধি</li>
+        <li>অদলবদল-পুনরাবৃত্তি-ব্যাকট্র্যাক মূল প্যাটার্ন</li>
+        <li>ডুপ্লিকেট হ্যান্ডেল করতে প্রতিটি স্তরে ব্যবহৃত অক্ষর ট্র্যাক করা প্রয়োজন</li>
+        <li>শুধুমাত্র ছোট ইনপুটের জন্য ব্যবহারিক (n ≤ 10)</li>
+        <li>এই প্যাটার্ন অনেক সমন্বয়মূলক সমস্যায় প্রযোজ্য</li>
+      </ul>
+    </>
+  }
+/>

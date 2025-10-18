@@ -1,0 +1,113 @@
+---
+title: 77. Longest Substring Without Repeating
+description: Find the length of the longest substring without repeating characters
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Longest Substring Without Repeating" bn="পুনরাবৃত্তি ছাড়া দীর্ঘতম সাবস্ট্রিং" />
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: "abcabcbb"
+Output: 3 (substring "abc")
+
+Input: "bbbbb"
+Output: 1 (substring "b")
+
+Input: "pwwkew"
+Output: 3 (substring "wke")
+```
+
+## <TranslatedText en="Approach: Sliding Window" bn="পদ্ধতি: স্লাইডিং উইন্ডো" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <unordered_set>
+#include <algorithm>
+using namespace std;
+
+int lengthOfLongestSubstring(string s) {
+    unordered_set<char> seen;
+    int maxLen = 0;
+    int left = 0;
+
+    for (int right = 0; right < s.length(); right++) {
+        while (seen.count(s[right])) {
+            seen.erase(s[left]);
+            left++;
+        }
+
+        seen.insert(s[right]);
+        maxLen = max(maxLen, right - left + 1);
+    }
+
+    return maxLen;
+}
+
+int main() {
+    cout << lengthOfLongestSubstring("abcabcbb") << endl;
+    cout << lengthOfLongestSubstring("bbbbb") << endl;
+    cout << lengthOfLongestSubstring("pwwkew") << endl;
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def length_of_longest_substring(s):
+    seen = set()
+    max_len = 0
+    left = 0
+
+    for right in range(len(s)):
+        while s[right] in seen:
+            seen.remove(s[left])
+            left += 1
+
+        seen.add(s[right])
+        max_len = max(max_len, right - left + 1)
+
+    return max_len
+
+print(length_of_longest_substring("abcabcbb"))
+print(length_of_longest_substring("bbbbb"))
+print(length_of_longest_substring("pwwkew"))
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function lengthOfLongestSubstring(s) {
+    const seen = new Set();
+    let maxLen = 0;
+    let left = 0;
+
+    for (let right = 0; right < s.length; right++) {
+        while (seen.has(s[right])) {
+            seen.delete(s[left]);
+            left++;
+        }
+
+        seen.add(s[right]);
+        maxLen = Math.max(maxLen, right - left + 1);
+    }
+
+    return maxLen;
+}
+
+console.log(lengthOfLongestSubstring("abcabcbb"));
+console.log(lengthOfLongestSubstring("bbbbb"));
+console.log(lengthOfLongestSubstring("pwwkew"));
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(min(n, m)) <TranslatedText en="where m is charset size" bn="যেখানে m হল চারসেট আকার" />

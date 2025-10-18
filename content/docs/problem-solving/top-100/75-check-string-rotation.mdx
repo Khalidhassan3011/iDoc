@@ -1,0 +1,86 @@
+---
+title: 75. Check String Rotation
+description: Check if one string is a rotation of another
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Check String Rotation" bn="স্ট্রিং রোটেশন চেক করুন" />
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: s1 = "waterbottle", s2 = "erbottlewat"
+Output: true
+
+Input: s1 = "hello", s2 = "lohel"
+Output: true
+
+Input: s1 = "hello", s2 = "world"
+Output: false
+```
+
+## <TranslatedText en="Approach: Concatenation Trick" bn="পদ্ধতি: সংযুক্তি ট্রিক" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+bool isRotation(const string& s1, const string& s2) {
+    if (s1.length() != s2.length()) {
+        return false;
+    }
+
+    // s2 is rotation of s1 if s2 is substring of s1+s1
+    string concat = s1 + s1;
+    return concat.find(s2) != string::npos;
+}
+
+int main() {
+    cout << boolalpha;
+    cout << isRotation("waterbottle", "erbottlewat") << endl;
+    cout << isRotation("hello", "lohel") << endl;
+    cout << isRotation("hello", "world") << endl;
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def is_rotation(s1, s2):
+    if len(s1) != len(s2):
+        return False
+
+    # s2 is rotation if it's in s1+s1
+    return s2 in (s1 + s1)
+
+print(is_rotation("waterbottle", "erbottlewat"))
+print(is_rotation("hello", "lohel"))
+print(is_rotation("hello", "world"))
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function isRotation(s1, s2) {
+    if (s1.length !== s2.length) {
+        return false;
+    }
+
+    return (s1 + s1).includes(s2);
+}
+
+console.log(isRotation("waterbottle", "erbottlewat"));
+console.log(isRotation("hello", "lohel"));
+console.log(isRotation("hello", "world"));
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Key Insight" bn="মূল অন্তর্দৃষ্টি" />:** <TranslatedText en="If s2 is a rotation of s1, then s2 will be a substring of s1+s1" bn="যদি s2 s1 এর একটি রোটেশন হয়, তাহলে s2 s1+s1 এর একটি সাবস্ট্রিং হবে" />

@@ -1,0 +1,137 @@
+---
+title: 78. Longest Palindromic Substring
+description: Find the longest palindromic substring in a given string
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Longest Palindromic Substring" bn="দীর্ঘতম প্যালিনড্রোমিক সাবস্ট্রিং" />
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: "babad"
+Output: "bab" or "aba"
+
+Input: "cbbd"
+Output: "bb"
+```
+
+## <TranslatedText en="Approach: Expand Around Center" bn="পদ্ধতি: কেন্দ্রের চারপাশে সম্প্রসারণ" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+string expandAroundCenter(const string& s, int left, int right) {
+    while (left >= 0 && right < s.length() && s[left] == s[right]) {
+        left--;
+        right++;
+    }
+    return s.substr(left + 1, right - left - 1);
+}
+
+string longestPalindrome(string s) {
+    if (s.empty()) return "";
+
+    string longest = "";
+
+    for (int i = 0; i < s.length(); i++) {
+        // Odd length palindrome
+        string odd = expandAroundCenter(s, i, i);
+        if (odd.length() > longest.length()) {
+            longest = odd;
+        }
+
+        // Even length palindrome
+        string even = expandAroundCenter(s, i, i + 1);
+        if (even.length() > longest.length()) {
+            longest = even;
+        }
+    }
+
+    return longest;
+}
+
+int main() {
+    cout << longestPalindrome("babad") << endl;
+    cout << longestPalindrome("cbbd") << endl;
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def longest_palindrome(s):
+    def expand_around_center(left, right):
+        while left >= 0 and right < len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return s[left + 1:right]
+
+    if not s:
+        return ""
+
+    longest = ""
+
+    for i in range(len(s)):
+        # Odd length
+        odd = expand_around_center(i, i)
+        if len(odd) > len(longest):
+            longest = odd
+
+        # Even length
+        even = expand_around_center(i, i + 1)
+        if len(even) > len(longest):
+            longest = even
+
+    return longest
+
+print(longest_palindrome("babad"))
+print(longest_palindrome("cbbd"))
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function longestPalindrome(s) {
+    function expandAroundCenter(left, right) {
+        while (left >= 0 && right < s.length && s[left] === s[right]) {
+            left--;
+            right++;
+        }
+        return s.substring(left + 1, right);
+    }
+
+    if (!s) return "";
+
+    let longest = "";
+
+    for (let i = 0; i < s.length; i++) {
+        const odd = expandAroundCenter(i, i);
+        if (odd.length > longest.length) {
+            longest = odd;
+        }
+
+        const even = expandAroundCenter(i, i + 1);
+        if (even.length > longest.length) {
+            longest = even;
+        }
+    }
+
+    return longest;
+}
+
+console.log(longestPalindrome("babad"));
+console.log(longestPalindrome("cbbd"));
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n²)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)

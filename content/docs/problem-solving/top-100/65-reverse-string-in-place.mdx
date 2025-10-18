@@ -1,0 +1,386 @@
+---
+title: 65. Reverse String in Place
+description: Reverse a given string in place without using extra space
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Reverse String in Place" bn="স্ট্রিং ইন-প্লেস রিভার্স করুন" />
+
+<TranslatedText
+  en="Reverse a given string in place without using additional space by swapping characters from both ends."
+  bn="অতিরিক্ত স্থান ব্যবহার না করে উভয় প্রান্ত থেকে অক্ষর অদলবদল করে একটি প্রদত্ত স্ট্রিং ইন-প্লেস রিভার্স করুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given a string, reverse it in place without using any additional data structures. The reversal should be done by modifying the original string itself."
+  bn="একটি স্ট্রিং দেওয়া হলে, কোনো অতিরিক্ত ডেটা স্ট্রাকচার ব্যবহার না করে এটি ইন-প্লেস রিভার্স করুন। মূল স্ট্রিং নিজেই পরিবর্তন করে রিভার্সাল করা উচিত।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: "hello"
+Output: "olleh"
+
+Input: "Java"
+Output: "avaJ"
+
+Input: "a"
+Output: "a"
+
+Input: ""
+Output: ""
+```
+
+## <TranslatedText en="Approach 1: Two Pointer (Recommended)" bn="পদ্ধতি ১: দুটি পয়েন্টার (প্রস্তাবিত)" />
+
+<TranslatedText
+  en="Use two pointers, one at the start and one at the end. Swap characters and move pointers toward each other until they meet."
+  bn="দুটি পয়েন্টার ব্যবহার করুন, একটি শুরুতে এবং একটি শেষে। অক্ষর অদলবদল করুন এবং তারা মিলিত না হওয়া পর্যন্ত পয়েন্টারগুলি একে অপরের দিকে সরান।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+void reverseString(string& s) {
+    int left = 0;
+    int right = s.length() - 1;
+
+    while (left < right) {
+        // Swap characters
+        swap(s[left], s[right]);
+        left++;
+        right--;
+    }
+}
+
+// Alternative using standard library
+void reverseStringSTL(string& s) {
+    reverse(s.begin(), s.end());
+}
+
+int main() {
+    string s1 = "hello";
+    cout << "Original: " << s1 << endl;
+    reverseString(s1);
+    cout << "Reversed: " << s1 << endl;
+
+    string s2 = "Java";
+    cout << "\nOriginal: " << s2 << endl;
+    reverseStringSTL(s2);
+    cout << "Reversed: " << s2 << endl;
+
+    string s3 = "a";
+    cout << "\nOriginal: " << s3 << endl;
+    reverseString(s3);
+    cout << "Reversed: " << s3 << endl;
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Original: hello
+Reversed: olleh
+
+Original: Java
+Reversed: avaJ
+
+Original: a
+Reversed: a
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def reverse_string(s):
+    # Convert to list (strings are immutable in Python)
+    chars = list(s)
+    left = 0
+    right = len(chars) - 1
+
+    while left < right:
+        # Swap characters
+        chars[left], chars[right] = chars[right], chars[left]
+        left += 1
+        right -= 1
+
+    return ''.join(chars)
+
+# Pythonic way (not truly in-place)
+def reverse_string_pythonic(s):
+    return s[::-1]
+
+# Test cases
+s1 = "hello"
+print(f"Original: {s1}")
+print(f"Reversed: {reverse_string(s1)}")
+
+s2 = "Java"
+print(f"\nOriginal: {s2}")
+print(f"Reversed: {reverse_string_pythonic(s2)}")
+
+s3 = "a"
+print(f"\nOriginal: {s3}")
+print(f"Reversed: {reverse_string(s3)}")
+```
+
+**Output:**
+```
+Original: hello
+Reversed: olleh
+
+Original: Java
+Reversed: avaJ
+
+Original: a
+Reversed: a
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function reverseString(s) {
+    // Convert to array (strings are immutable in JavaScript)
+    const chars = s.split('');
+    let left = 0;
+    let right = chars.length - 1;
+
+    while (left < right) {
+        // Swap characters
+        [chars[left], chars[right]] = [chars[right], chars[left]];
+        left++;
+        right--;
+    }
+
+    return chars.join('');
+}
+
+// Alternative methods
+function reverseStringBuiltIn(s) {
+    return s.split('').reverse().join('');
+}
+
+function reverseStringRecursive(s) {
+    if (s.length <= 1) return s;
+    return reverseStringRecursive(s.slice(1)) + s[0];
+}
+
+// Test cases
+const s1 = "hello";
+console.log(`Original: ${s1}`);
+console.log(`Reversed: ${reverseString(s1)}`);
+
+const s2 = "Java";
+console.log(`\nOriginal: ${s2}`);
+console.log(`Reversed: ${reverseStringBuiltIn(s2)}`);
+
+const s3 = "a";
+console.log(`\nOriginal: ${s3}`);
+console.log(`Reversed: ${reverseString(s3)}`);
+```
+
+**Output:**
+```
+Original: hello
+Reversed: olleh
+
+Original: Java
+Reversed: avaJ
+
+Original: a
+Reversed: a
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n) <TranslatedText en="where n is the length of the string" bn="যেখানে n হল স্ট্রিংয়ের দৈর্ঘ্য" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1) <TranslatedText en="(in-place for C++, O(n) for Python/JS due to immutability)" bn="(C++ এর জন্য ইন-প্লেস, Python/JS এর জন্য O(n) অপরিবর্তনীয়তার কারণে)" />
+
+## <TranslatedText en="How It Works" bn="এটি কীভাবে কাজ করে" />
+
+<TranslatedText
+  en="The two-pointer approach works by swapping characters from both ends moving toward the center:"
+  bn="টু-পয়েন্টার পদ্ধতি কেন্দ্রের দিকে চলমান উভয় প্রান্ত থেকে অক্ষর অদলবদল করে কাজ করে:"
+/>
+
+```
+Example: Reverse "hello"
+
+Initial: h e l l o
+         ↑       ↑
+         L       R
+
+Step 1: Swap h and o
+        o e l l h
+          ↑   ↑
+          L   R
+
+Step 2: Swap e and l
+        o l l e h
+            ↑
+           L,R (meet in middle)
+
+Result: "olleh"
+```
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Two-pointer technique</strong>: Efficiently processes from both ends simultaneously</li>
+        <li><strong>In-place modification</strong>: No additional space needed (in languages with mutable strings)</li>
+        <li><strong>String immutability</strong>: Python and JavaScript strings are immutable, requiring array conversion</li>
+        <li><strong>Symmetric operation</strong>: Swapping continues until pointers meet in the middle</li>
+        <li><strong>Edge cases</strong>: Empty strings and single characters need no swapping</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>টু-পয়েন্টার কৌশল</strong>: উভয় প্রান্ত থেকে একযোগে দক্ষতার সাথে প্রক্রিয়া করে</li>
+        <li><strong>ইন-প্লেস পরিবর্তন</strong>: কোনো অতিরিক্ত স্থান প্রয়োজন নেই (পরিবর্তনযোগ্য স্ট্রিং সহ ভাষায়)</li>
+        <li><strong>স্ট্রিং অপরিবর্তনীয়তা</strong>: Python এবং JavaScript স্ট্রিং অপরিবর্তনীয়, অ্যারে রূপান্তর প্রয়োজন</li>
+        <li><strong>প্রতিসম অপারেশন</strong>: পয়েন্টার মাঝখানে মিলিত না হওয়া পর্যন্ত অদলবদল চলতে থাকে</li>
+        <li><strong>এজ কেস</strong>: খালি স্ট্রিং এবং একক অক্ষরের অদলবদলের প্রয়োজন নেই</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Edge Cases to Consider" bn="বিবেচনা করার জন্য এজ কেস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Empty string</strong>: Return as is, no processing needed</li>
+        <li><strong>Single character</strong>: Already reversed, return as is</li>
+        <li><strong>Two characters</strong>: Single swap needed</li>
+        <li><strong>Odd length</strong>: Middle character stays in place</li>
+        <li><strong>Even length</strong>: All characters get swapped</li>
+        <li><strong>Special characters</strong>: Treated like any other character</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>খালি স্ট্রিং</strong>: যেমন আছে তেমন ফেরত দিন, কোনো প্রক্রিয়াকরণ প্রয়োজন নেই</li>
+        <li><strong>একক অক্ষর</strong>: ইতিমধ্যে রিভার্স হয়েছে, যেমন আছে তেমন ফেরত দিন</li>
+        <li><strong>দুটি অক্ষর</strong>: একক অদলবদল প্রয়োজন</li>
+        <li><strong>বিজোড় দৈর্ঘ্য</strong>: মাঝখানের অক্ষর স্থানে থাকে</li>
+        <li><strong>জোড় দৈর্ঘ্য</strong>: সমস্ত অক্ষর অদলবদল হয়</li>
+        <li><strong>বিশেষ অক্ষর</strong>: অন্য যেকোনো অক্ষরের মতো আচরণ করা হয়</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Clarify mutability</strong>: Ask if you can modify the original string or need to return new one</li>
+        <li><strong>Mention language constraints</strong>: Explain string immutability in Python/JavaScript</li>
+        <li><strong>Discuss alternatives</strong>: Built-in methods vs manual implementation</li>
+        <li><strong>Time/space tradeoff</strong>: In-place is O(1) space but requires mutable strings</li>
+        <li><strong>Handle edge cases</strong>: Always check for null/empty strings</li>
+        <li><strong>XOR swap</strong>: You can mention XOR swap for character swapping without temp variable</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>পরিবর্তনযোগ্যতা স্পষ্ট করুন</strong>: জিজ্ঞাসা করুন আপনি মূল স্ট্রিং পরিবর্তন করতে পারবেন কিনা বা নতুন ফেরত দিতে হবে</li>
+        <li><strong>ভাষা সীমাবদ্ধতা উল্লেখ করুন</strong>: Python/JavaScript এ স্ট্রিং অপরিবর্তনীয়তা ব্যাখ্যা করুন</li>
+        <li><strong>বিকল্প আলোচনা করুন</strong>: বিল্ট-ইন মেথড বনাম ম্যানুয়াল বাস্তবায়ন</li>
+        <li><strong>সময়/স্থান ট্রেড-অফ</strong>: ইন-প্লেস হল O(1) স্থান কিন্তু পরিবর্তনযোগ্য স্ট্রিং প্রয়োজন</li>
+        <li><strong>এজ কেস হ্যান্ডেল করুন</strong>: সবসময় null/খালি স্ট্রিং চেক করুন</li>
+        <li><strong>XOR অদলবদল</strong>: আপনি temp ভেরিয়েবল ছাড়া অক্ষর অদলবদলের জন্য XOR অদলবদল উল্লেখ করতে পারেন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Common Mistakes to Avoid" bn="এড়ানোর জন্য সাধারণ ভুল" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Not checking for null or empty strings</li>
+        <li>Forgetting that strings are immutable in most languages</li>
+        <li>Using O(n) extra space when in-place is possible</li>
+        <li>Off-by-one errors in pointer initialization or loop condition</li>
+        <li>Not handling single character strings</li>
+        <li>Swapping when pointers have crossed (should be left less than right)</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>null বা খালি স্ট্রিং চেক না করা</li>
+        <li>ভুলে যাওয়া যে স্ট্রিং বেশিরভাগ ভাষায় অপরিবর্তনীয়</li>
+        <li>ইন-প্লেস সম্ভব হলে O(n) অতিরিক্ত স্থান ব্যবহার করা</li>
+        <li>পয়েন্টার ইনিশিয়ালাইজেশন বা লুপ কন্ডিশনে অফ-বাই-ওয়ান ত্রুটি</li>
+        <li>একক অক্ষর স্ট্রিং হ্যান্ডেল না করা</li>
+        <li>পয়েন্টার ক্রস হয়ে গেলে অদলবদল করা (বাম ডানের চেয়ে কম হওয়া উচিত)</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Reverse words in a sentence
+- Reverse a linked list
+- Palindrome check (reverse and compare)
+- Rotate string
+- Reverse vowels only in a string
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Two-pointer technique is fundamental for in-place string/array manipulation</li>
+        <li>String immutability varies by language - important to understand</li>
+        <li>True in-place reversal is only possible with mutable strings (C++, Java with char[])</li>
+        <li>Time complexity is always O(n), space depends on mutability</li>
+        <li>This pattern applies to many similar problems (reverse subarray, rotate, etc.)</li>
+        <li>Always consider edge cases: empty, single element, two elements</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>টু-পয়েন্টার কৌশল ইন-প্লেস স্ট্রিং/অ্যারে ম্যানিপুলেশনের জন্য মৌলিক</li>
+        <li>স্ট্রিং অপরিবর্তনীয়তা ভাষা অনুসারে পরিবর্তিত হয় - বোঝা গুরুত্বপূর্ণ</li>
+        <li>সত্যিকারের ইন-প্লেস রিভার্সাল শুধুমাত্র পরিবর্তনযোগ্য স্ট্রিং দিয়ে সম্ভব (C++, Java char[] সহ)</li>
+        <li>সময় জটিলতা সবসময় O(n), স্থান পরিবর্তনযোগ্যতার উপর নির্ভর করে</li>
+        <li>এই প্যাটার্ন অনেক অনুরূপ সমস্যায় প্রযোজ্য (সাবঅ্যারে রিভার্স, ঘূর্ণন ইত্যাদি)</li>
+        <li>সবসময় এজ কেস বিবেচনা করুন: খালি, একক উপাদান, দুটি উপাদান</li>
+      </ul>
+    </>
+  }
+/>

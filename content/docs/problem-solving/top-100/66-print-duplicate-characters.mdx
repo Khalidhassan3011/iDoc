@@ -1,0 +1,515 @@
+---
+title: 66. Print Duplicate Characters
+description: Find and print all duplicate characters in a string along with their count
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Print Duplicate Characters" bn="ডুপ্লিকেট অক্ষর প্রিন্ট করুন" />
+
+<TranslatedText
+  en="Find and print all characters that appear more than once in a string, along with their occurrence count."
+  bn="একটি স্ট্রিংয়ে একাধিকবার প্রদর্শিত সমস্ত অক্ষর খুঁজুন এবং প্রিন্ট করুন, তাদের ঘটনা গণনা সহ।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given a string, find all characters that appear more than once and print them along with their count. The order of printing can be based on first occurrence or any consistent order."
+  bn="একটি স্ট্রিং দেওয়া হলে, একাধিকবার প্রদর্শিত সমস্ত অক্ষর খুঁজুন এবং তাদের গণনা সহ প্রিন্ট করুন। প্রিন্টিংয়ের ক্রম প্রথম ঘটনা বা যেকোনো সামঞ্জস্যপূর্ণ ক্রমের উপর ভিত্তি করে হতে পারে।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: "programming"
+Output:
+g: 2
+r: 2
+m: 2
+
+Input: "hello"
+Output:
+l: 2
+
+Input: "abcdef"
+Output:
+(No duplicates)
+
+Input: "aabbcc"
+Output:
+a: 2
+b: 2
+c: 2
+```
+
+## <TranslatedText en="Approach 1: Hash Map (Recommended)" bn="পদ্ধতি ১: হ্যাশ ম্যাপ (প্রস্তাবিত)" />
+
+<TranslatedText
+  en="Use a hash map to count character frequencies, then print characters with count greater than 1."
+  bn="অক্ষর ফ্রিকোয়েন্সি গণনা করতে একটি হ্যাশ ম্যাপ ব্যবহার করুন, তারপর 1 এর চেয়ে বড় গণনা সহ অক্ষর প্রিন্ট করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+void printDuplicates(const string& str) {
+    unordered_map<char, int> charCount;
+
+    // Count frequency of each character
+    for (char ch : str) {
+        charCount[ch]++;
+    }
+
+    // Print characters with count > 1
+    bool foundDuplicate = false;
+    for (const auto& pair : charCount) {
+        if (pair.second > 1) {
+            cout << pair.first << ": " << pair.second << endl;
+            foundDuplicate = true;
+        }
+    }
+
+    if (!foundDuplicate) {
+        cout << "(No duplicates)" << endl;
+    }
+}
+
+// Alternative: Maintain insertion order
+void printDuplicatesOrdered(const string& str) {
+    unordered_map<char, int> charCount;
+
+    // First pass: count frequencies
+    for (char ch : str) {
+        charCount[ch]++;
+    }
+
+    // Second pass: print duplicates in order of first occurrence
+    unordered_map<char, bool> printed;
+    for (char ch : str) {
+        if (charCount[ch] > 1 && !printed[ch]) {
+            cout << ch << ": " << charCount[ch] << endl;
+            printed[ch] = true;
+        }
+    }
+}
+
+int main() {
+    cout << "Test 1: \"programming\"" << endl;
+    printDuplicatesOrdered("programming");
+
+    cout << "\nTest 2: \"hello\"" << endl;
+    printDuplicatesOrdered("hello");
+
+    cout << "\nTest 3: \"abcdef\"" << endl;
+    printDuplicates("abcdef");
+
+    cout << "\nTest 4: \"aabbcc\"" << endl;
+    printDuplicatesOrdered("aabbcc");
+
+    return 0;
+}
+```
+
+**Output:**
+```
+Test 1: "programming"
+g: 2
+r: 2
+m: 2
+
+Test 2: "hello"
+l: 2
+
+Test 3: "abcdef"
+(No duplicates)
+
+Test 4: "aabbcc"
+a: 2
+b: 2
+c: 2
+```
+  </Tab>
+  <Tab value="Python">
+```python
+from collections import Counter, OrderedDict
+
+def print_duplicates(s):
+    # Count character frequencies
+    char_count = {}
+    for ch in s:
+        char_count[ch] = char_count.get(ch, 0) + 1
+
+    # Print characters with count > 1
+    duplicates = {ch: count for ch, count in char_count.items() if count > 1}
+
+    if duplicates:
+        for ch, count in duplicates.items():
+            print(f"{ch}: {count}")
+    else:
+        print("(No duplicates)")
+
+# Using Counter (more Pythonic)
+def print_duplicates_counter(s):
+    char_count = Counter(s)
+
+    duplicates = {ch: count for ch, count in char_count.items() if count > 1}
+
+    if duplicates:
+        for ch, count in duplicates.items():
+            print(f"{ch}: {count}")
+    else:
+        print("(No duplicates)")
+
+# Maintain order of first occurrence
+def print_duplicates_ordered(s):
+    char_count = Counter(s)
+
+    # Track which duplicates we've already printed
+    printed = set()
+
+    for ch in s:
+        if char_count[ch] > 1 and ch not in printed:
+            print(f"{ch}: {char_count[ch]}")
+            printed.add(ch)
+
+# Test cases
+print('Test 1: "programming"')
+print_duplicates_ordered("programming")
+
+print('\nTest 2: "hello"')
+print_duplicates_ordered("hello")
+
+print('\nTest 3: "abcdef"')
+print_duplicates("abcdef")
+
+print('\nTest 4: "aabbcc"')
+print_duplicates_ordered("aabbcc")
+```
+
+**Output:**
+```
+Test 1: "programming"
+g: 2
+r: 2
+m: 2
+
+Test 2: "hello"
+l: 2
+
+Test 3: "abcdef"
+(No duplicates)
+
+Test 4: "aabbcc"
+a: 2
+b: 2
+c: 2
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function printDuplicates(str) {
+    // Count character frequencies
+    const charCount = new Map();
+
+    for (const ch of str) {
+        charCount.set(ch, (charCount.get(ch) || 0) + 1);
+    }
+
+    // Print characters with count > 1
+    let foundDuplicate = false;
+    for (const [ch, count] of charCount) {
+        if (count > 1) {
+            console.log(`${ch}: ${count}`);
+            foundDuplicate = true;
+        }
+    }
+
+    if (!foundDuplicate) {
+        console.log("(No duplicates)");
+    }
+}
+
+// Maintain order of first occurrence
+function printDuplicatesOrdered(str) {
+    const charCount = new Map();
+
+    // First pass: count frequencies
+    for (const ch of str) {
+        charCount.set(ch, (charCount.get(ch) || 0) + 1);
+    }
+
+    // Second pass: print in order of first occurrence
+    const printed = new Set();
+
+    for (const ch of str) {
+        if (charCount.get(ch) > 1 && !printed.has(ch)) {
+            console.log(`${ch}: ${charCount.get(ch)}`);
+            printed.add(ch);
+        }
+    }
+}
+
+// Using object instead of Map
+function printDuplicatesObject(str) {
+    const charCount = {};
+
+    for (const ch of str) {
+        charCount[ch] = (charCount[ch] || 0) + 1;
+    }
+
+    const duplicates = Object.entries(charCount).filter(([ch, count]) => count > 1);
+
+    if (duplicates.length > 0) {
+        duplicates.forEach(([ch, count]) => console.log(`${ch}: ${count}`));
+    } else {
+        console.log("(No duplicates)");
+    }
+}
+
+// Test cases
+console.log('Test 1: "programming"');
+printDuplicatesOrdered("programming");
+
+console.log('\nTest 2: "hello"');
+printDuplicatesOrdered("hello");
+
+console.log('\nTest 3: "abcdef"');
+printDuplicates("abcdef");
+
+console.log('\nTest 4: "aabbcc"');
+printDuplicatesOrdered("aabbcc");
+```
+
+**Output:**
+```
+Test 1: "programming"
+g: 2
+r: 2
+m: 2
+
+Test 2: "hello"
+l: 2
+
+Test 3: "abcdef"
+(No duplicates)
+
+Test 4: "aabbcc"
+a: 2
+b: 2
+c: 2
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n) <TranslatedText en="where n is the length of the string" bn="যেখানে n হল স্ট্রিংয়ের দৈর্ঘ্য" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(k) <TranslatedText en="where k is the number of unique characters" bn="যেখানে k হল অনন্য অক্ষরের সংখ্যা" />
+
+## <TranslatedText en="Approach 2: Array for ASCII Characters" bn="পদ্ধতি ২: ASCII অক্ষরের জন্য অ্যারে" />
+
+<TranslatedText
+  en="If the string contains only ASCII characters, use an array of size 256 for constant space complexity."
+  bn="যদি স্ট্রিংয়ে শুধুমাত্র ASCII অক্ষর থাকে, ধ্রুবক স্থান জটিলতার জন্য 256 আকারের একটি অ্যারে ব্যবহার করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+void printDuplicatesArray(const string& str) {
+    int charCount[256] = {0}; // ASCII character set
+
+    // Count frequencies
+    for (char ch : str) {
+        charCount[(unsigned char)ch]++;
+    }
+
+    // Print duplicates
+    bool foundDuplicate = false;
+    for (int i = 0; i < 256; i++) {
+        if (charCount[i] > 1) {
+            cout << (char)i << ": " << charCount[i] << endl;
+            foundDuplicate = true;
+        }
+    }
+
+    if (!foundDuplicate) {
+        cout << "(No duplicates)" << endl;
+    }
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def print_duplicates_array(s):
+    char_count = [0] * 256  # ASCII character set
+
+    # Count frequencies
+    for ch in s:
+        char_count[ord(ch)] += 1
+
+    # Print duplicates
+    duplicates = []
+    for i in range(256):
+        if char_count[i] > 1:
+            duplicates.append((chr(i), char_count[i]))
+
+    if duplicates:
+        for ch, count in duplicates:
+            print(f"{ch}: {count}")
+    else:
+        print("(No duplicates)")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function printDuplicatesArray(str) {
+    const charCount = new Array(256).fill(0); // ASCII character set
+
+    // Count frequencies
+    for (const ch of str) {
+        charCount[ch.charCodeAt(0)]++;
+    }
+
+    // Print duplicates
+    let foundDuplicate = false;
+    for (let i = 0; i < 256; i++) {
+        if (charCount[i] > 1) {
+            console.log(`${String.fromCharCode(i)}: ${charCount[i]}`);
+            foundDuplicate = true;
+        }
+    }
+
+    if (!foundDuplicate) {
+        console.log("(No duplicates)");
+    }
+}
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1) <TranslatedText en="(constant 256 space)" bn="(ধ্রুবক 256 স্থান)" />
+
+## <TranslatedText en="How It Works" bn="এটি কীভাবে কাজ করে" />
+
+```
+Example: Find duplicates in "programming"
+
+Step 1: Count frequencies
+p: 1
+r: 2  ← duplicate
+o: 1
+g: 2  ← duplicate
+a: 1
+m: 2  ← duplicate
+i: 1
+n: 1
+
+Step 2: Print characters with count > 1
+g: 2
+r: 2
+m: 2
+```
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Hash map approach</strong>: Works for any character set (Unicode, ASCII, etc.)</li>
+        <li><strong>Array approach</strong>: More space-efficient for limited character sets</li>
+        <li><strong>Two-pass solution</strong>: Count first, then print in order</li>
+        <li><strong>Order preservation</strong>: Use second pass through original string for first-occurrence order</li>
+        <li><strong>Case sensitivity</strong>: Decide if 'A' and 'a' are same or different</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>হ্যাশ ম্যাপ পদ্ধতি</strong>: যেকোনো অক্ষর সেটের জন্য কাজ করে (ইউনিকোড, ASCII ইত্যাদি)</li>
+        <li><strong>অ্যারে পদ্ধতি</strong>: সীমিত অক্ষর সেটের জন্য আরও স্থান-দক্ষ</li>
+        <li><strong>টু-পাস সমাধান</strong>: প্রথমে গণনা করুন, তারপর ক্রমে প্রিন্ট করুন</li>
+        <li><strong>ক্রম সংরক্ষণ</strong>: প্রথম-ঘটনা ক্রমের জন্য মূল স্ট্রিংয়ের মাধ্যমে দ্বিতীয় পাস ব্যবহার করুন</li>
+        <li><strong>কেস সংবেদনশীলতা</strong>: 'A' এবং 'a' একই না ভিন্ন তা সিদ্ধান্ত নিন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Clarify character set</strong>: ASCII only or Unicode support needed?</li>
+        <li><strong>Clarify case sensitivity</strong>: Are 'A' and 'a' considered same?</li>
+        <li><strong>Clarify output order</strong>: First occurrence, alphabetical, or any order?</li>
+        <li><strong>Discuss space constraints</strong>: Array vs Map tradeoffs</li>
+        <li><strong>Handle spaces/special chars</strong>: Should they be counted?</li>
+        <li><strong>Edge cases</strong>: Empty string, no duplicates, all duplicates</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>অক্ষর সেট স্পষ্ট করুন</strong>: শুধু ASCII না ইউনিকোড সমর্থন প্রয়োজন?</li>
+        <li><strong>কেস সংবেদনশীলতা স্পষ্ট করুন</strong>: 'A' এবং 'a' একই বলে গণ্য হয়?</li>
+        <li><strong>আউটপুট ক্রম স্পষ্ট করুন</strong>: প্রথম ঘটনা, বর্ণানুক্রমিক বা যেকোনো ক্রম?</li>
+        <li><strong>স্থান সীমাবদ্ধতা আলোচনা করুন</strong>: অ্যারে বনাম ম্যাপ ট্রেড-অফ</li>
+        <li><strong>স্থান/বিশেষ অক্ষর হ্যান্ডেল করুন</strong>: সেগুলি গণনা করা উচিত?</li>
+        <li><strong>এজ কেস</strong>: খালি স্ট্রিং, কোনো ডুপ্লিকেট নেই, সব ডুপ্লিকেট</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- First non-repeated character
+- Count character occurrences
+- Remove duplicate characters
+- Maximum occurring character
+- Anagram detection
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Hash map provides flexible solution for any character set</li>
+        <li>Array approach is more space-efficient for limited character sets</li>
+        <li>Two-pass solution allows preserving order of first occurrence</li>
+        <li>Time complexity is always O(n), space varies by approach</li>
+        <li>Always clarify requirements: case sensitivity, character set, output order</li>
+        <li>This pattern is foundation for many string frequency problems</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>হ্যাশ ম্যাপ যেকোনো অক্ষর সেটের জন্য নমনীয় সমাধান প্রদান করে</li>
+        <li>অ্যারে পদ্ধতি সীমিত অক্ষর সেটের জন্য আরও স্থান-দক্ষ</li>
+        <li>টু-পাস সমাধান প্রথম ঘটনার ক্রম সংরক্ষণ করতে দেয়</li>
+        <li>সময় জটিলতা সবসময় O(n), স্থান পদ্ধতি অনুসারে পরিবর্তিত হয়</li>
+        <li>সবসময় প্রয়োজনীয়তা স্পষ্ট করুন: কেস সংবেদনশীলতা, অক্ষর সেট, আউটপুট ক্রম</li>
+        <li>এই প্যাটার্ন অনেক স্ট্রিং ফ্রিকোয়েন্সি সমস্যার ভিত্তি</li>
+      </ul>
+    </>
+  }
+/>

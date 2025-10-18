@@ -1,0 +1,129 @@
+---
+title: 76. Check if String is Palindrome
+description: Determine if a string reads the same forwards and backwards
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Check if String is Palindrome" bn="স্ট্রিং প্যালিনড্রোম কিনা চেক করুন" />
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: "racecar"
+Output: true
+
+Input: "A man a plan a canal Panama"
+Output: true (ignoring case and spaces)
+
+Input: "hello"
+Output: false
+```
+
+## <TranslatedText en="Approach" bn="পদ্ধতি" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <algorithm>
+#include <cctype>
+using namespace std;
+
+bool isPalindrome(const string& s) {
+    int left = 0, right = s.length() - 1;
+
+    while (left < right) {
+        // Skip non-alphanumeric
+        while (left < right && !isalnum(s[left])) left++;
+        while (left < right && !isalnum(s[right])) right--;
+
+        if (tolower(s[left]) != tolower(s[right])) {
+            return false;
+        }
+
+        left++;
+        right--;
+    }
+
+    return true;
+}
+
+int main() {
+    cout << boolalpha;
+    cout << isPalindrome("racecar") << endl;
+    cout << isPalindrome("A man a plan a canal Panama") << endl;
+    cout << isPalindrome("hello") << endl;
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def is_palindrome(s):
+    # Filter alphanumeric and convert to lowercase
+    filtered = ''.join(ch.lower() for ch in s if ch.isalnum())
+    return filtered == filtered[::-1]
+
+# Two pointer approach
+def is_palindrome_two_pointer(s):
+    left, right = 0, len(s) - 1
+
+    while left < right:
+        while left < right and not s[left].isalnum():
+            left += 1
+        while left < right and not s[right].isalnum():
+            right -= 1
+
+        if s[left].lower() != s[right].lower():
+            return False
+
+        left += 1
+        right -= 1
+
+    return True
+
+print(is_palindrome("racecar"))
+print(is_palindrome("A man a plan a canal Panama"))
+print(is_palindrome("hello"))
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function isPalindrome(s) {
+    const filtered = s.toLowerCase().replace(/[^a-z0-9]/g, '');
+    return filtered === filtered.split('').reverse().join('');
+}
+
+// Two pointer
+function isPalindromeTwoPointer(s) {
+    let left = 0, right = s.length - 1;
+
+    while (left < right) {
+        while (left < right && !/[a-z0-9]/i.test(s[left])) left++;
+        while (left < right && !/[a-z0-9]/i.test(s[right])) right--;
+
+        if (s[left].toLowerCase() !== s[right].toLowerCase()) {
+            return false;
+        }
+
+        left++;
+        right--;
+    }
+
+    return true;
+}
+
+console.log(isPalindrome("racecar"));
+console.log(isPalindrome("A man a plan a canal Panama"));
+console.log(isPalindrome("hello"));
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1) <TranslatedText en="for two-pointer approach" bn="টু-পয়েন্টার পদ্ধতির জন্য" />

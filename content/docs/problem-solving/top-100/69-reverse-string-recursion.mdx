@@ -1,0 +1,276 @@
+---
+title: 69. Reverse String Using Recursion
+description: Reverse a given string using recursive approach
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Reverse String Using Recursion" bn="পুনরাবৃত্তি ব্যবহার করে স্ট্রিং রিভার্স করুন" />
+
+<TranslatedText
+  en="Reverse a given string using a recursive approach instead of iterative loops."
+  bn="পুনরাবৃত্তিমূলক লুপের পরিবর্তে একটি পুনরাবৃত্ত পদ্ধতি ব্যবহার করে একটি প্রদত্ত স্ট্রিং রিভার্স করুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given a string, reverse it using recursion. The solution should not use loops but instead rely on recursive function calls."
+  bn="একটি স্ট্রিং দেওয়া হলে, পুনরাবৃত্তি ব্যবহার করে এটি রিভার্স করুন। সমাধান লুপ ব্যবহার করবে না বরং পুনরাবৃত্ত ফাংশন কলের উপর নির্ভর করবে।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: "hello"
+Output: "olleh"
+
+Input: "recursion"
+Output: "noisrucer"
+
+Input: "a"
+Output: "a"
+
+Input: ""
+Output: ""
+```
+
+## <TranslatedText en="Approach: Recursive Reversal" bn="পদ্ধতি: পুনরাবৃত্ত রিভার্সাল" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Method 1: Reverse by taking last character first
+string reverseRecursive(const string& str) {
+    // Base case
+    if (str.empty()) {
+        return "";
+    }
+
+    // Recursive case: last char + reverse of rest
+    return str[str.length() - 1] + reverseRecursive(str.substr(0, str.length() - 1));
+}
+
+// Method 2: Reverse by taking first character last
+string reverseRecursive2(const string& str) {
+    // Base case
+    if (str.length() <= 1) {
+        return str;
+    }
+
+    // Recursive case: reverse of rest + first char
+    return reverseRecursive2(str.substr(1)) + str[0];
+}
+
+// Method 3: In-place reversal using helper function
+void reverseHelper(string& str, int left, int right) {
+    // Base case
+    if (left >= right) {
+        return;
+    }
+
+    // Swap and recurse
+    swap(str[left], str[right]);
+    reverseHelper(str, left + 1, right - 1);
+}
+
+string reverseRecursive3(string str) {
+    reverseHelper(str, 0, str.length() - 1);
+    return str;
+}
+
+int main() {
+    string s1 = "hello";
+    cout << "Original: " << s1 << endl;
+    cout << "Reversed (method 1): " << reverseRecursive(s1) << endl;
+    cout << "Reversed (method 2): " << reverseRecursive2(s1) << endl;
+    cout << "Reversed (method 3): " << reverseRecursive3(s1) << endl;
+
+    string s2 = "recursion";
+    cout << "\nOriginal: " << s2 << endl;
+    cout << "Reversed: " << reverseRecursive(s2) << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def reverse_recursive(s):
+    # Base case
+    if len(s) == 0:
+        return ""
+
+    # Recursive case: last char + reverse of rest
+    return s[-1] + reverse_recursive(s[:-1])
+
+def reverse_recursive2(s):
+    # Base case
+    if len(s) <= 1:
+        return s
+
+    # Recursive case: reverse of rest + first char
+    return reverse_recursive2(s[1:]) + s[0]
+
+# Using list for in-place modification
+def reverse_recursive3(s):
+    def reverse_helper(chars, left, right):
+        if left >= right:
+            return
+        chars[left], chars[right] = chars[right], chars[left]
+        reverse_helper(chars, left + 1, right - 1)
+
+    chars = list(s)
+    reverse_helper(chars, 0, len(chars) - 1)
+    return ''.join(chars)
+
+# Test cases
+s1 = "hello"
+print(f"Original: {s1}")
+print(f"Reversed (method 1): {reverse_recursive(s1)}")
+print(f"Reversed (method 2): {reverse_recursive2(s1)}")
+print(f"Reversed (method 3): {reverse_recursive3(s1)}")
+
+s2 = "recursion"
+print(f"\nOriginal: {s2}")
+print(f"Reversed: {reverse_recursive(s2)}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function reverseRecursive(str) {
+    // Base case
+    if (str.length === 0) {
+        return "";
+    }
+
+    // Recursive case: last char + reverse of rest
+    return str[str.length - 1] + reverseRecursive(str.slice(0, -1));
+}
+
+function reverseRecursive2(str) {
+    // Base case
+    if (str.length <= 1) {
+        return str;
+    }
+
+    // Recursive case: reverse of rest + first char
+    return reverseRecursive2(str.slice(1)) + str[0];
+}
+
+function reverseRecursive3(str) {
+    function reverseHelper(chars, left, right) {
+        if (left >= right) {
+            return;
+        }
+        [chars[left], chars[right]] = [chars[right], chars[left]];
+        reverseHelper(chars, left + 1, right - 1);
+    }
+
+    const chars = str.split('');
+    reverseHelper(chars, 0, chars.length - 1);
+    return chars.join('');
+}
+
+// Test cases
+const s1 = "hello";
+console.log(`Original: ${s1}`);
+console.log(`Reversed (method 1): ${reverseRecursive(s1)}`);
+console.log(`Reversed (method 2): ${reverseRecursive2(s1)}`);
+console.log(`Reversed (method 3): ${reverseRecursive3(s1)}`);
+
+const s2 = "recursion";
+console.log(`\nOriginal: ${s2}`);
+console.log(`Reversed: ${reverseRecursive(s2)}`);
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n²) <TranslatedText en="for substring methods, O(n) for in-place" bn="সাবস্ট্রিং পদ্ধতির জন্য, ইন-প্লেসের জন্য O(n)" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n) <TranslatedText en="for recursion call stack" bn="পুনরাবৃত্তি কল স্ট্যাকের জন্য" />
+
+## <TranslatedText en="How It Works" bn="এটি কীভাবে কাজ করে" />
+
+```
+Example: Reverse "abc" using recursion
+
+reverseRecursive("abc")
+→ 'c' + reverseRecursive("ab")
+  → 'c' + ('b' + reverseRecursive("a"))
+    → 'c' + ('b' + 'a')
+    → 'c' + "ba"
+  → "cba"
+
+Call stack visualization:
+reverseRecursive("abc")    // Returns 'c' + "ba" = "cba"
+  reverseRecursive("ab")   // Returns 'b' + "a" = "ba"
+    reverseRecursive("a")  // Returns "a"
+      reverseRecursive("") // Base case, returns ""
+```
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Base case</strong>: Empty string or single character</li>
+        <li><strong>Recursive pattern</strong>: Character + reverse(rest)</li>
+        <li><strong>Three approaches</strong>: Last-first, first-last, in-place swap</li>
+        <li><strong>Call stack usage</strong>: Each call adds to stack, uses O(n) space</li>
+        <li><strong>String creation</strong>: Substring methods create new strings (inefficient)</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>বেস কেস</strong>: খালি স্ট্রিং বা একক অক্ষর</li>
+        <li><strong>পুনরাবৃত্ত প্যাটার্ন</strong>: অক্ষর + reverse(বাকি)</li>
+        <li><strong>তিনটি পদ্ধতি</strong>: শেষ-প্রথম, প্রথম-শেষ, ইন-প্লেস অদলবদল</li>
+        <li><strong>কল স্ট্যাক ব্যবহার</strong>: প্রতিটি কল স্ট্যাকে যোগ করে, O(n) স্থান ব্যবহার করে</li>
+        <li><strong>স্ট্রিং তৈরি</strong>: সাবস্ট্রিং পদ্ধতি নতুন স্ট্রিং তৈরি করে (অদক্ষ)</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Reverse linked list recursively
+- Palindrome check using recursion
+- Reverse words in string
+- Print string in reverse order
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Recursion provides elegant solution but uses O(n) stack space</li>
+        <li>In-place swap method is more efficient than creating substrings</li>
+        <li>Iterative approach is generally preferred for production code</li>
+        <li>Good for demonstrating recursion concepts in interviews</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>পুনরাবৃত্তি মার্জন্ত সমাধান প্রদান করে কিন্তু O(n) স্ট্যাক স্থান ব্যবহার করে</li>
+        <li>ইন-প্লেস অদলবদল পদ্ধতি সাবস্ট্রিং তৈরির চেয়ে আরও দক্ষ</li>
+        <li>পুনরাবৃত্তিমূলক পদ্ধতি সাধারণত প্রোডাকশন কোডের জন্য পছন্দনীয়</li>
+        <li>ইন্টারভিউতে পুনরাবৃত্তি ধারণা প্রদর্শনের জন্য ভাল</li>
+      </ul>
+    </>
+  }
+/>
