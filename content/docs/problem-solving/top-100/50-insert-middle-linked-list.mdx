@@ -3,513 +3,780 @@ title: 50. Insert Element in Middle of Linked List
 description: How to add an element in the middle of a singly linked list
 ---
 
-## Problem Statement
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { TranslatedText, LanguageSwitcher } from '@/components/LanguageSwitcher';
 
-Write a program to insert a new node in the middle of a singly linked list. If the list has an even number of nodes, insert after the first middle node.
+<LanguageSwitcher />
 
-## Examples
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
 
-### Example 1
+<TranslatedText
+  en="Write a program to insert a new node in the middle of a singly linked list. If the list has an even number of nodes, insert after the first middle node."
+  bn="একটি সিঙ্গেল লিঙ্কড লিস্টের মাঝামাঝিতে একটি নতুন নোড ইনসার্ট করার জন্য একটি প্রোগ্রাম লিখুন। যদি লিস্টে সমসংখ্যক নোড থাকে, প্রথম মধ্যম নোডের পরে ইনসার্ট করুন।"
+/>
+
+## <TranslatedText en="Examples" bn="উদাহরণসমূহ" />
+
+### <TranslatedText en="Example 1" bn="উদাহরণ ১" />
 ```
 Input: 1 -> 2 -> 4 -> 5, insert 3
 Output: 1 -> 2 -> 3 -> 4 -> 5
 ```
 
-### Example 2
+### <TranslatedText en="Example 2" bn="উদাহরণ ২" />
 ```
 Input: 1 -> 2 -> 3 -> 4, insert 10
 Output: 1 -> 2 -> 10 -> 3 -> 4
 ```
 
-### Example 3
+### <TranslatedText en="Example 3" bn="উদাহরণ ৩" />
 ```
 Input: 1, insert 2
 Output: 1 -> 2
 ```
 
-## Node Definition
+## <TranslatedText en="Node Definition" bn="নোড সংজ্ঞা" />
 
-```dart
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+struct Node {
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
 class Node {
-  int data;
-  Node? next;
-
-  Node(this.data, [this.next]);
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
 }
 ```
+  </Tab>
+</Tabs>
 
-## Solution
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতিসমূহ" />
 
-### Approach 1: Two Pass (Find Length First)
+### <TranslatedText en="Approach 1: Fast and Slow Pointers (Optimal)" bn="পদ্ধতি ১: ফাস্ট এবং স্লো পয়েন্টার (সর্বোত্তম)" />
 
-Find the middle position in the first pass, then insert in the second pass.
+<TranslatedText
+  en="Use Floyd's cycle detection algorithm concept to find the middle in one pass. The slow pointer moves one step while the fast pointer moves two steps."
+  bn="একটি পাসে মধ্যম খুঁজে পেতে ফ্লয়েডের সাইকেল ডিটেকশন অ্যালগরিদম ধারণা ব্যবহার করুন। স্লো পয়েন্টার একটি ধাপ চলে যখন ফাস্ট পয়েন্টার দুটি ধাপ চলে।"
+/>
 
-**Time Complexity:** O(n)
-**Space Complexity:** O(1)
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
 
-```dart
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+void insertInMiddle(Node* head, int data) {
+    if (head == nullptr) return;
+
+    Node* slow = head;
+    Node* fast = head;
+
+    // Find middle using fast and slow pointers
+    while (fast->next != nullptr && fast->next->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    // Insert after slow (which is at middle)
+    Node* newNode = new Node(data);
+    newNode->next = slow->next;
+    slow->next = newNode;
+}
+
+void printList(Node* head) {
+    Node* current = head;
+    while (current != nullptr) {
+        cout << current->data << " -> ";
+        current = current->next;
+    }
+    cout << "null" << endl;
+}
+
+int main() {
+    // Create list: 1 -> 2 -> 4 -> 5
+    Node* head = new Node(1);
+    head->next = new Node(2);
+    head->next->next = new Node(4);
+    head->next->next->next = new Node(5);
+
+    cout << "Original list:" << endl;
+    printList(head);
+
+    insertInMiddle(head, 3);
+
+    cout << "\nAfter inserting 3 in middle:" << endl;
+    printList(head);
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def insert_in_middle(head, data):
+    """Insert node in middle using fast/slow pointers"""
+    if head is None:
+        return
+
+    slow = head
+    fast = head
+
+    # Find middle using fast and slow pointers
+    while fast.next is not None and fast.next.next is not None:
+        slow = slow.next
+        fast = fast.next.next
+
+    # Insert after slow (which is at middle)
+    new_node = Node(data)
+    new_node.next = slow.next
+    slow.next = new_node
+
+def print_list(head):
+    """Print linked list"""
+    current = head
+    while current is not None:
+        print(f"{current.data} -> ", end="")
+        current = current.next
+    print("null")
+
+# Example usage
+# Create list: 1 -> 2 -> 4 -> 5
+head = Node(1)
+head.next = Node(2)
+head.next.next = Node(4)
+head.next.next.next = Node(5)
+
+print("Original list:")
+print_list(head)
+
+insert_in_middle(head, 3)
+
+print("\nAfter inserting 3 in middle:")
+print_list(head)
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
 class Node {
-  int data;
-  Node? next;
-
-  Node(this.data, [this.next]);
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
 }
 
-void insertInMiddle(Node? head, int data) {
-  if (head == null) return;
+function insertInMiddle(head, data) {
+    if (head === null) return;
 
-  // Find length
-  int length = 0;
-  Node? current = head;
-  while (current != null) {
-    length++;
-    current = current.next;
-  }
+    let slow = head;
+    let fast = head;
 
-  // Find middle position
-  int mid = length ~/ 2;
-
-  // Traverse to middle
-  current = head;
-  for (int i = 0; i < mid; i++) {
-    current = current!.next;
-  }
-
-  // Insert new node
-  Node newNode = Node(data, current!.next);
-  current.next = newNode;
-}
-
-void printList(Node? head) {
-  Node? current = head;
-  while (current != null) {
-    stdout.write('${current.data} -> ');
-    current = current.next;
-  }
-  print('null');
-}
-
-void main() {
-  Node head = Node(1, Node(2, Node(4, Node(5))));
-
-  print('Original list:');
-  printList(head);
-
-  insertInMiddle(head, 3);
-
-  print('\nAfter inserting 3 in middle:');
-  printList(head);
-}
-```
-
-### Approach 2: Fast and Slow Pointers (One Pass - Optimal)
-
-Use Floyd's cycle detection algorithm concept to find middle in one pass.
-
-**Time Complexity:** O(n)
-**Space Complexity:** O(1)
-
-```dart
-void insertInMiddleFast(Node? head, int data) {
-  if (head == null) return;
-
-  Node? slow = head;
-  Node? fast = head;
-
-  // Find middle using fast and slow pointers
-  while (fast!.next != null && fast.next!.next != null) {
-    slow = slow!.next;
-    fast = fast.next!.next;
-  }
-
-  // Insert after slow (which is at middle)
-  Node newNode = Node(data, slow!.next);
-  slow.next = newNode;
-}
-
-void main() {
-  Node head = Node(1, Node(2, Node(4, Node(5))));
-
-  print('Original list:');
-  printList(head);
-
-  insertInMiddleFast(head, 3);
-
-  print('\nAfter inserting 3 in middle:');
-  printList(head);
-}
-```
-
-### Approach 3: Insert at Specific Position
-
-Generic function to insert at any position.
-
-**Time Complexity:** O(n)
-**Space Complexity:** O(1)
-
-```dart
-void insertAtPosition(Node? head, int data, int position) {
-  if (head == null) return;
-
-  if (position == 0) {
-    // Insert at beginning (special case)
-    print('Cannot insert before head with this method');
-    return;
-  }
-
-  Node? current = head;
-  int count = 0;
-
-  // Traverse to position - 1
-  while (current != null && count < position - 1) {
-    current = current.next;
-    count++;
-  }
-
-  if (current == null) {
-    print('Position out of bounds');
-    return;
-  }
-
-  // Insert new node
-  Node newNode = Node(data, current.next);
-  current.next = newNode;
-}
-
-void main() {
-  Node head = Node(1, Node(2, Node(3, Node(5))));
-
-  print('Original list:');
-  printList(head);
-
-  insertAtPosition(head, 4, 3); // Insert 4 at position 3
-
-  print('\nAfter inserting 4 at position 3:');
-  printList(head);
-}
-```
-
-### Approach 4: Complete LinkedList Class with Insert Methods
-
-Full implementation with various insert operations.
-
-```dart
-class LinkedList {
-  Node? head;
-
-  // Insert at end
-  void add(int data) {
-    if (head == null) {
-      head = Node(data);
-      return;
+    // Find middle using fast and slow pointers
+    while (fast.next !== null && fast.next.next !== null) {
+        slow = slow.next;
+        fast = fast.next.next;
     }
 
-    Node? current = head;
-    while (current!.next != null) {
-      current = current.next;
-    }
-    current.next = Node(data);
-  }
-
-  // Insert at beginning
-  void addFirst(int data) {
-    head = Node(data, head);
-  }
-
-  // Insert in middle
-  void insertInMiddle(int data) {
-    if (head == null) {
-      head = Node(data);
-      return;
-    }
-
-    Node? slow = head;
-    Node? fast = head;
-
-    while (fast!.next != null && fast.next!.next != null) {
-      slow = slow!.next;
-      fast = fast.next!.next;
-    }
-
-    Node newNode = Node(data, slow!.next);
+    // Insert after slow (which is at middle)
+    const newNode = new Node(data);
+    newNode.next = slow.next;
     slow.next = newNode;
-  }
+}
 
-  // Insert at specific position
-  void insertAt(int data, int position) {
+function printList(head) {
+    let current = head;
+    let result = '';
+    while (current !== null) {
+        result += current.data + ' -> ';
+        current = current.next;
+    }
+    result += 'null';
+    console.log(result);
+}
+
+// Example usage
+// Create list: 1 -> 2 -> 4 -> 5
+const head = new Node(1);
+head.next = new Node(2);
+head.next.next = new Node(4);
+head.next.next.next = new Node(5);
+
+console.log('Original list:');
+printList(head);
+
+insertInMiddle(head, 3);
+
+console.log('\nAfter inserting 3 in middle:');
+printList(head);
+```
+  </Tab>
+</Tabs>
+
+### <TranslatedText en="Approach 2: Two Pass (Find Length First)" bn="পদ্ধতি ২: টু পাস (প্রথমে দৈর্ঘ্য খুঁজুন)" />
+
+<TranslatedText
+  en="Find the middle position in the first pass by counting length, then insert in the second pass."
+  bn="প্রথম পাসে দৈর্ঘ্য গণনা করে মধ্যম অবস্থান খুঁজুন, তারপর দ্বিতীয় পাসে ইনসার্ট করুন।"
+/>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+void insertInMiddleTwoPass(Node* head, int data) {
+    if (head == nullptr) return;
+
+    // Find length
+    int length = 0;
+    Node* current = head;
+    while (current != nullptr) {
+        length++;
+        current = current->next;
+    }
+
+    // Find middle position
+    int mid = length / 2;
+
+    // Traverse to middle
+    current = head;
+    for (int i = 0; i < mid; i++) {
+        current = current->next;
+    }
+
+    // Insert new node
+    Node* newNode = new Node(data);
+    newNode->next = current->next;
+    current->next = newNode;
+}
+
+void printList(Node* head) {
+    Node* current = head;
+    while (current != nullptr) {
+        cout << current->data << " -> ";
+        current = current->next;
+    }
+    cout << "null" << endl;
+}
+
+int main() {
+    // Create list: 1 -> 2 -> 4 -> 5
+    Node* head = new Node(1);
+    head->next = new Node(2);
+    head->next->next = new Node(4);
+    head->next->next->next = new Node(5);
+
+    cout << "Original list:" << endl;
+    printList(head);
+
+    insertInMiddleTwoPass(head, 3);
+
+    cout << "\nAfter inserting 3 in middle:" << endl;
+    printList(head);
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def insert_in_middle_two_pass(head, data):
+    """Insert node in middle using two-pass approach"""
+    if head is None:
+        return
+
+    # Find length
+    length = 0
+    current = head
+    while current is not None:
+        length += 1
+        current = current.next
+
+    # Find middle position
+    mid = length // 2
+
+    # Traverse to middle
+    current = head
+    for i in range(mid):
+        current = current.next
+
+    # Insert new node
+    new_node = Node(data)
+    new_node.next = current.next
+    current.next = new_node
+
+def print_list(head):
+    """Print linked list"""
+    current = head
+    while current is not None:
+        print(f"{current.data} -> ", end="")
+        current = current.next
+    print("null")
+
+# Example usage
+# Create list: 1 -> 2 -> 4 -> 5
+head = Node(1)
+head.next = Node(2)
+head.next.next = Node(4)
+head.next.next.next = Node(5)
+
+print("Original list:")
+print_list(head)
+
+insert_in_middle_two_pass(head, 3)
+
+print("\nAfter inserting 3 in middle:")
+print_list(head)
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+function insertInMiddleTwoPass(head, data) {
+    if (head === null) return;
+
+    // Find length
+    let length = 0;
+    let current = head;
+    while (current !== null) {
+        length++;
+        current = current.next;
+    }
+
+    // Find middle position
+    const mid = Math.floor(length / 2);
+
+    // Traverse to middle
+    current = head;
+    for (let i = 0; i < mid; i++) {
+        current = current.next;
+    }
+
+    // Insert new node
+    const newNode = new Node(data);
+    newNode.next = current.next;
+    current.next = newNode;
+}
+
+function printList(head) {
+    let current = head;
+    let result = '';
+    while (current !== null) {
+        result += current.data + ' -> ';
+        current = current.next;
+    }
+    result += 'null';
+    console.log(result);
+}
+
+// Example usage
+// Create list: 1 -> 2 -> 4 -> 5
+const head = new Node(1);
+head.next = new Node(2);
+head.next.next = new Node(4);
+head.next.next.next = new Node(5);
+
+console.log('Original list:');
+printList(head);
+
+insertInMiddleTwoPass(head, 3);
+
+console.log('\nAfter inserting 3 in middle:');
+printList(head);
+```
+  </Tab>
+</Tabs>
+
+### <TranslatedText en="Approach 3: Insert at Specific Position" bn="পদ্ধতি ৩: নির্দিষ্ট অবস্থানে ইনসার্ট করুন" />
+
+<TranslatedText
+  en="Generic function to insert at any position (0-indexed). Useful when you know the exact position."
+  bn="যেকোনো অবস্থানে ইনসার্ট করার জন্য একটি জেনেরিক ফাংশন (০-ইনডেক্সড)। যখন আপনি সঠিক অবস্থান জানেন তখন উপযোগী।"
+/>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+void insertAtPosition(Node* head, int data, int position) {
+    if (head == nullptr) return;
+
     if (position == 0) {
-      addFirst(data);
-      return;
+        cout << "Cannot insert before head with this method" << endl;
+        return;
     }
 
-    Node? current = head;
+    Node* current = head;
     int count = 0;
 
-    while (current != null && count < position - 1) {
-      current = current.next;
-      count++;
+    // Traverse to position - 1
+    while (current != nullptr && count < position - 1) {
+        current = current->next;
+        count++;
     }
 
-    if (current == null) {
-      print('Position out of bounds');
-      return;
+    if (current == nullptr) {
+        cout << "Position out of bounds" << endl;
+        return;
     }
 
-    Node newNode = Node(data, current.next);
-    current.next = newNode;
-  }
-
-  // Insert after a specific node
-  void insertAfter(Node? prevNode, int data) {
-    if (prevNode == null) {
-      print('Previous node cannot be null');
-      return;
-    }
-
-    Node newNode = Node(data, prevNode.next);
-    prevNode.next = newNode;
-  }
-
-  // Insert in sorted order
-  void insertSorted(int data) {
-    if (head == null || head!.data >= data) {
-      addFirst(data);
-      return;
-    }
-
-    Node? current = head;
-
-    while (current!.next != null && current.next!.data < data) {
-      current = current.next;
-    }
-
-    Node newNode = Node(data, current.next);
-    current.next = newNode;
-  }
-
-  void display() {
-    Node? current = head;
-    while (current != null) {
-      stdout.write('${current.data} -> ');
-      current = current.next;
-    }
-    print('null');
-  }
-
-  int get length {
-    int count = 0;
-    Node? current = head;
-
-    while (current != null) {
-      count++;
-      current = current.next;
-    }
-
-    return count;
-  }
-
-  // Get middle node
-  Node? getMiddle() {
-    if (head == null) return null;
-
-    Node? slow = head;
-    Node? fast = head;
-
-    while (fast != null && fast.next != null) {
-      slow = slow!.next;
-      fast = fast.next!.next;
-    }
-
-    return slow;
-  }
+    // Insert new node
+    Node* newNode = new Node(data);
+    newNode->next = current->next;
+    current->next = newNode;
 }
 
-void main() {
-  LinkedList list = LinkedList();
+void printList(Node* head) {
+    Node* current = head;
+    while (current != nullptr) {
+        cout << current->data << " -> ";
+        current = current->next;
+    }
+    cout << "null" << endl;
+}
 
-  // Test various insert operations
-  list.add(1);
-  list.add(2);
-  list.add(4);
-  list.add(5);
+int main() {
+    // Create list: 1 -> 2 -> 3 -> 5
+    Node* head = new Node(1);
+    head->next = new Node(2);
+    head->next->next = new Node(3);
+    head->next->next->next = new Node(5);
 
-  print('Original list:');
-  list.display();
-  print('Length: ${list.length}');
-  print('Middle node: ${list.getMiddle()?.data}\n');
+    cout << "Original list:" << endl;
+    printList(head);
 
-  print('Insert 3 in middle:');
-  list.insertInMiddle(3);
-  list.display();
+    insertAtPosition(head, 4, 3); // Insert 4 at position 3
 
-  print('\nInsert 0 at beginning:');
-  list.addFirst(0);
-  list.display();
+    cout << "\nAfter inserting 4 at position 3:" << endl;
+    printList(head);
 
-  print('\nInsert 10 at position 3:');
-  list.insertAt(10, 3);
-  list.display();
-
-  print('\n--- Sorted insertion example ---');
-  LinkedList sortedList = LinkedList();
-  sortedList.add(1);
-  sortedList.add(3);
-  sortedList.add(5);
-  sortedList.add(7);
-
-  print('Sorted list:');
-  sortedList.display();
-
-  print('\nInsert 4 in sorted order:');
-  sortedList.insertSorted(4);
-  sortedList.display();
-
-  print('\nInsert 0 in sorted order:');
-  sortedList.insertSorted(0);
-  sortedList.display();
+    return 0;
 }
 ```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
 
-### Approach 5: Insert Before a Value
+def insert_at_position(head, data, position):
+    """Insert node at specific position (0-indexed)"""
+    if head is None:
+        return
 
-Insert a new node before the first occurrence of a specific value.
+    if position == 0:
+        print("Cannot insert before head with this method")
+        return
 
-```dart
-void insertBefore(Node? head, int target, int data) {
-  if (head == null) return;
+    current = head
+    count = 0
 
-  // Special case: insert before head
-  if (head.data == target) {
-    print('Cannot insert before head with this method');
-    return;
-  }
+    # Traverse to position - 1
+    while current is not None and count < position - 1:
+        current = current.next
+        count += 1
 
-  Node? current = head;
+    if current is None:
+        print("Position out of bounds")
+        return
 
-  // Find the node before target
-  while (current!.next != null && current.next!.data != target) {
-    current = current.next;
-  }
+    # Insert new node
+    new_node = Node(data)
+    new_node.next = current.next
+    current.next = new_node
 
-  if (current.next == null) {
-    print('Target not found');
-    return;
-  }
+def print_list(head):
+    """Print linked list"""
+    current = head
+    while current is not None:
+        print(f"{current.data} -> ", end="")
+        current = current.next
+    print("null")
 
-  // Insert new node
-  Node newNode = Node(data, current.next);
-  current.next = newNode;
+# Example usage
+# Create list: 1 -> 2 -> 3 -> 5
+head = Node(1)
+head.next = Node(2)
+head.next.next = Node(3)
+head.next.next.next = Node(5)
+
+print("Original list:")
+print_list(head)
+
+insert_at_position(head, 4, 3)  # Insert 4 at position 3
+
+print("\nAfter inserting 4 at position 3:")
+print_list(head)
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
 }
 
-void main() {
-  Node head = Node(1, Node(2, Node(4, Node(5))));
+function insertAtPosition(head, data, position) {
+    if (head === null) return;
 
-  print('Original list:');
-  printList(head);
+    if (position === 0) {
+        console.log("Cannot insert before head with this method");
+        return;
+    }
 
-  insertBefore(head, 4, 3);
+    let current = head;
+    let count = 0;
 
-  print('\nAfter inserting 3 before 4:');
-  printList(head);
+    // Traverse to position - 1
+    while (current !== null && count < position - 1) {
+        current = current.next;
+        count++;
+    }
+
+    if (current === null) {
+        console.log("Position out of bounds");
+        return;
+    }
+
+    // Insert new node
+    const newNode = new Node(data);
+    newNode.next = current.next;
+    current.next = newNode;
 }
+
+function printList(head) {
+    let current = head;
+    let result = '';
+    while (current !== null) {
+        result += current.data + ' -> ';
+        current = current.next;
+    }
+    result += 'null';
+    console.log(result);
+}
+
+// Example usage
+// Create list: 1 -> 2 -> 3 -> 5
+const head = new Node(1);
+head.next = new Node(2);
+head.next.next = new Node(3);
+head.next.next.next = new Node(5);
+
+console.log('Original list:');
+printList(head);
+
+insertAtPosition(head, 4, 3); // Insert 4 at position 3
+
+console.log('\nAfter inserting 4 at position 3:');
+printList(head);
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Algorithm Walkthrough" bn="অ্যালগরিদম ধাপে ধাপে বর্ণনা" />
+
+<TranslatedText
+  en="Let's trace through the Fast/Slow Pointers approach (Approach 1) with list 1 -> 2 -> 4 -> 5, inserting 3:"
+  bn="চলুন লিস্ট 1 -> 2 -> 4 -> 5 দিয়ে ফাস্ট/স্লো পয়েন্টার পদ্ধতি (পদ্ধতি ১) ট্রেস করি, 3 ইনসার্ট করছি:"
+/>
+
+```
+List: 1 -> 2 -> 4 -> 5 -> null
+Insert value: 3
+
+Initial state:
+  slow = head (1)
+  fast = head (1)
+
+Iteration 1:
+  Check: fast.next (2) != null AND fast.next.next (4) != null → True
+  slow = slow.next → slow = 2
+  fast = fast.next.next → fast = 4
+
+  State: 1 -> 2 -> 4 -> 5 -> null
+              ↑       ↑
+            slow    fast
+
+Iteration 2:
+  Check: fast.next (5) != null AND fast.next.next (null) != null → False
+  Loop exits
+
+  Final state:
+    slow = 2 (this is the middle position)
+    fast = 4
+
+Insert after slow (2):
+  Create newNode with value 3
+  newNode.next = slow.next (which is 4)
+  slow.next = newNode
+
+  Step-by-step insertion:
+    Before: 1 -> 2 -> 4 -> 5 -> null
+                  ↑
+                slow
+
+    newNode(3).next = 4:
+            3 -> 4 -> 5 -> null
+
+    slow(2).next = newNode(3):
+            1 -> 2 -> 3 -> 4 -> 5 -> null
+
+Result: 1 -> 2 -> 3 -> 4 -> 5 -> null
 ```
 
-## Visualization
+<TranslatedText
+  en="**Key Observation**: When fast pointer reaches near the end (can't move 2 steps), slow pointer is at the middle. For even-length lists, slow stops at the first middle node."
+  bn="**মূল পর্যবেক্ষণ**: যখন ফাস্ট পয়েন্টার শেষের কাছাকাছি পৌঁছায় (২ ধাপ চলতে পারে না), স্লো পয়েন্টার মাঝামাঝিতে থাকে। সমদৈর্ঘ্য লিস্টের জন্য, স্লো প্রথম মধ্যম নোডে থেমে যায়।"
+/>
 
-### Finding Middle with Fast/Slow Pointers:
+## <TranslatedText en="Finding Middle Visualization" bn="মাঝামাঝি খোঁজার ভিজুয়ালাইজেশন" />
+
+### <TranslatedText en="Odd Length List (5 nodes)" bn="বিজোড় দৈর্ঘ্যের লিস্ট (৫টি নোড)" />
 
 ```
 List: 1 -> 2 -> 3 -> 4 -> 5
 
-Initial:
-slow: 1
-fast: 1
+Step 0: slow=1, fast=1
+Step 1: slow=2, fast=3
+Step 2: slow=3, fast=5 (fast.next=null, stop)
 
-Step 1:
-slow: 2 (moves 1 step)
-fast: 3 (moves 2 steps)
-
-Step 2:
-slow: 3 (moves 1 step) ← Middle!
-fast: 5 (moves 2 steps)
-
-Step 3:
-fast.next is null, stop
-
-Insert after slow (3):
-1 -> 2 -> 3 -> NEW -> 4 -> 5
+Middle: 3
 ```
 
-## Comparison of Approaches
+### <TranslatedText en="Even Length List (4 nodes)" bn="সম দৈর্ঘ্যের লিস্ট (৪টি নোড)" />
 
-| Approach | Time | Space | Pros | Cons |
+```
+List: 1 -> 2 -> 3 -> 4
+
+Step 0: slow=1, fast=1
+Step 1: slow=2, fast=3 (fast.next.next=null, stop)
+
+Middle (first): 2
+```
+
+## <TranslatedText en="Comparison of Approaches" bn="পদ্ধতিগুলোর তুলনা" />
+
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time" bn="সময়" /> | <TranslatedText en="Space" bn="স্থান" /> | <TranslatedText en="Pros" bn="সুবিধা" /> | <TranslatedText en="Cons" bn="অসুবিধা" /> |
 |----------|------|-------|------|------|
-| Two Pass | O(n) | O(1) | Simple to understand | Two passes |
-| Fast/Slow | O(n) | O(1) | One pass, optimal | Slightly complex |
-| At Position | O(n) | O(1) | Flexible | Need to know position |
-| Sorted Insert | O(n) | O(1) | Maintains order | Only for sorted lists |
-| Before Value | O(n) | O(1) | Value-based | Need special handling |
+| <TranslatedText en="Fast/Slow" bn="ফাস্ট/স্লো" /> | O(n) | O(1) | <TranslatedText en="One pass, optimal" bn="এক পাস, সর্বোত্তম" /> | <TranslatedText en="Slightly complex" bn="কিছুটা জটিল" /> |
+| <TranslatedText en="Two Pass" bn="টু পাস" /> | O(n) | O(1) | <TranslatedText en="Simple to understand" bn="বুঝতে সহজ" /> | <TranslatedText en="Two passes needed" bn="দুটি পাস প্রয়োজন" /> |
+| <TranslatedText en="At Position" bn="অবস্থানে" /> | O(n) | O(1) | <TranslatedText en="Flexible, any position" bn="নমনীয়, যেকোনো অবস্থান" /> | <TranslatedText en="Need to know position" bn="অবস্থান জানতে হবে" /> |
 
-## Key Points
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
 
-1. **Fast/Slow Optimal**: Finds middle in one pass
-2. **Even Length**: Insert after first middle node
-3. **Edge Cases**: Empty list, single node
-4. **Pointer Update**: Always save next before modifying
-5. **Position Counting**: 0-indexed or 1-indexed, be consistent
+1. **<TranslatedText en="Fast/Slow is Optimal" bn="ফাস্ট/স্লো সর্বোত্তম" />**: <TranslatedText en="The fast/slow pointer technique finds the middle in one pass with O(1) space." bn="ফাস্ট/স্লো পয়েন্টার কৌশল O(1) স্থান সহ একটি পাসে মধ্যম খুঁজে পায়।" />
 
-## Common Pitfalls
+2. **<TranslatedText en="Even Length Handling" bn="সম দৈর্ঘ্য পরিচালনা" />**: <TranslatedText en="For even-length lists, the algorithm inserts after the first middle node, which is exactly in the center." bn="সমদৈর্ঘ্য লিস্টের জন্য, অ্যালগরিদম প্রথম মধ্যম নোডের পরে ইনসার্ট করে, যা ঠিক কেন্দ্রে থাকে।" />
 
-- Not handling empty list
-- Not handling single node list
-- Losing reference to next node
-- Off-by-one errors in position counting
-- Not considering even vs odd length
+3. **<TranslatedText en="Pointer Movement Pattern" bn="পয়েন্টার মুভমেন্ট প্যাটার্ন" />**: <TranslatedText en="Slow moves 1 step, fast moves 2 steps. When fast can't move 2 steps, slow is at middle." bn="স্লো ১ ধাপ চলে, ফাস্ট ২ ধাপ চলে। যখন ফাস্ট ২ ধাপ চলতে পারে না, স্লো মাঝামাঝিতে থাকে।" />
 
-## Test Cases
+4. **<TranslatedText en="Edge Cases Matter" bn="প্রান্তিক কেস গুরুত্বপূর্ণ" />**: <TranslatedText en="Always check for empty lists and single-node lists before applying the algorithm." bn="অ্যালগরিদম প্রয়োগ করার আগে সবসময় খালি লিস্ট এবং একক-নোড লিস্ট পরীক্ষা করুন।" />
 
-```dart
-void testInsertMiddle() {
-  // Test 1: Odd length list
-  Node head1 = Node(1, Node(2, Node(3)));
-  insertInMiddleFast(head1, 10);
-  assert(head1.next?.next?.data == 10);
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
 
-  // Test 2: Even length list
-  Node head2 = Node(1, Node(2, Node(3, Node(4))));
-  insertInMiddleFast(head2, 10);
-  assert(head2.next?.next?.data == 10);
+1. **<TranslatedText en="Start with Fast/Slow" bn="ফাস্ট/স্লো দিয়ে শুরু করুন" />**: <TranslatedText en="This is the optimal solution interviewers expect for finding the middle." bn="এটি সর্বোত্তম সমাধান যা ইন্টারভিউয়াররা মাঝামাঝি খোঁজার জন্য আশা করেন।" />
 
-  // Test 3: Two nodes
-  Node head3 = Node(1, Node(2));
-  insertInMiddleFast(head3, 10);
-  assert(head3.next?.data == 10);
+2. **<TranslatedText en="Clarify Even/Odd" bn="সম/বিজোড় স্পষ্ট করুন" />**: <TranslatedText en="Ask whether to insert after the first or second middle for even-length lists." bn="সমদৈর্ঘ্য লিস্টের জন্য প্রথম না দ্বিতীয় মধ্যম পরে ইনসার্ট করতে হবে তা জিজ্ঞাসা করুন।" />
 
-  // Test 4: Single node
-  Node head4 = Node(1);
-  insertInMiddleFast(head4, 10);
-  assert(head4.next?.data == 10);
+3. **<TranslatedText en="Handle Edge Cases" bn="প্রান্তিক কেস পরিচালনা করুন" />**:
+   - <TranslatedText en="Empty list → Cannot insert" bn="খালি লিস্ট → ইনসার্ট করতে পারবেন না" />
+   - <TranslatedText en="Single node → Insert after it" bn="একক নোড → এর পরে ইনসার্ট করুন" />
+   - <TranslatedText en="Two nodes → Insert after first" bn="দুটি নোড → প্রথমটির পরে ইনসার্ট করুন" />
 
-  print('All tests passed!');
-}
-```
+4. **<TranslatedText en="Explain the Pattern" bn="প্যাটার্ন ব্যাখ্যা করুন" />**: <TranslatedText en="Draw the pointer movements to show how fast/slow technique works." bn="ফাস্ট/স্লো কৌশল কীভাবে কাজ করে তা দেখাতে পয়েন্টার মুভমেন্ট আঁকুন।" />
 
-## Applications
+## <TranslatedText en="Common Pitfalls" bn="সাধারণ সমস্যাসমূহ" />
 
-- Maintaining sorted order
-- Building expression trees
-- Implementing undo/redo with middle insertion
-- Priority queue implementations
-- Edit operations in text editors
+1. **<TranslatedText en="Not Handling Empty List" bn="খালি লিস্ট পরিচালনা না করা" />**: <TranslatedText en="Always check if head is null before processing." bn="প্রক্রিয়াকরণের আগে সবসময় পরীক্ষা করুন head null কিনা।" />
 
-## Related Problems
+2. **<TranslatedText en="Losing Next Reference" bn="Next রেফারেন্স হারানো" />**: <TranslatedText en="Save slow.next before modifying slow.next, or you'll lose the rest of the list." bn="slow.next পরিবর্তন করার আগে slow.next সংরক্ষণ করুন, অন্যথায় আপনি লিস্টের বাকি অংশ হারাবেন।" />
 
-- Find middle of linked list
-- Insert at beginning/end
-- Delete from middle
-- Rotate linked list
-- Split linked list
+3. **<TranslatedText en="Off-by-One Errors" bn="অফ-বাই-ওয়ান ত্রুটি" />**: <TranslatedText en="Be careful with position counting - is it 0-indexed or 1-indexed?" bn="অবস্থান গণনার সাথে সতর্ক থাকুন - এটি ০-ইনডেক্সড নাকি ১-ইনডেক্সড?" />
 
-## Reference
+4. **<TranslatedText en="Fast Pointer Null Check" bn="ফাস্ট পয়েন্টার Null চেক" />**: <TranslatedText en="Check both fast.next and fast.next.next to avoid null pointer exceptions." bn="null পয়েন্টার ব্যতিক্রম এড়াতে fast.next এবং fast.next.next উভয় পরীক্ষা করুন।" />
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+1. <TranslatedText en="The fast/slow pointer technique is the optimal approach with O(n) time and O(1) space, requiring only one pass." bn="ফাস্ট/স্লো পয়েন্টার কৌশল O(n) সময় এবং O(1) স্থান সহ সর্বোত্তম পদ্ধতি, শুধুমাত্র একটি পাস প্রয়োজন।" />
+
+2. <TranslatedText en="Slow pointer moves 1 step while fast moves 2 steps; when fast can't proceed, slow is at the middle." bn="স্লো পয়েন্টার ১ ধাপ চলে যখন ফাস্ট ২ ধাপ চলে; যখন ফাস্ট এগোতে পারে না, স্লো মাঝামাঝিতে থাকে।" />
+
+3. <TranslatedText en="For even-length lists, the algorithm naturally stops at the first middle node." bn="সমদৈর্ঘ্য লিস্টের জন্য, অ্যালগরিদম প্রাকৃতিকভাবে প্রথম মধ্যম নোডে থেমে যায়।" />
+
+4. <TranslatedText en="Always preserve the next reference: create newNode.next = slow.next BEFORE setting slow.next = newNode." bn="সবসময় next রেফারেন্স সংরক্ষণ করুন: slow.next = newNode সেট করার আগে newNode.next = slow.next তৈরি করুন।" />
+
+5. <TranslatedText en="Handle edge cases: empty list, single node, and ensure null checks for fast pointer movements." bn="প্রান্তিক কেস পরিচালনা করুন: খালি লিস্ট, একক নোড, এবং ফাস্ট পয়েন্টার মুভমেন্টের জন্য null চেক নিশ্চিত করুন।" />
+
+## <TranslatedText en="Reference" bn="রেফারেন্স" />
 
 [GeeksforGeeks - Insert Node Middle](https://www.geeksforgeeks.org/insert-node-middle-linked-list/)

@@ -3,375 +3,53 @@ title: 45. Array vs Linked List - Differences
 description: Understanding the key differences between arrays and linked lists data structures
 ---
 
-## Problem Statement
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { TranslatedText, LanguageSwitcher } from '@/components/LanguageSwitcher';
 
-Explain the differences between Array and Linked List data structures. Understand their characteristics, advantages, disadvantages, and when to use each.
+<LanguageSwitcher />
 
-## Overview
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
 
-Arrays and Linked Lists are both linear data structures used to store collections of elements, but they differ fundamentally in how they store and access data.
+<TranslatedText
+  en="Explain the differences between Array and Linked List data structures. Understand their characteristics, advantages, disadvantages, and when to use each."
+  bn="অ্যারে এবং লিঙ্কড লিস্ট ডেটা স্ট্রাকচারের মধ্যে পার্থক্য ব্যাখ্যা করুন। তাদের বৈশিষ্ট্য, সুবিধা, অসুবিধা এবং কখন প্রতিটি ব্যবহার করতে হবে তা বুঝুন।"
+/>
 
-## Key Differences
+## <TranslatedText en="Overview" bn="সংক্ষিপ্ত বিবরণ" />
 
-| Aspect | Array | Linked List |
+<TranslatedText
+  en="Arrays and Linked Lists are both linear data structures used to store collections of elements, but they differ fundamentally in how they store and access data."
+  bn="অ্যারে এবং লিঙ্কড লিস্ট উভয়ই রৈখিক ডেটা স্ট্রাকচার যা এলিমেন্টের কালেকশন সংরক্ষণ করতে ব্যবহৃত হয়, কিন্তু তারা মৌলিকভাবে ডেটা সংরক্ষণ এবং অ্যাক্সেস করার পদ্ধতিতে ভিন্ন।"
+/>
+
+## <TranslatedText en="Key Differences" bn="মূল পার্থক্য" />
+
+| <TranslatedText en="Aspect" bn="দিক" /> | <TranslatedText en="Array" bn="অ্যারে" /> | <TranslatedText en="Linked List" bn="লিঙ্কড লিস্ট" /> |
 |--------|-------|-------------|
-| **Memory Allocation** | Contiguous memory | Non-contiguous memory |
-| **Size** | Fixed size (static) | Dynamic size |
-| **Access Time** | O(1) - Direct access | O(n) - Sequential access |
-| **Insertion (beginning)** | O(n) - Need to shift | O(1) - Just update pointers |
-| **Insertion (end)** | O(1) if space available | O(n) to find end, O(1) to insert |
-| **Deletion (beginning)** | O(n) - Need to shift | O(1) - Just update pointers |
-| **Memory Overhead** | No extra | Extra for pointers |
-| **Cache Performance** | Better (locality) | Worse (scattered) |
-| **Random Access** | Yes (by index) | No (must traverse) |
-| **Memory Waste** | Can have unused space | Only allocated nodes |
+| **<TranslatedText en="Memory Allocation" bn="মেমরি বরাদ্দ" />** | <TranslatedText en="Contiguous memory" bn="সংলগ্ন মেমরি" /> | <TranslatedText en="Non-contiguous memory" bn="অ-সংলগ্ন মেমরি" /> |
+| **<TranslatedText en="Size" bn="আকার" />** | <TranslatedText en="Fixed size (static)" bn="স্থির আকার (স্ট্যাটিক)" /> | <TranslatedText en="Dynamic size" bn="ডাইনামিক আকার" /> |
+| **<TranslatedText en="Access Time" bn="অ্যাক্সেস সময়" />** | O(1) - <TranslatedText en="Direct access" bn="সরাসরি অ্যাক্সেস" /> | O(n) - <TranslatedText en="Sequential access" bn="ক্রমিক অ্যাক্সেস" /> |
+| **<TranslatedText en="Insertion (beginning)" bn="সন্নিবেশ (শুরুতে)" />** | O(n) - <TranslatedText en="Need to shift" bn="শিফট করতে হবে" /> | O(1) - <TranslatedText en="Just update pointers" bn="শুধু পয়েন্টার আপডেট" /> |
+| **<TranslatedText en="Memory Overhead" bn="মেমরি ওভারহেড" />** | <TranslatedText en="No extra" bn="অতিরিক্ত নেই" /> | <TranslatedText en="Extra for pointers" bn="পয়েন্টারের জন্য অতিরিক্ত" /> |
+| **<TranslatedText en="Cache Performance" bn="ক্যাশে পারফরম্যান্স" />** | <TranslatedText en="Better (locality)" bn="ভালো (লোকালিটি)" /> | <TranslatedText en="Worse (scattered)" bn="খারাপ (ছড়িয়ে থাকা)" /> |
+| **<TranslatedText en="Random Access" bn="র্যান্ডম অ্যাক্সেস" />** | <TranslatedText en="Yes (by index)" bn="হ্যাঁ (ইনডেক্স দ্বারা)" /> | <TranslatedText en="No (must traverse)" bn="না (ট্রাভার্স করতে হবে)" /> |
 
-## Detailed Comparison
+## <TranslatedText en="Memory Layout Visualization" bn="মেমরি লেআউট ভিজুয়ালাইজেশন" />
 
-### 1. Memory Allocation
+### <TranslatedText en="Array Memory Layout" bn="অ্যারে মেমরি লেআউট" />
 
-**Array:**
-```dart
-// Dart List (backed by array) - contiguous memory
-List<int> array = [1, 2, 3, 4, 5];
-// Memory: [1][2][3][4][5] - all in one block
-```
-
-**Linked List:**
-```dart
-// Linked List - scattered memory
-class Node {
-  int data;
-  Node? next;
-  Node(this.data, [this.next]);
-}
-
-// Memory: [1|*] -> [2|*] -> [3|*] -> [4|*] -> [5|null]
-// Can be anywhere in memory
-```
-
-### 2. Access Time
-
-**Array - O(1) Direct Access:**
-```dart
-List<int> array = [10, 20, 30, 40, 50];
-int value = array[2]; // Instant access to index 2
-print(value); // 30
-```
-
-**Linked List - O(n) Sequential Access:**
-```dart
-Node? getNodeAt(Node? head, int index) {
-  Node? current = head;
-  int count = 0;
-
-  while (current != null && count < index) {
-    current = current.next;
-    count++;
-  }
-
-  return current;
-}
-
-void main() {
-  Node head = Node(10, Node(20, Node(30, Node(40, Node(50)))));
-  Node? node = getNodeAt(head, 2);
-  print(node?.data); // 30 - but had to traverse
-}
-```
-
-### 3. Insertion Operations
-
-**Array - Insertion at Beginning O(n):**
-```dart
-void insertAtBeginning(List<int> array, int value) {
-  array.insert(0, value); // Shifts all elements
-}
-
-void main() {
-  List<int> array = [2, 3, 4, 5];
-  insertAtBeginning(array, 1);
-  print(array); // [1, 2, 3, 4, 5]
-}
-```
-
-**Linked List - Insertion at Beginning O(1):**
-```dart
-Node insertAtBeginning(Node? head, int value) {
-  return Node(value, head); // Just create new node
-}
-
-void main() {
-  Node? head = Node(2, Node(3, Node(4, Node(5))));
-  head = insertAtBeginning(head, 1);
-  // New node points to old head - O(1)
-}
-```
-
-### 4. Deletion Operations
-
-**Array - Deletion O(n):**
-```dart
-void deleteAt(List<int> array, int index) {
-  array.removeAt(index); // Shifts elements after index
-}
-
-void main() {
-  List<int> array = [1, 2, 3, 4, 5];
-  deleteAt(array, 2);
-  print(array); // [1, 2, 4, 5]
-}
-```
-
-**Linked List - Deletion O(1) if node reference known:**
-```dart
-Node? deleteNode(Node? head, int value) {
-  if (head == null) return null;
-
-  if (head.data == value) {
-    return head.next; // O(1) for head
-  }
-
-  Node? current = head;
-  while (current?.next != null) {
-    if (current!.next!.data == value) {
-      current.next = current.next!.next; // O(1) operation
-      break;
-    }
-    current = current.next;
-  }
-
-  return head;
-}
-```
-
-## Implementation Examples
-
-### Complete Array Operations
-
-```dart
-class ArrayOperations {
-  List<int> array;
-
-  ArrayOperations(this.array);
-
-  // Access - O(1)
-  int? get(int index) {
-    if (index >= 0 && index < array.length) {
-      return array[index];
-    }
-    return null;
-  }
-
-  // Insert - O(n)
-  void insert(int index, int value) {
-    array.insert(index, value);
-  }
-
-  // Delete - O(n)
-  void delete(int index) {
-    array.removeAt(index);
-  }
-
-  // Search - O(n)
-  int search(int value) {
-    return array.indexOf(value);
-  }
-
-  void display() {
-    print(array);
-  }
-}
-
-void main() {
-  ArrayOperations arr = ArrayOperations([1, 2, 3, 4, 5]);
-
-  print('Original:');
-  arr.display();
-
-  print('\nGet element at index 2: ${arr.get(2)}');
-
-  arr.insert(2, 99);
-  print('\nAfter insert 99 at index 2:');
-  arr.display();
-
-  arr.delete(2);
-  print('\nAfter delete at index 2:');
-  arr.display();
-
-  print('\nSearch for 4: index ${arr.search(4)}');
-}
-```
-
-### Complete Linked List Operations
-
-```dart
-class Node {
-  int data;
-  Node? next;
-
-  Node(this.data, [this.next]);
-}
-
-class LinkedList {
-  Node? head;
-
-  // Insert at beginning - O(1)
-  void insertAtBeginning(int data) {
-    head = Node(data, head);
-  }
-
-  // Insert at end - O(n)
-  void insertAtEnd(int data) {
-    if (head == null) {
-      head = Node(data);
-      return;
-    }
-
-    Node? current = head;
-    while (current!.next != null) {
-      current = current.next;
-    }
-    current.next = Node(data);
-  }
-
-  // Delete - O(n)
-  void delete(int data) {
-    if (head == null) return;
-
-    if (head!.data == data) {
-      head = head!.next;
-      return;
-    }
-
-    Node? current = head;
-    while (current?.next != null) {
-      if (current!.next!.data == data) {
-        current.next = current.next!.next;
-        return;
-      }
-      current = current.next;
-    }
-  }
-
-  // Search - O(n)
-  bool search(int data) {
-    Node? current = head;
-    while (current != null) {
-      if (current.data == data) return true;
-      current = current.next;
-    }
-    return false;
-  }
-
-  // Display
-  void display() {
-    Node? current = head;
-    List<int> elements = [];
-    while (current != null) {
-      elements.add(current.data);
-      current = current.next;
-    }
-    print(elements.join(' -> '));
-  }
-}
-
-void main() {
-  LinkedList list = LinkedList();
-
-  list.insertAtEnd(1);
-  list.insertAtEnd(2);
-  list.insertAtEnd(3);
-  list.insertAtEnd(4);
-  list.insertAtEnd(5);
-
-  print('Original:');
-  list.display();
-
-  list.insertAtBeginning(0);
-  print('\nAfter insert 0 at beginning:');
-  list.display();
-
-  list.delete(3);
-  print('\nAfter delete 3:');
-  list.display();
-
-  print('\nSearch for 4: ${list.search(4)}');
-  print('Search for 10: ${list.search(10)}');
-}
-```
-
-## When to Use Each
-
-### Use Array When:
-
-1. **Random Access Needed**: Need to access elements by index frequently
-2. **Size is Known**: Number of elements is known and fixed
-3. **Memory Locality**: Better cache performance is important
-4. **Simple Data**: Just storing and accessing data
-5. **Binary Search**: Need to perform binary search
-
-**Example Use Cases:**
-- Storing student grades
-- Lookup tables
-- Matrix operations
-- Buffer implementations
-
-### Use Linked List When:
-
-1. **Dynamic Size**: Number of elements changes frequently
-2. **Frequent Insertions/Deletions**: Especially at beginning or middle
-3. **Unknown Size**: Don't know how many elements in advance
-4. **No Random Access**: Don't need to access by index
-5. **Memory Fragmentation**: Can't allocate large contiguous block
-
-**Example Use Cases:**
-- Implementing Stack/Queue
-- Undo functionality
-- Music playlist
-- Browser history
-- Dynamic memory allocation
-
-## Advantages and Disadvantages
-
-### Array Advantages
-✅ Fast random access O(1)
-✅ Better cache locality
-✅ Less memory per element (no pointers)
-✅ Can use binary search (if sorted)
-✅ Simple to implement and use
-
-### Array Disadvantages
-❌ Fixed size (in traditional arrays)
-❌ Insertion/deletion is expensive
-❌ Wasted space if not full
-❌ Cannot easily insert in middle
-❌ Reallocation needed for resizing
-
-### Linked List Advantages
-✅ Dynamic size
-✅ Fast insertion/deletion at beginning
-✅ No wasted space
-✅ Easy to insert/delete anywhere (with pointer)
-✅ Can grow without reallocation
-
-### Linked List Disadvantages
-❌ No random access
-❌ Extra memory for pointers
-❌ Poor cache locality
-❌ Cannot use binary search
-❌ More complex to implement
-
-## Memory Visualization
-
-### Array Memory Layout:
 ```
 Index:    0    1    2    3    4
 Value:  [10] [20] [30] [40] [50]
-Address: 100  104  108  112  116  (contiguous)
+Address: 100  104  108  112  116  (contiguous - consecutive addresses)
+
+✓ All elements in one continuous block
+✓ Fast access: address = base + (index × size)
+✗ Hard to insert/delete (must shift elements)
 ```
 
-### Linked List Memory Layout:
+### <TranslatedText en="Linked List Memory Layout" bn="লিঙ্কড লিস্ট মেমরি লেআউট" />
+
 ```
 Node 1: [10|*]  at address 200, points to 450
          ↓
@@ -383,43 +61,444 @@ Node 4: [40|*]  at address 800, points to 320
          ↓
 Node 5: [50|null] at address 320
 
-(scattered in memory)
+✓ Nodes scattered in memory
+✓ Easy to insert/delete (change pointers)
+✗ Must traverse from start to access element
 ```
 
-## Dart-Specific Notes
+## <TranslatedText en="Code Comparison" bn="কোড তুলনা" />
 
-In Dart:
-- `List` is the built-in dynamic array (can grow)
-- No built-in linked list (must implement)
-- `List` internally uses a growable array
-- For linked-list behavior, implement custom class
+### <TranslatedText en="1. Memory Allocation" bn="১. মেমরি বরাদ্দ" />
 
-```dart
-// Dart List (dynamic array)
-List<int> list = [1, 2, 3];
-list.add(4); // Can grow
-list[0]; // O(1) access
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
 
-// Custom Linked List
-class LinkedList {
-  // Must implement yourself
+// ARRAY - Contiguous memory
+int array[5] = {1, 2, 3, 4, 5};
+// Memory: [1][2][3][4][5] - all in one block
+
+// LINKED LIST - Non-contiguous memory
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+int main() {
+    // Array access - O(1)
+    cout << "Array element at index 2: " << array[2] << endl;
+
+    // Linked List - O(n) to access
+    Node* head = new Node(1);
+    head->next = new Node(2);
+    head->next->next = new Node(3);
+
+    // Must traverse to access
+    Node* current = head;
+    for (int i = 0; i < 2; i++) {
+        current = current->next;
+    }
+    cout << "Linked List element at position 2: "
+         << current->data << endl;
+
+    return 0;
 }
 ```
+  </Tab>
+  <Tab value="Python">
+```python
+# ARRAY (Python list) - Contiguous memory
+array = [1, 2, 3, 4, 5]
+# Memory: [1][2][3][4][5] - all in one block
 
-## Performance Summary
+# LINKED LIST - Non-contiguous memory
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
 
-| Operation | Array | Linked List | Winner |
+# Array access - O(1)
+print(f"Array element at index 2: {array[2]}")
+
+# Linked List - O(n) to access
+head = Node(1)
+head.next = Node(2)
+head.next.next = Node(3)
+
+# Must traverse to access
+current = head
+for i in range(2):
+    current = current.next
+print(f"Linked List element at position 2: {current.data}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+// ARRAY - Contiguous memory
+let array = [1, 2, 3, 4, 5];
+// Memory: [1][2][3][4][5] - all in one block
+
+// LINKED LIST - Non-contiguous memory
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+// Array access - O(1)
+console.log("Array element at index 2:", array[2]);
+
+// Linked List - O(n) to access
+let head = new Node(1);
+head.next = new Node(2);
+head.next.next = new Node(3);
+
+// Must traverse to access
+let current = head;
+for (let i = 0; i < 2; i++) {
+    current = current.next;
+}
+console.log("Linked List element at position 2:", current.data);
+```
+  </Tab>
+</Tabs>
+
+### <TranslatedText en="2. Insertion at Beginning" bn="২. শুরুতে সন্নিবেশ" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+// ARRAY - O(n) insertion at beginning
+void arrayInsertAtBeginning(vector<int>& arr, int value) {
+    arr.insert(arr.begin(), value); // Shifts all elements
+}
+
+// LINKED LIST - O(1) insertion at beginning
+Node* linkedListInsertAtBeginning(Node* head, int value) {
+    Node* newNode = new Node(value);
+    newNode->next = head; // Just update pointer
+    return newNode;
+}
+
+int main() {
+    // Array example
+    vector<int> arr = {2, 3, 4, 5};
+    cout << "Array before: ";
+    for (int x : arr) cout << x << " ";
+
+    arrayInsertAtBeginning(arr, 1);
+    cout << "\nArray after insert 1: ";
+    for (int x : arr) cout << x << " ";
+
+    // Linked List example
+    Node* head = new Node(2);
+    head->next = new Node(3);
+    head->next->next = new Node(4);
+
+    head = linkedListInsertAtBeginning(head, 1);
+    cout << "\n\nLinked List after insert 1: ";
+    Node* current = head;
+    while (current != nullptr) {
+        cout << current->data << " ";
+        current = current->next;
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+# ARRAY - O(n) insertion at beginning
+def array_insert_at_beginning(arr, value):
+    arr.insert(0, value)  # Shifts all elements
+
+# LINKED LIST - O(1) insertion at beginning
+def linked_list_insert_at_beginning(head, value):
+    new_node = Node(value)
+    new_node.next = head  # Just update pointer
+    return new_node
+
+# Array example
+arr = [2, 3, 4, 5]
+print(f"Array before: {arr}")
+array_insert_at_beginning(arr, 1)
+print(f"Array after insert 1: {arr}")
+
+# Linked List example
+head = Node(2)
+head.next = Node(3)
+head.next.next = Node(4)
+
+head = linked_list_insert_at_beginning(head, 1)
+print("\nLinked List after insert 1:", end=" ")
+current = head
+while current:
+    print(current.data, end=" ")
+    current = current.next
+print()
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+// ARRAY - O(n) insertion at beginning
+function arrayInsertAtBeginning(arr, value) {
+    arr.unshift(value); // Shifts all elements
+}
+
+// LINKED LIST - O(1) insertion at beginning
+function linkedListInsertAtBeginning(head, value) {
+    let newNode = new Node(value);
+    newNode.next = head; // Just update pointer
+    return newNode;
+}
+
+// Array example
+let arr = [2, 3, 4, 5];
+console.log("Array before:", arr);
+arrayInsertAtBeginning(arr, 1);
+console.log("Array after insert 1:", arr);
+
+// Linked List example
+let head = new Node(2);
+head.next = new Node(3);
+head.next.next = new Node(4);
+
+head = linkedListInsertAtBeginning(head, 1);
+console.log("\nLinked List after insert 1:");
+let current = head;
+let result = [];
+while (current !== null) {
+    result.push(current.data);
+    current = current.next;
+}
+console.log(result.join(" "));
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="When to Use Each" bn="কখন প্রতিটি ব্যবহার করবেন" />
+
+### <TranslatedText en="Use Array When:" bn="অ্যারে ব্যবহার করুন যখন:" />
+
+<TranslatedText
+  en="1. **Random Access Needed**: Need to access elements by index frequently"
+  bn="১. **র্যান্ডম অ্যাক্সেস প্রয়োজন**: ঘন ঘন ইনডেক্স দ্বারা এলিমেন্ট অ্যাক্সেস করতে হবে"
+/>
+
+<TranslatedText
+  en="2. **Size is Known**: Number of elements is known and relatively fixed"
+  bn="২. **আকার জানা আছে**: এলিমেন্টের সংখ্যা জানা এবং তুলনামূলকভাবে স্থির"
+/>
+
+<TranslatedText
+  en="3. **Memory Locality**: Better cache performance is important"
+  bn="৩. **মেমরি লোকালিটি**: ভালো ক্যাশে পারফরম্যান্স গুরুত্বপূর্ণ"
+/>
+
+<TranslatedText
+  en="4. **Binary Search**: Need to perform binary search"
+  bn="৪. **বাইনারি সার্চ**: বাইনারি সার্চ করতে হবে"
+/>
+
+**<TranslatedText en="Example Use Cases" bn="উদাহরণ ব্যবহার কেস" />:**
+- <TranslatedText en="Storing student grades" bn="ছাত্রদের গ্রেড সংরক্ষণ" />
+- <TranslatedText en="Lookup tables" bn="লুকআপ টেবিল" />
+- <TranslatedText en="Matrix operations" bn="ম্যাট্রিক্স অপারেশন" />
+- <TranslatedText en="Buffer implementations" bn="বাফার বাস্তবায়ন" />
+
+### <TranslatedText en="Use Linked List When:" bn="লিঙ্কড লিস্ট ব্যবহার করুন যখন:" />
+
+<TranslatedText
+  en="1. **Dynamic Size**: Number of elements changes frequently"
+  bn="১. **ডাইনামিক আকার**: এলিমেন্টের সংখ্যা ঘন ঘন পরিবর্তিত হয়"
+/>
+
+<TranslatedText
+  en="2. **Frequent Insertions/Deletions**: Especially at beginning or middle"
+  bn="২. **ঘন ঘন সন্নিবেশ/মুছে ফেলা**: বিশেষত শুরুতে বা মাঝে"
+/>
+
+<TranslatedText
+  en="3. **Unknown Size**: Don't know how many elements in advance"
+  bn="৩. **অজানা আকার**: আগে থেকে কতগুলি এলিমেন্ট জানা নেই"
+/>
+
+<TranslatedText
+  en="4. **No Random Access**: Don't need to access by index"
+  bn="৪. **র্যান্ডম অ্যাক্সেস নেই**: ইনডেক্স দ্বারা অ্যাক্সেস করার প্রয়োজন নেই"
+/>
+
+**<TranslatedText en="Example Use Cases" bn="উদাহরণ ব্যবহার কেস" />:**
+- <TranslatedText en="Implementing Stack/Queue" bn="স্ট্যাক/কিউ বাস্তবায়ন" />
+- <TranslatedText en="Undo functionality" bn="আনডু কার্যকারিতা" />
+- <TranslatedText en="Music playlist" bn="মিউজিক প্লেলিস্ট" />
+- <TranslatedText en="Browser history" bn="ব্রাউজার ইতিহাস" />
+
+## <TranslatedText en="Advantages and Disadvantages" bn="সুবিধা এবং অসুবিধা" />
+
+### <TranslatedText en="Array Advantages" bn="অ্যারে সুবিধা" />
+
+✅ <TranslatedText en="Fast random access O(1)" bn="দ্রুত র্যান্ডম অ্যাক্সেস O(1)" />
+
+✅ <TranslatedText en="Better cache locality" bn="ভালো ক্যাশে লোকালিটি" />
+
+✅ <TranslatedText en="Less memory per element (no pointers)" bn="প্রতি এলিমেন্টে কম মেমরি (পয়েন্টার নেই)" />
+
+✅ <TranslatedText en="Can use binary search (if sorted)" bn="বাইনারি সার্চ ব্যবহার করতে পারে (যদি সর্ট করা হয়)" />
+
+✅ <TranslatedText en="Simple to implement and use" bn="বাস্তবায়ন এবং ব্যবহার করা সহজ" />
+
+### <TranslatedText en="Array Disadvantages" bn="অ্যারে অসুবিধা" />
+
+❌ <TranslatedText en="Fixed size (in traditional arrays)" bn="স্থির আকার (ট্র্যাডিশনাল অ্যারেতে)" />
+
+❌ <TranslatedText en="Insertion/deletion is expensive" bn="সন্নিবেশ/মুছে ফেলা ব্যয়বহুল" />
+
+❌ <TranslatedText en="Wasted space if not full" bn="পূর্ণ না হলে মেমরি নষ্ট" />
+
+❌ <TranslatedText en="Cannot easily insert in middle" bn="মাঝে সহজে সন্নিবেশ করতে পারে না" />
+
+### <TranslatedText en="Linked List Advantages" bn="লিঙ্কড লিস্ট সুবিধা" />
+
+✅ <TranslatedText en="Dynamic size" bn="ডাইনামিক আকার" />
+
+✅ <TranslatedText en="Fast insertion/deletion at beginning O(1)" bn="শুরুতে দ্রুত সন্নিবেশ/মুছে ফেলা O(1)" />
+
+✅ <TranslatedText en="No wasted space" bn="কোনো মেমরি নষ্ট নেই" />
+
+✅ <TranslatedText en="Easy to insert/delete anywhere (with pointer)" bn="যেকোনো জায়গায় সন্নিবেশ/মুছে ফেলা সহজ (পয়েন্টার সহ)" />
+
+### <TranslatedText en="Linked List Disadvantages" bn="লিঙ্কড লিস্ট অসুবিধা" />
+
+❌ <TranslatedText en="No random access" bn="র্যান্ডম অ্যাক্সেস নেই" />
+
+❌ <TranslatedText en="Extra memory for pointers" bn="পয়েন্টারের জন্য অতিরিক্ত মেমরি" />
+
+❌ <TranslatedText en="Poor cache locality" bn="খারাপ ক্যাশে লোকালিটি" />
+
+❌ <TranslatedText en="Cannot use binary search" bn="বাইনারি সার্চ ব্যবহার করতে পারে না" />
+
+❌ <TranslatedText en="More complex to implement" bn="বাস্তবায়ন আরো জটিল" />
+
+## <TranslatedText en="Performance Summary" bn="পারফরম্যান্স সারসংক্ষেপ" />
+
+| <TranslatedText en="Operation" bn="অপারেশন" /> | <TranslatedText en="Array" bn="অ্যারে" /> | <TranslatedText en="Linked List" bn="লিঙ্কড লিস্ট" /> | <TranslatedText en="Winner" bn="বিজয়ী" /> |
 |-----------|-------|-------------|---------|
-| Access by index | O(1) | O(n) | Array |
-| Insert at start | O(n) | O(1) | Linked List |
-| Insert at end | O(1)* | O(n) or O(1)** | Depends |
-| Delete at start | O(n) | O(1) | Linked List |
-| Search | O(n) | O(n) | Tie |
-| Memory usage | Less | More | Array |
+| <TranslatedText en="Access by index" bn="ইনডেক্স দ্বারা অ্যাক্সেস" /> | O(1) | O(n) | <TranslatedText en="Array" bn="অ্যারে" /> |
+| <TranslatedText en="Insert at start" bn="শুরুতে সন্নিবেশ" /> | O(n) | O(1) | <TranslatedText en="Linked List" bn="লিঙ্কড লিস্ট" /> |
+| <TranslatedText en="Insert at end" bn="শেষে সন্নিবেশ" /> | O(1)* | O(n) | <TranslatedText en="Array" bn="অ্যারে" /> |
+| <TranslatedText en="Delete at start" bn="শুরুতে মুছে ফেলা" /> | O(n) | O(1) | <TranslatedText en="Linked List" bn="লিঙ্কড লিস্ট" /> |
+| <TranslatedText en="Search" bn="সার্চ" /> | O(n) | O(n) | <TranslatedText en="Tie" bn="সমান" /> |
+| <TranslatedText en="Memory usage" bn="মেমরি ব্যবহার" /> | <TranslatedText en="Less" bn="কম" /> | <TranslatedText en="More" bn="বেশি" /> | <TranslatedText en="Array" bn="অ্যারে" /> |
 
-\* Assuming space available
-\** O(1) with tail pointer
+\* <TranslatedText en="Assuming space available" bn="স্পেস উপলব্ধ ধরে নিয়ে" />
 
-## Reference
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+### 1. <TranslatedText en="Memory Layout is Fundamental" bn="মেমরি লেআউট মৌলিক" />
+
+<TranslatedText
+  en="Arrays store elements in **contiguous memory**, which means elements are next to each other. This allows direct calculation of any element's address, enabling O(1) access. Linked Lists store elements in **scattered memory**, connected by pointers, requiring traversal."
+  bn="অ্যারে **সংলগ্ন মেমরিতে** এলিমেন্ট সংরক্ষণ করে, যার মানে এলিমেন্টগুলি একে অপরের পাশে থাকে। এটি যেকোনো এলিমেন্টের ঠিকানা সরাসরি গণনা করতে দেয়, O(1) অ্যাক্সেস সক্ষম করে। লিঙ্কড লিস্ট **ছড়িয়ে থাকা মেমরিতে** এলিমেন্ট সংরক্ষণ করে, পয়েন্টার দ্বারা সংযুক্ত, ট্রাভার্সাল প্রয়োজন।"
+/>
+
+### 2. <TranslatedText en="Cache Locality Matters" bn="ক্যাশে লোকালিটি গুরুত্বপূর্ণ" />
+
+<TranslatedText
+  en="Arrays have better **cache performance** because when you access one element, nearby elements are loaded into cache. Linked Lists have poor cache performance because nodes are scattered, causing more cache misses."
+  bn="অ্যারের ভালো **ক্যাশে পারফরম্যান্স** আছে কারণ যখন আপনি একটি এলিমেন্ট অ্যাক্সেস করেন, কাছাকাছি এলিমেন্টগুলি ক্যাশে লোড হয়। লিঙ্কড লিস্টের খারাপ ক্যাশে পারফরম্যান্স আছে কারণ নোডগুলি ছড়িয়ে থাকে, আরো ক্যাশে মিস ঘটায়।"
+/>
+
+### 3. <TranslatedText en="Trade-off: Access vs Insertion" bn="ট্রেডঅফ: অ্যাক্সেস বনাম সন্নিবেশ" />
+
+<TranslatedText
+  en="Arrays excel at **random access** (O(1)) but struggle with **insertions** (O(n) due to shifting). Linked Lists are the opposite: poor at **random access** (O(n) traversal) but excellent at **insertions** at known positions (O(1) pointer update)."
+  bn="অ্যারে **র্যান্ডম অ্যাক্সেসে** (O(1)) দক্ষ কিন্তু **সন্নিবেশে** (শিফটিংয়ের কারণে O(n)) সংগ্রাম করে। লিঙ্কড লিস্ট বিপরীত: **র্যান্ডম অ্যাক্সেসে** (O(n) ট্রাভার্সাল) দুর্বল কিন্তু জানা অবস্থানে **সন্নিবেশে** (O(1) পয়েন্টার আপডেট) চমৎকার।"
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="1. **Understand the Tradeoffs**: Explain why arrays are fast for access but slow for insertion"
+  bn="১. **ট্রেডঅফ বুঝুন**: ব্যাখ্যা করুন কেন অ্যারে অ্যাক্সেসের জন্য দ্রুত কিন্তু সন্নিবেশের জন্য ধীর"
+/>
+
+<TranslatedText
+  en="2. **Mention Memory Layout**: Discuss contiguous vs non-contiguous memory allocation"
+  bn="২. **মেমরি লেআউট উল্লেখ করুন**: সংলগ্ন বনাম অ-সংলগ্ন মেমরি বরাদ্দ আলোচনা করুন"
+/>
+
+<TranslatedText
+  en="3. **Know Use Cases**: Be ready to recommend which structure for specific scenarios"
+  bn="৩. **ব্যবহার কেস জানুন**: নির্দিষ্ট পরিস্থিতিতে কোন স্ট্রাকচার সুপারিশ করতে প্রস্তুত থাকুন"
+/>
+
+<TranslatedText
+  en="4. **Cache Locality**: Mention that arrays have better cache performance in practice"
+  bn="৪. **ক্যাশে লোকালিটি**: উল্লেখ করুন যে অ্যারের ব্যবহারিকভাবে ভালো ক্যাশে পারফরম্যান্স আছে"
+/>
+
+<TranslatedText
+  en="5. **Hybrid Approaches**: Some structures (like ArrayList in Java) combine both benefits"
+  bn="৫. **হাইব্রিড পদ্ধতি**: কিছু স্ট্রাকচার (যেমন Java-তে ArrayList) উভয় সুবিধা একত্রিত করে"
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="- **Arrays**: Fast access (O(1)), slow insertion (O(n)), contiguous memory, fixed size"
+  bn="- **অ্যারে**: দ্রুত অ্যাক্সেস (O(1)), ধীর সন্নিবেশ (O(n)), সংলগ্ন মেমরি, স্থির আকার"
+/>
+
+<TranslatedText
+  en="- **Linked Lists**: Slow access (O(n)), fast insertion at known position (O(1)), scattered memory, dynamic size"
+  bn="- **লিঙ্কড লিস্ট**: ধীর অ্যাক্সেস (O(n)), জানা অবস্থানে দ্রুত সন্নিবেশ (O(1)), ছড়িয়ে থাকা মেমরি, ডাইনামিক আকার"
+/>
+
+<TranslatedText
+  en="- **Choose Based on Operations**: If you need frequent access, use arrays. If you need frequent insertions/deletions, use linked lists"
+  bn="- **অপারেশনের উপর ভিত্তি করে চয়ন করুন**: যদি আপনার ঘন ঘন অ্যাক্সেস প্রয়োজন, অ্যারে ব্যবহার করুন। যদি আপনার ঘন ঘন সন্নিবেশ/মুছে ফেলা প্রয়োজন, লিঙ্কড লিস্ট ব্যবহার করুন"
+/>
+
+<TranslatedText
+  en="- **Memory Matters**: Arrays use less memory per element, but may waste space. Linked lists use more memory (pointers) but no waste"
+  bn="- **মেমরি গুরুত্বপূর্ণ**: অ্যারে প্রতি এলিমেন্টে কম মেমরি ব্যবহার করে, কিন্তু স্পেস নষ্ট করতে পারে। লিঙ্কড লিস্ট আরো মেমরি (পয়েন্টার) ব্যবহার করে কিন্তু কোনো নষ্ট নেই"
+/>
+
+<TranslatedText
+  en="- **Cache Performance**: Arrays have better cache locality, making them faster in practice for sequential access"
+  bn="- **ক্যাশে পারফরম্যান্স**: অ্যারের ভালো ক্যাশে লোকালিটি আছে, ক্রমিক অ্যাক্সেসের জন্য ব্যবহারিকভাবে তাদের দ্রুততর করে"
+/>
+
+## <TranslatedText en="Reference" bn="রেফারেন্স" />
 
 [Java67 - Array vs Linked List Differences](http://www.java67.com/2017/06/5-difference-between-array-and-linked.html)

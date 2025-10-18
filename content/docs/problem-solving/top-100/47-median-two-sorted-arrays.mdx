@@ -3,411 +3,522 @@ title: 47. Median of Two Sorted Arrays
 description: Find the median of two sorted arrays of different sizes
 ---
 
-## Problem Statement
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { TranslatedText, LanguageSwitcher } from '@/components/LanguageSwitcher';
 
-Given two sorted arrays of different sizes, find the median of the two sorted arrays combined. The overall run time complexity should be O(log(min(m,n))).
+<LanguageSwitcher />
 
-## What is Median?
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
 
-The median is the middle value in an ordered list of numbers:
-- For odd length: middle element
-- For even length: average of two middle elements
+<TranslatedText
+  en="Given two sorted arrays of different sizes, find the median of the two sorted arrays combined. The overall run time complexity should be O(log(min(m,n)))."
+  bn="বিভিন্ন আকারের দুটি সর্ট করা অ্যারে দেওয়া হয়েছে, দুটি সর্ট করা অ্যারে একত্রিত করার পরে মিডিয়ান খুঁজুন। সামগ্রিক রান টাইম কমপ্লেক্সিটি O(log(min(m,n))) হওয়া উচিত।"
+/>
 
-## Examples
+## <TranslatedText en="What is Median?" bn="মিডিয়ান কী?" />
 
-### Example 1
+<TranslatedText
+  en="The median is the middle value in an ordered list of numbers:"
+  bn="মিডিয়ান হলো সংখ্যার একটি সাজানো তালিকার মধ্যম মান:"
+/>
+
+- **<TranslatedText en="For odd length" bn="বিষম দৈর্ঘ্যের জন্য" />**: <TranslatedText en="middle element" bn="মধ্যম এলিমেন্ট" />
+- **<TranslatedText en="For even length" bn="জোড় দৈর্ঘ্যের জন্য" />**: <TranslatedText en="average of two middle elements" bn="দুটি মধ্যম এলিমেন্টের গড়" />
+
+## <TranslatedText en="Examples" bn="উদাহরণসমূহ" />
+
+### <TranslatedText en="Example 1" bn="উদাহরণ ১" />
+
 ```
 Input: arr1 = [1, 3], arr2 = [2]
 Output: 2.0
 Explanation: Combined sorted: [1, 2, 3], median = 2
 ```
 
-### Example 2
+### <TranslatedText en="Example 2" bn="উদাহরণ ২" />
+
 ```
 Input: arr1 = [1, 2], arr2 = [3, 4]
 Output: 2.5
 Explanation: Combined sorted: [1, 2, 3, 4], median = (2 + 3) / 2 = 2.5
 ```
 
-### Example 3
+### <TranslatedText en="Example 3" bn="উদাহরণ ৩" />
+
 ```
 Input: arr1 = [1, 5, 9], arr2 = [2, 3, 6, 7]
 Output: 5.0
 Explanation: Combined sorted: [1, 2, 3, 5, 6, 7, 9], median = 5
 ```
 
-## Solution
+## <TranslatedText en="Solution Approaches" bn="সমাধানের পদ্ধতিসমূহ" />
 
-### Approach 1: Merge and Find Median (Simple)
+### <TranslatedText en="Approach 1: Merge and Find Median (Simple)" bn="পদ্ধতি ১: মার্জ করুন এবং মিডিয়ান খুঁজুন (সহজ)" />
 
-Merge both arrays and find the median.
+<TranslatedText
+  en="Merge both sorted arrays and find the median. This is the most intuitive approach."
+  bn="উভয় সর্ট করা অ্যারে মার্জ করুন এবং মিডিয়ান খুঁজুন। এটি সবচেয়ে স্বজ্ঞাত পদ্ধতি।"
+/>
 
-**Time Complexity:** O(m + n)
-**Space Complexity:** O(m + n)
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(m + n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(m + n)
 
-```dart
-double findMedianMerge(List<int> arr1, List<int> arr2) {
-  List<int> merged = [];
-  int i = 0, j = 0;
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
 
-  // Merge two sorted arrays
-  while (i < arr1.length && j < arr2.length) {
-    if (arr1[i] <= arr2[j]) {
-      merged.add(arr1[i++]);
-    } else {
-      merged.add(arr2[j++]);
-    }
-  }
+double findMedianMerge(const vector<int>& arr1, const vector<int>& arr2) {
+    vector<int> merged;
+    int i = 0, j = 0;
 
-  // Add remaining elements
-  while (i < arr1.length) {
-    merged.add(arr1[i++]);
-  }
-
-  while (j < arr2.length) {
-    merged.add(arr2[j++]);
-  }
-
-  // Find median
-  int n = merged.length;
-  if (n % 2 == 0) {
-    return (merged[n ~/ 2 - 1] + merged[n ~/ 2]) / 2.0;
-  } else {
-    return merged[n ~/ 2].toDouble();
-  }
-}
-
-void main() {
-  List<int> arr1 = [1, 3];
-  List<int> arr2 = [2];
-  print('Array 1: $arr1');
-  print('Array 2: $arr2');
-  print('Median: ${findMedianMerge(arr1, arr2)}');
-
-  List<int> arr3 = [1, 2];
-  List<int> arr4 = [3, 4];
-  print('\nArray 1: $arr3');
-  print('Array 2: $arr4');
-  print('Median: ${findMedianMerge(arr3, arr4)}');
-}
-```
-
-### Approach 2: Without Extra Space (Optimized Merge)
-
-Find median without storing the entire merged array.
-
-**Time Complexity:** O(m + n)
-**Space Complexity:** O(1)
-
-```dart
-double findMedianNoExtraSpace(List<int> arr1, List<int> arr2) {
-  int m = arr1.length;
-  int n = arr2.length;
-  int total = m + n;
-
-  int i = 0, j = 0, count = 0;
-  int median1 = 0, median2 = 0;
-
-  // We only need to find elements at positions total/2 and total/2-1
-  while (count <= total ~/ 2) {
-    median1 = median2;
-
-    if (i < m && (j >= n || arr1[i] <= arr2[j])) {
-      median2 = arr1[i++];
-    } else {
-      median2 = arr2[j++];
+    // Merge two sorted arrays
+    while (i < arr1.size() && j < arr2.size()) {
+        if (arr1[i] <= arr2[j]) {
+            merged.push_back(arr1[i++]);
+        } else {
+            merged.push_back(arr2[j++]);
+        }
     }
 
-    count++;
-  }
-
-  if (total % 2 == 0) {
-    return (median1 + median2) / 2.0;
-  } else {
-    return median2.toDouble();
-  }
-}
-
-void main() {
-  List<int> arr1 = [1, 3, 5];
-  List<int> arr2 = [2, 4, 6];
-  print('Array 1: $arr1');
-  print('Array 2: $arr2');
-  print('Median: ${findMedianNoExtraSpace(arr1, arr2)}');
-}
-```
-
-### Approach 3: Binary Search (Optimal - O(log(min(m,n))))
-
-The most efficient approach using binary search.
-
-**Time Complexity:** O(log(min(m, n)))
-**Space Complexity:** O(1)
-
-```dart
-double findMedianBinarySearch(List<int> arr1, List<int> arr2) {
-  // Ensure arr1 is the smaller array
-  if (arr1.length > arr2.length) {
-    return findMedianBinarySearch(arr2, arr1);
-  }
-
-  int m = arr1.length;
-  int n = arr2.length;
-  int left = 0;
-  int right = m;
-
-  while (left <= right) {
-    // Partition arr1
-    int partition1 = (left + right) ~/ 2;
-    // Partition arr2
-    int partition2 = (m + n + 1) ~/ 2 - partition1;
-
-    // Handle edge cases
-    int maxLeft1 = (partition1 == 0) ? double.negativeInfinity.toInt() : arr1[partition1 - 1];
-    int minRight1 = (partition1 == m) ? double.infinity.toInt() : arr1[partition1];
-
-    int maxLeft2 = (partition2 == 0) ? double.negativeInfinity.toInt() : arr2[partition2 - 1];
-    int minRight2 = (partition2 == n) ? double.infinity.toInt() : arr2[partition2];
-
-    // Check if we found the correct partition
-    if (maxLeft1 <= minRight2 && maxLeft2 <= minRight1) {
-      // Even total length
-      if ((m + n) % 2 == 0) {
-        return (maxLeft1 > maxLeft2 ? maxLeft1 : maxLeft2) +
-            (minRight1 < minRight2 ? minRight1 : minRight2) / 2.0;
-      } else {
-        // Odd total length
-        return (maxLeft1 > maxLeft2 ? maxLeft1 : maxLeft2).toDouble();
-      }
-    } else if (maxLeft1 > minRight2) {
-      // Move towards left in arr1
-      right = partition1 - 1;
-    } else {
-      // Move towards right in arr1
-      left = partition1 + 1;
+    // Add remaining elements
+    while (i < arr1.size()) {
+        merged.push_back(arr1[i++]);
     }
-  }
 
-  throw Exception('Input arrays are not sorted');
-}
+    while (j < arr2.size()) {
+        merged.push_back(arr2[j++]);
+    }
 
-void main() {
-  List<int> arr1 = [1, 3, 8, 9, 15];
-  List<int> arr2 = [7, 11, 18, 19, 21, 25];
-
-  print('Array 1: $arr1');
-  print('Array 2: $arr2');
-  print('Median: ${findMedianBinarySearch(arr1, arr2)}');
-}
-```
-
-### Approach 4: For Same Size Arrays
-
-Simplified version when both arrays have the same size.
-
-**Time Complexity:** O(log n)
-**Space Complexity:** O(1)
-
-```dart
-double findMedianSameSize(List<int> arr1, List<int> arr2) {
-  int n = arr1.length;
-
-  if (n == 0) return 0.0;
-  if (n == 1) return (arr1[0] + arr2[0]) / 2.0;
-
-  // Base case for 2 elements
-  if (n == 2) {
-    return (arr1[1] > arr2[0] ? arr1[1] : arr2[0]) +
-        (arr1[0] < arr2[1] ? arr1[0] : arr2[1]) / 2.0;
-  }
-
-  double median1 = getMedian(arr1);
-  double median2 = getMedian(arr2);
-
-  if (median1 == median2) {
-    return median1;
-  }
-
-  // If median1 < median2, median is in arr1[n/2...] and arr2[...n/2]
-  if (median1 < median2) {
+    // Find median
+    int n = merged.size();
     if (n % 2 == 0) {
-      return findMedianSameSize(
-        arr1.sublist(n ~/ 2 - 1),
-        arr2.sublist(0, n ~/ 2 + 1),
-      );
+        return (merged[n / 2 - 1] + merged[n / 2]) / 2.0;
+    } else {
+        return merged[n / 2];
     }
-    return findMedianSameSize(
-      arr1.sublist(n ~/ 2),
-      arr2.sublist(0, n ~/ 2 + 1),
-    );
-  }
-
-  // If median1 > median2, median is in arr1[...n/2] and arr2[n/2...]
-  if (n % 2 == 0) {
-    return findMedianSameSize(
-      arr1.sublist(0, n ~/ 2 + 1),
-      arr2.sublist(n ~/ 2 - 1),
-    );
-  }
-  return findMedianSameSize(
-    arr1.sublist(0, n ~/ 2 + 1),
-    arr2.sublist(n ~/ 2),
-  );
 }
 
-double getMedian(List<int> arr) {
-  int n = arr.length;
-  if (n % 2 == 0) {
-    return (arr[n ~/ 2] + arr[n ~/ 2 - 1]) / 2.0;
-  } else {
-    return arr[n ~/ 2].toDouble();
-  }
-}
+int main() {
+    vector<int> arr1 = {1, 3};
+    vector<int> arr2 = {2};
+    cout << "Array 1: ";
+    for (int x : arr1) cout << x << " ";
+    cout << "\nArray 2: ";
+    for (int x : arr2) cout << x << " ";
+    cout << "\nMedian: " << findMedianMerge(arr1, arr2) << endl;
 
-void main() {
-  List<int> arr1 = [1, 2, 3, 6];
-  List<int> arr2 = [4, 6, 8, 10];
-
-  print('Array 1: $arr1');
-  print('Array 2: $arr2');
-  print('Median: ${findMedianSameSize(arr1, arr2)}');
+    return 0;
 }
 ```
+  </Tab>
+  <Tab value="Python">
+```python
+def find_median_merge(arr1, arr2):
+    """Merge and find median"""
+    merged = []
+    i, j = 0, 0
 
-### Approach 5: Using Sorted List Merge (Dart-specific)
+    # Merge two sorted arrays
+    while i < len(arr1) and j < len(arr2):
+        if arr1[i] <= arr2[j]:
+            merged.append(arr1[i])
+            i += 1
+        else:
+            merged.append(arr2[j])
+            j += 1
 
-Leverage Dart's features for a cleaner solution.
+    # Add remaining elements
+    while i < len(arr1):
+        merged.append(arr1[i])
+        i += 1
 
-**Time Complexity:** O(m + n)
-**Space Complexity:** O(m + n)
+    while j < len(arr2):
+        merged.append(arr2[j])
+        j += 1
 
-```dart
-double findMedianDart(List<int> arr1, List<int> arr2) {
-  List<int> merged = [...arr1, ...arr2]..sort();
+    # Find median
+    n = len(merged)
+    if n % 2 == 0:
+        return (merged[n // 2 - 1] + merged[n // 2]) / 2.0
+    else:
+        return float(merged[n // 2])
 
-  int n = merged.length;
-  if (n % 2 == 0) {
-    return (merged[n ~/ 2 - 1] + merged[n ~/ 2]) / 2.0;
-  } else {
-    return merged[n ~/ 2].toDouble();
-  }
+# Example usage
+arr1 = [1, 3]
+arr2 = [2]
+print(f"Array 1: {arr1}")
+print(f"Array 2: {arr2}")
+print(f"Median: {find_median_merge(arr1, arr2)}")
+
+arr3 = [1, 2]
+arr4 = [3, 4]
+print(f"\nArray 1: {arr3}")
+print(f"Array 2: {arr4}")
+print(f"Median: {find_median_merge(arr3, arr4)}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function findMedianMerge(arr1, arr2) {
+    let merged = [];
+    let i = 0, j = 0;
+
+    // Merge two sorted arrays
+    while (i < arr1.length && j < arr2.length) {
+        if (arr1[i] <= arr2[j]) {
+            merged.push(arr1[i++]);
+        } else {
+            merged.push(arr2[j++]);
+        }
+    }
+
+    // Add remaining elements
+    while (i < arr1.length) {
+        merged.push(arr1[i++]);
+    }
+
+    while (j < arr2.length) {
+        merged.push(arr2[j++]);
+    }
+
+    // Find median
+    let n = merged.length;
+    if (n % 2 === 0) {
+        return (merged[Math.floor(n / 2) - 1] + merged[Math.floor(n / 2)]) / 2.0;
+    } else {
+        return merged[Math.floor(n / 2)];
+    }
 }
 
-void main() {
-  List<int> arr1 = [1, 5, 9];
-  List<int> arr2 = [2, 3, 6, 7];
+// Example usage
+let arr1 = [1, 3];
+let arr2 = [2];
+console.log("Array 1:", arr1);
+console.log("Array 2:", arr2);
+console.log("Median:", findMedianMerge(arr1, arr2));
 
-  print('Array 1: $arr1');
-  print('Array 2: $arr2');
-  print('Median: ${findMedianDart(arr1, arr2)}');
+let arr3 = [1, 2];
+let arr4 = [3, 4];
+console.log("\nArray 1:", arr3);
+console.log("Array 2:", arr4);
+console.log("Median:", findMedianMerge(arr3, arr4));
+```
+  </Tab>
+</Tabs>
+
+### <TranslatedText en="Approach 2: Without Extra Space (Optimized)" bn="পদ্ধতি ২: অতিরিক্ত স্পেস ছাড়া (অপটিমাইজড)" />
+
+<TranslatedText
+  en="Find median without storing the entire merged array. We only track the middle elements as we iterate."
+  bn="সম্পূর্ণ মার্জ করা অ্যারে সংরক্ষণ না করে মিডিয়ান খুঁজুন। আমরা ইটারেট করার সময় শুধুমাত্র মধ্যম এলিমেন্টগুলি ট্র্যাক করি।"
+/>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(m + n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+double findMedianNoExtraSpace(const vector<int>& arr1, const vector<int>& arr2) {
+    int m = arr1.size();
+    int n = arr2.size();
+    int total = m + n;
+
+    int i = 0, j = 0, count = 0;
+    int median1 = 0, median2 = 0;
+
+    // We only need to find elements at positions total/2 and total/2-1
+    while (count <= total / 2) {
+        median1 = median2;
+
+        if (i < m && (j >= n || arr1[i] <= arr2[j])) {
+            median2 = arr1[i++];
+        } else {
+            median2 = arr2[j++];
+        }
+
+        count++;
+    }
+
+    if (total % 2 == 0) {
+        return (median1 + median2) / 2.0;
+    } else {
+        return median2;
+    }
+}
+
+int main() {
+    vector<int> arr1 = {1, 3, 5};
+    vector<int> arr2 = {2, 4, 6};
+    cout << "Array 1: ";
+    for (int x : arr1) cout << x << " ";
+    cout << "\nArray 2: ";
+    for (int x : arr2) cout << x << " ";
+    cout << "\nMedian: " << findMedianNoExtraSpace(arr1, arr2) << endl;
+
+    return 0;
 }
 ```
+  </Tab>
+  <Tab value="Python">
+```python
+def find_median_no_extra_space(arr1, arr2):
+    """Find median without extra space"""
+    m, n = len(arr1), len(arr2)
+    total = m + n
 
-## Comparison of Approaches
+    i, j, count = 0, 0, 0
+    median1, median2 = 0, 0
 
-| Approach | Time | Space | Pros | Cons |
-|----------|------|-------|------|------|
-| Merge Arrays | O(m+n) | O(m+n) | Simple, easy | Extra space |
-| No Extra Space | O(m+n) | O(1) | Space efficient | Still O(m+n) time |
-| Binary Search | O(log(min(m,n))) | O(1) | Optimal | Complex |
-| Same Size | O(log n) | O(log n) | Efficient | Only for equal sizes |
-| Dart Merge | O((m+n)log(m+n)) | O(m+n) | Clean code | Slower (sorting) |
+    # We only need to find elements at positions total/2 and total/2-1
+    while count <= total // 2:
+        median1 = median2
 
-## Key Concepts
+        if i < m and (j >= n or arr1[i] <= arr2[j]):
+            median2 = arr1[i]
+            i += 1
+        else:
+            median2 = arr2[j]
+            j += 1
 
-### Why Binary Search Works
+        count += 1
 
-The key insight is that we're looking for a partition where:
-1. Left half contains exactly `(m+n+1)/2` elements
-2. Max of left half ≤ Min of right half
+    if total % 2 == 0:
+        return (median1 + median2) / 2.0
+    else:
+        return float(median2)
 
-### Partition Example
-
-For arr1 = [1, 3, 8, 9, 15] and arr2 = [7, 11, 18, 19, 21, 25]:
-
+# Example usage
+arr1 = [1, 3, 5]
+arr2 = [2, 4, 6]
+print(f"Array 1: {arr1}")
+print(f"Array 2: {arr2}")
+print(f"Median: {find_median_no_extra_space(arr1, arr2)}")
 ```
-arr1: [1, 3 | 8, 9, 15]        partition1 = 2
-arr2: [7, 11, 18, 19 | 21, 25] partition2 = 4
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function findMedianNoExtraSpace(arr1, arr2) {
+    let m = arr1.length;
+    let n = arr2.length;
+    let total = m + n;
 
-Left: [1, 3, 7, 11, 18, 19]    maxLeft = 19
-Right: [8, 9, 15, 21, 25]      minRight = 8
+    let i = 0, j = 0, count = 0;
+    let median1 = 0, median2 = 0;
 
-Not valid! 19 > 8, adjust partition...
-```
+    // We only need to find elements at positions total/2 and total/2-1
+    while (count <= Math.floor(total / 2)) {
+        median1 = median2;
 
-## Common Pitfalls
+        if (i < m && (j >= n || arr1[i] <= arr2[j])) {
+            median2 = arr1[i++];
+        } else {
+            median2 = arr2[j++];
+        }
 
-- Not handling empty arrays
-- Forgetting to swap to make arr1 smaller
-- Integer overflow in addition
-- Edge cases at partition boundaries
-- Not handling odd/even lengths correctly
+        count++;
+    }
 
-## Test Cases
-
-```dart
-void testFindMedian() {
-  // Test 1: Different sizes
-  assert(findMedianBinarySearch([1, 3], [2]) == 2.0);
-
-  // Test 2: Even total length
-  assert(findMedianBinarySearch([1, 2], [3, 4]) == 2.5);
-
-  // Test 3: One empty array
-  assert(findMedianBinarySearch([], [1]) == 1.0);
-
-  // Test 4: Same element
-  assert(findMedianBinarySearch([1, 1], [1, 1]) == 1.0);
-
-  // Test 5: No overlap
-  assert(findMedianBinarySearch([1, 2, 3], [4, 5, 6]) == 3.5);
-
-  // Test 6: All from one array
-  assert(findMedianBinarySearch([1, 1, 1], [2, 2, 2]) == 1.5);
-
-  print('All tests passed!');
+    if (total % 2 === 0) {
+        return (median1 + median2) / 2.0;
+    } else {
+        return median2;
+    }
 }
+
+// Example usage
+let arr1 = [1, 3, 5];
+let arr2 = [2, 4, 6];
+console.log("Array 1:", arr1);
+console.log("Array 2:", arr2);
+console.log("Median:", findMedianNoExtraSpace(arr1, arr2));
+```
+  </Tab>
+</Tabs>
+
+### <TranslatedText en="Approach 3: Binary Search (Optimal)" bn="পদ্ধতি ৩: বাইনারি সার্চ (সর্বোত্তম)" />
+
+<TranslatedText
+  en="The most efficient approach using binary search on the smaller array. Achieves O(log(min(m,n))) time complexity."
+  bn="ছোট অ্যারেতে বাইনারি সার্চ ব্যবহার করে সবচেয়ে কার্যকর পদ্ধতি। O(log(min(m,n))) সময় জটিলতা অর্জন করে।"
+/>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(log(min(m, n)))
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+<TranslatedText
+  en="**Key Idea**: Partition both arrays such that left half contains exactly (m+n+1)/2 elements and max(left) ≤ min(right)."
+  bn="**মূল ধারণা**: উভয় অ্যারে পার্টিশন করুন যাতে বাম অর্ধেক ঠিক (m+n+1)/2 এলিমেন্ট ধারণ করে এবং max(left) ≤ min(right)।"
+/>
+
+<Tabs items={['Python']} groupId="language">
+  <Tab value="Python">
+```python
+def find_median_binary_search(arr1, arr2):
+    """Binary search approach - O(log(min(m,n)))"""
+    # Ensure arr1 is the smaller array
+    if len(arr1) > len(arr2):
+        return find_median_binary_search(arr2, arr1)
+
+    m, n = len(arr1), len(arr2)
+    left, right = 0, m
+
+    while left <= right:
+        # Partition arr1
+        partition1 = (left + right) // 2
+        # Partition arr2
+        partition2 = (m + n + 1) // 2 - partition1
+
+        # Handle edge cases
+        maxLeft1 = float('-inf') if partition1 == 0 else arr1[partition1 - 1]
+        minRight1 = float('inf') if partition1 == m else arr1[partition1]
+
+        maxLeft2 = float('-inf') if partition2 == 0 else arr2[partition2 - 1]
+        minRight2 = float('inf') if partition2 == n else arr2[partition2]
+
+        # Check if we found the correct partition
+        if maxLeft1 <= minRight2 and maxLeft2 <= minRight1:
+            # Even total length
+            if (m + n) % 2 == 0:
+                return (max(maxLeft1, maxLeft2) + min(minRight1, minRight2)) / 2.0
+            else:
+                # Odd total length
+                return float(max(maxLeft1, maxLeft2))
+        elif maxLeft1 > minRight2:
+            # Move towards left in arr1
+            right = partition1 - 1
+        else:
+            # Move towards right in arr1
+            left = partition1 + 1
+
+    raise Exception('Input arrays are not sorted')
+
+# Example usage
+arr1 = [1, 3, 8, 9, 15]
+arr2 = [7, 11, 18, 19, 21, 25]
+print(f"Array 1: {arr1}")
+print(f"Array 2: {arr2}")
+print(f"Median (Binary Search): {find_median_binary_search(arr1, arr2)}")
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Algorithm Walkthrough" bn="অ্যালগরিদম ওয়াকথ্রু" />
+
+<TranslatedText
+  en="Let's trace the merge approach for `[1, 3]` and `[2]`:"
+  bn="চলুন `[1, 3]` এবং `[2]` এর জন্য মার্জ পদ্ধতি ট্রেস করি:"
+/>
+
+```
+Array 1: [1, 3]
+Array 2: [2]
+
+Merge Process:
+Step 1: Compare 1 vs 2 → 1 smaller → merged = [1]
+Step 2: Compare 3 vs 2 → 2 smaller → merged = [1, 2]
+Step 3: No more in arr2, add 3 → merged = [1, 2, 3]
+
+Final merged: [1, 2, 3]
+Length: 3 (odd)
+Median position: 3 / 2 = 1
+Median: merged[1] = 2
 ```
 
-## Visualization
-
-For [1, 3, 8] and [7, 9, 10, 11]:
+### <TranslatedText en="Even Length Example" bn="জোড় দৈর্ঘ্যের উদাহরণ" />
 
 ```
-Combined and sorted: [1, 3, 7, 8, 9, 10, 11]
-Total length: 7 (odd)
-Median position: 7 / 2 = 3
-Median: 8
+Array 1: [1, 2]
+Array 2: [3, 4]
 
-Step by step:
-Index: 0  1  2  3  4  5   6
-Value: 1  3  7  8  9  10  11
-                ↑
-              Median
-```
-
-For [1, 2] and [3, 4]:
-
-```
-Combined and sorted: [1, 2, 3, 4]
-Total length: 4 (even)
-Median positions: 1 and 2
+Final merged: [1, 2, 3, 4]
+Length: 4 (even)
+Median positions: index 1 and 2
 Median: (2 + 3) / 2 = 2.5
-
-Index: 0  1  2  3
-Value: 1  2  3  4
-          ↑  ↑
-       Take average
 ```
 
-## Applications
+## <TranslatedText en="Comparison of Approaches" bn="পদ্ধতিসমূহের তুলনা" />
 
-- Statistics and data analysis
-- Database query optimization
-- Stream processing
-- Load balancing
-- Distributed systems
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time" bn="সময়" /> | <TranslatedText en="Space" bn="স্থান" /> | <TranslatedText en="Pros" bn="সুবিধা" /> | <TranslatedText en="Cons" bn="অসুবিধা" /> |
+|----------|------|-------|------|------|
+| Merge Arrays | O(m+n) | O(m+n) | <TranslatedText en="Simple, easy to understand" bn="সহজ, বোঝা সহজ" /> | <TranslatedText en="Extra space" bn="অতিরিক্ত স্পেস" /> |
+| No Extra Space | O(m+n) | O(1) | <TranslatedText en="Space efficient" bn="স্পেস সাশ্রয়ী" /> | <TranslatedText en="Still O(m+n) time" bn="এখনও O(m+n) সময়" /> |
+| Binary Search | O(log(min(m,n))) | O(1) | <TranslatedText en="Optimal complexity" bn="সর্বোত্তম কমপ্লেক্সিটি" /> | <TranslatedText en="Complex logic" bn="জটিল লজিক" /> |
 
-## Reference
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+### 1. <TranslatedText en="Median Definition" bn="মিডিয়ান সংজ্ঞা" />
+
+<TranslatedText
+  en="For **odd** length, median is the middle element. For **even** length, median is the average of the two middle elements."
+  bn="**বিষম** দৈর্ঘ্যের জন্য, মিডিয়ান মধ্যম এলিমেন্ট। **জোড়** দৈর্ঘ্যের জন্য, মিডিয়ান দুটি মধ্যম এলিমেন্টের গড়।"
+/>
+
+### 2. <TranslatedText en="Binary Search Insight" bn="বাইনারি সার্চ অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en="The key insight is partitioning: we want max(left half) ≤ min(right half) with exactly half the elements on the left."
+  bn="মূল অন্তর্দৃষ্টি হলো পার্টিশনিং: আমরা চাই max(বাম অর্ধেক) ≤ min(ডান অর্ধেক) বামে ঠিক অর্ধেক এলিমেন্ট সহ।"
+/>
+
+### 3. <TranslatedText en="Optimization" bn="অপটিমাইজেশন" />
+
+<TranslatedText
+  en="Binary search on the **smaller array** reduces time complexity from O(m+n) to O(log(min(m,n)))."
+  bn="**ছোট অ্যারেতে** বাইনারি সার্চ সময় জটিলতা O(m+n) থেকে O(log(min(m,n))) এ কমায়।"
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en="1. **Start Simple**: Begin with merge approach, then optimize to binary search if asked"
+  bn="১. **সহজ দিয়ে শুরু করুন**: মার্জ পদ্ধতি দিয়ে শুরু করুন, তারপর জিজ্ঞাসা করলে বাইনারি সার্চে অপটিমাইজ করুন"
+/>
+
+<TranslatedText
+  en="2. **Handle Edge Cases**: Empty arrays, single elements, all from one array"
+  bn="২. **এজ কেস হ্যান্ডেল করুন**: খালি অ্যারে, একক এলিমেন্ট, একটি অ্যারে থেকে সব"
+/>
+
+<TranslatedText
+  en="3. **Odd vs Even**: Remember different formulas for odd and even total lengths"
+  bn="৩. **বিষম বনাম জোড়**: বিষম এবং জোড় মোট দৈর্ঘ্যের জন্য বিভিন্ন সূত্র মনে রাখুন"
+/>
+
+<TranslatedText
+  en="4. **Binary Search Logic**: Ensure smaller array is arr1 to minimize search space"
+  bn="৪. **বাইনারি সার্চ লজিক**: সার্চ স্পেস কমাতে ছোট অ্যারে arr1 নিশ্চিত করুন"
+/>
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en="- **Three Approaches**: Merge (simple), No extra space (optimized), Binary search (optimal)"
+  bn="- **তিনটি পদ্ধতি**: মার্জ (সহজ), অতিরিক্ত স্পেস নেই (অপটিমাইজড), বাইনারি সার্চ (সর্বোত্তম)"
+/>
+
+<TranslatedText
+  en="- **Optimal Complexity**: O(log(min(m,n))) using binary search on smaller array"
+  bn="- **সর্বোত্তম কমপ্লেক্সিটি**: ছোট অ্যারেতে বাইনারি সার্চ ব্যবহার করে O(log(min(m,n)))"
+/>
+
+<TranslatedText
+  en="- **Partition Concept**: Key to binary search is finding correct partition where max(left) ≤ min(right)"
+  bn="- **পার্টিশন ধারণা**: বাইনারি সার্চের চাবিকাঠি হলো সঠিক পার্টিশন খুঁজে পাওয়া যেখানে max(বাম) ≤ min(ডান)"
+/>
+
+<TranslatedText
+  en="- **Practical Use**: Statistics, data analysis, database optimization"
+  bn="- **ব্যবহারিক ব্যবহার**: পরিসংখ্যান, ডেটা বিশ্লেষণ, ডেটাবেস অপটিমাইজেশন"
+/>
+
+## <TranslatedText en="Reference" bn="রেফারেন্স" />
 
 [GeeksforGeeks - Median of Two Sorted Arrays](https://www.geeksforgeeks.org/median-of-two-sorted-arrays-of-different-sizes/)

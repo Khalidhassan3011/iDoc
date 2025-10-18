@@ -3,13 +3,21 @@ title: 51. Intersection of Two Linked Lists
 description: Find the node at which two singly linked lists intersect
 ---
 
-## Problem Statement
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { TranslatedText, LanguageSwitcher } from '@/components/LanguageSwitcher';
 
-Given two singly linked lists, find the node at which the two lists intersect. If the two linked lists have no intersection, return null.
+<LanguageSwitcher />
 
-## Examples
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
 
-### Example 1
+<TranslatedText
+  en="Given two singly linked lists, find the node at which the two lists intersect. If the two linked lists have no intersection, return null."
+  bn="দুটি সিঙ্গেল লিঙ্কড লিস্ট দেওয়া হলে, সেই নোডটি খুঁজে বের করুন যেখানে দুটি লিস্ট ছেদ করে। যদি দুটি লিঙ্কড লিস্টের কোনো ছেদ না থাকে, null রিটার্ন করুন।"
+/>
+
+## <TranslatedText en="Examples" bn="উদাহরণসমূহ" />
+
+### <TranslatedText en="Example 1" bn="উদাহরণ ১" />
 ```
 List A: 1 -> 2 -> 3 \
                       6 -> 7 -> 8
@@ -18,7 +26,7 @@ List B: 4 -> 5 ------/
 Intersection at node with value 6
 ```
 
-### Example 2
+### <TranslatedText en="Example 2" bn="উদাহরণ ২" />
 ```
 List A: 1 -> 2 -> 3 -> 4
 List B: 5 -> 6 -> 7
@@ -26,7 +34,7 @@ List B: 5 -> 6 -> 7
 No intersection, return null
 ```
 
-### Example 3
+### <TranslatedText en="Example 3" bn="উদাহরণ ৩" />
 ```
 List A: 1 \
           3 -> 4 -> 5
@@ -35,289 +43,620 @@ List B: 2 /
 Intersection at node with value 3
 ```
 
-## Solution
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতিসমূহ" />
 
-### Approach 1: Using Length Difference (Optimal)
+### <TranslatedText en="Approach 1: Two Pointers (Optimal & Elegant)" bn="পদ্ধতি ১: টু পয়েন্টার (সর্বোত্তম ও মার্জিত)" />
 
-Calculate lengths, align the lists, then find intersection.
+<TranslatedText
+  en="Move pointers through both lists, swapping heads when reaching the end. Both pointers traverse the same total distance and meet at intersection."
+  bn="উভয় লিস্টের মাধ্যমে পয়েন্টার সরান, শেষে পৌঁছালে হেড অদলবদল করুন। উভয় পয়েন্টার একই মোট দূরত্ব অতিক্রম করে এবং ছেদে মিলিত হয়।"
+/>
 
-**Time Complexity:** O(m + n)
-**Space Complexity:** O(1)
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(m + n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
 
-```dart
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+Node* getIntersection(Node* head1, Node* head2) {
+    if (head1 == nullptr || head2 == nullptr) return nullptr;
+
+    Node* p1 = head1;
+    Node* p2 = head2;
+
+    // Traverse both lists
+    // When a pointer reaches end, redirect to other list's head
+    while (p1 != p2) {
+        p1 = (p1 == nullptr) ? head2 : p1->next;
+        p2 = (p2 == nullptr) ? head1 : p2->next;
+    }
+
+    return p1; // Will be nullptr if no intersection
+}
+
+int main() {
+    // Create intersection
+    Node* common = new Node(6);
+    common->next = new Node(7);
+    common->next->next = new Node(8);
+
+    // List A: 1 -> 2 -> 3 -> common
+    Node* head1 = new Node(1);
+    head1->next = new Node(2);
+    head1->next->next = new Node(3);
+    head1->next->next->next = common;
+
+    // List B: 4 -> 5 -> common
+    Node* head2 = new Node(4);
+    head2->next = new Node(5);
+    head2->next->next = common;
+
+    Node* intersection = getIntersection(head1, head2);
+
+    if (intersection != nullptr) {
+        cout << "Lists intersect at node with value "
+             << intersection->data << endl;
+    } else {
+        cout << "No intersection" << endl;
+    }
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def get_intersection(head1, head2):
+    """Find intersection using two pointers"""
+    if head1 is None or head2 is None:
+        return None
+
+    p1 = head1
+    p2 = head2
+
+    # Traverse both lists
+    # When a pointer reaches end, redirect to other list's head
+    while p1 != p2:
+        p1 = head2 if p1 is None else p1.next
+        p2 = head1 if p2 is None else p2.next
+
+    return p1  # Will be None if no intersection
+
+# Example usage
+# Create intersection
+common = Node(6)
+common.next = Node(7)
+common.next.next = Node(8)
+
+# List A: 1 -> 2 -> 3 -> common
+head1 = Node(1)
+head1.next = Node(2)
+head1.next.next = Node(3)
+head1.next.next.next = common
+
+# List B: 4 -> 5 -> common
+head2 = Node(4)
+head2.next = Node(5)
+head2.next.next = common
+
+intersection = get_intersection(head1, head2)
+
+if intersection is not None:
+    print(f"Lists intersect at node with value {intersection.data}")
+else:
+    print("No intersection")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
 class Node {
-  int data;
-  Node? next;
-
-  Node(this.data, [this.next]);
-}
-
-int getLength(Node? head) {
-  int length = 0;
-  Node? current = head;
-
-  while (current != null) {
-    length++;
-    current = current.next;
-  }
-
-  return length;
-}
-
-Node? getIntersection(Node? head1, Node? head2) {
-  if (head1 == null || head2 == null) return null;
-
-  // Get lengths
-  int len1 = getLength(head1);
-  int len2 = getLength(head2);
-
-  // Align the lists
-  Node? longer = len1 > len2 ? head1 : head2;
-  Node? shorter = len1 > len2 ? head2 : head1;
-  int diff = (len1 - len2).abs();
-
-  // Move longer list pointer forward by diff
-  for (int i = 0; i < diff; i++) {
-    longer = longer!.next;
-  }
-
-  // Find intersection
-  while (longer != null && shorter != null) {
-    if (identical(longer, shorter)) {
-      return longer;
+    constructor(data) {
+        this.data = data;
+        this.next = null;
     }
-    longer = longer.next;
-    shorter = shorter.next;
-  }
-
-  return null;
 }
 
-void main() {
-  // Create intersection
-  Node common = Node(6, Node(7, Node(8)));
+function getIntersection(head1, head2) {
+    if (head1 === null || head2 === null) return null;
 
-  // List A: 1 -> 2 -> 3 -> common
-  Node head1 = Node(1, Node(2, Node(3, common)));
+    let p1 = head1;
+    let p2 = head2;
 
-  // List B: 4 -> 5 -> common
-  Node head2 = Node(4, Node(5, common));
-
-  Node? intersection = getIntersection(head1, head2);
-
-  if (intersection != null) {
-    print('Lists intersect at node with value ${intersection.data}');
-  } else {
-    print('No intersection');
-  }
-}
-```
-
-### Approach 2: Using HashSet
-
-Store nodes from one list in a set, then check the other list.
-
-**Time Complexity:** O(m + n)
-**Space Complexity:** O(m) or O(n)
-
-```dart
-Node? getIntersectionHashSet(Node? head1, Node? head2) {
-  if (head1 == null || head2 == null) return null;
-
-  Set<Node> visited = {};
-
-  // Add all nodes from first list to set
-  Node? current = head1;
-  while (current != null) {
-    visited.add(current);
-    current = current.next;
-  }
-
-  // Check second list for intersection
-  current = head2;
-  while (current != null) {
-    if (visited.contains(current)) {
-      return current;
+    // Traverse both lists
+    // When a pointer reaches end, redirect to other list's head
+    while (p1 !== p2) {
+        p1 = (p1 === null) ? head2 : p1.next;
+        p2 = (p2 === null) ? head1 : p2.next;
     }
-    current = current.next;
-  }
 
-  return null;
+    return p1; // Will be null if no intersection
 }
 
-void main() {
-  Node common = Node(6, Node(7, Node(8)));
-  Node head1 = Node(1, Node(2, Node(3, common)));
-  Node head2 = Node(4, Node(5, common)));
+// Example usage
+// Create intersection
+const common = new Node(6);
+common.next = new Node(7);
+common.next.next = new Node(8);
 
-  Node? intersection = getIntersectionHashSet(head1, head2);
+// List A: 1 -> 2 -> 3 -> common
+const head1 = new Node(1);
+head1.next = new Node(2);
+head1.next.next = new Node(3);
+head1.next.next.next = common;
 
-  if (intersection != null) {
-    print('Lists intersect at node with value ${intersection.data}');
-  } else {
-    print('No intersection');
-  }
-}
-```
+// List B: 4 -> 5 -> common
+const head2 = new Node(4);
+head2.next = new Node(5);
+head2.next.next = common;
 
-### Approach 3: Two Pointers (Elegant)
+const intersection = getIntersection(head1, head2);
 
-Move pointers through both lists, swapping heads when reaching end.
-
-**Time Complexity:** O(m + n)
-**Space Complexity:** O(1)
-
-```dart
-Node? getIntersectionTwoPointers(Node? head1, Node? head2) {
-  if (head1 == null || head2 == null) return null;
-
-  Node? p1 = head1;
-  Node? p2 = head2;
-
-  // Traverse both lists
-  // When a pointer reaches end, redirect to other list's head
-  while (p1 != p2) {
-    p1 = (p1 == null) ? head2 : p1.next;
-    p2 = (p2 == null) ? head1 : p2.next;
-  }
-
-  return p1; // Will be null if no intersection
-}
-
-void main() {
-  Node common = Node(6, Node(7, Node(8)));
-  Node head1 = Node(1, Node(2, Node(3, common)));
-  Node head2 = Node(4, Node(5, common));
-
-  Node? intersection = getIntersectionTwoPointers(head1, head2);
-
-  if (intersection != null) {
-    print('Lists intersect at node with value ${intersection.data}');
-  } else {
-    print('No intersection');
-  }
+if (intersection !== null) {
+    console.log(`Lists intersect at node with value ${intersection.data}`);
+} else {
+    console.log('No intersection');
 }
 ```
+  </Tab>
+</Tabs>
 
-### Approach 4: Using Tail Comparison
+### <TranslatedText en="Approach 2: Using Length Difference" bn="পদ্ধতি ২: দৈর্ঘ্য পার্থক্য ব্যবহার করে" />
 
-Check if lists have the same tail (last node).
+<TranslatedText
+  en="Calculate lengths, align the lists by skipping nodes in the longer list, then find intersection by comparing nodes."
+  bn="দৈর্ঘ্য গণনা করুন, দীর্ঘ লিস্টে নোড এড়িয়ে লিস্ট সাজান, তারপর নোড তুলনা করে ছেদ খুঁজুন।"
+/>
 
-**Time Complexity:** O(m + n)
-**Space Complexity:** O(1)
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(m + n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
 
-```dart
-class IntersectionResult {
-  bool hasIntersection;
-  Node? intersectionNode;
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <cmath>
+using namespace std;
 
-  IntersectionResult(this.hasIntersection, [this.intersectionNode]);
-}
+struct Node {
+    int data;
+    Node* next;
 
-Node? getTail(Node? head) {
-  if (head == null) return null;
+    Node(int val) : data(val), next(nullptr) {}
+};
 
-  Node? current = head;
-  while (current!.next != null) {
-    current = current.next;
-  }
+int getLength(Node* head) {
+    int length = 0;
+    Node* current = head;
 
-  return current;
-}
-
-IntersectionResult checkAndGetIntersection(Node? head1, Node? head2) {
-  if (head1 == null || head2 == null) {
-    return IntersectionResult(false);
-  }
-
-  // Get tails
-  Node? tail1 = getTail(head1);
-  Node? tail2 = getTail(head2);
-
-  // If tails are different, no intersection
-  if (!identical(tail1, tail2)) {
-    return IntersectionResult(false);
-  }
-
-  // Find the actual intersection point
-  Node? intersection = getIntersection(head1, head2);
-
-  return IntersectionResult(true, intersection);
-}
-
-void main() {
-  Node common = Node(6, Node(7, Node(8)));
-  Node head1 = Node(1, Node(2, Node(3, common)));
-  Node head2 = Node(4, Node(5, common));
-
-  var result = checkAndGetIntersection(head1, head2);
-
-  if (result.hasIntersection) {
-    print('Lists intersect at node with value ${result.intersectionNode?.data}');
-  } else {
-    print('No intersection');
-  }
-}
-```
-
-### Approach 5: Mark Visited Nodes (Destructive)
-
-Temporarily modify nodes to mark visited (not recommended for production).
-
-**Time Complexity:** O(m + n)
-**Space Complexity:** O(1)
-
-```dart
-Node? getIntersectionMarking(Node? head1, Node? head2) {
-  if (head1 == null || head2 == null) return null;
-
-  // Mark all nodes in first list by negating data
-  Node? current = head1;
-  while (current != null) {
-    current.data = -current.data;
-    current = current.next;
-  }
-
-  // Find first marked node in second list
-  current = head2;
-  Node? intersection;
-
-  while (current != null) {
-    if (current.data < 0) {
-      intersection = current;
-      break;
+    while (current != nullptr) {
+        length++;
+        current = current->next;
     }
-    current = current.next;
-  }
 
-  // Restore first list
-  current = head1;
-  while (current != null) {
-    current.data = -current.data;
-    current = current.next;
-  }
-
-  return intersection;
+    return length;
 }
 
-void main() {
-  Node common = Node(6, Node(7, Node(8)));
-  Node head1 = Node(1, Node(2, Node(3, common)));
-  Node head2 = Node(4, Node(5, common));
+Node* getIntersectionByLength(Node* head1, Node* head2) {
+    if (head1 == nullptr || head2 == nullptr) return nullptr;
 
-  Node? intersection = getIntersectionMarking(head1, head2);
+    // Get lengths
+    int len1 = getLength(head1);
+    int len2 = getLength(head2);
 
-  if (intersection != null) {
-    print('Lists intersect at node with value ${intersection.data}');
-  } else {
-    print('No intersection');
-  }
+    // Align the lists
+    Node* longer = (len1 > len2) ? head1 : head2;
+    Node* shorter = (len1 > len2) ? head2 : head1;
+    int diff = abs(len1 - len2);
+
+    // Move longer list pointer forward by diff
+    for (int i = 0; i < diff; i++) {
+        longer = longer->next;
+    }
+
+    // Find intersection
+    while (longer != nullptr && shorter != nullptr) {
+        if (longer == shorter) {
+            return longer;
+        }
+        longer = longer->next;
+        shorter = shorter->next;
+    }
+
+    return nullptr;
+}
+
+int main() {
+    // Create intersection
+    Node* common = new Node(6);
+    common->next = new Node(7);
+    common->next->next = new Node(8);
+
+    // List A: 1 -> 2 -> 3 -> common
+    Node* head1 = new Node(1);
+    head1->next = new Node(2);
+    head1->next->next = new Node(3);
+    head1->next->next->next = common;
+
+    // List B: 4 -> 5 -> common
+    Node* head2 = new Node(4);
+    head2->next = new Node(5);
+    head2->next->next = common;
+
+    Node* intersection = getIntersectionByLength(head1, head2);
+
+    if (intersection != nullptr) {
+        cout << "Lists intersect at node with value "
+             << intersection->data << endl;
+    } else {
+        cout << "No intersection" << endl;
+    }
+
+    return 0;
 }
 ```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
 
-## Visualization
+def get_length(head):
+    """Get length of linked list"""
+    length = 0
+    current = head
 
-### Two Pointer Approach:
+    while current is not None:
+        length += 1
+        current = current.next
+
+    return length
+
+def get_intersection_by_length(head1, head2):
+    """Find intersection using length difference"""
+    if head1 is None or head2 is None:
+        return None
+
+    # Get lengths
+    len1 = get_length(head1)
+    len2 = get_length(head2)
+
+    # Align the lists
+    longer = head1 if len1 > len2 else head2
+    shorter = head2 if len1 > len2 else head1
+    diff = abs(len1 - len2)
+
+    # Move longer list pointer forward by diff
+    for i in range(diff):
+        longer = longer.next
+
+    # Find intersection
+    while longer is not None and shorter is not None:
+        if longer == shorter:
+            return longer
+        longer = longer.next
+        shorter = shorter.next
+
+    return None
+
+# Example usage
+# Create intersection
+common = Node(6)
+common.next = Node(7)
+common.next.next = Node(8)
+
+# List A: 1 -> 2 -> 3 -> common
+head1 = Node(1)
+head1.next = Node(2)
+head1.next.next = Node(3)
+head1.next.next.next = common
+
+# List B: 4 -> 5 -> common
+head2 = Node(4)
+head2.next = Node(5)
+head2.next.next = common
+
+intersection = get_intersection_by_length(head1, head2)
+
+if intersection is not None:
+    print(f"Lists intersect at node with value {intersection.data}")
+else:
+    print("No intersection")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+function getLength(head) {
+    let length = 0;
+    let current = head;
+
+    while (current !== null) {
+        length++;
+        current = current.next;
+    }
+
+    return length;
+}
+
+function getIntersectionByLength(head1, head2) {
+    if (head1 === null || head2 === null) return null;
+
+    // Get lengths
+    const len1 = getLength(head1);
+    const len2 = getLength(head2);
+
+    // Align the lists
+    let longer = (len1 > len2) ? head1 : head2;
+    let shorter = (len1 > len2) ? head2 : head1;
+    const diff = Math.abs(len1 - len2);
+
+    // Move longer list pointer forward by diff
+    for (let i = 0; i < diff; i++) {
+        longer = longer.next;
+    }
+
+    // Find intersection
+    while (longer !== null && shorter !== null) {
+        if (longer === shorter) {
+            return longer;
+        }
+        longer = longer.next;
+        shorter = shorter.next;
+    }
+
+    return null;
+}
+
+// Example usage
+// Create intersection
+const common = new Node(6);
+common.next = new Node(7);
+common.next.next = new Node(8);
+
+// List A: 1 -> 2 -> 3 -> common
+const head1 = new Node(1);
+head1.next = new Node(2);
+head1.next.next = new Node(3);
+head1.next.next.next = common;
+
+// List B: 4 -> 5 -> common
+const head2 = new Node(4);
+head2.next = new Node(5);
+head2.next.next = common;
+
+const intersection = getIntersectionByLength(head1, head2);
+
+if (intersection !== null) {
+    console.log(`Lists intersect at node with value ${intersection.data}`);
+} else {
+    console.log('No intersection');
+}
+```
+  </Tab>
+</Tabs>
+
+### <TranslatedText en="Approach 3: Using HashSet" bn="পদ্ধতি ৩: হ্যাশসেট ব্যবহার করে" />
+
+<TranslatedText
+  en="Store nodes from one list in a set, then check the other list for the first node that appears in the set."
+  bn="একটি লিস্ট থেকে নোডগুলি একটি সেটে সংরক্ষণ করুন, তারপর সেটে উপস্থিত প্রথম নোডের জন্য অন্য লিস্ট পরীক্ষা করুন।"
+/>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(m + n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(m) <TranslatedText en="or" bn="অথবা" /> O(n)
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <unordered_set>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+Node* getIntersectionHashSet(Node* head1, Node* head2) {
+    if (head1 == nullptr || head2 == nullptr) return nullptr;
+
+    unordered_set<Node*> visited;
+
+    // Add all nodes from first list to set
+    Node* current = head1;
+    while (current != nullptr) {
+        visited.insert(current);
+        current = current->next;
+    }
+
+    // Check second list for intersection
+    current = head2;
+    while (current != nullptr) {
+        if (visited.count(current)) {
+            return current;
+        }
+        current = current->next;
+    }
+
+    return nullptr;
+}
+
+int main() {
+    // Create intersection
+    Node* common = new Node(6);
+    common->next = new Node(7);
+    common->next->next = new Node(8);
+
+    // List A: 1 -> 2 -> 3 -> common
+    Node* head1 = new Node(1);
+    head1->next = new Node(2);
+    head1->next->next = new Node(3);
+    head1->next->next->next = common;
+
+    // List B: 4 -> 5 -> common
+    Node* head2 = new Node(4);
+    head2->next = new Node(5);
+    head2->next->next = common;
+
+    Node* intersection = getIntersectionHashSet(head1, head2);
+
+    if (intersection != nullptr) {
+        cout << "Lists intersect at node with value "
+             << intersection->data << endl;
+    } else {
+        cout << "No intersection" << endl;
+    }
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def get_intersection_hashset(head1, head2):
+    """Find intersection using hashset"""
+    if head1 is None or head2 is None:
+        return None
+
+    visited = set()
+
+    # Add all nodes from first list to set
+    current = head1
+    while current is not None:
+        visited.add(current)
+        current = current.next
+
+    # Check second list for intersection
+    current = head2
+    while current is not None:
+        if current in visited:
+            return current
+        current = current.next
+
+    return None
+
+# Example usage
+# Create intersection
+common = Node(6)
+common.next = Node(7)
+common.next.next = Node(8)
+
+# List A: 1 -> 2 -> 3 -> common
+head1 = Node(1)
+head1.next = Node(2)
+head1.next.next = Node(3)
+head1.next.next.next = common
+
+# List B: 4 -> 5 -> common
+head2 = Node(4)
+head2.next = Node(5)
+head2.next.next = common
+
+intersection = get_intersection_hashset(head1, head2)
+
+if intersection is not None:
+    print(f"Lists intersect at node with value {intersection.data}")
+else:
+    print("No intersection")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+function getIntersectionHashSet(head1, head2) {
+    if (head1 === null || head2 === null) return null;
+
+    const visited = new Set();
+
+    // Add all nodes from first list to set
+    let current = head1;
+    while (current !== null) {
+        visited.add(current);
+        current = current.next;
+    }
+
+    // Check second list for intersection
+    current = head2;
+    while (current !== null) {
+        if (visited.has(current)) {
+            return current;
+        }
+        current = current.next;
+    }
+
+    return null;
+}
+
+// Example usage
+// Create intersection
+const common = new Node(6);
+common.next = new Node(7);
+common.next.next = new Node(8);
+
+// List A: 1 -> 2 -> 3 -> common
+const head1 = new Node(1);
+head1.next = new Node(2);
+head1.next.next = new Node(3);
+head1.next.next.next = common;
+
+// List B: 4 -> 5 -> common
+const head2 = new Node(4);
+head2.next = new Node(5);
+head2.next.next = common;
+
+const intersection = getIntersectionHashSet(head1, head2);
+
+if (intersection !== null) {
+    console.log(`Lists intersect at node with value ${intersection.data}`);
+} else {
+    console.log('No intersection');
+}
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Algorithm Walkthrough" bn="অ্যালগরিদম ধাপে ধাপে বর্ণনা" />
+
+<TranslatedText
+  en="Let's trace through the Two Pointers approach (Approach 1) with the following lists:"
+  bn="চলুন নিম্নলিখিত লিস্টের সাথে টু পয়েন্টার পদ্ধতি (পদ্ধতি ১) ট্রেস করি:"
+/>
 
 ```
 List A: 1 -> 2 -> 3 \
@@ -326,107 +665,94 @@ List B: 4 -> 5 ------/
 
 Length A = 6, Length B = 5
 
-Step 1: p1 = 1, p2 = 4
-Step 2: p1 = 2, p2 = 5
-Step 3: p1 = 3, p2 = 6
-Step 4: p1 = 6, p2 = 7
-Step 5: p1 = 7, p2 = 8
-Step 6: p1 = 8, p2 = null
-Step 7: p1 = null, p2 = 1 (switch to head1)
-Step 8: p1 = 4 (switch to head2), p2 = 2
-Step 9: p1 = 5, p2 = 3
-Step 10: p1 = 6, p2 = 6 ← Intersection found!
+Initial state:
+  p1 = 1 (head1)
+  p2 = 4 (head2)
+
+Step 1: p1 = 2, p2 = 5
+Step 2: p1 = 3, p2 = 6
+Step 3: p1 = 6, p2 = 7
+Step 4: p1 = 7, p2 = 8
+Step 5: p1 = 8, p2 = null
+Step 6: p1 = null, p2 = 1 (p2 switches to head1)
+Step 7: p1 = 4 (p1 switches to head2), p2 = 2
+Step 8: p1 = 5, p2 = 3
+Step 9: p1 = 6, p2 = 6  ← Both pointers meet!
+
+Result: Intersection at node 6
 ```
 
-## Comparison of Approaches
+<TranslatedText
+  en="**Why It Works**: Both pointers traverse exactly (m + n) nodes. If there's an intersection, they will meet at it. If not, both will reach null simultaneously."
+  bn="**কেন এটি কাজ করে**: উভয় পয়েন্টার ঠিক (m + n) নোড অতিক্রম করে। যদি ছেদ থাকে, তারা এটিতে মিলিত হবে। যদি না থাকে, উভয়ই একসাথে null-এ পৌঁছাবে।"
+/>
 
-| Approach | Time | Space | Pros | Cons |
+## <TranslatedText en="Mathematical Proof" bn="গাণিতিক প্রমাণ" />
+
+```
+If lists intersect at node k from the end:
+  List A: length = m, unique part = (m - k)
+  List B: length = n, unique part = (n - k)
+
+Pointer 1 path: m + (n - k) = m + n - k
+Pointer 2 path: n + (m - k) = m + n - k
+
+Both travel same distance and meet at intersection!
+```
+
+## <TranslatedText en="Comparison of Approaches" bn="পদ্ধতিগুলোর তুলনা" />
+
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time" bn="সময়" /> | <TranslatedText en="Space" bn="স্থান" /> | <TranslatedText en="Pros" bn="সুবিধা" /> | <TranslatedText en="Cons" bn="অসুবিধা" /> |
 |----------|------|-------|------|------|
-| Length Difference | O(m+n) | O(1) | Optimal, clear | Requires 3 passes |
-| HashSet | O(m+n) | O(m) | Simple | Extra space |
-| Two Pointers | O(m+n) | O(1) | Elegant, optimal | Subtle logic |
-| Tail Comparison | O(m+n) | O(1) | Quick check | Still needs full search |
-| Marking | O(m+n) | O(1) | No extra space | Modifies data |
+| <TranslatedText en="Two Pointers" bn="টু পয়েন্টার" /> | O(m+n) | O(1) | <TranslatedText en="Elegant, optimal" bn="মার্জিত, সর্বোত্তম" /> | <TranslatedText en="Subtle logic" bn="সূক্ষ্ম লজিক" /> |
+| <TranslatedText en="Length Difference" bn="দৈর্ঘ্য পার্থক্য" /> | O(m+n) | O(1) | <TranslatedText en="Clear, intuitive" bn="স্পষ্ট, স্বজ্ঞাত" /> | <TranslatedText en="Requires 3 passes" bn="৩টি পাস প্রয়োজন" /> |
+| <TranslatedText en="HashSet" bn="হ্যাশসেট" /> | O(m+n) | O(m) | <TranslatedText en="Simple, easy" bn="সহজ, সরল" /> | <TranslatedText en="Extra space" bn="অতিরিক্ত স্থান" /> |
 
-## Key Points
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
 
-1. **Identity Check**: Use `identical()` in Dart, not `==`
-2. **Same Tail**: If lists intersect, they share the same tail
-3. **No Cycle**: Assumes lists don't contain cycles
-4. **Physical Node**: Intersection is physical node, not value
-5. **Two Pointer Trick**: Both traverse same total distance
+1. **<TranslatedText en="Node Identity, Not Value" bn="নোড আইডেন্টিটি, মান নয়" />**: <TranslatedText en="Intersection is about the same physical node object, not nodes with the same value." bn="ছেদ একই ফিজিক্যাল নোড অবজেক্ট সম্পর্কে, একই মান সহ নোড নয়।" />
 
-## Common Pitfalls
+2. **<TranslatedText en="Two Pointers Magic" bn="টু পয়েন্টার ম্যাজিক" />**: <TranslatedText en="By switching heads, both pointers travel the same total distance (m + n), ensuring they meet at the intersection." bn="হেড পরিবর্তন করে, উভয় পয়েন্টার একই মোট দূরত্ব (m + n) ভ্রমণ করে, নিশ্চিত করে যে তারা ছেদে মিলিত হয়।" />
 
-- Comparing values instead of node identity
-- Not handling different length lists
-- Not handling null lists
-- Modifying the original lists unintentionally
-- Assuming intersection means same values
+3. **<TranslatedText en="Same Tail Means Intersection" bn="একই টেইল মানে ছেদ" />**: <TranslatedText en="If two lists intersect, they share the same tail (all nodes from intersection to the end)." bn="যদি দুটি লিস্ট ছেদ করে, তারা একই টেইল শেয়ার করে (ছেদ থেকে শেষ পর্যন্ত সব নোড)।" />
 
-## Test Cases
+4. **<TranslatedText en="No Cycle Assumption" bn="কোনো সাইকেল অনুমান নেই" />**: <TranslatedText en="These algorithms assume lists don't contain cycles. For cyclic lists, use Floyd's cycle detection first." bn="এই অ্যালগরিদমগুলি অনুমান করে লিস্টে সাইকেল নেই। সাইক্লিক লিস্টের জন্য, প্রথমে ফ্লয়েডের সাইকেল ডিটেকশন ব্যবহার করুন।" />
 
-```dart
-void testIntersection() {
-  // Test 1: With intersection
-  Node common1 = Node(6, Node(7, Node(8)));
-  Node head1a = Node(1, Node(2, Node(3, common1)));
-  Node head1b = Node(4, Node(5, common1));
-  assert(getIntersection(head1a, head1b)?.data == 6);
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
 
-  // Test 2: No intersection
-  Node head2a = Node(1, Node(2, Node(3)));
-  Node head2b = Node(4, Node(5, Node(6)));
-  assert(getIntersection(head2a, head2b) == null);
+1. **<TranslatedText en="Start with Two Pointers" bn="টু পয়েন্টার দিয়ে শুরু করুন" />**: <TranslatedText en="This is the most elegant solution - demonstrate it first, then mention alternatives." bn="এটি সবচেয়ে মার্জিত সমাধান - প্রথমে এটি প্রদর্শন করুন, তারপর বিকল্পগুলি উল্লেখ করুন।" />
 
-  // Test 3: Intersection at head
-  Node common3 = Node(1, Node(2, Node(3)));
-  assert(identical(getIntersection(common3, common3), common3));
+2. **<TranslatedText en="Clarify Node vs Value" bn="নোড বনাম মান স্পষ্ট করুন" />**: <TranslatedText en="Ask if intersection means same node object or same value - it's always the object." bn="জিজ্ঞাসা করুন ছেদ মানে একই নোড অবজেক্ট নাকি একই মান - এটি সবসময় অবজেক্ট।" />
 
-  // Test 4: One list empty
-  Node head4 = Node(1, Node(2));
-  assert(getIntersection(head4, null) == null);
+3. **<TranslatedText en="Handle Edge Cases" bn="প্রান্তিক কেস পরিচালনা করুন" />**:
+   - <TranslatedText en="One or both lists are null → Return null" bn="এক বা উভয় লিস্ট null → null রিটার্ন করুন" />
+   - <TranslatedText en="No intersection → Both pointers reach null" bn="কোনো ছেদ নেই → উভয় পয়েন্টার null-এ পৌঁছায়" />
+   - <TranslatedText en="Intersection at head → Immediately found" bn="হেডে ছেদ → তাৎক্ষণিকভাবে পাওয়া যায়" />
 
-  // Test 5: Different lengths
-  Node common5 = Node(5);
-  Node head5a = Node(1, Node(2, Node(3, Node(4, common5))));
-  Node head5b = Node(9, common5);
-  assert(getIntersection(head5a, head5b)?.data == 5);
+4. **<TranslatedText en="Explain the Math" bn="গণিত ব্যাখ্যা করুন" />**: <TranslatedText en="Show why both pointers travel the same distance: m + (n - k) = n + (m - k)." bn="দেখান কেন উভয় পয়েন্টার একই দূরত্ব ভ্রমণ করে: m + (n - k) = n + (m - k)।" />
 
-  print('All tests passed!');
-}
-```
+## <TranslatedText en="Common Pitfalls" bn="সাধারণ সমস্যাসমূহ" />
 
-## Why Two Pointer Works
+1. **<TranslatedText en="Comparing Values Instead of References" bn="রেফারেন্সের পরিবর্তে মান তুলনা করা" />**: <TranslatedText en="Use identity comparison (==/=== in most languages), not value equality." bn="আইডেন্টিটি তুলনা ব্যবহার করুন (বেশিরভাগ ভাষায় ==/===), মান সমতা নয়।" />
 
-Both pointers traverse the same total distance:
-- Length of A + Length of B
-- When they meet, it's either at intersection or both are null
+2. **<TranslatedText en="Not Handling Different Lengths" bn="বিভিন্ন দৈর্ঘ্য পরিচালনা না করা" />**: <TranslatedText en="The two-pointer approach elegantly handles different lengths by swapping." bn="টু-পয়েন্টার পদ্ধতি অদলবদল করে বিভিন্ন দৈর্ঘ্য মার্জিতভাবে পরিচালনা করে।" />
 
-```
-If lengths are m and n:
-Pointer 1: m steps (list A) + (n - k) steps (list B) = m + n - k
-Pointer 2: n steps (list B) + (m - k) steps (list A) = m + n - k
+3. **<TranslatedText en="Infinite Loop" bn="অসীম লুপ" />**: <TranslatedText en="Ensure the swap logic is correct - both pointers must eventually align." bn="নিশ্চিত করুন অদলবদল লজিক সঠিক - উভয় পয়েন্টার অবশেষে সাজানো হতে হবে।" />
 
-Where k is the length from intersection to end
-They meet at the intersection!
-```
+4. **<TranslatedText en="Null Checks" bn="Null চেক" />**: <TranslatedText en="Always check if either list is null before processing." bn="প্রক্রিয়াকরণের আগে সবসময় পরীক্ষা করুন যেকোনো লিস্ট null কিনা।" />
 
-## Applications
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
 
-- Detecting shared memory in data structures
-- Finding common ancestors
-- Merge points in version control
-- Dependency resolution
-- Graph cycle detection variations
+1. <TranslatedText en="The two-pointer approach is optimal with O(m+n) time and O(1) space - both pointers travel exactly (m + n) nodes." bn="টু-পয়েন্টার পদ্ধতি O(m+n) সময় এবং O(1) স্থান সহ সর্বোত্তম - উভয় পয়েন্টার ঠিক (m + n) নোড ভ্রমণ করে।" />
 
-## Related Problems
+2. <TranslatedText en="Intersection is about node identity (same memory address), not node value." bn="ছেদ নোড আইডেন্টিটি (একই মেমরি ঠিকানা) সম্পর্কে, নোড মান নয়।" />
 
-- Linked list cycle detection
-- Merge two sorted lists
-- Clone list with random pointer
-- Find the starting point of a cycle
+3. <TranslatedText en="When a pointer reaches null, redirect it to the other list's head to equalize distances." bn="যখন একটি পয়েন্টার null-এ পৌঁছায়, দূরত্ব সমান করতে এটি অন্য লিস্টের হেডে পুনঃনির্দেশ করুন।" />
 
-## Reference
+4. <TranslatedText en="If lists intersect, they share the same tail from intersection point to the end." bn="যদি লিস্ট ছেদ করে, তারা ছেদ বিন্দু থেকে শেষ পর্যন্ত একই টেইল শেয়ার করে।" />
+
+5. <TranslatedText en="Handle edge cases: null lists, no intersection (both pointers reach null), and lists of different lengths." bn="প্রান্তিক কেস পরিচালনা করুন: null লিস্ট, কোনো ছেদ নেই (উভয় পয়েন্টার null-এ পৌঁছায়), এবং বিভিন্ন দৈর্ঘ্যের লিস্ট।" />
+
+## <TranslatedText en="Reference" bn="রেফারেন্স" />
 
 [LeetCode - Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/solution/)

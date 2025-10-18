@@ -3,545 +3,791 @@ title: 49. Reverse a Linked List
 description: How to reverse a singly linked list using iteration and recursion
 ---
 
-## Problem Statement
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { TranslatedText, LanguageSwitcher } from '@/components/LanguageSwitcher';
 
-Write a program to reverse a singly linked list. Implement both iterative and recursive approaches.
+<LanguageSwitcher />
 
-## Examples
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
 
-### Example 1
+<TranslatedText
+  en="Write a program to reverse a singly linked list. Implement both iterative and recursive approaches."
+  bn="একটি সিঙ্গেল লিঙ্কড লিস্ট রিভার্স করার জন্য একটি প্রোগ্রাম লিখুন। ইটারেটিভ এবং রিকার্সিভ উভয় পদ্ধতি বাস্তবায়ন করুন।"
+/>
+
+## <TranslatedText en="Examples" bn="উদাহরণসমূহ" />
+
+### <TranslatedText en="Example 1" bn="উদাহরণ ১" />
 ```
 Input: 1 -> 2 -> 3 -> 4 -> 5 -> null
 Output: 5 -> 4 -> 3 -> 2 -> 1 -> null
 ```
 
-### Example 2
+### <TranslatedText en="Example 2" bn="উদাহরণ ২" />
 ```
 Input: 1 -> 2 -> null
 Output: 2 -> 1 -> null
 ```
 
-### Example 3
+### <TranslatedText en="Example 3" bn="উদাহরণ ৩" />
 ```
 Input: 1 -> null
 Output: 1 -> null
 ```
 
-## Linked List Node Definition
+## <TranslatedText en="Linked List Node Definition" bn="লিঙ্কড লিস্ট নোড সংজ্ঞা" />
 
-```dart
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+struct Node {
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
 class Node {
-  int data;
-  Node? next;
-
-  Node(this.data, [this.next]);
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
 }
 ```
+  </Tab>
+</Tabs>
 
-## Solution
+## <TranslatedText en="Solution Approaches" bn="সমাধান পদ্ধতিসমূহ" />
 
-### Approach 1: Iterative (Optimal)
+### <TranslatedText en="Approach 1: Iterative (Optimal)" bn="পদ্ধতি ১: ইটারেটিভ (সর্বোত্তম)" />
 
-Reverse the list by changing the next pointers iteratively.
+<TranslatedText
+  en="Reverse the list by changing the next pointers iteratively using three pointers (prev, current, next). This is the recommended approach."
+  bn="তিনটি পয়েন্টার (prev, current, next) ব্যবহার করে ইটারেটিভভাবে নেক্সট পয়েন্টার পরিবর্তন করে লিস্ট রিভার্স করুন। এটি প্রস্তাবিত পদ্ধতি।"
+/>
 
-**Time Complexity:** O(n)
-**Space Complexity:** O(1)
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
 
-```dart
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+Node* reverseListIterative(Node* head) {
+    Node* prev = nullptr;
+    Node* current = head;
+    Node* next = nullptr;
+
+    while (current != nullptr) {
+        // Store next node
+        next = current->next;
+
+        // Reverse the link
+        current->next = prev;
+
+        // Move prev and current one step forward
+        prev = current;
+        current = next;
+    }
+
+    return prev; // New head
+}
+
+void printList(Node* head) {
+    Node* current = head;
+    while (current != nullptr) {
+        cout << current->data << " -> ";
+        current = current->next;
+    }
+    cout << "null" << endl;
+}
+
+int main() {
+    // Create list: 1 -> 2 -> 3 -> 4 -> 5
+    Node* head = new Node(1);
+    head->next = new Node(2);
+    head->next->next = new Node(3);
+    head->next->next->next = new Node(4);
+    head->next->next->next->next = new Node(5);
+
+    cout << "Original list:" << endl;
+    printList(head);
+
+    Node* reversed = reverseListIterative(head);
+
+    cout << "\nReversed list:" << endl;
+    printList(reversed);
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def reverse_list_iterative(head):
+    """Reverse linked list iteratively"""
+    prev = None
+    current = head
+
+    while current is not None:
+        # Store next node
+        next_node = current.next
+
+        # Reverse the link
+        current.next = prev
+
+        # Move prev and current one step forward
+        prev = current
+        current = next_node
+
+    return prev  # New head
+
+def print_list(head):
+    """Print linked list"""
+    current = head
+    while current is not None:
+        print(f"{current.data} -> ", end="")
+        current = current.next
+    print("null")
+
+# Example usage
+# Create list: 1 -> 2 -> 3 -> 4 -> 5
+head = Node(1)
+head.next = Node(2)
+head.next.next = Node(3)
+head.next.next.next = Node(4)
+head.next.next.next.next = Node(5)
+
+print("Original list:")
+print_list(head)
+
+reversed_head = reverse_list_iterative(head)
+
+print("\nReversed list:")
+print_list(reversed_head)
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
 class Node {
-  int data;
-  Node? next;
-
-  Node(this.data, [this.next]);
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
 }
 
-Node? reverseListIterative(Node? head) {
-  Node? prev = null;
-  Node? current = head;
-  Node? next;
+function reverseListIterative(head) {
+    let prev = null;
+    let current = head;
+    let next = null;
 
-  while (current != null) {
-    // Store next node
-    next = current.next;
+    while (current !== null) {
+        // Store next node
+        next = current.next;
 
-    // Reverse the link
-    current.next = prev;
+        // Reverse the link
+        current.next = prev;
 
-    // Move prev and current one step forward
-    prev = current;
-    current = next;
-  }
-
-  return prev; // New head
-}
-
-void printList(Node? head) {
-  Node? current = head;
-  while (current != null) {
-    print('${current.data} -> ', end: '');
-    current = current.next;
-  }
-  print('null');
-}
-
-void print(String text, {String end = '\n'}) {
-  stdout.write(text + end);
-}
-
-void main() {
-  // Create list: 1 -> 2 -> 3 -> 4 -> 5
-  Node head = Node(1, Node(2, Node(3, Node(4, Node(5)))));
-
-  print('Original list:');
-  printList(head);
-
-  Node? reversed = reverseListIterative(head);
-
-  print('\nReversed list:');
-  printList(reversed);
-}
-```
-
-### Approach 2: Recursive
-
-Elegant recursive solution.
-
-**Time Complexity:** O(n)
-**Space Complexity:** O(n) due to recursion stack
-
-```dart
-Node? reverseListRecursive(Node? head) {
-  // Base cases
-  if (head == null || head.next == null) {
-    return head;
-  }
-
-  // Reverse the rest of the list
-  Node? newHead = reverseListRecursive(head.next);
-
-  // Make the next node point back to current
-  head.next!.next = head;
-
-  // Remove the link from current to next
-  head.next = null;
-
-  return newHead;
-}
-
-void main() {
-  Node head = Node(1, Node(2, Node(3, Node(4, Node(5)))));
-
-  print('Original list:');
-  printList(head);
-
-  Node? reversed = reverseListRecursive(head);
-
-  print('\nReversed list:');
-  printList(reversed);
-}
-```
-
-### Approach 3: Using Stack
-
-Store nodes in a stack and rebuild the list.
-
-**Time Complexity:** O(n)
-**Space Complexity:** O(n)
-
-```dart
-Node? reverseListStack(Node? head) {
-  if (head == null) return null;
-
-  List<Node> stack = [];
-  Node? current = head;
-
-  // Push all nodes to stack
-  while (current != null) {
-    stack.add(current);
-    current = current.next;
-  }
-
-  // Pop from stack and rebuild
-  Node? newHead = stack.removeLast();
-  current = newHead;
-
-  while (stack.isNotEmpty) {
-    current!.next = stack.removeLast();
-    current = current.next;
-  }
-
-  current!.next = null;
-
-  return newHead;
-}
-
-void main() {
-  Node head = Node(1, Node(2, Node(3, Node(4, Node(5)))));
-
-  print('Original list:');
-  printList(head);
-
-  Node? reversed = reverseListStack(head);
-
-  print('\nReversed list:');
-  printList(reversed);
-}
-```
-
-### Approach 4: Tail Recursive
-
-Tail-recursive version that can be optimized by compiler.
-
-**Time Complexity:** O(n)
-**Space Complexity:** O(n) for recursion stack
-
-```dart
-Node? reverseListTailRecursive(Node? head, [Node? prev]) {
-  if (head == null) {
-    return prev;
-  }
-
-  Node? next = head.next;
-  head.next = prev;
-
-  return reverseListTailRecursive(next, head);
-}
-
-void main() {
-  Node head = Node(1, Node(2, Node(3, Node(4, Node(5)))));
-
-  print('Original list:');
-  printList(head);
-
-  Node? reversed = reverseListTailRecursive(head);
-
-  print('\nReversed list:');
-  printList(reversed);
-}
-```
-
-### Approach 5: Reverse in Groups
-
-Reverse the list in groups of k nodes.
-
-**Time Complexity:** O(n)
-**Space Complexity:** O(1)
-
-```dart
-Node? reverseInGroups(Node? head, int k) {
-  if (head == null) return null;
-
-  Node? current = head;
-  Node? prev = null;
-  Node? next;
-  int count = 0;
-
-  // Reverse first k nodes
-  while (current != null && count < k) {
-    next = current.next;
-    current.next = prev;
-    prev = current;
-    current = next;
-    count++;
-  }
-
-  // Recursively reverse the rest
-  if (next != null) {
-    head.next = reverseInGroups(next, k);
-  }
-
-  return prev;
-}
-
-void main() {
-  Node head = Node(1, Node(2, Node(3, Node(4, Node(5, Node(6, Node(7, Node(8))))))));
-
-  print('Original list:');
-  printList(head);
-
-  Node? reversed = reverseInGroups(head, 3);
-
-  print('\nReversed in groups of 3:');
-  printList(reversed);
-}
-```
-
-### Approach 6: Complete LinkedList Class
-
-Full implementation with reverse method.
-
-```dart
-class LinkedList {
-  Node? head;
-
-  void add(int data) {
-    if (head == null) {
-      head = Node(data);
-      return;
+        // Move prev and current one step forward
+        prev = current;
+        current = next;
     }
 
-    Node? current = head;
-    while (current!.next != null) {
-      current = current.next;
-    }
-    current.next = Node(data);
-  }
-
-  void reverse() {
-    Node? prev = null;
-    Node? current = head;
-    Node? next;
-
-    while (current != null) {
-      next = current.next;
-      current.next = prev;
-      prev = current;
-      current = next;
-    }
-
-    head = prev;
-  }
-
-  void display() {
-    Node? current = head;
-    while (current != null) {
-      stdout.write('${current.data} -> ');
-      current = current.next;
-    }
-    print('null');
-  }
-
-  int? get(int index) {
-    Node? current = head;
-    int count = 0;
-
-    while (current != null) {
-      if (count == index) {
-        return current.data;
-      }
-      count++;
-      current = current.next;
-    }
-
-    return null;
-  }
-
-  int get length {
-    int count = 0;
-    Node? current = head;
-
-    while (current != null) {
-      count++;
-      current = current.next;
-    }
-
-    return count;
-  }
+    return prev; // New head
 }
 
-void main() {
-  LinkedList list = LinkedList();
+function printList(head) {
+    let current = head;
+    let result = '';
+    while (current !== null) {
+        result += current.data + ' -> ';
+        current = current.next;
+    }
+    result += 'null';
+    console.log(result);
+}
 
-  list.add(1);
-  list.add(2);
-  list.add(3);
-  list.add(4);
-  list.add(5);
+// Example usage
+// Create list: 1 -> 2 -> 3 -> 4 -> 5
+const head = new Node(1);
+head.next = new Node(2);
+head.next.next = new Node(3);
+head.next.next.next = new Node(4);
+head.next.next.next.next = new Node(5);
 
-  print('Original list:');
-  list.display();
-  print('Length: ${list.length}');
+console.log('Original list:');
+printList(head);
 
-  list.reverse();
+const reversed = reverseListIterative(head);
 
-  print('\nReversed list:');
-  list.display();
+console.log('\nReversed list:');
+printList(reversed);
+```
+  </Tab>
+</Tabs>
 
-  print('\nElement at index 2: ${list.get(2)}');
+### <TranslatedText en="Approach 2: Recursive" bn="পদ্ধতি ২: রিকার্সিভ" />
+
+<TranslatedText
+  en="Elegant recursive solution that reverses the list by recursively reversing the rest of the list and then adjusting pointers."
+  bn="একটি মার্জিত রিকার্সিভ সমাধান যা লিস্টের বাকি অংশ রিকার্সিভভাবে রিভার্স করে এবং তারপর পয়েন্টার সমন্বয় করে লিস্ট রিভার্স করে।"
+/>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n) <TranslatedText en="due to recursion stack" bn="রিকার্শন স্ট্যাকের কারণে" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+Node* reverseListRecursive(Node* head) {
+    // Base cases
+    if (head == nullptr || head->next == nullptr) {
+        return head;
+    }
+
+    // Reverse the rest of the list
+    Node* newHead = reverseListRecursive(head->next);
+
+    // Make the next node point back to current
+    head->next->next = head;
+
+    // Remove the link from current to next
+    head->next = nullptr;
+
+    return newHead;
+}
+
+void printList(Node* head) {
+    Node* current = head;
+    while (current != nullptr) {
+        cout << current->data << " -> ";
+        current = current->next;
+    }
+    cout << "null" << endl;
+}
+
+int main() {
+    // Create list: 1 -> 2 -> 3 -> 4 -> 5
+    Node* head = new Node(1);
+    head->next = new Node(2);
+    head->next->next = new Node(3);
+    head->next->next->next = new Node(4);
+    head->next->next->next->next = new Node(5);
+
+    cout << "Original list:" << endl;
+    printList(head);
+
+    Node* reversed = reverseListRecursive(head);
+
+    cout << "\nReversed list:" << endl;
+    printList(reversed);
+
+    return 0;
 }
 ```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
 
-## Visualization
+def reverse_list_recursive(head):
+    """Reverse linked list recursively"""
+    # Base cases
+    if head is None or head.next is None:
+        return head
 
-### Iterative Reversal Process:
+    # Reverse the rest of the list
+    new_head = reverse_list_recursive(head.next)
+
+    # Make the next node point back to current
+    head.next.next = head
+
+    # Remove the link from current to next
+    head.next = None
+
+    return new_head
+
+def print_list(head):
+    """Print linked list"""
+    current = head
+    while current is not None:
+        print(f"{current.data} -> ", end="")
+        current = current.next
+    print("null")
+
+# Example usage
+# Create list: 1 -> 2 -> 3 -> 4 -> 5
+head = Node(1)
+head.next = Node(2)
+head.next.next = Node(3)
+head.next.next.next = Node(4)
+head.next.next.next.next = Node(5)
+
+print("Original list:")
+print_list(head)
+
+reversed_head = reverse_list_recursive(head)
+
+print("\nReversed list:")
+print_list(reversed_head)
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+function reverseListRecursive(head) {
+    // Base cases
+    if (head === null || head.next === null) {
+        return head;
+    }
+
+    // Reverse the rest of the list
+    const newHead = reverseListRecursive(head.next);
+
+    // Make the next node point back to current
+    head.next.next = head;
+
+    // Remove the link from current to next
+    head.next = null;
+
+    return newHead;
+}
+
+function printList(head) {
+    let current = head;
+    let result = '';
+    while (current !== null) {
+        result += current.data + ' -> ';
+        current = current.next;
+    }
+    result += 'null';
+    console.log(result);
+}
+
+// Example usage
+// Create list: 1 -> 2 -> 3 -> 4 -> 5
+const head = new Node(1);
+head.next = new Node(2);
+head.next.next = new Node(3);
+head.next.next.next = new Node(4);
+head.next.next.next.next = new Node(5);
+
+console.log('Original list:');
+printList(head);
+
+const reversed = reverseListRecursive(head);
+
+console.log('\nReversed list:');
+printList(reversed);
+```
+  </Tab>
+</Tabs>
+
+### <TranslatedText en="Approach 3: Using Stack" bn="পদ্ধতি ৩: স্ট্যাক ব্যবহার করে" />
+
+<TranslatedText
+  en="Store nodes in a stack and rebuild the list in reverse order. This approach is easier to understand but uses extra space."
+  bn="স্ট্যাকে নোড সংরক্ষণ করুন এবং বিপরীত ক্রমে লিস্ট পুনর্নির্মাণ করুন। এই পদ্ধতি বুঝতে সহজ কিন্তু অতিরিক্ত স্থান ব্যবহার করে।"
+/>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n)
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <stack>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+Node* reverseListStack(Node* head) {
+    if (head == nullptr) return nullptr;
+
+    stack<Node*> nodeStack;
+    Node* current = head;
+
+    // Push all nodes to stack
+    while (current != nullptr) {
+        nodeStack.push(current);
+        current = current->next;
+    }
+
+    // Pop from stack and rebuild
+    Node* newHead = nodeStack.top();
+    nodeStack.pop();
+    current = newHead;
+
+    while (!nodeStack.empty()) {
+        current->next = nodeStack.top();
+        nodeStack.pop();
+        current = current->next;
+    }
+
+    current->next = nullptr;
+
+    return newHead;
+}
+
+void printList(Node* head) {
+    Node* current = head;
+    while (current != nullptr) {
+        cout << current->data << " -> ";
+        current = current->next;
+    }
+    cout << "null" << endl;
+}
+
+int main() {
+    // Create list: 1 -> 2 -> 3 -> 4 -> 5
+    Node* head = new Node(1);
+    head->next = new Node(2);
+    head->next->next = new Node(3);
+    head->next->next->next = new Node(4);
+    head->next->next->next->next = new Node(5);
+
+    cout << "Original list:" << endl;
+    printList(head);
+
+    Node* reversed = reverseListStack(head);
+
+    cout << "\nReversed list:" << endl;
+    printList(reversed);
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def reverse_list_stack(head):
+    """Reverse linked list using stack"""
+    if head is None:
+        return None
+
+    stack = []
+    current = head
+
+    # Push all nodes to stack
+    while current is not None:
+        stack.append(current)
+        current = current.next
+
+    # Pop from stack and rebuild
+    new_head = stack.pop()
+    current = new_head
+
+    while stack:
+        current.next = stack.pop()
+        current = current.next
+
+    current.next = None
+
+    return new_head
+
+def print_list(head):
+    """Print linked list"""
+    current = head
+    while current is not None:
+        print(f"{current.data} -> ", end="")
+        current = current.next
+    print("null")
+
+# Example usage
+# Create list: 1 -> 2 -> 3 -> 4 -> 5
+head = Node(1)
+head.next = Node(2)
+head.next.next = Node(3)
+head.next.next.next = Node(4)
+head.next.next.next.next = Node(5)
+
+print("Original list:")
+print_list(head)
+
+reversed_head = reverse_list_stack(head)
+
+print("\nReversed list:")
+print_list(reversed_head)
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+function reverseListStack(head) {
+    if (head === null) return null;
+
+    const stack = [];
+    let current = head;
+
+    // Push all nodes to stack
+    while (current !== null) {
+        stack.push(current);
+        current = current.next;
+    }
+
+    // Pop from stack and rebuild
+    const newHead = stack.pop();
+    current = newHead;
+
+    while (stack.length > 0) {
+        current.next = stack.pop();
+        current = current.next;
+    }
+
+    current.next = null;
+
+    return newHead;
+}
+
+function printList(head) {
+    let current = head;
+    let result = '';
+    while (current !== null) {
+        result += current.data + ' -> ';
+        current = current.next;
+    }
+    result += 'null';
+    console.log(result);
+}
+
+// Example usage
+// Create list: 1 -> 2 -> 3 -> 4 -> 5
+const head = new Node(1);
+head.next = new Node(2);
+head.next.next = new Node(3);
+head.next.next.next = new Node(4);
+head.next.next.next.next = new Node(5);
+
+console.log('Original list:');
+printList(head);
+
+const reversed = reverseListStack(head);
+
+console.log('\nReversed list:');
+printList(reversed);
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Algorithm Walkthrough" bn="অ্যালগরিদম ধাপে ধাপে বর্ণনা" />
+
+<TranslatedText
+  en="Let's trace through the Iterative approach (Approach 1) with list 1 -> 2 -> 3 -> 4 -> 5:"
+  bn="চলুন লিস্ট 1 -> 2 -> 3 -> 4 -> 5 দিয়ে ইটারেটিভ পদ্ধতি (পদ্ধতি ১) ট্রেস করি:"
+/>
 
 ```
 Initial: 1 -> 2 -> 3 -> 4 -> 5 -> null
          ↑
         head
 
-Step 1:  null <- 1    2 -> 3 -> 4 -> 5 -> null
+State: prev = null, current = 1, next = undefined
+
+Step 1: Process node 1
+  next = 2 (save current.next)
+  1.next = null (reverse: 1 -> null)
+  prev = 1
+  current = 2
+
+  State: null <- 1    2 -> 3 -> 4 -> 5 -> null
                prev  curr
 
-Step 2:  null <- 1 <- 2    3 -> 4 -> 5 -> null
+Step 2: Process node 2
+  next = 3 (save current.next)
+  2.next = 1 (reverse: 2 -> 1)
+  prev = 2
+  current = 3
+
+  State: null <- 1 <- 2    3 -> 4 -> 5 -> null
                      prev  curr
 
-Step 3:  null <- 1 <- 2 <- 3    4 -> 5 -> null
+Step 3: Process node 3
+  next = 4 (save current.next)
+  3.next = 2 (reverse: 3 -> 2)
+  prev = 3
+  current = 4
+
+  State: null <- 1 <- 2 <- 3    4 -> 5 -> null
                           prev  curr
 
-Step 4:  null <- 1 <- 2 <- 3 <- 4    5 -> null
+Step 4: Process node 4
+  next = 5 (save current.next)
+  4.next = 3 (reverse: 4 -> 3)
+  prev = 4
+  current = 5
+
+  State: null <- 1 <- 2 <- 3 <- 4    5 -> null
                                prev  curr
 
-Step 5:  null <- 1 <- 2 <- 3 <- 4 <- 5    null
+Step 5: Process node 5
+  next = null (save current.next)
+  5.next = 4 (reverse: 5 -> 4)
+  prev = 5
+  current = null
+
+  State: null <- 1 <- 2 <- 3 <- 4 <- 5    null
                                     prev  curr
 
-Result:  5 -> 4 -> 3 -> 2 -> 1 -> null
-         ↑
-       newHead
+Loop exits (current == null)
+Return prev (which is 5)
+
+Result: 5 -> 4 -> 3 -> 2 -> 1 -> null
+        ↑
+      newHead
 ```
 
-### Recursive Reversal:
+<TranslatedText
+  en="**Key Observation**: We use three pointers: `prev` tracks the already-reversed portion, `current` is the node being processed, and `next` temporarily stores the remaining list. At each step, we reverse one link by making `current.next = prev`."
+  bn="**মূল পর্যবেক্ষণ**: আমরা তিনটি পয়েন্টার ব্যবহার করি: `prev` ইতিমধ্যে রিভার্স করা অংশ ট্র্যাক করে, `current` হল প্রক্রিয়াকৃত নোড, এবং `next` অস্থায়ীভাবে অবশিষ্ট লিস্ট সংরক্ষণ করে। প্রতিটি ধাপে, আমরা `current.next = prev` তৈরি করে একটি লিংক রিভার্স করি।"
+/>
+
+## <TranslatedText en="Recursive Visualization" bn="রিকার্সিভ ভিজুয়ালাইজেশন" />
 
 ```
 reverseList(1 -> 2 -> 3 -> 4 -> 5)
+    |
     reverseList(2 -> 3 -> 4 -> 5)
+        |
         reverseList(3 -> 4 -> 5)
+            |
             reverseList(4 -> 5)
-                reverseList(5) → returns 5
-                5 -> 4 -> null
-            returns 5
-            5 -> 4 -> 3 -> null
-        returns 5
-        5 -> 4 -> 3 -> 2 -> null
-    returns 5
-    5 -> 4 -> 3 -> 2 -> 1 -> null
-returns 5
+                |
+                reverseList(5)  ← Base case: returns 5
+                |
+                ← 4.next.next = 4 (5 -> 4)
+                ← 4.next = null
+                returns 5 (5 -> 4 -> null)
+            |
+            ← 3.next.next = 3 (4 -> 3)
+            ← 3.next = null
+            returns 5 (5 -> 4 -> 3 -> null)
+        |
+        ← 2.next.next = 2 (3 -> 2)
+        ← 2.next = null
+        returns 5 (5 -> 4 -> 3 -> 2 -> null)
+    |
+    ← 1.next.next = 1 (2 -> 1)
+    ← 1.next = null
+    returns 5 (5 -> 4 -> 3 -> 2 -> 1 -> null)
 ```
 
-## Comparison of Approaches
+## <TranslatedText en="Comparison of Approaches" bn="পদ্ধতিগুলোর তুলনা" />
 
-| Approach | Time | Space | Pros | Cons |
+| <TranslatedText en="Approach" bn="পদ্ধতি" /> | <TranslatedText en="Time" bn="সময়" /> | <TranslatedText en="Space" bn="স্থান" /> | <TranslatedText en="Pros" bn="সুবিধা" /> | <TranslatedText en="Cons" bn="অসুবিধা" /> |
 |----------|------|-------|------|------|
-| Iterative | O(n) | O(1) | Optimal, no recursion | More code |
-| Recursive | O(n) | O(n) | Elegant, clean | Stack space |
-| Stack | O(n) | O(n) | Easy to understand | Extra space |
-| Tail Recursive | O(n) | O(n) | Cleaner recursion | Stack space |
-| In Groups | O(n) | O(1) | Flexible | More complex |
+| <TranslatedText en="Iterative" bn="ইটারেটিভ" /> | O(n) | O(1) | <TranslatedText en="Optimal, no recursion" bn="সর্বোত্তম, রিকার্শন নেই" /> | <TranslatedText en="More code" bn="বেশি কোড" /> |
+| <TranslatedText en="Recursive" bn="রিকার্সিভ" /> | O(n) | O(n) | <TranslatedText en="Elegant, clean" bn="মার্জিত, পরিষ্কার" /> | <TranslatedText en="Stack space" bn="স্ট্যাক স্থান" /> |
+| <TranslatedText en="Stack" bn="স্ট্যাক" /> | O(n) | O(n) | <TranslatedText en="Easy to understand" bn="বুঝতে সহজ" /> | <TranslatedText en="Extra space" bn="অতিরিক্ত স্থান" /> |
 
-## Key Points
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
 
-1. **Iterative Preferred**: O(1) space, no stack overflow risk
-2. **Three Pointers**: prev, current, next needed for iterative
-3. **Recursive Base Case**: Single node or null
-4. **In-Place**: Both methods modify the original list
-5. **Return New Head**: The old tail becomes the new head
+1. **<TranslatedText en="Iterative is Preferred" bn="ইটারেটিভ পছন্দনীয়" />**: <TranslatedText en="The iterative approach uses O(1) space and has no risk of stack overflow, making it optimal for production code." bn="ইটারেটিভ পদ্ধতি O(1) স্থান ব্যবহার করে এবং স্ট্যাক ওভারফ্লোর ঝুঁকি নেই, যা প্রোডাকশন কোডের জন্য সর্বোত্তম করে তোলে।" />
 
-## Common Pitfalls
+2. **<TranslatedText en="Three Pointers Pattern" bn="তিন পয়েন্টার প্যাটার্ন" />**: <TranslatedText en="The iterative approach requires three pointers: prev (reversed portion), current (node being processed), and next (remaining list)." bn="ইটারেটিভ পদ্ধতিতে তিনটি পয়েন্টার প্রয়োজন: prev (রিভার্স করা অংশ), current (প্রক্রিয়াকৃত নোড), এবং next (অবশিষ্ট লিস্ট)।" />
 
-- Forgetting to save the next node before changing pointers
-- Not updating the head pointer
-- Not handling empty list or single node
-- Creating a cycle by not setting the old head's next to null
-- Stack overflow with recursive approach on very long lists
+3. **<TranslatedText en="Recursive Base Case" bn="রিকার্সিভ বেস কেস" />**: <TranslatedText en="For recursion, the base case is when the list is empty or has a single node (head == null or head.next == null)." bn="রিকার্শনের জন্য, বেস কেস হল যখন লিস্ট খালি বা একটি একক নোড আছে (head == null বা head.next == null)।" />
 
-## Edge Cases
+4. **<TranslatedText en="In-Place Reversal" bn="ইন-প্লেস রিভার্সাল" />**: <TranslatedText en="Both iterative and recursive methods modify the original list in place - no new nodes are created." bn="ইটারেটিভ এবং রিকার্সিভ উভয় পদ্ধতি মূল লিস্ট ইন-প্লেস পরিবর্তন করে - কোন নতুন নোড তৈরি হয় না।" />
 
-```dart
-void testEdgeCases() {
-  // Empty list
-  Node? empty = null;
-  print('Empty: ${reverseListIterative(empty)}');
+5. **<TranslatedText en="Return New Head" bn="নতুন হেড রিটার্ন করুন" />**: <TranslatedText en="After reversal, the old tail becomes the new head, which must be returned." bn="রিভার্সালের পরে, পুরানো টেইল নতুন হেড হয়ে যায়, যা রিটার্ন করতে হবে।" />
 
-  // Single node
-  Node single = Node(1);
-  print('Single: ${reverseListIterative(single)?.data}');
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
 
-  // Two nodes
-  Node two = Node(1, Node(2));
-  var reversed = reverseListIterative(two);
-  print('Two nodes: ${reversed?.data} -> ${reversed?.next?.data}');
-}
-```
+1. **<TranslatedText en="Start with Iterative" bn="ইটারেটিভ দিয়ে শুরু করুন" />**: <TranslatedText en="In interviews, demonstrate the iterative approach first as it's the optimal solution." bn="ইন্টারভিউতে, প্রথমে ইটারেটিভ পদ্ধতি প্রদর্শন করুন কারণ এটি সর্বোত্তম সমাধান।" />
 
-## Test Cases
+2. **<TranslatedText en="Draw Diagrams" bn="ডায়াগ্রাম আঁকুন" />**: <TranslatedText en="Draw the pointer movements on the whiteboard to show your understanding clearly." bn="আপনার বোঝা স্পষ্টভাবে দেখাতে হোয়াইটবোর্ডে পয়েন্টার মুভমেন্ট আঁকুন।" />
 
-```dart
-void testReverseList() {
-  // Test 1: Normal list
-  Node head1 = Node(1, Node(2, Node(3, Node(4, Node(5)))));
-  Node? rev1 = reverseListIterative(head1);
-  assert(rev1?.data == 5);
-  assert(rev1?.next?.data == 4);
+3. **<TranslatedText en="Handle Edge Cases" bn="প্রান্তিক কেস পরিচালনা করুন" />**:
+   - <TranslatedText en="Empty list (null) → Return null" bn="খালি লিস্ট (null) → null রিটার্ন করুন" />
+   - <TranslatedText en="Single node → Return the same node" bn="একক নোড → একই নোড রিটার্ন করুন" />
+   - <TranslatedText en="Two nodes → Properly reverse" bn="দুটি নোড → সঠিকভাবে রিভার্স করুন" />
 
-  // Test 2: Single element
-  Node head2 = Node(1);
-  Node? rev2 = reverseListIterative(head2);
-  assert(rev2?.data == 1);
-  assert(rev2?.next == null);
+4. **<TranslatedText en="Mention Trade-offs" bn="ট্রেড-অফ উল্লেখ করুন" />**: <TranslatedText en="Explain that recursive is elegant but uses O(n) stack space and may cause stack overflow for very long lists." bn="ব্যাখ্যা করুন যে রিকার্সিভ মার্জিত কিন্তু O(n) স্ট্যাক স্থান ব্যবহার করে এবং খুব দীর্ঘ লিস্টের জন্য স্ট্যাক ওভারফ্লো হতে পারে।" />
 
-  // Test 3: Two elements
-  Node head3 = Node(1, Node(2));
-  Node? rev3 = reverseListIterative(head3);
-  assert(rev3?.data == 2);
-  assert(rev3?.next?.data == 1);
+## <TranslatedText en="Common Pitfalls" bn="সাধারণ সমস্যাসমূহ" />
 
-  // Test 4: Empty list
-  Node? rev4 = reverseListIterative(null);
-  assert(rev4 == null);
+1. **<TranslatedText en="Forgetting to Save Next" bn="Next সংরক্ষণ করতে ভুলে যাওয়া" />**: <TranslatedText en="You must save `current.next` before reversing the pointer, otherwise you lose the rest of the list." bn="পয়েন্টার রিভার্স করার আগে আপনাকে `current.next` সংরক্ষণ করতে হবে, অন্যথায় আপনি লিস্টের বাকি অংশ হারাবেন।" />
 
-  print('All tests passed!');
-}
-```
+2. **<TranslatedText en="Not Updating Head" bn="হেড আপডেট না করা" />**: <TranslatedText en="The new head is the old tail (prev pointer when current becomes null)." bn="নতুন হেড হল পুরানো টেইল (prev পয়েন্টার যখন current null হয়ে যায়)।" />
 
-## Applications
+3. **<TranslatedText en="Creating a Cycle" bn="চক্র তৈরি করা" />**: <TranslatedText en="Forgetting to set the old head's next to null creates a circular reference." bn="পুরানো হেড-এর next কে null-এ সেট করতে ভুলে যাওয়া একটি বৃত্তাকার রেফারেন্স তৈরি করে।" />
 
-- Undo/Redo functionality
-- Browser back button
-- Reversing a path
-- Palindrome checking
-- Expression evaluation
+4. **<TranslatedText en="Stack Overflow" bn="স্ট্যাক ওভারফ্লো" />**: <TranslatedText en="Recursive approach can cause stack overflow with very long lists (10000+ nodes)." bn="রিকার্সিভ পদ্ধতি খুব দীর্ঘ লিস্ট (10000+ নোড) দিয়ে স্ট্যাক ওভারফ্লো হতে পারে।" />
 
-## Performance
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
 
-```dart
-import 'dart:io';
+1. <TranslatedText en="The iterative approach with three pointers (prev, current, next) is the optimal solution with O(n) time and O(1) space." bn="তিনটি পয়েন্টার (prev, current, next) সহ ইটারেটিভ পদ্ধতি O(n) সময় এবং O(1) স্থান সহ সর্বোত্তম সমাধান।" />
 
-void benchmark() {
-  List<int> sizes = [100, 1000, 10000];
+2. <TranslatedText en="The recursive approach is elegant but uses O(n) space due to the recursion stack." bn="রিকার্সিভ পদ্ধতি মার্জিত কিন্তু রিকার্শন স্ট্যাকের কারণে O(n) স্থান ব্যবহার করে।" />
 
-  for (int size in sizes) {
-    // Create list
-    Node? head = Node(0);
-    Node? current = head;
-    for (int i = 1; i < size; i++) {
-      current!.next = Node(i);
-      current = current.next;
-    }
+3. <TranslatedText en="Always save the next pointer before reversing the current pointer to avoid losing the rest of the list." bn="লিস্টের বাকি অংশ হারানো এড়াতে বর্তমান পয়েন্টার রিভার্স করার আগে সবসময় next পয়েন্টার সংরক্ষণ করুন।" />
 
-    // Benchmark iterative
-    Stopwatch sw1 = Stopwatch()..start();
-    reverseListIterative(head);
-    sw1.stop();
+4. <TranslatedText en="The new head of the reversed list is the old tail (the last non-null node)." bn="রিভার্স লিস্টের নতুন হেড হল পুরানো টেইল (শেষ নন-null নোড)।" />
 
-    // Recreate list for recursive test
-    head = Node(0);
-    current = head;
-    for (int i = 1; i < size; i++) {
-      current!.next = Node(i);
-      current = current.next;
-    }
+5. <TranslatedText en="Handle edge cases: empty list, single node, and two nodes." bn="প্রান্তিক কেস পরিচালনা করুন: খালি লিস্ট, একক নোড, এবং দুটি নোড।" />
 
-    // Benchmark recursive
-    Stopwatch sw2 = Stopwatch()..start();
-    reverseListRecursive(head);
-    sw2.stop();
-
-    print('Size: $size');
-    print('  Iterative: ${sw1.elapsedMicroseconds} μs');
-    print('  Recursive: ${sw2.elapsedMicroseconds} μs\n');
-  }
-}
-```
-
-## Related Problems
-
-- Reverse linked list in groups of k
-- Reverse alternate k nodes
-- Reverse a doubly linked list
-- Reverse only odd positioned nodes
-- Palindrome linked list (requires reversal)
-
-## Reference
+## <TranslatedText en="Reference" bn="রেফারেন্স" />
 
 - [GeeksforGeeks - Reverse Linked List](https://www.geeksforgeeks.org/reverse-a-linked-list/)
 - [Java67 - Reverse Singly Linked List](http://www.java67.com/2016/07/how-to-reverse-singly-linked-list-in-java-example.html)

@@ -3,491 +3,564 @@ title: 46. Binary Search in Array
 description: How to perform binary search in a sorted array
 ---
 
-## Problem Statement
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { TranslatedText, LanguageSwitcher } from '@/components/LanguageSwitcher';
 
-Implement binary search algorithm to find an element in a sorted array. Binary search is an efficient algorithm that works by repeatedly dividing the search interval in half.
+<LanguageSwitcher />
 
-## Algorithm Overview
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
 
-Binary search works on **sorted arrays** only:
-1. Compare target with middle element
-2. If target equals middle, return index
-3. If target is less, search left half
-4. If target is greater, search right half
-5. Repeat until found or search space is empty
+<TranslatedText
+  en="Implement binary search algorithm to find an element in a sorted array. Binary search is an efficient algorithm that works by repeatedly dividing the search interval in half."
+  bn="একটি সর্ট করা অ্যারেতে একটি এলিমেন্ট খুঁজে পেতে বাইনারি সার্চ অ্যালগরিদম বাস্তবায়ন করুন। বাইনারি সার্চ একটি কার্যকর অ্যালগরিদম যা বারবার সার্চ ইন্টারভাল অর্ধেক ভাগ করে কাজ করে।"
+/>
 
-## Examples
+## <TranslatedText en="Algorithm Overview" bn="অ্যালগরিদম সংক্ষিপ্ত বিবরণ" />
 
-### Example 1
+<TranslatedText
+  en="Binary search works on **sorted arrays** only:"
+  bn="বাইনারি সার্চ শুধুমাত্র **সর্ট করা অ্যারেতে** কাজ করে:"
+/>
+
+<TranslatedText
+  en="1. Compare target with middle element"
+  bn="১. টার্গেটকে মধ্যম এলিমেন্টের সাথে তুলনা করুন"
+/>
+
+<TranslatedText
+  en="2. If target equals middle, return index"
+  bn="২. যদি টার্গেট মধ্যমের সমান হয়, ইনডেক্স রিটার্ন করুন"
+/>
+
+<TranslatedText
+  en="3. If target is less, search left half"
+  bn="৩. যদি টার্গেট কম হয়, বাম অর্ধেক সার্চ করুন"
+/>
+
+<TranslatedText
+  en="4. If target is greater, search right half"
+  bn="৪. যদি টার্গেট বেশি হয়, ডান অর্ধেক সার্চ করুন"
+/>
+
+<TranslatedText
+  en="5. Repeat until found or search space is empty"
+  bn="৫. খুঁজে পাওয়া বা সার্চ স্পেস খালি না হওয়া পর্যন্ত পুনরাবৃত্তি করুন"
+/>
+
+## <TranslatedText en="Examples" bn="উদাহরণসমূহ" />
+
+### <TranslatedText en="Example 1" bn="উদাহরণ ১" />
+
 ```
 Input: arr = [1, 3, 5, 7, 9, 11, 13], target = 7
 Output: 3 (index of 7)
 ```
 
-### Example 2
+### <TranslatedText en="Example 2" bn="উদাহরণ ২" />
+
 ```
 Input: arr = [2, 4, 6, 8, 10], target = 5
 Output: -1 (not found)
 ```
 
-### Example 3
+### <TranslatedText en="Example 3" bn="উদাহরণ ৩" />
+
 ```
 Input: arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], target = 1
 Output: 0
 ```
 
-## Solution
+## <TranslatedText en="Solution Approaches" bn="সমাধানের পদ্ধতিসমূহ" />
 
-### Approach 1: Iterative Binary Search (Recommended)
+### <TranslatedText en="Approach 1: Iterative Binary Search (Recommended)" bn="পদ্ধতি ১: ইটারেটিভ বাইনারি সার্চ (প্রস্তাবিত)" />
 
-The standard iterative implementation.
+<TranslatedText
+  en="The standard iterative implementation. This is the most efficient approach with O(1) space complexity."
+  bn="স্ট্যান্ডার্ড ইটারেটিভ বাস্তবায়ন। এটি O(1) স্পেস কমপ্লেক্সিটি সহ সবচেয়ে কার্যকর পদ্ধতি।"
+/>
 
-**Time Complexity:** O(log n)
-**Space Complexity:** O(1)
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(log n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
 
-```dart
-int binarySearch(List<int> arr, int target) {
-  int left = 0;
-  int right = arr.length - 1;
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
 
-  while (left <= right) {
-    // Calculate middle index (avoids overflow)
-    int mid = left + (right - left) ~/ 2;
-
-    if (arr[mid] == target) {
-      return mid; // Found
-    } else if (arr[mid] < target) {
-      left = mid + 1; // Search right half
-    } else {
-      right = mid - 1; // Search left half
-    }
-  }
-
-  return -1; // Not found
-}
-
-void main() {
-  List<int> arr = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
-
-  print('Array: $arr\n');
-
-  List<int> targets = [7, 5, 20, 1, 19];
-  for (int target in targets) {
-    int index = binarySearch(arr, target);
-    if (index != -1) {
-      print('Found $target at index $index');
-    } else {
-      print('$target not found in array');
-    }
-  }
-}
-```
-
-### Approach 2: Recursive Binary Search
-
-Elegant recursive implementation.
-
-**Time Complexity:** O(log n)
-**Space Complexity:** O(log n) due to recursion stack
-
-```dart
-int binarySearchRecursive(List<int> arr, int target, int left, int right) {
-  if (left > right) {
-    return -1; // Base case: not found
-  }
-
-  int mid = left + (right - left) ~/ 2;
-
-  if (arr[mid] == target) {
-    return mid; // Found
-  } else if (arr[mid] < target) {
-    return binarySearchRecursive(arr, target, mid + 1, right); // Search right
-  } else {
-    return binarySearchRecursive(arr, target, left, mid - 1); // Search left
-  }
-}
-
-void main() {
-  List<int> arr = [1, 3, 5, 7, 9, 11, 13];
-
-  print('Array: $arr');
-
-  int target = 7;
-  int index = binarySearchRecursive(arr, target, 0, arr.length - 1);
-
-  if (index != -1) {
-    print('Found $target at index $index');
-  } else {
-    print('$target not found');
-  }
-}
-```
-
-### Approach 3: Binary Search with First Occurrence
-
-Find the first occurrence of a target (useful for duplicates).
-
-**Time Complexity:** O(log n)
-**Space Complexity:** O(1)
-
-```dart
-int binarySearchFirst(List<int> arr, int target) {
-  int left = 0;
-  int right = arr.length - 1;
-  int result = -1;
-
-  while (left <= right) {
-    int mid = left + (right - left) ~/ 2;
-
-    if (arr[mid] == target) {
-      result = mid;
-      right = mid - 1; // Continue searching in left half
-    } else if (arr[mid] < target) {
-      left = mid + 1;
-    } else {
-      right = mid - 1;
-    }
-  }
-
-  return result;
-}
-
-void main() {
-  List<int> arr = [1, 2, 2, 2, 3, 4, 5];
-  print('Array: $arr');
-
-  int target = 2;
-  int index = binarySearchFirst(arr, target);
-  print('First occurrence of $target at index $index');
-}
-```
-
-### Approach 4: Binary Search with Last Occurrence
-
-Find the last occurrence of a target.
-
-**Time Complexity:** O(log n)
-**Space Complexity:** O(1)
-
-```dart
-int binarySearchLast(List<int> arr, int target) {
-  int left = 0;
-  int right = arr.length - 1;
-  int result = -1;
-
-  while (left <= right) {
-    int mid = left + (right - left) ~/ 2;
-
-    if (arr[mid] == target) {
-      result = mid;
-      left = mid + 1; // Continue searching in right half
-    } else if (arr[mid] < target) {
-      left = mid + 1;
-    } else {
-      right = mid - 1;
-    }
-  }
-
-  return result;
-}
-
-void main() {
-  List<int> arr = [1, 2, 2, 2, 3, 4, 5];
-  print('Array: $arr');
-
-  int target = 2;
-  int index = binarySearchLast(arr, target);
-  print('Last occurrence of $target at index $index');
-}
-```
-
-### Approach 5: Binary Search for Insertion Position
-
-Find the position where target should be inserted to maintain sorted order.
-
-**Time Complexity:** O(log n)
-**Space Complexity:** O(1)
-
-```dart
-int binarySearchInsertPosition(List<int> arr, int target) {
-  int left = 0;
-  int right = arr.length - 1;
-
-  while (left <= right) {
-    int mid = left + (right - left) ~/ 2;
-
-    if (arr[mid] == target) {
-      return mid;
-    } else if (arr[mid] < target) {
-      left = mid + 1;
-    } else {
-      right = mid - 1;
-    }
-  }
-
-  return left; // Position to insert
-}
-
-void main() {
-  List<int> arr = [1, 3, 5, 7, 9];
-  print('Array: $arr');
-
-  List<int> targets = [4, 0, 10];
-  for (int target in targets) {
-    int pos = binarySearchInsertPosition(arr, target);
-    print('Insert $target at position $pos');
-  }
-}
-```
-
-### Approach 6: Binary Search with Custom Comparator
-
-Generic binary search that works with any comparable type.
-
-**Time Complexity:** O(log n)
-**Space Complexity:** O(1)
-
-```dart
-int binarySearchGeneric<T>(
-  List<T> arr,
-  T target,
-  int Function(T a, T b) compare,
-) {
-  int left = 0;
-  int right = arr.length - 1;
-
-  while (left <= right) {
-    int mid = left + (right - left) ~/ 2;
-    int cmp = compare(arr[mid], target);
-
-    if (cmp == 0) {
-      return mid;
-    } else if (cmp < 0) {
-      left = mid + 1;
-    } else {
-      right = mid - 1;
-    }
-  }
-
-  return -1;
-}
-
-void main() {
-  // Integer search
-  List<int> numbers = [1, 3, 5, 7, 9];
-  int numIndex = binarySearchGeneric(
-    numbers,
-    5,
-    (a, b) => a.compareTo(b),
-  );
-  print('Found 5 at index $numIndex');
-
-  // String search
-  List<String> words = ['apple', 'banana', 'cherry', 'date'];
-  int strIndex = binarySearchGeneric(
-    words,
-    'cherry',
-    (a, b) => a.compareTo(b),
-  );
-  print('Found cherry at index $strIndex');
-}
-```
-
-### Approach 7: Using Dart's Built-in Methods
-
-Dart doesn't have built-in binary search, but here's how to implement it cleanly.
-
-```dart
-extension BinarySearchExtension on List<int> {
-  int binarySearch(int target) {
+int binarySearch(const vector<int>& arr, int target) {
     int left = 0;
-    int right = length - 1;
+    int right = arr.size() - 1;
 
     while (left <= right) {
-      int mid = left + (right - left) ~/ 2;
+        // Calculate middle index (avoids overflow)
+        int mid = left + (right - left) / 2;
 
-      if (this[mid] == target) {
-        return mid;
-      } else if (this[mid] < target) {
-        left = mid + 1;
-      } else {
-        right = mid - 1;
-      }
+        if (arr[mid] == target) {
+            return mid; // Found
+        } else if (arr[mid] < target) {
+            left = mid + 1; // Search right half
+        } else {
+            right = mid - 1; // Search left half
+        }
     }
 
-    return -1;
-  }
+    return -1; // Not found
 }
 
-void main() {
-  List<int> arr = [1, 3, 5, 7, 9, 11, 13];
-  print('Array: $arr');
+int main() {
+    vector<int> arr = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
+    cout << "Array: ";
+    for (int x : arr) cout << x << " ";
+    cout << "\n\n";
 
-  int index = arr.binarySearch(7);
-  print('Found 7 at index $index');
+    vector<int> targets = {7, 5, 20, 1, 19};
+    for (int target : targets) {
+        int index = binarySearch(arr, target);
+        if (index != -1) {
+            cout << "Found " << target << " at index " << index << endl;
+        } else {
+            cout << target << " not found in array" << endl;
+        }
+    }
+
+    return 0;
 }
 ```
+  </Tab>
+  <Tab value="Python">
+```python
+def binary_search(arr, target):
+    """Iterative binary search"""
+    left = 0
+    right = len(arr) - 1
 
-## Visualization
+    while left <= right:
+        # Calculate middle index (avoids overflow)
+        mid = left + (right - left) // 2
 
-Searching for 7 in [1, 3, 5, 7, 9, 11, 13]:
+        if arr[mid] == target:
+            return mid  # Found
+        elif arr[mid] < target:
+            left = mid + 1  # Search right half
+        else:
+            right = mid - 1  # Search left half
+
+    return -1  # Not found
+
+# Example usage
+arr = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
+print(f"Array: {arr}\n")
+
+targets = [7, 5, 20, 1, 19]
+for target in targets:
+    index = binary_search(arr, target)
+    if index != -1:
+        print(f"Found {target} at index {index}")
+    else:
+        print(f"{target} not found in array")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function binarySearch(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+
+    while (left <= right) {
+        // Calculate middle index (avoids overflow)
+        let mid = left + Math.floor((right - left) / 2);
+
+        if (arr[mid] === target) {
+            return mid; // Found
+        } else if (arr[mid] < target) {
+            left = mid + 1; // Search right half
+        } else {
+            right = mid - 1; // Search left half
+        }
+    }
+
+    return -1; // Not found
+}
+
+// Example usage
+let arr = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
+console.log("Array:", arr, "\n");
+
+let targets = [7, 5, 20, 1, 19];
+for (let target of targets) {
+    let index = binarySearch(arr, target);
+    if (index !== -1) {
+        console.log(`Found ${target} at index ${index}`);
+    } else {
+        console.log(`${target} not found in array`);
+    }
+}
+```
+  </Tab>
+</Tabs>
+
+### <TranslatedText en="Approach 2: Recursive Binary Search" bn="পদ্ধতি ২: রিকার্সিভ বাইনারি সার্চ" />
+
+<TranslatedText
+  en="Elegant recursive implementation. Uses recursion stack, so space complexity is O(log n)."
+  bn="মার্জিত রিকার্সিভ বাস্তবায়ন। রিকার্শন স্ট্যাক ব্যবহার করে, তাই স্পেস কমপ্লেক্সিটি O(log n)।"
+/>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(log n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(log n) <TranslatedText en="due to recursion stack" bn="রিকার্শন স্ট্যাকের কারণে" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int binarySearchRecursive(const vector<int>& arr, int target, int left, int right) {
+    if (left > right) {
+        return -1; // Base case: not found
+    }
+
+    int mid = left + (right - left) / 2;
+
+    if (arr[mid] == target) {
+        return mid; // Found
+    } else if (arr[mid] < target) {
+        return binarySearchRecursive(arr, target, mid + 1, right); // Search right
+    } else {
+        return binarySearchRecursive(arr, target, left, mid - 1); // Search left
+    }
+}
+
+int main() {
+    vector<int> arr = {1, 3, 5, 7, 9, 11, 13};
+    cout << "Array: ";
+    for (int x : arr) cout << x << " ";
+    cout << endl;
+
+    int target = 7;
+    int index = binarySearchRecursive(arr, target, 0, arr.size() - 1);
+
+    if (index != -1) {
+        cout << "Found " << target << " at index " << index << endl;
+    } else {
+        cout << target << " not found" << endl;
+    }
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def binary_search_recursive(arr, target, left, right):
+    """Recursive binary search"""
+    if left > right:
+        return -1  # Base case: not found
+
+    mid = left + (right - left) // 2
+
+    if arr[mid] == target:
+        return mid  # Found
+    elif arr[mid] < target:
+        return binary_search_recursive(arr, target, mid + 1, right)  # Search right
+    else:
+        return binary_search_recursive(arr, target, left, mid - 1)  # Search left
+
+# Example usage
+arr = [1, 3, 5, 7, 9, 11, 13]
+print(f"Array: {arr}")
+
+target = 7
+index = binary_search_recursive(arr, target, 0, len(arr) - 1)
+
+if index != -1:
+    print(f"Found {target} at index {index}")
+else:
+    print(f"{target} not found")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function binarySearchRecursive(arr, target, left, right) {
+    if (left > right) {
+        return -1; // Base case: not found
+    }
+
+    let mid = left + Math.floor((right - left) / 2);
+
+    if (arr[mid] === target) {
+        return mid; // Found
+    } else if (arr[mid] < target) {
+        return binarySearchRecursive(arr, target, mid + 1, right); // Search right
+    } else {
+        return binarySearchRecursive(arr, target, left, mid - 1); // Search left
+    }
+}
+
+// Example usage
+let arr = [1, 3, 5, 7, 9, 11, 13];
+console.log("Array:", arr);
+
+let target = 7;
+let index = binarySearchRecursive(arr, target, 0, arr.length - 1);
+
+if (index !== -1) {
+    console.log(`Found ${target} at index ${index}`);
+} else {
+    console.log(`${target} not found`);
+}
+```
+  </Tab>
+</Tabs>
+
+### <TranslatedText en="Approach 3: First Occurrence (For Duplicates)" bn="পদ্ধতি ৩: প্রথম ঘটনা (ডুপ্লিকেটের জন্য)" />
+
+<TranslatedText
+  en="Find the first occurrence of a target. Useful when array contains duplicates and you want the leftmost match."
+  bn="টার্গেটের প্রথম ঘটনা খুঁজুন। যখন অ্যারেতে ডুপ্লিকেট থাকে এবং আপনি সবচেয়ে বাম ম্যাচ চান তখন উপযোগী।"
+/>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(log n)
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int binarySearchFirst(const vector<int>& arr, int target) {
+    int left = 0;
+    int right = arr.size() - 1;
+    int result = -1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == target) {
+            result = mid;
+            right = mid - 1; // Continue searching in left half
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 2, 2, 3, 4, 5};
+    cout << "Array: ";
+    for (int x : arr) cout << x << " ";
+    cout << endl;
+
+    int target = 2;
+    int index = binarySearchFirst(arr, target);
+    cout << "First occurrence of " << target << " at index " << index << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def binary_search_first(arr, target):
+    """Find first occurrence of target"""
+    left = 0
+    right = len(arr) - 1
+    result = -1
+
+    while left <= right:
+        mid = left + (right - left) // 2
+
+        if arr[mid] == target:
+            result = mid
+            right = mid - 1  # Continue searching in left half
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return result
+
+# Example usage
+arr = [1, 2, 2, 2, 3, 4, 5]
+print(f"Array: {arr}")
+
+target = 2
+index = binary_search_first(arr, target)
+print(f"First occurrence of {target} at index {index}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function binarySearchFirst(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+    let result = -1;
+
+    while (left <= right) {
+        let mid = left + Math.floor((right - left) / 2);
+
+        if (arr[mid] === target) {
+            result = mid;
+            right = mid - 1; // Continue searching in left half
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return result;
+}
+
+// Example usage
+let arr = [1, 2, 2, 2, 3, 4, 5];
+console.log("Array:", arr);
+
+let target = 2;
+let index = binarySearchFirst(arr, target);
+console.log(`First occurrence of ${target} at index ${index}`);
+```
+  </Tab>
+</Tabs>
+
+## <TranslatedText en="Algorithm Walkthrough" bn="অ্যালগরিদম ওয়াকথ্রু" />
+
+<TranslatedText
+  en="Let's trace binary search for target = 9 in array `[1, 3, 5, 7, 9, 11, 13]`:"
+  bn="চলুন অ্যারে `[1, 3, 5, 7, 9, 11, 13]`-এ target = 9 এর জন্য বাইনারি সার্চ ট্রেস করি:"
+/>
 
 ```
-Step 1:
-[1, 3, 5, 7, 9, 11, 13]
- L        M          R
-Compare: 7 vs 7 → Found! Return index 3
+Array: [1, 3, 5, 7, 9, 11, 13]
+Index:  0  1  2  3  4   5   6
 
-Example with 9:
 Step 1:
-[1, 3, 5, 7, 9, 11, 13]
- L        M          R
-Compare: 9 vs 7 → 9 > 7, search right
+  left = 0, right = 6
+  mid = 0 + (6 - 0) / 2 = 3
+  arr[3] = 7
+  Compare: 9 vs 7 → 9 > 7
+  Search right half → left = 4
 
 Step 2:
-[1, 3, 5, 7, 9, 11, 13]
-             L  M   R
-Compare: 9 vs 11 → 9 < 11, search left
+  left = 4, right = 6
+  mid = 4 + (6 - 4) / 2 = 5
+  arr[5] = 11
+  Compare: 9 vs 11 → 9 < 11
+  Search left half → right = 4
 
 Step 3:
-[1, 3, 5, 7, 9, 11, 13]
-             L
-             M
-             R
-Compare: 9 vs 9 → Found! Return index 4
+  left = 4, right = 4
+  mid = 4 + (4 - 4) / 2 = 4
+  arr[4] = 9
+  Compare: 9 vs 9 → Match! ✓
+  Return index 4
+
+Total comparisons: 3 (log₂ 7 ≈ 2.8)
 ```
 
-## Key Points
+## <TranslatedText en="Comparison with Linear Search" bn="লিনিয়ার সার্চের সাথে তুলনা" />
 
-1. **Sorted Array Required**: Binary search only works on sorted arrays
-2. **O(log n) Complexity**: Very efficient for large datasets
-3. **Divide and Conquer**: Repeatedly halves the search space
-4. **Iterative vs Recursive**: Iterative is preferred (no stack overhead)
-5. **Overflow Prevention**: Use `left + (right - left) / 2` instead of `(left + right) / 2`
-
-## Common Variations
-
-### 1. Count Occurrences
-```dart
-int countOccurrences(List<int> arr, int target) {
-  int first = binarySearchFirst(arr, target);
-  if (first == -1) return 0;
-
-  int last = binarySearchLast(arr, target);
-  return last - first + 1;
-}
-```
-
-### 2. Find Closest Element
-```dart
-int findClosest(List<int> arr, int target) {
-  int left = 0;
-  int right = arr.length - 1;
-
-  if (target <= arr[left]) return left;
-  if (target >= arr[right]) return right;
-
-  while (left < right) {
-    int mid = left + (right - left) ~/ 2;
-
-    if (arr[mid] == target) return mid;
-
-    if (arr[mid] < target) {
-      left = mid + 1;
-    } else {
-      right = mid;
-    }
-  }
-
-  // Check which is closer
-  if (left > 0 && (target - arr[left - 1]).abs() < (arr[left] - target).abs()) {
-    return left - 1;
-  }
-
-  return left;
-}
-```
-
-## Comparison with Linear Search
-
-| Aspect | Binary Search | Linear Search |
+| <TranslatedText en="Aspect" bn="দিক" /> | <TranslatedText en="Binary Search" bn="বাইনারি সার্চ" /> | <TranslatedText en="Linear Search" bn="লিনিয়ার সার্চ" /> |
 |--------|---------------|---------------|
-| Time Complexity | O(log n) | O(n) |
-| Requires Sorted | Yes | No |
-| Best For | Large arrays | Small arrays |
-| Implementation | More complex | Simple |
+| **<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />** | O(log n) | O(n) |
+| **<TranslatedText en="Requires Sorted" bn="সর্ট করা প্রয়োজন" />** | <TranslatedText en="Yes" bn="হ্যাঁ" /> | <TranslatedText en="No" bn="না" /> |
+| **<TranslatedText en="Best For" bn="সেরা জন্য" />** | <TranslatedText en="Large arrays" bn="বড় অ্যারে" /> | <TranslatedText en="Small arrays" bn="ছোট অ্যারে" /> |
+| **<TranslatedText en="Implementation" bn="বাস্তবায়ন" />** | <TranslatedText en="More complex" bn="আরো জটিল" /> | <TranslatedText en="Simple" bn="সহজ" /> |
 
-## Common Pitfalls
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
 
-- Forgetting array must be sorted
-- Using `(left + right) / 2` which can overflow
-- Using `<` instead of `<=` in while condition
-- Not handling empty array case
-- Off-by-one errors in boundary updates
+### 1. <TranslatedText en="Sorted Array Required" bn="সর্ট করা অ্যারে প্রয়োজন" />
 
-## Test Cases
+<TranslatedText
+  en="Binary search **only works on sorted arrays**. If the array is unsorted, you must either sort it first (O(n log n)) or use linear search (O(n))."
+  bn="বাইনারি সার্চ **শুধুমাত্র সর্ট করা অ্যারেতে কাজ করে**। যদি অ্যারে আনসর্টেড হয়, আপনাকে হয় প্রথমে সর্ট করতে হবে (O(n log n)) অথবা লিনিয়ার সার্চ ব্যবহার করতে হবে (O(n))।"
+/>
 
-```dart
-void testBinarySearch() {
-  // Test 1: Element exists
-  assert(binarySearch([1, 3, 5, 7, 9], 5) == 2);
+### 2. <TranslatedText en="Logarithmic Time Complexity" bn="লগারিদমিক সময় জটিলতা" />
 
-  // Test 2: Element doesn't exist
-  assert(binarySearch([1, 3, 5, 7, 9], 4) == -1);
+<TranslatedText
+  en="Binary search achieves O(log n) by **halving the search space** in each iteration. For an array of 1 million elements, it takes only ~20 comparisons!"
+  bn="বাইনারি সার্চ প্রতিটি ইটারেশনে **সার্চ স্পেস অর্ধেক করে** O(log n) অর্জন করে। ১ মিলিয়ন এলিমেন্টের একটি অ্যারের জন্য, এটি শুধুমাত্র ~২০ তুলনা নেয়!"
+/>
 
-  // Test 3: First element
-  assert(binarySearch([1, 3, 5, 7, 9], 1) == 0);
+### 3. <TranslatedText en="Overflow Prevention" bn="ওভারফ্লো প্রতিরোধ" />
 
-  // Test 4: Last element
-  assert(binarySearch([1, 3, 5, 7, 9], 9) == 4);
+<TranslatedText
+  en="Always use `left + (right - left) / 2` instead of `(left + right) / 2` to calculate mid. The latter can overflow when left and right are large integers."
+  bn="মিড গণনা করতে `(left + right) / 2` এর পরিবর্তে সর্বদা `left + (right - left) / 2` ব্যবহার করুন। যখন left এবং right বড় ইন্টিজার হয় তখন পরেরটি ওভারফ্লো হতে পারে।"
+/>
 
-  // Test 5: Single element (found)
-  assert(binarySearch([5], 5) == 0);
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
 
-  // Test 6: Single element (not found)
-  assert(binarySearch([5], 3) == -1);
+<TranslatedText
+  en="1. **Check if Sorted**: Always verify the array is sorted before applying binary search"
+  bn="১. **সর্ট করা চেক করুন**: বাইনারি সার্চ প্রয়োগ করার আগে সর্বদা যাচাই করুন অ্যারে সর্ট করা আছে কিনা"
+/>
 
-  // Test 7: Empty array
-  assert(binarySearch([], 5) == -1);
+<TranslatedText
+  en="2. **Boundary Conditions**: Pay attention to `<=` vs `<` in while loop and boundary updates"
+  bn="২. **সীমানা শর্ত**: while লুপে `<=` বনাম `<` এবং সীমানা আপডেটে মনোযোগ দিন"
+/>
 
-  // Test 8: Large array
-  List<int> large = List.generate(1000, (i) => i * 2);
-  assert(binarySearch(large, 500) == 250);
+<TranslatedText
+  en="3. **Overflow Safety**: Use the overflow-safe mid calculation method"
+  bn="৩. **ওভারফ্লো নিরাপত্তা**: ওভারফ্লো-নিরাপদ মিড গণনা পদ্ধতি ব্যবহার করুন"
+/>
 
-  print('All tests passed!');
-}
-```
+<TranslatedText
+  en="4. **Variations**: Know first/last occurrence variants for duplicate handling"
+  bn="৪. **বৈচিত্র্য**: ডুপ্লিকেট হ্যান্ডলিংয়ের জন্য প্রথম/শেষ ঘটনা বৈচিত্র্য জানুন"
+/>
 
-## Performance
+<TranslatedText
+  en="5. **Complexity Analysis**: Explain why it's O(log n) - search space halves each time"
+  bn="৫. **কমপ্লেক্সিটি বিশ্লেষণ**: ব্যাখ্যা করুন কেন এটি O(log n) - প্রতিবার সার্চ স্পেস অর্ধেক হয়"
+/>
 
-```dart
-import 'dart:math';
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
 
-void benchmark() {
-  List<int> sizes = [100, 1000, 10000, 100000];
+<TranslatedText
+  en="- **O(log n) Time**: Binary search is very efficient for large sorted arrays"
+  bn="- **O(log n) সময়**: বাইনারি সার্চ বড় সর্ট করা অ্যারের জন্য খুবই কার্যকর"
+/>
 
-  for (int size in sizes) {
-    List<int> arr = List.generate(size, (i) => i);
-    int target = Random().nextInt(size);
+<TranslatedText
+  en="- **Sorted Requirement**: Only works on sorted data - crucial constraint"
+  bn="- **সর্ট করা প্রয়োজনীয়তা**: শুধুমাত্র সর্ট করা ডেটাতে কাজ করে - গুরুত্বপূর্ণ সীমাবদ্ধতা"
+/>
 
-    Stopwatch sw = Stopwatch()..start();
-    binarySearch(arr, target);
-    sw.stop();
+<TranslatedText
+  en="- **Divide and Conquer**: Repeatedly halves search space until target found or space empty"
+  bn="- **ভাগ করো এবং জয় করো**: টার্গেট পাওয়া বা স্পেস খালি না হওয়া পর্যন্ত বারবার সার্চ স্পেস অর্ধেক করে"
+/>
 
-    print('Size: $size, Time: ${sw.elapsedMicroseconds} μs');
-  }
-}
-```
+<TranslatedText
+  en="- **Iterative Preferred**: Iterative approach is better than recursive (no stack overhead)"
+  bn="- **ইটারেটিভ পছন্দসই**: ইটারেটিভ পদ্ধতি রিকার্সিভের চেয়ে ভালো (কোনো স্ট্যাক ওভারহেড নেই)"
+/>
 
-## Applications
+<TranslatedText
+  en="- **Many Variants**: First/last occurrence, insertion position, closest element, etc."
+  bn="- **অনেক বৈচিত্র্য**: প্রথম/শেষ ঘটনা, সন্নিবেশ অবস্থান, নিকটতম এলিমেন্ট, ইত্যাদি"
+/>
 
-- Dictionary lookups
-- Database indexing
-- Finding roots of equations
-- Game AI (decision trees)
-- Resource allocation
-- Finding boundaries in data
+## <TranslatedText en="Applications" bn="প্রয়োগসমূহ" />
 
-## Reference
+- <TranslatedText en="Dictionary lookups" bn="ডিকশনারি লুকআপ" />
+- <TranslatedText en="Database indexing" bn="ডেটাবেস ইনডেক্সিং" />
+- <TranslatedText en="Finding roots of equations" bn="সমীকরণের মূল খোঁজা" />
+- <TranslatedText en="Game AI (decision trees)" bn="গেম AI (ডিসিশন ট্রি)" />
+- <TranslatedText en="Resource allocation" bn="রিসোর্স বরাদ্দ" />
+
+## <TranslatedText en="Reference" bn="রেফারেন্স" />
 
 [JavaRevisited - Binary Search Implementation](http://javarevisited.blogspot.sg/2015/10/how-to-implement-binary-search-tree-in-java-example.html#axzz4wnEtnNB3)
