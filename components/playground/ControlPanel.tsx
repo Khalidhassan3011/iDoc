@@ -16,42 +16,61 @@ export default function ControlPanel({
   hasTestCases,
 }: ControlPanelProps) {
   return (
-    <div className="flex items-center gap-2 px-4 py-2">
+    <div className="flex items-center gap-4 px-4">
       <button
         onClick={onRunCode}
         disabled={isLoading}
-        className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-md transition-all shadow-lg hover:shadow-green-500/50 flex items-center gap-2"
+        title="Run Code"
+        className="text-green-500 hover:text-green-400 disabled:text-gray-600 disabled:cursor-not-allowed transition-colors flex items-center gap-1.5"
       >
         {isLoading ? (
-          <>
-            <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-            Running...
-          </>
+          <div className="animate-spin rounded-full h-5 w-5 border-2 border-green-500 border-t-transparent"></div>
         ) : (
-          <>
-            <span>▶</span>
-            Run
-          </>
+          <svg
+            className="w-6 h-6"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M8 5v14l11-7z" />
+          </svg>
         )}
+        <span className="text-sm font-semibold">Run</span>
       </button>
 
       <button
         onClick={onRunTests}
         disabled={isLoading || !hasTestCases}
-        title={!hasTestCases ? 'Add test cases to enable' : 'Run all test cases'}
-        className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-md transition-all shadow-lg hover:shadow-blue-500/50 flex items-center gap-2"
+        title={!hasTestCases ? 'Add test cases to enable' : 'Run Test Cases'}
+        className="text-blue-500 hover:text-blue-400 disabled:text-gray-600 disabled:cursor-not-allowed transition-colors flex items-center gap-1.5"
       >
-        <span>✓</span>
-        Test
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span className="text-sm font-semibold">Test</span>
       </button>
 
       <button
         onClick={onReset}
         disabled={isLoading}
-        className="px-3 py-2 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-600 disabled:cursor-not-allowed text-gray-300 text-sm font-medium rounded-md transition-colors flex items-center gap-1"
+        title="Reset Code"
+        className="text-orange-500 hover:text-orange-400 disabled:text-gray-600 disabled:cursor-not-allowed transition-colors flex items-center gap-1.5"
       >
-        <span className="text-base">↻</span>
-        Reset
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        <span className="text-sm font-semibold">Reset</span>
       </button>
     </div>
   );
