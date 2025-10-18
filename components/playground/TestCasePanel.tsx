@@ -89,12 +89,16 @@ export default function TestCasePanel({
 
           return (
             <div key={index}>
-              <div className="flex items-start gap-3">
+              <div className="flex items-center gap-3">
+                {/* Test Case Number */}
+                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-700/50 border border-gray-600">
+                  <span className="text-sm font-bold text-gray-300">{index + 1}</span>
+                </div>
+
                 {/* Input and Output Fields */}
                 <div className="flex-1 space-y-2">
                   {/* Input Row */}
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-400 font-medium w-4">I</span>
                     <input
                       type="text"
                       value={testCase.input}
@@ -119,7 +123,6 @@ export default function TestCasePanel({
 
                   {/* Output Row */}
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-400 font-medium w-4">O</span>
                     <input
                       type="text"
                       value={testCase.expectedOutput}
@@ -143,7 +146,7 @@ export default function TestCasePanel({
 
                   {/* Error Message */}
                   {result && !result.passed && (
-                    <div className="ml-6 text-xs text-red-400 font-mono bg-red-950/30 px-2 py-1.5 rounded border border-red-500/30">
+                    <div className="text-xs text-red-400 font-mono bg-red-950/30 px-2 py-1.5 rounded border border-red-500/30">
                       {result.error ? (
                         <>Error: {result.error}</>
                       ) : (
@@ -156,7 +159,7 @@ export default function TestCasePanel({
                 {/* Delete Button */}
                 <button
                   onClick={() => handleRemoveTestCase(index)}
-                  className="mt-1 text-red-400 hover:text-red-300 transition-colors"
+                  className="text-red-400 hover:text-red-300 transition-colors"
                   title="Remove test case"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
