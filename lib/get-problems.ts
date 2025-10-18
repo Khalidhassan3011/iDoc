@@ -62,6 +62,17 @@ export function getAllProblems(): Problem[] {
     { id: '51', title: '51. Intersection of Two Linked Lists', slug: '51-intersection-two-linked-lists', url: '/docs/problem-solving/top-100/51-intersection-two-linked-lists' },
     { id: '52', title: '52. Detect Cycle in Linked List', slug: '52-detect-cycle-linked-list', url: '/docs/problem-solving/top-100/52-detect-cycle-linked-list' },
     { id: '53', title: '53. Merge Sorted Linked Lists', slug: '53-merge-sorted-linked-lists', url: '/docs/problem-solving/top-100/53-merge-sorted-linked-lists' },
+    { id: '54', title: '54. Find Middle Element in One Pass', slug: '54-find-middle-one-pass', url: '/docs/problem-solving/top-100/54-find-middle-one-pass' },
+    { id: '55', title: '55. Detect Cycle in Linked List', slug: '55-detect-cycle-linked-list', url: '/docs/problem-solving/top-100/55-detect-cycle-linked-list' },
+    { id: '56', title: '56. Find Third Node from End', slug: '56-third-node-from-end', url: '/docs/problem-solving/top-100/56-third-node-from-end' },
+    { id: '57', title: '57. Sum of Two Linked Lists', slug: '57-sum-two-linked-lists', url: '/docs/problem-solving/top-100/57-sum-two-linked-lists' },
+    { id: '58', title: '58. Delete All Occurrences of Key', slug: '58-delete-all-occurrences', url: '/docs/problem-solving/top-100/58-delete-all-occurrences' },
+    { id: '59', title: '59. Remove Nth Node from End', slug: '59-remove-nth-from-end', url: '/docs/problem-solving/top-100/59-remove-nth-from-end' },
+    { id: '60', title: '60. Merge Two Sorted Lists', slug: '60-merge-two-sorted-lists', url: '/docs/problem-solving/top-100/60-merge-two-sorted-lists' },
+    { id: '61', title: '61. Partition List', slug: '61-partition-list', url: '/docs/problem-solving/top-100/61-partition-list' },
+    { id: '62', title: '62. Remove Duplicates from Sorted List', slug: '62-remove-duplicates-sorted-list', url: '/docs/problem-solving/top-100/62-remove-duplicates-sorted-list' },
+    { id: '63', title: '63. Remove Duplicates from Unsorted List', slug: '63-remove-duplicates-unsorted-list', url: '/docs/problem-solving/top-100/63-remove-duplicates-unsorted-list' },
+    { id: '64', title: '64. Find Length of Linked List', slug: '64-find-length-linked-list', url: '/docs/problem-solving/top-100/64-find-length-linked-list' },
   ];
 
   return problems;

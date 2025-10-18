@@ -1,0 +1,599 @@
+---
+title: 55. Detect Cycle in Linked List
+description: Check if a linked list contains a cycle and find the starting node of the cycle
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Detect Cycle in Linked List" bn="লিঙ্কড লিস্টে সাইকেল সনাক্ত করুন" />
+
+<TranslatedText
+  en="Detect if a linked list contains a cycle and find the starting node of the cycle using Floyd's Cycle Detection Algorithm."
+  bn="ফ্লয়েডের সাইকেল সনাক্তকরণ অ্যালগরিদম ব্যবহার করে একটি লিঙ্কড লিস্টে সাইকেল আছে কিনা তা সনাক্ত করুন এবং সাইকেলের শুরু নোড খুঁজুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given a linked list, determine if it has a cycle in it. Additionally, if a cycle exists, find the node where the cycle begins."
+  bn="একটি লিঙ্কড লিস্ট দেওয়া হলে, নির্ধারণ করুন এতে কোনো সাইকেল আছে কিনা। অতিরিক্তভাবে, যদি কোনো সাইকেল থাকে, তাহলে সাইকেল যেখানে শুরু হয় সেই নোড খুঁজুন।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: 1 -> 2 -> 3 -> 4 -> 2 (cycle back to node 2)
+Output: Cycle detected, starts at node 2
+
+Input: 1 -> 2 -> 3 -> 4 -> 5
+Output: No cycle
+
+Input: 1 -> 1 (self loop)
+Output: Cycle detected, starts at node 1
+```
+
+## <TranslatedText en="Approach 1: Floyd's Cycle Detection (Tortoise and Hare)" bn="পদ্ধতি ১: ফ্লয়েডের সাইকেল সনাক্তকরণ (কচ্ছপ এবং খরগোশ)" />
+
+<TranslatedText
+  en="Use two pointers moving at different speeds. If there's a cycle, they will eventually meet."
+  bn="বিভিন্ন গতিতে চলমান দুটি পয়েন্টার ব্যবহার করুন। যদি কোনো সাইকেল থাকে, তারা শেষ পর্যন্ত মিলিত হবে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+// Detect if cycle exists
+bool hasCycle(Node* head) {
+    if (!head || !head->next) return false;
+
+    Node* slow = head;
+    Node* fast = head;
+
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow == fast) {
+            return true;  // Cycle detected
+        }
+    }
+
+    return false;  // No cycle
+}
+
+// Find the starting node of the cycle
+Node* detectCycle(Node* head) {
+    if (!head || !head->next) return nullptr;
+
+    Node* slow = head;
+    Node* fast = head;
+    bool hasCycleFlag = false;
+
+    // Phase 1: Detect if cycle exists
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow == fast) {
+            hasCycleFlag = true;
+            break;
+        }
+    }
+
+    if (!hasCycleFlag) return nullptr;
+
+    // Phase 2: Find the start of the cycle
+    slow = head;
+    while (slow != fast) {
+        slow = slow->next;
+        fast = fast->next;
+    }
+
+    return slow;  // Starting node of cycle
+}
+
+int main() {
+    // Create a list with cycle: 1 -> 2 -> 3 -> 4 -> 2
+    Node* head = new Node(1);
+    head->next = new Node(2);
+    head->next->next = new Node(3);
+    head->next->next->next = new Node(4);
+    head->next->next->next->next = head->next;  // Create cycle
+
+    // Test hasCycle
+    if (hasCycle(head)) {
+        cout << "Cycle detected!" << endl;
+    } else {
+        cout << "No cycle" << endl;
+    }
+
+    // Test detectCycle
+    Node* cycleStart = detectCycle(head);
+    if (cycleStart) {
+        cout << "Cycle starts at node with data: " << cycleStart->data << endl;
+    } else {
+        cout << "No cycle found" << endl;
+    }
+
+    // Test with no cycle
+    Node* head2 = new Node(1);
+    head2->next = new Node(2);
+    head2->next->next = new Node(3);
+
+    cout << "\nList without cycle:" << endl;
+    cout << "Has cycle? " << (hasCycle(head2) ? "Yes" : "No") << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def has_cycle(head):
+    """Detect if cycle exists"""
+    if not head or not head.next:
+        return False
+
+    slow = head
+    fast = head
+
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+
+        if slow == fast:
+            return True  # Cycle detected
+
+    return False  # No cycle
+
+def detect_cycle(head):
+    """Find the starting node of the cycle"""
+    if not head or not head.next:
+        return None
+
+    slow = head
+    fast = head
+    has_cycle_flag = False
+
+    # Phase 1: Detect if cycle exists
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+
+        if slow == fast:
+            has_cycle_flag = True
+            break
+
+    if not has_cycle_flag:
+        return None
+
+    # Phase 2: Find the start of the cycle
+    slow = head
+    while slow != fast:
+        slow = slow.next
+        fast = fast.next
+
+    return slow  # Starting node of cycle
+
+# Create a list with cycle: 1 -> 2 -> 3 -> 4 -> 2
+head = Node(1)
+head.next = Node(2)
+head.next.next = Node(3)
+head.next.next.next = Node(4)
+head.next.next.next.next = head.next  # Create cycle
+
+# Test has_cycle
+if has_cycle(head):
+    print("Cycle detected!")
+else:
+    print("No cycle")
+
+# Test detect_cycle
+cycle_start = detect_cycle(head)
+if cycle_start:
+    print(f"Cycle starts at node with data: {cycle_start.data}")
+else:
+    print("No cycle found")
+
+# Test with no cycle
+head2 = Node(1)
+head2.next = Node(2)
+head2.next.next = Node(3)
+
+print("\nList without cycle:")
+print(f"Has cycle? {'Yes' if has_cycle(head2) else 'No'}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+function hasCycle(head) {
+    // Detect if cycle exists
+    if (!head || !head.next) return false;
+
+    let slow = head;
+    let fast = head;
+
+    while (fast && fast.next) {
+        slow = slow.next;
+        fast = fast.next.next;
+
+        if (slow === fast) {
+            return true;  // Cycle detected
+        }
+    }
+
+    return false;  // No cycle
+}
+
+function detectCycle(head) {
+    // Find the starting node of the cycle
+    if (!head || !head.next) return null;
+
+    let slow = head;
+    let fast = head;
+    let hasCycleFlag = false;
+
+    // Phase 1: Detect if cycle exists
+    while (fast && fast.next) {
+        slow = slow.next;
+        fast = fast.next.next;
+
+        if (slow === fast) {
+            hasCycleFlag = true;
+            break;
+        }
+    }
+
+    if (!hasCycleFlag) return null;
+
+    // Phase 2: Find the start of the cycle
+    slow = head;
+    while (slow !== fast) {
+        slow = slow.next;
+        fast = fast.next;
+    }
+
+    return slow;  // Starting node of cycle
+}
+
+// Create a list with cycle: 1 -> 2 -> 3 -> 4 -> 2
+const head = new Node(1);
+head.next = new Node(2);
+head.next.next = new Node(3);
+head.next.next.next = new Node(4);
+head.next.next.next.next = head.next;  // Create cycle
+
+// Test hasCycle
+if (hasCycle(head)) {
+    console.log("Cycle detected!");
+} else {
+    console.log("No cycle");
+}
+
+// Test detectCycle
+const cycleStart = detectCycle(head);
+if (cycleStart) {
+    console.log(`Cycle starts at node with data: ${cycleStart.data}`);
+} else {
+    console.log("No cycle found");
+}
+
+// Test with no cycle
+const head2 = new Node(1);
+head2.next = new Node(2);
+head2.next.next = new Node(3);
+
+console.log("\nList without cycle:");
+console.log(`Has cycle? ${hasCycle(head2) ? 'Yes' : 'No'}`);
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+## <TranslatedText en="How Floyd's Algorithm Works" bn="ফ্লয়েডের অ্যালগরিদম কীভাবে কাজ করে" />
+
+### <TranslatedText en="Phase 1: Detect Cycle" bn="ফেজ ১: সাইকেল সনাক্ত করুন" />
+
+```
+List: 1 -> 2 -> 3 -> 4
+              ↑________|
+
+Step 1: slow=1, fast=1
+Step 2: slow=2, fast=3
+Step 3: slow=3, fast=2 (wrapped around)
+Step 4: slow=4, fast=4 (MEET!)
+
+When they meet, cycle exists
+```
+
+### <TranslatedText en="Phase 2: Find Cycle Start" bn="ফেজ ২: সাইকেল শুরু খুঁজুন" />
+
+```
+After meeting:
+- Move slow back to head
+- Move both one step at a time
+- They meet at cycle start
+
+Mathematical proof:
+If distance to cycle start = k
+And cycle length = c
+They will meet at cycle start after k steps
+```
+
+## <TranslatedText en="Approach 2: Hash Set Method" bn="পদ্ধতি ২: হ্যাশ সেট পদ্ধতি" />
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <unordered_set>
+using namespace std;
+
+bool hasCycleHashSet(Node* head) {
+    unordered_set<Node*> visited;
+
+    Node* curr = head;
+    while (curr) {
+        // If node already visited, cycle exists
+        if (visited.find(curr) != visited.end()) {
+            return true;
+        }
+        visited.insert(curr);
+        curr = curr->next;
+    }
+
+    return false;
+}
+
+Node* detectCycleHashSet(Node* head) {
+    unordered_set<Node*> visited;
+
+    Node* curr = head;
+    while (curr) {
+        if (visited.find(curr) != visited.end()) {
+            return curr;  // Cycle start
+        }
+        visited.insert(curr);
+        curr = curr->next;
+    }
+
+    return nullptr;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def has_cycle_hash_set(head):
+    visited = set()
+
+    curr = head
+    while curr:
+        # If node already visited, cycle exists
+        if curr in visited:
+            return True
+        visited.add(curr)
+        curr = curr.next
+
+    return False
+
+def detect_cycle_hash_set(head):
+    visited = set()
+
+    curr = head
+    while curr:
+        if curr in visited:
+            return curr  # Cycle start
+        visited.add(curr)
+        curr = curr.next
+
+    return None
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function hasCycleHashSet(head) {
+    const visited = new Set();
+
+    let curr = head;
+    while (curr) {
+        // If node already visited, cycle exists
+        if (visited.has(curr)) {
+            return true;
+        }
+        visited.add(curr);
+        curr = curr.next;
+    }
+
+    return false;
+}
+
+function detectCycleHashSet(head) {
+    const visited = new Set();
+
+    let curr = head;
+    while (curr) {
+        if (visited.has(curr)) {
+            return curr;  // Cycle start
+        }
+        visited.add(curr);
+        curr = curr.next;
+    }
+
+    return null;
+}
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n) <TranslatedText en="for hash set" bn="হ্যাশ সেটের জন্য" />
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Floyd's Algorithm is optimal</strong>: O(1) space vs O(n) for hash set</li>
+        <li><strong>Two-phase approach</strong>: First detect, then find start</li>
+        <li><strong>Meeting point is guaranteed</strong>: Fast catches slow if cycle exists</li>
+        <li><strong>Mathematical guarantee</strong>: Distance from head to cycle start equals distance from meeting point to cycle start</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>ফ্লয়েডের অ্যালগরিদম সর্বোত্তম</strong>: হ্যাশ সেটের জন্য O(n) এর বিপরীতে O(1) স্থান</li>
+        <li><strong>দুই-ফেজ পদ্ধতি</strong>: প্রথমে সনাক্ত করুন, তারপর শুরু খুঁজুন</li>
+        <li><strong>মিটিং পয়েন্ট গ্যারান্টিযুক্ত</strong>: যদি সাইকেল থাকে তাহলে দ্রুত ধীরকে ধরে</li>
+        <li><strong>গাণিতিক গ্যারান্টি</strong>: হেড থেকে সাইকেল শুরু পর্যন্ত দূরত্ব মিটিং পয়েন্ট থেকে সাইকেল শুরু পর্যন্ত দূরত্বের সমান</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Edge Cases to Consider" bn="বিবেচনা করার জন্য এজ কেস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Empty list</strong>: No cycle</li>
+        <li><strong>Single node</strong>: Check if it points to itself</li>
+        <li><strong>Two nodes with cycle</strong>: 1 → 2 → 1</li>
+        <li><strong>Cycle at end</strong>: Last node points back</li>
+        <li><strong>Cycle at beginning</strong>: Head is part of cycle</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>খালি লিস্ট</strong>: কোনো সাইকেল নেই</li>
+        <li><strong>একক নোড</strong>: পরীক্ষা করুন এটি নিজেকে নির্দেশ করে কিনা</li>
+        <li><strong>সাইকেল সহ দুটি নোড</strong>: 1 → 2 → 1</li>
+        <li><strong>শেষে সাইকেল</strong>: শেষ নোড পিছনে নির্দেশ করে</li>
+        <li><strong>শুরুতে সাইকেল</strong>: হেড সাইকেলের অংশ</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Start with Floyd's algorithm</strong>: Shows knowledge of optimal solution</li>
+        <li><strong>Explain the two-phase approach</strong>: Detection then finding start</li>
+        <li><strong>Mention space optimization</strong>: O(1) vs O(n) for hash set</li>
+        <li><strong>Draw a diagram</strong>: Visual representation helps explain the algorithm</li>
+        <li><strong>Discuss why it works</strong>: Mathematical reasoning behind meeting point</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>ফ্লয়েডের অ্যালগরিদম দিয়ে শুরু করুন</strong>: সর্বোত্তম সমাধানের জ্ঞান দেখায়</li>
+        <li><strong>দুই-ফেজ পদ্ধতি ব্যাখ্যা করুন</strong>: সনাক্তকরণ তারপর শুরু খুঁজে বের করা</li>
+        <li><strong>স্থান অপ্টিমাইজেশন উল্লেখ করুন</strong>: হ্যাশ সেটের জন্য O(n) এর বিপরীতে O(1)</li>
+        <li><strong>একটি ডায়াগ্রাম আঁকুন</strong>: ভিজ্যুয়াল উপস্থাপনা অ্যালগরিদম ব্যাখ্যা করতে সাহায্য করে</li>
+        <li><strong>কেন এটি কাজ করে তা আলোচনা করুন</strong>: মিটিং পয়েন্টের পিছনে গাণিতিক যুক্তি</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Common Mistakes to Avoid" bn="এড়ানোর জন্য সাধারণ ভুল" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Not checking for null pointers before accessing next</li>
+        <li>Forgetting to reset slow pointer to head in phase 2</li>
+        <li>Moving both pointers at same speed in phase 2</li>
+        <li>Not handling empty list or single node cases</li>
+        <li>Assuming cycle always exists without proper detection</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>পরবর্তী অ্যাক্সেস করার আগে null পয়েন্টার চেক না করা</li>
+        <li>ফেজ 2 তে ধীর পয়েন্টার হেডে রিসেট করতে ভুলে যাওয়া</li>
+        <li>ফেজ 2 তে উভয় পয়েন্টার একই গতিতে চলানো</li>
+        <li>খালি লিস্ট বা একক নোড কেস হ্যান্ডেল না করা</li>
+        <li>সঠিক সনাক্তকরণ ছাড়াই সাইকেল সর্বদা বিদ্যমান ধরে নেওয়া</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Happy Number (uses similar cycle detection)
+- Find Duplicate Number (uses Floyd's algorithm)
+- Linked List Cycle II
+- Circular Array Loop
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Floyd's Cycle Detection is the optimal solution: O(n) time, O(1) space</li>
+        <li>Two-phase approach: detect cycle, then find starting node</li>
+        <li>Fast pointer moves 2x speed, slow moves 1x</li>
+        <li>When they meet, cycle exists</li>
+        <li>Mathematical property guarantees finding cycle start</li>
+        <li>This algorithm applies to many cycle detection problems</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>ফ্লয়েডের সাইকেল সনাক্তকরণ সর্বোত্তম সমাধান: O(n) সময়, O(1) স্থান</li>
+        <li>দুই-ফেজ পদ্ধতি: সাইকেল সনাক্ত করুন, তারপর শুরু নোড খুঁজুন</li>
+        <li>দ্রুত পয়েন্টার 2x গতিতে চলে, ধীর 1x চলে</li>
+        <li>যখন তারা মিলিত হয়, সাইকেল বিদ্যমান</li>
+        <li>গাণিতিক বৈশিষ্ট্য সাইকেল শুরু খুঁজে পাওয়ার গ্যারান্টি দেয়</li>
+        <li>এই অ্যালগরিদম অনেক সাইকেল সনাক্তকরণ সমস্যার ক্ষেত্রে প্রযোজ্য</li>
+      </ul>
+    </>
+  }
+/>

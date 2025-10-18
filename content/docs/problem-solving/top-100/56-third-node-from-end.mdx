@@ -1,0 +1,569 @@
+---
+title: 56. Find Third Node from End
+description: Find the third node from the end of a singly linked list in one pass
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Find Third Node from End" bn="শেষ থেকে তৃতীয় নোড খুঁজুন" />
+
+<TranslatedText
+  en="Find the third node from the end of a singly linked list in a single traversal using the two-pointer technique."
+  bn="টু-পয়েন্টার কৌশল ব্যবহার করে একটি একক ট্রাভার্সালে সিঙ্গলি লিঙ্কড লিস্টের শেষ থেকে তৃতীয় নোড খুঁজুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given a singly linked list, find the third node from the end. You must solve this in one pass without counting the length first."
+  bn="একটি সিঙ্গলি লিঙ্কড লিস্ট দেওয়া হলে, শেষ থেকে তৃতীয় নোড খুঁজুন। আপনাকে অবশ্যই প্রথমে দৈর্ঘ্য গণনা না করে এক পাসে এটি সমাধান করতে হবে।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: 1 -> 2 -> 3 -> 4 -> 5
+Output: 3 (third from end)
+
+Input: 10 -> 20 -> 30 -> 40 -> 50 -> 60
+Output: 40 (third from end)
+
+Input: 1 -> 2
+Output: null (list has less than 3 nodes)
+```
+
+## <TranslatedText en="Approach: Two Pointer with Gap" bn="পদ্ধতি: গ্যাপ সহ দুটি পয়েন্টার" />
+
+<TranslatedText
+  en="Use two pointers with a gap of 3 nodes. When the fast pointer reaches the end, the slow pointer will be at the third node from the end."
+  bn="3 নোডের গ্যাপ সহ দুটি পয়েন্টার ব্যবহার করুন। যখন দ্রুত পয়েন্টার শেষে পৌঁছায়, ধীর পয়েন্টার শেষ থেকে তৃতীয় নোডে থাকবে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+Node* findThirdFromEnd(Node* head) {
+    if (!head) return nullptr;
+
+    Node* fast = head;
+    Node* slow = head;
+
+    // Move fast pointer 3 steps ahead
+    for (int i = 0; i < 3; i++) {
+        if (!fast) {
+            // List has less than 3 nodes
+            return nullptr;
+        }
+        fast = fast->next;
+    }
+
+    // Move both pointers until fast reaches end
+    while (fast) {
+        slow = slow->next;
+        fast = fast->next;
+    }
+
+    return slow;
+}
+
+// Generalized: Find Nth node from end
+Node* findNthFromEnd(Node* head, int n) {
+    if (!head || n <= 0) return nullptr;
+
+    Node* fast = head;
+    Node* slow = head;
+
+    // Move fast pointer n steps ahead
+    for (int i = 0; i < n; i++) {
+        if (!fast) {
+            return nullptr;  // List has less than n nodes
+        }
+        fast = fast->next;
+    }
+
+    // Move both pointers together
+    while (fast) {
+        slow = slow->next;
+        fast = fast->next;
+    }
+
+    return slow;
+}
+
+// Helper function to create linked list
+Node* createList(int arr[], int n) {
+    if (n == 0) return nullptr;
+    Node* head = new Node(arr[0]);
+    Node* curr = head;
+    for (int i = 1; i < n; i++) {
+        curr->next = new Node(arr[i]);
+        curr = curr->next;
+    }
+    return head;
+}
+
+// Helper function to print list
+void printList(Node* head) {
+    while (head) {
+        cout << head->data;
+        if (head->next) cout << " -> ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    // Test case 1
+    int arr1[] = {1, 2, 3, 4, 5};
+    Node* head1 = createList(arr1, 5);
+    cout << "List 1: ";
+    printList(head1);
+    Node* third1 = findThirdFromEnd(head1);
+    if (third1) {
+        cout << "Third from end: " << third1->data << endl;
+    } else {
+        cout << "List has less than 3 nodes" << endl;
+    }
+
+    // Test case 2: Using generalized function
+    int arr2[] = {10, 20, 30, 40, 50, 60};
+    Node* head2 = createList(arr2, 6);
+    cout << "\nList 2: ";
+    printList(head2);
+    Node* third2 = findNthFromEnd(head2, 3);
+    if (third2) {
+        cout << "Third from end: " << third2->data << endl;
+    }
+
+    // Test 5th from end
+    Node* fifth = findNthFromEnd(head2, 5);
+    if (fifth) {
+        cout << "Fifth from end: " << fifth->data << endl;
+    }
+
+    // Test case 3: Short list
+    int arr3[] = {1, 2};
+    Node* head3 = createList(arr3, 2);
+    cout << "\nList 3: ";
+    printList(head3);
+    Node* third3 = findThirdFromEnd(head3);
+    if (third3) {
+        cout << "Third from end: " << third3->data << endl;
+    } else {
+        cout << "List has less than 3 nodes" << endl;
+    }
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def find_third_from_end(head):
+    if not head:
+        return None
+
+    fast = head
+    slow = head
+
+    # Move fast pointer 3 steps ahead
+    for _ in range(3):
+        if not fast:
+            # List has less than 3 nodes
+            return None
+        fast = fast.next
+
+    # Move both pointers until fast reaches end
+    while fast:
+        slow = slow.next
+        fast = fast.next
+
+    return slow
+
+# Generalized: Find Nth node from end
+def find_nth_from_end(head, n):
+    if not head or n <= 0:
+        return None
+
+    fast = head
+    slow = head
+
+    # Move fast pointer n steps ahead
+    for _ in range(n):
+        if not fast:
+            return None  # List has less than n nodes
+        fast = fast.next
+
+    # Move both pointers together
+    while fast:
+        slow = slow.next
+        fast = fast.next
+
+    return slow
+
+# Helper function to create linked list
+def create_list(arr):
+    if not arr:
+        return None
+    head = Node(arr[0])
+    curr = head
+    for val in arr[1:]:
+        curr.next = Node(val)
+        curr = curr.next
+    return head
+
+# Helper function to print list
+def print_list(head):
+    result = []
+    while head:
+        result.append(str(head.data))
+        head = head.next
+    print(" -> ".join(result))
+
+# Test case 1
+head1 = create_list([1, 2, 3, 4, 5])
+print("List 1:", end=" ")
+print_list(head1)
+third1 = find_third_from_end(head1)
+if third1:
+    print(f"Third from end: {third1.data}")
+else:
+    print("List has less than 3 nodes")
+
+# Test case 2: Using generalized function
+head2 = create_list([10, 20, 30, 40, 50, 60])
+print("\nList 2:", end=" ")
+print_list(head2)
+third2 = find_nth_from_end(head2, 3)
+if third2:
+    print(f"Third from end: {third2.data}")
+
+# Test 5th from end
+fifth = find_nth_from_end(head2, 5)
+if fifth:
+    print(f"Fifth from end: {fifth.data}")
+
+# Test case 3: Short list
+head3 = create_list([1, 2])
+print("\nList 3:", end=" ")
+print_list(head3)
+third3 = find_third_from_end(head3)
+if third3:
+    print(f"Third from end: {third3.data}")
+else:
+    print("List has less than 3 nodes")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+function findThirdFromEnd(head) {
+    if (!head) return null;
+
+    let fast = head;
+    let slow = head;
+
+    // Move fast pointer 3 steps ahead
+    for (let i = 0; i < 3; i++) {
+        if (!fast) {
+            // List has less than 3 nodes
+            return null;
+        }
+        fast = fast.next;
+    }
+
+    // Move both pointers until fast reaches end
+    while (fast) {
+        slow = slow.next;
+        fast = fast.next;
+    }
+
+    return slow;
+}
+
+// Generalized: Find Nth node from end
+function findNthFromEnd(head, n) {
+    if (!head || n <= 0) return null;
+
+    let fast = head;
+    let slow = head;
+
+    // Move fast pointer n steps ahead
+    for (let i = 0; i < n; i++) {
+        if (!fast) {
+            return null;  // List has less than n nodes
+        }
+        fast = fast.next;
+    }
+
+    // Move both pointers together
+    while (fast) {
+        slow = slow.next;
+        fast = fast.next;
+    }
+
+    return slow;
+}
+
+// Helper function to create linked list
+function createList(arr) {
+    if (arr.length === 0) return null;
+    const head = new Node(arr[0]);
+    let curr = head;
+    for (let i = 1; i < arr.length; i++) {
+        curr.next = new Node(arr[i]);
+        curr = curr.next;
+    }
+    return head;
+}
+
+// Helper function to print list
+function printList(head) {
+    const result = [];
+    while (head) {
+        result.push(head.data);
+        head = head.next;
+    }
+    console.log(result.join(" -> "));
+}
+
+// Test case 1
+const head1 = createList([1, 2, 3, 4, 5]);
+console.log("List 1:");
+printList(head1);
+const third1 = findThirdFromEnd(head1);
+if (third1) {
+    console.log(`Third from end: ${third1.data}`);
+} else {
+    console.log("List has less than 3 nodes");
+}
+
+// Test case 2: Using generalized function
+const head2 = createList([10, 20, 30, 40, 50, 60]);
+console.log("\nList 2:");
+printList(head2);
+const third2 = findNthFromEnd(head2, 3);
+if (third2) {
+    console.log(`Third from end: ${third2.data}`);
+}
+
+// Test 5th from end
+const fifth = findNthFromEnd(head2, 5);
+if (fifth) {
+    console.log(`Fifth from end: ${fifth.data}`);
+}
+
+// Test case 3: Short list
+const head3 = createList([1, 2]);
+console.log("\nList 3:");
+printList(head3);
+const third3 = findThirdFromEnd(head3);
+if (third3) {
+    console.log(`Third from end: ${third3.data}`);
+} else {
+    console.log("List has less than 3 nodes");
+}
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n) <TranslatedText en="where n is the number of nodes" bn="যেখানে n হল নোডের সংখ্যা" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+## <TranslatedText en="How It Works" bn="এটি কীভাবে কাজ করে" />
+
+```
+List: 1 -> 2 -> 3 -> 4 -> 5
+
+Step 1: Move fast 3 steps ahead
+        1 -> 2 -> 3 -> 4 -> 5
+        ^              ^
+        slow         fast
+
+Step 2: Move both together until fast reaches null
+        1 -> 2 -> 3 -> 4 -> 5 -> null
+                  ^              ^
+                slow          fast
+
+Result: slow is at node 3 (third from end)
+```
+
+## <TranslatedText en="Generalized Solution: Nth Node from End" bn="সাধারণীকৃত সমাধান: শেষ থেকে Nth নোড" />
+
+<TranslatedText
+  en="The same technique works for finding any Nth node from the end by adjusting the initial gap between pointers."
+  bn="পয়েন্টারের মধ্যে প্রাথমিক গ্যাপ সামঞ্জস্য করে শেষ থেকে যেকোনো Nth নোড খুঁজে পেতে একই কৌশল কাজ করে।"
+/>
+
+```
+To find Nth node from end:
+1. Move fast pointer N steps ahead
+2. Move both pointers together
+3. When fast reaches null, slow is at Nth from end
+```
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Single pass solution</strong>: No need to count length first</li>
+        <li><strong>Two-pointer with fixed gap</strong>: Maintains constant distance between pointers</li>
+        <li><strong>Easily generalized</strong>: Same logic works for any Nth node from end</li>
+        <li><strong>Edge case handling</strong>: Returns null if list has less than N nodes</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>একক পাস সমাধান</strong>: প্রথমে দৈর্ঘ্য গণনা করার প্রয়োজন নেই</li>
+        <li><strong>নির্দিষ্ট গ্যাপ সহ দুই-পয়েন্টার</strong>: পয়েন্টারের মধ্যে স্থির দূরত্ব বজায় রাখে</li>
+        <li><strong>সহজেই সাধারণীকৃত</strong>: একই লজিক শেষ থেকে যেকোনো Nth নোডের জন্য কাজ করে</li>
+        <li><strong>এজ কেস হ্যান্ডলিং</strong>: যদি লিস্টে N টির কম নোড থাকে তাহলে null ফেরত দেয়</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Edge Cases to Consider" bn="বিবেচনা করার জন্য এজ কেস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Empty list</strong>: Return null</li>
+        <li><strong>List shorter than N</strong>: Return null</li>
+        <li><strong>List exactly N nodes</strong>: Return head</li>
+        <li><strong>N = 1</strong>: Return last node</li>
+        <li><strong>N = 0 or negative</strong>: Invalid input, return null</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>খালি লিস্ট</strong>: null ফেরত দিন</li>
+        <li><strong>N এর চেয়ে ছোট লিস্ট</strong>: null ফেরত দিন</li>
+        <li><strong>ঠিক N নোডের লিস্ট</strong>: head ফেরত দিন</li>
+        <li><strong>N = 1</strong>: শেষ নোড ফেরত দিন</li>
+        <li><strong>N = 0 বা ঋণাত্মক</strong>: অবৈধ ইনপুট, null ফেরত দিন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Mention the constraint</strong>: Emphasize solving in one pass</li>
+        <li><strong>Explain the gap logic</strong>: Why maintaining fixed gap works</li>
+        <li><strong>Discuss generalization</strong>: Show you can adapt to any Nth node from end</li>
+        <li><strong>Handle edge cases</strong>: Demonstrate thinking about short lists</li>
+        <li><strong>Alternative approach</strong>: Could count length first (2 passes), but one pass is better</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>সীমাবদ্ধতা উল্লেখ করুন</strong>: এক পাসে সমাধান করার উপর জোর দিন</li>
+        <li><strong>গ্যাপ লজিক ব্যাখ্যা করুন</strong>: কেন নির্দিষ্ট গ্যাপ বজায় রাখা কাজ করে</li>
+        <li><strong>সাধারণীকরণ আলোচনা করুন</strong>: দেখান আপনি শেষ থেকে যেকোনো Nth নোডের সাথে খাপ খাইয়ে নিতে পারেন</li>
+        <li><strong>এজ কেস হ্যান্ডেল করুন</strong>: ছোট লিস্ট সম্পর্কে চিন্তাভাবনা প্রদর্শন করুন</li>
+        <li><strong>বিকল্প পদ্ধতি</strong>: প্রথমে দৈর্ঘ্য গণনা করতে পারে (2 পাস), তবে এক পাস ভাল</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Common Mistakes to Avoid" bn="এড়ানোর জন্য সাধারণ ভুল" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Not checking if list has enough nodes</li>
+        <li>Off-by-one errors in the initial gap</li>
+        <li>Not handling null pointer cases properly</li>
+        <li>Using two passes (counting first)</li>
+        <li>Forgetting to check for empty list</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>লিস্টে পর্যাপ্ত নোড আছে কিনা তা পরীক্ষা না করা</li>
+        <li>প্রাথমিক গ্যাপে অফ-বাই-ওয়ান ত্রুটি</li>
+        <li>null পয়েন্টার কেস সঠিকভাবে হ্যান্ডেল না করা</li>
+        <li>দুটি পাস ব্যবহার করা (প্রথমে গণনা করা)</li>
+        <li>খালি লিস্ট পরীক্ষা করতে ভুলে যাওয়া</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Remove Nth Node from End (LeetCode 19)
+- Find Kth Node from End
+- Middle of Linked List
+- Rotate List
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Two-pointer technique with fixed gap solves this in one pass</li>
+        <li>Move fast pointer N steps ahead first</li>
+        <li>Then move both together until fast reaches end</li>
+        <li>O(n) time with O(1) space - optimal solution</li>
+        <li>This pattern generalizes to finding any Nth node from end</li>
+        <li>Always validate that list has at least N nodes</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>নির্দিষ্ট গ্যাপ সহ টু-পয়েন্টার কৌশল এটি এক পাসে সমাধান করে</li>
+        <li>প্রথমে N ধাপ এগিয়ে দ্রুত পয়েন্টার সরান</li>
+        <li>তারপর দ্রুত শেষে পৌঁছানো পর্যন্ত উভয়কে একসাথে সরান</li>
+        <li>O(n) সময় O(1) স্থান সহ - সর্বোত্তম সমাধান</li>
+        <li>এই প্যাটার্ন শেষ থেকে যেকোনো Nth নোড খুঁজে পেতে সাধারণীকরণ করে</li>
+        <li>সর্বদা যাচাই করুন যে লিস্টে অন্তত N নোড আছে</li>
+      </ul>
+    </>
+  }
+/>

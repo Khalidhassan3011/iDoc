@@ -1,0 +1,516 @@
+---
+title: 61. Partition List
+description: Partition a linked list around a value such that all nodes less than the value come before nodes greater than or equal to it
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Partition List" bn="লিস্ট পার্টিশন করুন" />
+
+<TranslatedText
+  en="Partition a linked list around a value x such that all nodes with values less than x come before nodes with values greater than or equal to x, preserving the original relative order."
+  bn="একটি মান x এর চারপাশে একটি লিঙ্কড লিস্ট পার্টিশন করুন যাতে x এর চেয়ে ছোট মান সহ সমস্ত নোড x এর চেয়ে বড় বা সমান মান সহ নোডের আগে আসে, মূল আপেক্ষিক ক্রম সংরক্ষণ করে।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given the head of a linked list and a value x, partition it such that all nodes with values less than x come before nodes with values greater than or equal to x. You should preserve the original relative order of the nodes in each of the two partitions."
+  bn="একটি লিঙ্কড লিস্টের হেড এবং একটি মান x দেওয়া হলে, এটি পার্টিশন করুন যাতে x এর চেয়ে ছোট মান সহ সমস্ত নোড x এর চেয়ে বড় বা সমান মান সহ নোডের আগে আসে। আপনার দুটি পার্টিশনের প্রতিটিতে নোডের মূল আপেক্ষিক ক্রম সংরক্ষণ করা উচিত।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: head = 1 → 4 → 3 → 2 → 5 → 2, x = 3
+Output: 1 → 2 → 2 → 4 → 3 → 5
+Explanation: Nodes less than 3: [1,2,2], nodes >= 3: [4,3,5]
+
+Input: head = 2 → 1, x = 2
+Output: 1 → 2
+
+Input: head = 5 → 5 → 5, x = 3
+Output: 5 → 5 → 5
+Explanation: All nodes are >= 3, order unchanged
+```
+
+## <TranslatedText en="Approach: Two Separate Lists (Recommended)" bn="পদ্ধতি: দুটি পৃথক লিস্ট (প্রস্তাবিত)" />
+
+<TranslatedText
+  en="Create two separate lists: one for nodes less than x, another for nodes greater than or equal to x. Then connect them together."
+  bn="দুটি পৃথক লিস্ট তৈরি করুন: একটি x এর চেয়ে ছোট নোডের জন্য, অন্যটি x এর চেয়ে বড় বা সমান নোডের জন্য। তারপর তাদের একসাথে সংযুক্ত করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+Node* partition(Node* head, int x) {
+    // Create two dummy nodes for the two partitions
+    Node* lessDummy = new Node(0);
+    Node* greaterDummy = new Node(0);
+
+    Node* less = lessDummy;
+    Node* greater = greaterDummy;
+
+    // Traverse the original list
+    Node* curr = head;
+    while (curr) {
+        if (curr->data < x) {
+            // Add to less partition
+            less->next = curr;
+            less = less->next;
+        } else {
+            // Add to greater or equal partition
+            greater->next = curr;
+            greater = greater->next;
+        }
+        curr = curr->next;
+    }
+
+    // Important: Set the next of last greater node to null
+    greater->next = nullptr;
+
+    // Connect the two partitions
+    less->next = greaterDummy->next;
+
+    // Get the result and clean up dummy nodes
+    Node* result = lessDummy->next;
+    delete lessDummy;
+    delete greaterDummy;
+
+    return result;
+}
+
+// Helper function to create linked list
+Node* createList(int arr[], int n) {
+    if (n == 0) return nullptr;
+    Node* head = new Node(arr[0]);
+    Node* curr = head;
+    for (int i = 1; i < n; i++) {
+        curr->next = new Node(arr[i]);
+        curr = curr->next;
+    }
+    return head;
+}
+
+// Helper function to print list
+void printList(Node* head) {
+    while (head) {
+        cout << head->data;
+        if (head->next) cout << " → ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    // Test case 1: Mixed values
+    int arr1[] = {1, 4, 3, 2, 5, 2};
+    Node* head1 = createList(arr1, 6);
+    cout << "Original: ";
+    printList(head1);
+    head1 = partition(head1, 3);
+    cout << "Partitioned (x=3): ";
+    printList(head1);
+
+    // Test case 2: Small list
+    int arr2[] = {2, 1};
+    Node* head2 = createList(arr2, 2);
+    cout << "\nOriginal: ";
+    printList(head2);
+    head2 = partition(head2, 2);
+    cout << "Partitioned (x=2): ";
+    printList(head2);
+
+    // Test case 3: All values greater
+    int arr3[] = {5, 5, 5};
+    Node* head3 = createList(arr3, 3);
+    cout << "\nOriginal: ";
+    printList(head3);
+    head3 = partition(head3, 3);
+    cout << "Partitioned (x=3): ";
+    printList(head3);
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def partition(head, x):
+    # Create two dummy nodes for the two partitions
+    less_dummy = Node(0)
+    greater_dummy = Node(0)
+
+    less_ptr = less_dummy
+    greater_ptr = greater_dummy
+
+    # Traverse the original list
+    curr = head
+    while curr:
+        if curr.data < x:
+            # Add to less partition
+            less_ptr.next = curr
+            less_ptr = less_ptr.next
+        else:
+            # Add to greater or equal partition
+            greater_ptr.next = curr
+            greater_ptr = greater_ptr.next
+        curr = curr.next
+
+    # Important: Set the next of last greater node to None
+    greater_ptr.next = None
+
+    # Connect the two partitions
+    less_ptr.next = greater_dummy.next
+
+    # Return the result
+    return less_dummy.next
+
+# Helper function to create linked list
+def create_list(arr):
+    if not arr:
+        return None
+    head = Node(arr[0])
+    curr = head
+    for val in arr[1:]:
+        curr.next = Node(val)
+        curr = curr.next
+    return head
+
+# Helper function to print list
+def print_list(head):
+    result = []
+    while head:
+        result.append(str(head.data))
+        head = head.next
+    print(" → ".join(result))
+
+# Test case 1: Mixed values
+head1 = create_list([1, 4, 3, 2, 5, 2])
+print("Original:", end=" ")
+print_list(head1)
+head1 = partition(head1, 3)
+print("Partitioned (x=3):", end=" ")
+print_list(head1)
+
+# Test case 2: Small list
+head2 = create_list([2, 1])
+print("\nOriginal:", end=" ")
+print_list(head2)
+head2 = partition(head2, 2)
+print("Partitioned (x=2):", end=" ")
+print_list(head2)
+
+# Test case 3: All values greater
+head3 = create_list([5, 5, 5])
+print("\nOriginal:", end=" ")
+print_list(head3)
+head3 = partition(head3, 3)
+print("Partitioned (x=3):", end=" ")
+print_list(head3)
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+function partition(head, x) {
+    // Create two dummy nodes for the two partitions
+    const lessDummy = new Node(0);
+    const greaterDummy = new Node(0);
+
+    let lessPtr = lessDummy;
+    let greaterPtr = greaterDummy;
+
+    // Traverse the original list
+    let curr = head;
+    while (curr) {
+        if (curr.data < x) {
+            // Add to less partition
+            lessPtr.next = curr;
+            lessPtr = lessPtr.next;
+        } else {
+            // Add to greater or equal partition
+            greaterPtr.next = curr;
+            greaterPtr = greaterPtr.next;
+        }
+        curr = curr.next;
+    }
+
+    // Important: Set the next of last greater node to null
+    greaterPtr.next = null;
+
+    // Connect the two partitions
+    lessPtr.next = greaterDummy.next;
+
+    // Return the result
+    return lessDummy.next;
+}
+
+// Helper function to create linked list
+function createList(arr) {
+    if (arr.length === 0) return null;
+    const head = new Node(arr[0]);
+    let curr = head;
+    for (let i = 1; i < arr.length; i++) {
+        curr.next = new Node(arr[i]);
+        curr = curr.next;
+    }
+    return head;
+}
+
+// Helper function to print list
+function printList(head) {
+    const result = [];
+    while (head) {
+        result.push(head.data);
+        head = head.next;
+    }
+    console.log(result.join(" → "));
+}
+
+// Test case 1: Mixed values
+let head1 = createList([1, 4, 3, 2, 5, 2]);
+console.log("Original:");
+printList(head1);
+head1 = partition(head1, 3);
+console.log("Partitioned (x=3):");
+printList(head1);
+
+// Test case 2: Small list
+let head2 = createList([2, 1]);
+console.log("\nOriginal:");
+printList(head2);
+head2 = partition(head2, 2);
+console.log("Partitioned (x=2):");
+printList(head2);
+
+// Test case 3: All values greater
+let head3 = createList([5, 5, 5]);
+console.log("\nOriginal:");
+printList(head3);
+head3 = partition(head3, 3);
+console.log("Partitioned (x=3):");
+printList(head3);
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n) <TranslatedText en="where n is the number of nodes" bn="যেখানে n হল নোডের সংখ্যা" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1) <TranslatedText en="(only using pointers, not creating new nodes)" bn="(শুধুমাত্র পয়েন্টার ব্যবহার করছি, নতুন নোড তৈরি করছি না)" />
+
+## <TranslatedText en="How It Works" bn="এটি কীভাবে কাজ করে" />
+
+<TranslatedText
+  en="The algorithm maintains two separate lists and then merges them:"
+  bn="অ্যালগরিদম দুটি পৃথক লিস্ট বজায় রাখে এবং তারপর তাদের মার্জ করে:"
+/>
+
+```
+Example: Partition 1 → 4 → 3 → 2 → 5 → 2 with x = 3
+
+Initial:
+  lessDummy → (empty)
+  greaterDummy → (empty)
+  Original: 1 → 4 → 3 → 2 → 5 → 2
+
+Step 1: Process 1 (< 3)
+  lessDummy → 1
+  greaterDummy → (empty)
+
+Step 2: Process 4 (>= 3)
+  lessDummy → 1
+  greaterDummy → 4
+
+Step 3: Process 3 (>= 3)
+  lessDummy → 1
+  greaterDummy → 4 → 3
+
+Step 4: Process 2 (< 3)
+  lessDummy → 1 → 2
+  greaterDummy → 4 → 3
+
+Step 5: Process 5 (>= 3)
+  lessDummy → 1 → 2
+  greaterDummy → 4 → 3 → 5
+
+Step 6: Process 2 (< 3)
+  lessDummy → 1 → 2 → 2
+  greaterDummy → 4 → 3 → 5
+
+Step 7: Connect the two lists
+  Result: 1 → 2 → 2 → 4 → 3 → 5
+```
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Two dummy nodes</strong>: One for each partition simplifies building the lists</li>
+        <li><strong>Preserve relative order</strong>: Nodes maintain their original order within each partition</li>
+        <li><strong>In-place partitioning</strong>: We reuse existing nodes, don't create new ones</li>
+        <li><strong>Critical step</strong>: Must set greater partition's last node's next to null to avoid cycles</li>
+        <li><strong>Similar to Dutch National Flag</strong>: But for linked lists instead of arrays</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>দুটি ডামি নোড</strong>: প্রতিটি পার্টিশনের জন্য একটি লিস্ট তৈরি সরল করে</li>
+        <li><strong>আপেক্ষিক ক্রম সংরক্ষণ করুন</strong>: নোডগুলি প্রতিটি পার্টিশনের মধ্যে তাদের মূল ক্রম বজায় রাখে</li>
+        <li><strong>ইন-প্লেস পার্টিশনিং</strong>: আমরা বিদ্যমান নোড পুনরায় ব্যবহার করি, নতুন নোড তৈরি করি না</li>
+        <li><strong>গুরুত্বপূর্ণ ধাপ</strong>: চক্র এড়াতে বৃহত্তর পার্টিশনের শেষ নোডের পরবর্তী null সেট করতে হবে</li>
+        <li><strong>ডাচ ন্যাশনাল ফ্ল্যাগের মতো</strong>: তবে অ্যারের পরিবর্তে লিঙ্কড লিস্টের জন্য</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Edge Cases to Consider" bn="বিবেচনা করার জন্য এজ কেস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Empty list</strong>: Return null</li>
+        <li><strong>Single node</strong>: Return as is</li>
+        <li><strong>All nodes less than x</strong>: Greater partition is empty</li>
+        <li><strong>All nodes greater than or equal to x</strong>: Less partition is empty</li>
+        <li><strong>x not present in list</strong>: Still partition correctly</li>
+        <li><strong>Duplicate values</strong>: Handle correctly in both partitions</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>খালি লিস্ট</strong>: null ফেরত দিন</li>
+        <li><strong>একক নোড</strong>: যেমন আছে তেমন ফেরত দিন</li>
+        <li><strong>x এর চেয়ে ছোট সব নোড</strong>: বৃহত্তর পার্টিশন খালি</li>
+        <li><strong>x এর চেয়ে বড় বা সমান সব নোড</strong>: ছোট পার্টিশন খালি</li>
+        <li><strong>লিস্টে x উপস্থিত নেই</strong>: এখনও সঠিকভাবে পার্টিশন করুন</li>
+        <li><strong>ডুপ্লিকেট মান</strong>: উভয় পার্টিশনে সঠিকভাবে হ্যান্ডেল করুন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Clarify requirements</strong>: Confirm if relative order should be preserved (usually yes)</li>
+        <li><strong>Explain two-list approach</strong>: Why it's cleaner than in-place swapping</li>
+        <li><strong>Highlight the critical step</strong>: Setting greater.next = null to avoid cycles</li>
+        <li><strong>Discuss alternative</strong>: Could partition in-place like QuickSort, but loses relative order</li>
+        <li><strong>Mention QuickSort connection</strong>: This is similar to partitioning in QuickSort</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>প্রয়োজনীয়তা স্পষ্ট করুন</strong>: নিশ্চিত করুন আপেক্ষিক ক্রম সংরক্ষণ করা উচিত কিনা (সাধারণত হ্যাঁ)</li>
+        <li><strong>দুই-লিস্ট পদ্ধতি ব্যাখ্যা করুন</strong>: কেন এটি ইন-প্লেস অদলবদলের চেয়ে পরিষ্কার</li>
+        <li><strong>গুরুত্বপূর্ণ ধাপ হাইলাইট করুন</strong>: চক্র এড়াতে greater.next = null সেট করা</li>
+        <li><strong>বিকল্প আলোচনা করুন</strong>: QuickSort এর মতো ইন-প্লেস পার্টিশন করতে পারে, কিন্তু আপেক্ষিক ক্রম হারায়</li>
+        <li><strong>QuickSort সংযোগ উল্লেখ করুন</strong>: এটি QuickSort এ পার্টিশনিং এর মতো</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Common Mistakes to Avoid" bn="এড়ানোর জন্য সাধারণ ভুল" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Forgetting to set greater.next = null (causes cycle in the list)</li>
+        <li>Creating new nodes instead of reusing existing ones</li>
+        <li>Not handling empty partition cases (all less or all greater)</li>
+        <li>Losing the original relative order by doing in-place swaps</li>
+        <li>Memory leak by not deleting dummy nodes in C++</li>
+        <li>Using wrong comparison (less than vs less than or equal)</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>greater.next = null সেট করতে ভুলে যাওয়া (লিস্টে চক্র ঘটায়)</li>
+        <li>বিদ্যমান নোড পুনরায় ব্যবহার করার পরিবর্তে নতুন নোড তৈরি করা</li>
+        <li>খালি পার্টিশন কেস হ্যান্ডেল না করা (সব ছোট বা সব বড়)</li>
+        <li>ইন-প্লেস অদলবদল করে মূল আপেক্ষিক ক্রম হারানো</li>
+        <li>C++ এ ডামি নোড মুছে না ফেলে মেমরি লিক</li>
+        <li>ভুল তুলনা ব্যবহার করা (কম বনাম কম বা সমান)</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Dutch National Flag Problem (partition array into 3 parts)
+- QuickSort (uses partitioning)
+- Segregate even and odd nodes in a linked list
+- Sort linked list with 0s, 1s and 2s
+- Partition array around pivot
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Two-list approach maintains relative order elegantly</li>
+        <li>Dummy nodes simplify list building logic</li>
+        <li>Must terminate the greater partition to avoid cycles</li>
+        <li>O(n) time with O(1) space - optimal solution</li>
+        <li>In-place node rearrangement without creating new nodes</li>
+        <li>Similar pattern to merge two sorted lists</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>দুই-লিস্ট পদ্ধতি মার্জন্টভাবে আপেক্ষিক ক্রম বজায় রাখে</li>
+        <li>ডামি নোড লিস্ট তৈরির লজিক সরল করে</li>
+        <li>চক্র এড়াতে বৃহত্তর পার্টিশন সমাপ্ত করতে হবে</li>
+        <li>O(n) সময় O(1) স্থান সহ - সর্বোত্তম সমাধান</li>
+        <li>নতুন নোড তৈরি না করে ইন-প্লেস নোড পুনর্বিন্যাস</li>
+        <li>দুটি সাজানো লিস্ট মার্জ করার মতো প্যাটার্ন</li>
+      </ul>
+    </>
+  }
+/>

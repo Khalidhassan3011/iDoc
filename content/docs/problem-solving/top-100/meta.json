@@ -56,6 +56,18 @@
     "50-insert-middle-linked-list",
     "51-intersection-two-linked-lists",
     "52-detect-cycle-linked-list",
-    "53-merge-sorted-linked-lists"
+    "53-merge-sorted-linked-lists",
+    "54-find-middle-one-pass",
+    "55-detect-cycle-linked-list",
+    "56-third-node-from-end",
+    "57-sum-two-linked-lists",
+    "58-delete-all-occurrences",
+    "59-remove-nth-from-end",
+    "60-merge-two-sorted-lists",
+    "61-partition-list",
+    "62-remove-duplicates-sorted-list",
+    "63-remove-duplicates-unsorted-list",
+    "64-find-length-linked-list",
+    "---String Problems---"
   ]
 }

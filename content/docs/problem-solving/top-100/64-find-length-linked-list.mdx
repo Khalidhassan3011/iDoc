@@ -1,0 +1,531 @@
+---
+title: 64. Find Length of Linked List
+description: Calculate the number of nodes in a singly linked list using both iterative and recursive approaches
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Find Length of Linked List" bn="লিঙ্কড লিস্টের দৈর্ঘ্য খুঁজুন" />
+
+<TranslatedText
+  en="Calculate the total number of nodes in a singly linked list using both iterative and recursive approaches."
+  bn="পুনরাবৃত্তিমূলক এবং পুনরাবৃত্ত উভয় পদ্ধতি ব্যবহার করে একটি সিঙ্গলি লিঙ্কড লিস্টের মোট নোডের সংখ্যা গণনা করুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given the head of a singly linked list, find the total number of nodes in the list. Implement both iterative and recursive solutions."
+  bn="একটি সিঙ্গলি লিঙ্কড লিস্টের হেড দেওয়া হলে, লিস্টের মোট নোডের সংখ্যা খুঁজুন। পুনরাবৃত্তিমূলক এবং পুনরাবৃত্ত উভয় সমাধান বাস্তবায়ন করুন।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: 1 → 2 → 3 → 4 → 5
+Output: 5
+
+Input: 1
+Output: 1
+
+Input: null
+Output: 0
+
+Input: 10 → 20 → 30
+Output: 3
+```
+
+## <TranslatedText en="Approach 1: Iterative (Recommended)" bn="পদ্ধতি ১: পুনরাবৃত্তিমূলক (প্রস্তাবিত)" />
+
+<TranslatedText
+  en="Traverse the list with a counter, incrementing for each node until reaching the end."
+  bn="একটি কাউন্টার দিয়ে লিস্ট ট্রাভার্স করুন, শেষে পৌঁছানো পর্যন্ত প্রতিটি নোডের জন্য বৃদ্ধি করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+int getLength(Node* head) {
+    int length = 0;
+    Node* curr = head;
+
+    while (curr) {
+        length++;
+        curr = curr->next;
+    }
+
+    return length;
+}
+
+// Helper function to create linked list
+Node* createList(int arr[], int n) {
+    if (n == 0) return nullptr;
+    Node* head = new Node(arr[0]);
+    Node* curr = head;
+    for (int i = 1; i < n; i++) {
+        curr->next = new Node(arr[i]);
+        curr = curr->next;
+    }
+    return head;
+}
+
+// Helper function to print list
+void printList(Node* head) {
+    if (!head) {
+        cout << "[]";
+        return;
+    }
+    while (head) {
+        cout << head->data;
+        if (head->next) cout << " → ";
+        head = head->next;
+    }
+}
+
+int main() {
+    // Test case 1: Multiple nodes
+    int arr1[] = {1, 2, 3, 4, 5};
+    Node* head1 = createList(arr1, 5);
+    cout << "List: ";
+    printList(head1);
+    cout << "\nLength: " << getLength(head1) << endl;
+
+    // Test case 2: Single node
+    int arr2[] = {1};
+    Node* head2 = createList(arr2, 1);
+    cout << "\nList: ";
+    printList(head2);
+    cout << "\nLength: " << getLength(head2) << endl;
+
+    // Test case 3: Empty list
+    Node* head3 = nullptr;
+    cout << "\nList: ";
+    printList(head3);
+    cout << "\nLength: " << getLength(head3) << endl;
+
+    // Test case 4: Three nodes
+    int arr4[] = {10, 20, 30};
+    Node* head4 = createList(arr4, 3);
+    cout << "\nList: ";
+    printList(head4);
+    cout << "\nLength: " << getLength(head4) << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def get_length(head):
+    length = 0
+    curr = head
+
+    while curr:
+        length += 1
+        curr = curr.next
+
+    return length
+
+# Helper function to create linked list
+def create_list(arr):
+    if not arr:
+        return None
+    head = Node(arr[0])
+    curr = head
+    for val in arr[1:]:
+        curr.next = Node(val)
+        curr = curr.next
+    return head
+
+# Helper function to print list
+def print_list(head):
+    if not head:
+        print("[]", end="")
+        return
+    result = []
+    while head:
+        result.append(str(head.data))
+        head = head.next
+    print(" → ".join(result), end="")
+
+# Test case 1: Multiple nodes
+head1 = create_list([1, 2, 3, 4, 5])
+print("List: ", end="")
+print_list(head1)
+print(f"\nLength: {get_length(head1)}")
+
+# Test case 2: Single node
+head2 = create_list([1])
+print("\nList: ", end="")
+print_list(head2)
+print(f"\nLength: {get_length(head2)}")
+
+# Test case 3: Empty list
+head3 = None
+print("\nList: ", end="")
+print_list(head3)
+print(f"\nLength: {get_length(head3)}")
+
+# Test case 4: Three nodes
+head4 = create_list([10, 20, 30])
+print("\nList: ", end="")
+print_list(head4)
+print(f"\nLength: {get_length(head4)}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+function getLength(head) {
+    let length = 0;
+    let curr = head;
+
+    while (curr) {
+        length++;
+        curr = curr.next;
+    }
+
+    return length;
+}
+
+// Helper function to create linked list
+function createList(arr) {
+    if (arr.length === 0) return null;
+    const head = new Node(arr[0]);
+    let curr = head;
+    for (let i = 1; i < arr.length; i++) {
+        curr.next = new Node(arr[i]);
+        curr = curr.next;
+    }
+    return head;
+}
+
+// Helper function to print list
+function printList(head) {
+    if (!head) {
+        process.stdout.write("[]");
+        return;
+    }
+    const result = [];
+    while (head) {
+        result.push(head.data);
+        head = head.next;
+    }
+    process.stdout.write(result.join(" → "));
+}
+
+// Test case 1: Multiple nodes
+let head1 = createList([1, 2, 3, 4, 5]);
+process.stdout.write("List: ");
+printList(head1);
+console.log(`\nLength: ${getLength(head1)}`);
+
+// Test case 2: Single node
+let head2 = createList([1]);
+process.stdout.write("\nList: ");
+printList(head2);
+console.log(`\nLength: ${getLength(head2)}`);
+
+// Test case 3: Empty list
+let head3 = null;
+process.stdout.write("\nList: ");
+printList(head3);
+console.log(`\nLength: ${getLength(head3)}`);
+
+// Test case 4: Three nodes
+let head4 = createList([10, 20, 30]);
+process.stdout.write("\nList: ");
+printList(head4);
+console.log(`\nLength: ${getLength(head4)}`);
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n) <TranslatedText en="where n is the number of nodes" bn="যেখানে n হল নোডের সংখ্যা" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+## <TranslatedText en="Approach 2: Recursive Solution" bn="পদ্ধতি ২: পুনরাবৃত্ত সমাধান" />
+
+<TranslatedText
+  en="Calculate length recursively by counting 1 for current node plus the length of the rest of the list."
+  bn="বর্তমান নোডের জন্য 1 এবং বাকি লিস্টের দৈর্ঘ্য গণনা করে পুনরাবৃত্তভাবে দৈর্ঘ্য গণনা করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+int getLengthRecursive(Node* head) {
+    // Base case: empty list
+    if (!head) return 0;
+
+    // Recursive case: 1 + length of rest
+    return 1 + getLengthRecursive(head->next);
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def get_length_recursive(head):
+    # Base case: empty list
+    if not head:
+        return 0
+
+    # Recursive case: 1 + length of rest
+    return 1 + get_length_recursive(head.next)
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function getLengthRecursive(head) {
+    // Base case: empty list
+    if (!head) return 0;
+
+    // Recursive case: 1 + length of rest
+    return 1 + getLengthRecursive(head.next);
+}
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n) <TranslatedText en="due to recursion call stack" bn="পুনরাবৃত্তি কল স্ট্যাকের কারণে" />
+
+## <TranslatedText en="How It Works" bn="এটি কীভাবে কাজ করে" />
+
+<TranslatedText
+  en="The iterative algorithm simply counts nodes as it traverses:"
+  bn="পুনরাবৃত্তিমূলক অ্যালগরিদম কেবল ট্রাভার্স করার সময় নোড গণনা করে:"
+/>
+
+```
+Example: Find length of 1 → 2 → 3 → 4 → 5
+
+Iterative Approach:
+Initial: length = 0, curr = 1
+         1 → 2 → 3 → 4 → 5
+         ^
+
+Step 1: length = 1, curr = 2
+        1 → 2 → 3 → 4 → 5
+            ^
+
+Step 2: length = 2, curr = 3
+        1 → 2 → 3 → 4 → 5
+                ^
+
+Step 3: length = 3, curr = 4
+        1 → 2 → 3 → 4 → 5
+                    ^
+
+Step 4: length = 4, curr = 5
+        1 → 2 → 3 → 4 → 5
+                        ^
+
+Step 5: length = 5, curr = null
+        Stop, return 5
+
+Recursive Approach:
+length(1→2→3→4→5) = 1 + length(2→3→4→5)
+                   = 1 + (1 + length(3→4→5))
+                   = 1 + (1 + (1 + length(4→5)))
+                   = 1 + (1 + (1 + (1 + length(5))))
+                   = 1 + (1 + (1 + (1 + (1 + length(null)))))
+                   = 1 + (1 + (1 + (1 + (1 + 0))))
+                   = 5
+```
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Fundamental operation</strong>: Finding length is one of the most basic linked list operations</li>
+        <li><strong>Linear traversal</strong>: Must visit every node, cannot skip or optimize</li>
+        <li><strong>Iterative is better</strong>: O(1) space vs O(n) space for recursive</li>
+        <li><strong>Counter pattern</strong>: Simple increment counter for each node visited</li>
+        <li><strong>Empty list handling</strong>: Returns 0 for null/empty list</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>মৌলিক অপারেশন</strong>: দৈর্ঘ্য খোঁজা সবচেয়ে মৌলিক লিঙ্কড লিস্ট অপারেশনগুলির মধ্যে একটি</li>
+        <li><strong>রৈখিক ট্রাভার্সাল</strong>: প্রতিটি নোড পরিদর্শন করতে হবে, এড়িয়ে যেতে বা অপটিমাইজ করতে পারবেন না</li>
+        <li><strong>পুনরাবৃত্তিমূলক ভাল</strong>: পুনরাবৃত্তের জন্য O(n) স্থানের বিপরীতে O(1) স্থান</li>
+        <li><strong>কাউন্টার প্যাটার্ন</strong>: পরিদর্শন করা প্রতিটি নোডের জন্য সাধারণ বৃদ্ধি কাউন্টার</li>
+        <li><strong>খালি লিস্ট হ্যান্ডলিং</strong>: null/খালি লিস্টের জন্য 0 ফেরত দেয়</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Edge Cases to Consider" bn="বিবেচনা করার জন্য এজ কেস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Empty list (null)</strong>: Return 0</li>
+        <li><strong>Single node</strong>: Return 1</li>
+        <li><strong>Very long list</strong>: Recursive may cause stack overflow, use iterative</li>
+        <li><strong>Circular list</strong>: Would cause infinite loop (not handled in basic version)</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>খালি লিস্ট (null)</strong>: 0 ফেরত দিন</li>
+        <li><strong>একক নোড</strong>: 1 ফেরত দিন</li>
+        <li><strong>খুব দীর্ঘ লিস্ট</strong>: পুনরাবৃত্ত স্ট্যাক ওভারফ্লো ঘটাতে পারে, পুনরাবৃত্তিমূলক ব্যবহার করুন</li>
+        <li><strong>বৃত্তাকার লিস্ট</strong>: অসীম লুপ ঘটাবে (মৌলিক সংস্করণে হ্যান্ডেল করা হয়নি)</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Start with iterative</strong>: It's simpler and more efficient</li>
+        <li><strong>Mention both approaches</strong>: Show you know recursive solution too</li>
+        <li><strong>Discuss space complexity</strong>: Recursive uses O(n) call stack space</li>
+        <li><strong>Handle edge cases</strong>: Empty list should return 0, not error</li>
+        <li><strong>Mention optimization</strong>: Some implementations store length in list header for O(1) access</li>
+        <li><strong>Extension question</strong>: How would you handle a circular list?</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>পুনরাবৃত্তিমূলক দিয়ে শুরু করুন</strong>: এটি সহজ এবং আরও দক্ষ</li>
+        <li><strong>উভয় পদ্ধতি উল্লেখ করুন</strong>: দেখান যে আপনি পুনরাবৃত্ত সমাধানও জানেন</li>
+        <li><strong>স্থান জটিলতা আলোচনা করুন</strong>: পুনরাবৃত্ত O(n) কল স্ট্যাক স্থান ব্যবহার করে</li>
+        <li><strong>এজ কেস হ্যান্ডেল করুন</strong>: খালি লিস্ট 0 ফেরত দেওয়া উচিত, ত্রুটি নয়</li>
+        <li><strong>অপটিমাইজেশন উল্লেখ করুন</strong>: কিছু বাস্তবায়ন O(1) অ্যাক্সেসের জন্য লিস্ট হেডারে দৈর্ঘ্য সংরক্ষণ করে</li>
+        <li><strong>এক্সটেনশন প্রশ্ন</strong>: আপনি কিভাবে একটি বৃত্তাকার লিস্ট হ্যান্ডেল করবেন?</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Common Mistakes to Avoid" bn="এড়ানোর জন্য সাধারণ ভুল" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Not handling null/empty list (causes null pointer exception)</li>
+        <li>Starting counter at 1 instead of 0</li>
+        <li>Not moving curr pointer forward (infinite loop)</li>
+        <li>Using recursion for very long lists (stack overflow)</li>
+        <li>Confusing length with last index (length is n, last index is n-1)</li>
+        <li>Returning null or -1 for empty list instead of 0</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>null/খালি লিস্ট হ্যান্ডেল না করা (null পয়েন্টার এক্সেপশন ঘটায়)</li>
+        <li>0 এর পরিবর্তে 1 এ কাউন্টার শুরু করা</li>
+        <li>curr পয়েন্টার এগিয়ে না নিয়ে যাওয়া (অসীম লুপ)</li>
+        <li>খুব দীর্ঘ লিস্টের জন্য পুনরাবৃত্তি ব্যবহার করা (স্ট্যাক ওভারফ্লো)</li>
+        <li>শেষ সূচকের সাথে দৈর্ঘ্য গুলিয়ে ফেলা (দৈর্ঘ্য n, শেষ সূচক n-1)</li>
+        <li>খালি লিস্টের জন্য 0 এর পরিবর্তে null বা -1 ফেরত দেওয়া</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Variations and Extensions" bn="বৈচিত্র্য এবং এক্সটেনশন" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Doubly linked list length</strong>: Same algorithm, can traverse forward or backward</li>
+        <li><strong>Circular linked list length</strong>: Need to detect cycle and count nodes in cycle</li>
+        <li><strong>Length with condition</strong>: Count nodes that satisfy a condition (e.g., even values)</li>
+        <li><strong>Cached length</strong>: Store length in list header, update on insert/delete for O(1) access</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>দ্বৈত লিঙ্কড লিস্ট দৈর্ঘ্য</strong>: একই অ্যালগরিদম, সামনে বা পিছনে ট্রাভার্স করতে পারে</li>
+        <li><strong>বৃত্তাকার লিঙ্কড লিস্ট দৈর্ঘ্য</strong>: চক্র সনাক্ত করতে এবং চক্রে নোড গণনা করতে হবে</li>
+        <li><strong>শর্ত সহ দৈর্ঘ্য</strong>: শর্ত পূরণ করে এমন নোড গণনা করুন (যেমন, জোড় মান)</li>
+        <li><strong>ক্যাশড দৈর্ঘ্য</strong>: লিস্ট হেডারে দৈর্ঘ্য সংরক্ষণ করুন, O(1) অ্যাক্সেসের জন্য সন্নিবেশ/মুছে ফেলার সময় আপডেট করুন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Find the middle element of linked list (uses length / 2)
+- Find Nth node from end (uses length - N + 1)
+- Check if linked list is palindrome (needs length for two-pointer approach)
+- Split linked list into two halves (uses length / 2)
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Finding length is a fundamental linked list operation</li>
+        <li>Iterative approach is preferred: O(n) time with O(1) space</li>
+        <li>Recursive approach is elegant but uses O(n) call stack space</li>
+        <li>Must traverse entire list - no way to optimize to less than O(n)</li>
+        <li>Proper null handling is essential</li>
+        <li>Length is often needed as a helper for other linked list algorithms</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>দৈর্ঘ্য খোঁজা একটি মৌলিক লিঙ্কড লিস্ট অপারেশন</li>
+        <li>পুনরাবৃত্তিমূলক পদ্ধতি পছন্দনীয়: O(n) সময় O(1) স্থান সহ</li>
+        <li>পুনরাবৃত্ত পদ্ধতি মার্জন্ট কিন্তু O(n) কল স্ট্যাক স্থান ব্যবহার করে</li>
+        <li>সম্পূর্ণ লিস্ট ট্রাভার্স করতে হবে - O(n) এর কম অপটিমাইজ করার কোন উপায় নেই</li>
+        <li>সঠিক null হ্যান্ডলিং অপরিহার্য</li>
+        <li>দৈর্ঘ্য প্রায়শই অন্যান্য লিঙ্কড লিস্ট অ্যালগরিদমের জন্য একটি সাহায্যকারী হিসাবে প্রয়োজন</li>
+      </ul>
+    </>
+  }
+/>

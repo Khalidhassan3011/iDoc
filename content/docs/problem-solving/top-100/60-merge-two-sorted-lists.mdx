@@ -1,0 +1,581 @@
+---
+title: 60. Merge Two Sorted Lists
+description: Merge two sorted linked lists into a single sorted linked list
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Merge Two Sorted Lists" bn="দুটি সাজানো লিস্ট মার্জ করুন" />
+
+<TranslatedText
+  en="Merge two sorted linked lists into a single sorted linked list by splicing together the nodes of the input lists."
+  bn="ইনপুট লিস্টের নোডগুলিকে একসাথে জোড়া দিয়ে দুটি সাজানো লিঙ্কড লিস্টকে একটি একক সাজানো লিঙ্কড লিস্টে মার্জ করুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="You are given the heads of two sorted linked lists list1 and list2. Merge the two lists into one sorted list by splicing together the nodes from both lists. Return the head of the merged linked list."
+  bn="আপনাকে দুটি সাজানো লিঙ্কড লিস্ট list1 এবং list2 এর হেড দেওয়া হয়েছে। উভয় লিস্ট থেকে নোডগুলিকে একসাথে জোড়া দিয়ে দুটি লিস্টকে একটি সাজানো লিস্টে মার্জ করুন। মার্জ করা লিঙ্কড লিস্টের হেড ফেরত দিন।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: list1 = 1 → 2 → 4, list2 = 1 → 3 → 4
+Output: 1 → 1 → 2 → 3 → 4 → 4
+
+Input: list1 = [], list2 = []
+Output: []
+
+Input: list1 = [], list2 = 0
+Output: 0
+```
+
+## <TranslatedText en="Approach 1: Iterative with Dummy Node (Recommended)" bn="পদ্ধতি ১: ডামি নোড সহ পুনরাবৃত্তিমূলক (প্রস্তাবিত)" />
+
+<TranslatedText
+  en="Use a dummy node to simplify the merging process. Compare nodes from both lists one by one and attach the smaller node to the result list."
+  bn="মার্জিং প্রক্রিয়া সরল করতে একটি ডামি নোড ব্যবহার করুন। উভয় লিস্ট থেকে নোডগুলি একে একে তুলনা করুন এবং ছোট নোডটি ফলাফল লিস্টে সংযুক্ত করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+Node* mergeTwoLists(Node* list1, Node* list2) {
+    // Create dummy node to simplify logic
+    Node* dummy = new Node(0);
+    Node* curr = dummy;
+
+    // Merge while both lists have nodes
+    while (list1 && list2) {
+        if (list1->data <= list2->data) {
+            curr->next = list1;
+            list1 = list1->next;
+        } else {
+            curr->next = list2;
+            list2 = list2->next;
+        }
+        curr = curr->next;
+    }
+
+    // Attach remaining nodes (only one list can have remaining nodes)
+    if (list1) {
+        curr->next = list1;
+    } else {
+        curr->next = list2;
+    }
+
+    Node* result = dummy->next;
+    delete dummy;
+    return result;
+}
+
+// Helper function to create linked list
+Node* createList(int arr[], int n) {
+    if (n == 0) return nullptr;
+    Node* head = new Node(arr[0]);
+    Node* curr = head;
+    for (int i = 1; i < n; i++) {
+        curr->next = new Node(arr[i]);
+        curr = curr->next;
+    }
+    return head;
+}
+
+// Helper function to print list
+void printList(Node* head) {
+    if (!head) {
+        cout << "[]" << endl;
+        return;
+    }
+    while (head) {
+        cout << head->data;
+        if (head->next) cout << " → ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    // Test case 1: Both lists have elements
+    int arr1[] = {1, 2, 4};
+    int arr2[] = {1, 3, 4};
+    Node* list1 = createList(arr1, 3);
+    Node* list2 = createList(arr2, 3);
+
+    cout << "List 1: ";
+    printList(list1);
+    cout << "List 2: ";
+    printList(list2);
+
+    Node* merged = mergeTwoLists(list1, list2);
+    cout << "Merged: ";
+    printList(merged);
+
+    // Test case 2: One list is empty
+    int arr3[] = {5};
+    Node* list3 = createList(arr3, 1);
+    Node* list4 = nullptr;
+
+    cout << "\nList 3: ";
+    printList(list3);
+    cout << "List 4: ";
+    printList(list4);
+
+    Node* merged2 = mergeTwoLists(list3, list4);
+    cout << "Merged: ";
+    printList(merged2);
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def merge_two_lists(list1, list2):
+    # Create dummy node to simplify logic
+    dummy = Node(0)
+    curr = dummy
+
+    # Merge while both lists have nodes
+    while list1 and list2:
+        if list1.data <= list2.data:
+            curr.next = list1
+            list1 = list1.next
+        else:
+            curr.next = list2
+            list2 = list2.next
+        curr = curr.next
+
+    # Attach remaining nodes (only one list can have remaining nodes)
+    if list1:
+        curr.next = list1
+    else:
+        curr.next = list2
+
+    return dummy.next
+
+# Helper function to create linked list
+def create_list(arr):
+    if not arr:
+        return None
+    head = Node(arr[0])
+    curr = head
+    for val in arr[1:]:
+        curr.next = Node(val)
+        curr = curr.next
+    return head
+
+# Helper function to print list
+def print_list(head):
+    if not head:
+        print("[]")
+        return
+    result = []
+    while head:
+        result.append(str(head.data))
+        head = head.next
+    print(" → ".join(result))
+
+# Test case 1: Both lists have elements
+list1 = create_list([1, 2, 4])
+list2 = create_list([1, 3, 4])
+
+print("List 1:", end=" ")
+print_list(list1)
+print("List 2:", end=" ")
+print_list(list2)
+
+merged = merge_two_lists(list1, list2)
+print("Merged:", end=" ")
+print_list(merged)
+
+# Test case 2: One list is empty
+list3 = create_list([5])
+list4 = None
+
+print("\nList 3:", end=" ")
+print_list(list3)
+print("List 4:", end=" ")
+print_list(list4)
+
+merged2 = merge_two_lists(list3, list4)
+print("Merged:", end=" ")
+print_list(merged2)
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+function mergeTwoLists(list1, list2) {
+    // Create dummy node to simplify logic
+    const dummy = new Node(0);
+    let curr = dummy;
+
+    // Merge while both lists have nodes
+    while (list1 && list2) {
+        if (list1.data <= list2.data) {
+            curr.next = list1;
+            list1 = list1.next;
+        } else {
+            curr.next = list2;
+            list2 = list2.next;
+        }
+        curr = curr.next;
+    }
+
+    // Attach remaining nodes (only one list can have remaining nodes)
+    if (list1) {
+        curr.next = list1;
+    } else {
+        curr.next = list2;
+    }
+
+    return dummy.next;
+}
+
+// Helper function to create linked list
+function createList(arr) {
+    if (arr.length === 0) return null;
+    const head = new Node(arr[0]);
+    let curr = head;
+    for (let i = 1; i < arr.length; i++) {
+        curr.next = new Node(arr[i]);
+        curr = curr.next;
+    }
+    return head;
+}
+
+// Helper function to print list
+function printList(head) {
+    if (!head) {
+        console.log("[]");
+        return;
+    }
+    const result = [];
+    while (head) {
+        result.push(head.data);
+        head = head.next;
+    }
+    console.log(result.join(" → "));
+}
+
+// Test case 1: Both lists have elements
+let list1 = createList([1, 2, 4]);
+let list2 = createList([1, 3, 4]);
+
+console.log("List 1:");
+printList(list1);
+console.log("List 2:");
+printList(list2);
+
+let merged = mergeTwoLists(list1, list2);
+console.log("Merged:");
+printList(merged);
+
+// Test case 2: One list is empty
+let list3 = createList([5]);
+let list4 = null;
+
+console.log("\nList 3:");
+printList(list3);
+console.log("List 4:");
+printList(list4);
+
+let merged2 = mergeTwoLists(list3, list4);
+console.log("Merged:");
+printList(merged2);
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n + m) <TranslatedText en="where n and m are the lengths of the two lists" bn="যেখানে n এবং m দুটি লিস্টের দৈর্ঘ্য" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+## <TranslatedText en="Approach 2: Recursive Solution" bn="পদ্ধতি ২: পুনরাবৃত্ত সমাধান" />
+
+<TranslatedText
+  en="A recursive approach that elegantly merges the lists by choosing the smaller head at each step."
+  bn="একটি পুনরাবৃত্ত পদ্ধতি যা প্রতিটি ধাপে ছোট হেড নির্বাচন করে মার্জন্টভাবে লিস্টগুলি মার্জ করে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+Node* mergeTwoListsRecursive(Node* list1, Node* list2) {
+    // Base cases
+    if (!list1) return list2;
+    if (!list2) return list1;
+
+    // Choose the smaller node and recursively merge the rest
+    if (list1->data <= list2->data) {
+        list1->next = mergeTwoListsRecursive(list1->next, list2);
+        return list1;
+    } else {
+        list2->next = mergeTwoListsRecursive(list1, list2->next);
+        return list2;
+    }
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def merge_two_lists_recursive(list1, list2):
+    # Base cases
+    if not list1:
+        return list2
+    if not list2:
+        return list1
+
+    # Choose the smaller node and recursively merge the rest
+    if list1.data <= list2.data:
+        list1.next = merge_two_lists_recursive(list1.next, list2)
+        return list1
+    else:
+        list2.next = merge_two_lists_recursive(list1, list2.next)
+        return list2
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function mergeTwoListsRecursive(list1, list2) {
+    // Base cases
+    if (!list1) return list2;
+    if (!list2) return list1;
+
+    // Choose the smaller node and recursively merge the rest
+    if (list1.data <= list2.data) {
+        list1.next = mergeTwoListsRecursive(list1.next, list2);
+        return list1;
+    } else {
+        list2.next = mergeTwoListsRecursive(list1, list2.next);
+        return list2;
+    }
+}
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n + m)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n + m) <TranslatedText en="due to recursion call stack" bn="পুনরাবৃত্তি কল স্ট্যাকের কারণে" />
+
+## <TranslatedText en="How It Works" bn="এটি কীভাবে কাজ করে" />
+
+<TranslatedText
+  en="The iterative algorithm uses a dummy node and compares values step by step:"
+  bn="পুনরাবৃত্তিমূলক অ্যালগরিদম একটি ডামি নোড ব্যবহার করে এবং ধাপে ধাপে মান তুলনা করে:"
+/>
+
+```
+Example: Merge 1 → 2 → 4 and 1 → 3 → 4
+
+Step 1: dummy → (start)
+        list1: 1 → 2 → 4
+        list2: 1 → 3 → 4
+        Compare: 1 ≤ 1, choose list1
+        Result: dummy → 1
+
+Step 2: dummy → 1 →
+        list1:      2 → 4
+        list2: 1 → 3 → 4
+        Compare: 2 > 1, choose list2
+        Result: dummy → 1 → 1
+
+Step 3: dummy → 1 → 1 →
+        list1: 2 → 4
+        list2:      3 → 4
+        Compare: 2 ≤ 3, choose list1
+        Result: dummy → 1 → 1 → 2
+
+Step 4: dummy → 1 → 1 → 2 →
+        list1:          4
+        list2:      3 → 4
+        Compare: 4 > 3, choose list2
+        Result: dummy → 1 → 1 → 2 → 3
+
+Step 5: dummy → 1 → 1 → 2 → 3 →
+        list1:          4
+        list2:              4
+        Compare: 4 ≤ 4, choose list1
+        Result: dummy → 1 → 1 → 2 → 3 → 4
+
+Step 6: dummy → 1 → 1 → 2 → 3 → 4 →
+        list1: null
+        list2:              4
+        Attach remaining: 4
+
+Final Result: 1 → 1 → 2 → 3 → 4 → 4
+```
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Dummy node pattern</strong>: Eliminates edge case handling for empty result list</li>
+        <li><strong>In-place merging</strong>: We reuse existing nodes without creating new ones</li>
+        <li><strong>Greedy choice</strong>: At each step, choose the smaller value from the two lists</li>
+        <li><strong>Remaining nodes</strong>: After one list is exhausted, simply attach the other list</li>
+        <li><strong>Stability</strong>: Equal elements maintain their relative order (list1 comes first)</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>ডামি নোড প্যাটার্ন</strong>: খালি ফলাফল লিস্টের জন্য এজ কেস হ্যান্ডলিং দূর করে</li>
+        <li><strong>ইন-প্লেস মার্জিং</strong>: আমরা নতুন নোড তৈরি না করে বিদ্যমান নোড পুনরায় ব্যবহার করি</li>
+        <li><strong>লোভী পছন্দ</strong>: প্রতিটি ধাপে, দুটি লিস্ট থেকে ছোট মান নির্বাচন করুন</li>
+        <li><strong>অবশিষ্ট নোড</strong>: একটি লিস্ট শেষ হওয়ার পরে, কেবল অন্য লিস্ট সংযুক্ত করুন</li>
+        <li><strong>স্থিতিশীলতা</strong>: সমান উপাদানগুলি তাদের আপেক্ষিক ক্রম বজায় রাখে (list1 প্রথমে আসে)</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Edge Cases to Consider" bn="বিবেচনা করার জন্য এজ কেস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Both lists empty</strong>: Return null</li>
+        <li><strong>One list empty</strong>: Return the other list</li>
+        <li><strong>Lists of different lengths</strong>: Handle remaining nodes correctly</li>
+        <li><strong>All elements in list1 smaller than list2</strong>: First list gets exhausted first</li>
+        <li><strong>Duplicate values</strong>: Both lists can have the same values</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>উভয় লিস্ট খালি</strong>: null ফেরত দিন</li>
+        <li><strong>একটি লিস্ট খালি</strong>: অন্য লিস্ট ফেরত দিন</li>
+        <li><strong>বিভিন্ন দৈর্ঘ্যের লিস্ট</strong>: অবশিষ্ট নোডগুলি সঠিকভাবে হ্যান্ডেল করুন</li>
+        <li><strong>list1 এর সব উপাদান list2 থেকে ছোট</strong>: প্রথম লিস্ট প্রথমে শেষ হয়</li>
+        <li><strong>ডুপ্লিকেট মান</strong>: উভয় লিস্টে একই মান থাকতে পারে</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Start with examples</strong>: Draw out the merging process on paper</li>
+        <li><strong>Mention both approaches</strong>: Iterative (O(1) space) vs Recursive (cleaner but O(n) space)</li>
+        <li><strong>Explain dummy node benefit</strong>: Avoids special handling for the first node</li>
+        <li><strong>Discuss in-place merging</strong>: We're rearranging pointers, not creating new nodes</li>
+        <li><strong>Compare with merge sort</strong>: This is the merge step in merge sort algorithm</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>উদাহরণ দিয়ে শুরু করুন</strong>: কাগজে মার্জিং প্রক্রিয়া আঁকুন</li>
+        <li><strong>উভয় পদ্ধতি উল্লেখ করুন</strong>: পুনরাবৃত্তিমূলক (O(1) স্থান) বনাম পুনরাবৃত্ত (পরিষ্কার কিন্তু O(n) স্থান)</li>
+        <li><strong>ডামি নোড সুবিধা ব্যাখ্যা করুন</strong>: প্রথম নোডের জন্য বিশেষ হ্যান্ডলিং এড়ায়</li>
+        <li><strong>ইন-প্লেস মার্জিং আলোচনা করুন</strong>: আমরা পয়েন্টার পুনর্বিন্যাস করছি, নতুন নোড তৈরি করছি না</li>
+        <li><strong>মার্জ সর্টের সাথে তুলনা করুন</strong>: এটি মার্জ সর্ট অ্যালগরিদমের মার্জ ধাপ</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Common Mistakes to Avoid" bn="এড়ানোর জন্য সাধারণ ভুল" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Forgetting to handle empty list cases</li>
+        <li>Creating new nodes instead of reusing existing ones (wastes space)</li>
+        <li>Not attaching remaining nodes after one list is exhausted</li>
+        <li>Incorrect comparison (using less than instead of less than or equal)</li>
+        <li>Memory leak by not properly handling the dummy node in C++</li>
+        <li>Modifying the original lists when asked to preserve them</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>খালি লিস্ট কেস হ্যান্ডেল করতে ভুলে যাওয়া</li>
+        <li>বিদ্যমান নোড পুনরায় ব্যবহার করার পরিবর্তে নতুন নোড তৈরি করা (স্থান নষ্ট করে)</li>
+        <li>একটি লিস্ট শেষ হওয়ার পরে অবশিষ্ট নোড সংযুক্ত না করা</li>
+        <li>ভুল তুলনা (কম বা সমান এর পরিবর্তে কম ব্যবহার করা)</li>
+        <li>C++ এ ডামি নোড সঠিকভাবে হ্যান্ডেল না করে মেমরি লিক</li>
+        <li>মূল লিস্ট সংরক্ষণ করতে বলা হলে তাদের পরিবর্তন করা</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Merge k sorted lists
+- Merge sorted array
+- Sort linked list (uses merge sort)
+- Add two numbers represented as linked lists
+- Intersection of two sorted arrays
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Dummy node is essential for clean linked list merging code</li>
+        <li>Iterative approach is preferred for O(1) space complexity</li>
+        <li>Recursive approach is elegant but uses O(n) call stack space</li>
+        <li>This is a fundamental algorithm used in merge sort</li>
+        <li>In-place merging reuses existing nodes for efficiency</li>
+        <li>Handle edge cases: empty lists and remaining nodes</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>ডামি নোড পরিষ্কার লিঙ্কড লিস্ট মার্জিং কোডের জন্য অপরিহার্য</li>
+        <li>পুনরাবৃত্তিমূলক পদ্ধতি O(1) স্থান জটিলতার জন্য পছন্দনীয়</li>
+        <li>পুনরাবৃত্ত পদ্ধতি মার্জন্ট কিন্তু O(n) কল স্ট্যাক স্থান ব্যবহার করে</li>
+        <li>এটি মার্জ সর্টে ব্যবহৃত একটি মৌলিক অ্যালগরিদম</li>
+        <li>ইন-প্লেস মার্জিং দক্ষতার জন্য বিদ্যমান নোড পুনরায় ব্যবহার করে</li>
+        <li>এজ কেস হ্যান্ডেল করুন: খালি লিস্ট এবং অবশিষ্ট নোড</li>
+      </ul>
+    </>
+  }
+/>

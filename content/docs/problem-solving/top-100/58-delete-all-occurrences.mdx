@@ -1,0 +1,569 @@
+---
+title: 58. Delete All Occurrences of Key
+description: Remove all nodes with a specific value from a linked list
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Delete All Occurrences of Key" bn="কীটির সমস্ত ঘটনা মুছুন" />
+
+<TranslatedText
+  en="Remove all nodes containing a specific value from a linked list, handling cases where the head node itself needs to be deleted."
+  bn="একটি লিঙ্কড লিস্ট থেকে একটি নির্দিষ্ট মান সম্বলিত সমস্ত নোড সরান, যেখানে হেড নোড নিজেই মুছে ফেলার প্রয়োজন হয় সেই কেসগুলি পরিচালনা করুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given a linked list and a key, delete all occurrences of the given key from the linked list. The list may have multiple occurrences of the key, including at the head."
+  bn="একটি লিঙ্কড লিস্ট এবং একটি কী দেওয়া হলে, লিঙ্কড লিস্ট থেকে প্রদত্ত কীটির সমস্ত ঘটনা মুছুন। লিস্টে হেড সহ কীটির একাধিক ঘটনা থাকতে পারে।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: 1 → 2 → 6 → 3 → 4 → 5 → 6, key = 6
+Output: 1 → 2 → 3 → 4 → 5
+
+Input: 6 → 6 → 1 → 2 → 6, key = 6
+Output: 1 → 2
+
+Input: 6 → 6 → 6, key = 6
+Output: null (empty list)
+
+Input: 1 → 2 → 3, key = 4
+Output: 1 → 2 → 3 (no change)
+```
+
+## <TranslatedText en="Approach: Dummy Node Technique" bn="পদ্ধতি: ডামি নোড কৌশল" />
+
+<TranslatedText
+  en="Use a dummy node before the head to handle deletion of head nodes uniformly with other nodes."
+  bn="অন্যান্য নোডের সাথে একইভাবে হেড নোড মুছে ফেলার জন্য হেডের আগে একটি ডামি নোড ব্যবহার করুন।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+Node* deleteAllOccurrences(Node* head, int key) {
+    // Create dummy node
+    Node* dummy = new Node(0);
+    dummy->next = head;
+
+    Node* prev = dummy;
+    Node* curr = head;
+
+    while (curr) {
+        if (curr->data == key) {
+            // Delete current node
+            prev->next = curr->next;
+            Node* temp = curr;
+            curr = curr->next;
+            delete temp;
+        } else {
+            // Move forward
+            prev = curr;
+            curr = curr->next;
+        }
+    }
+
+    Node* newHead = dummy->next;
+    delete dummy;
+    return newHead;
+}
+
+// Alternative: Without dummy node (more complex)
+Node* deleteAllOccurrencesNoDummy(Node* head, int key) {
+    // Handle head deletions
+    while (head && head->data == key) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    }
+
+    if (!head) return nullptr;
+
+    // Handle rest of the list
+    Node* curr = head;
+    while (curr->next) {
+        if (curr->next->data == key) {
+            Node* temp = curr->next;
+            curr->next = curr->next->next;
+            delete temp;
+        } else {
+            curr = curr->next;
+        }
+    }
+
+    return head;
+}
+
+// Helper function to create list
+Node* createList(int arr[], int n) {
+    if (n == 0) return nullptr;
+    Node* head = new Node(arr[0]);
+    Node* curr = head;
+    for (int i = 1; i < n; i++) {
+        curr->next = new Node(arr[i]);
+        curr = curr->next;
+    }
+    return head;
+}
+
+// Helper function to print list
+void printList(Node* head) {
+    if (!head) {
+        cout << "Empty list" << endl;
+        return;
+    }
+    while (head) {
+        cout << head->data;
+        if (head->next) cout << " → ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    // Test case 1: Multiple occurrences
+    int arr1[] = {1, 2, 6, 3, 4, 5, 6};
+    Node* head1 = createList(arr1, 7);
+    cout << "Original: ";
+    printList(head1);
+    head1 = deleteAllOccurrences(head1, 6);
+    cout << "After deleting 6: ";
+    printList(head1);
+
+    // Test case 2: Head deletions
+    int arr2[] = {6, 6, 1, 2, 6};
+    Node* head2 = createList(arr2, 5);
+    cout << "\nOriginal: ";
+    printList(head2);
+    head2 = deleteAllOccurrences(head2, 6);
+    cout << "After deleting 6: ";
+    printList(head2);
+
+    // Test case 3: All nodes deleted
+    int arr3[] = {6, 6, 6};
+    Node* head3 = createList(arr3, 3);
+    cout << "\nOriginal: ";
+    printList(head3);
+    head3 = deleteAllOccurrences(head3, 6);
+    cout << "After deleting 6: ";
+    printList(head3);
+
+    // Test case 4: Key not found
+    int arr4[] = {1, 2, 3};
+    Node* head4 = createList(arr4, 3);
+    cout << "\nOriginal: ";
+    printList(head4);
+    head4 = deleteAllOccurrences(head4, 4);
+    cout << "After deleting 4: ";
+    printList(head4);
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def delete_all_occurrences(head, key):
+    # Create dummy node
+    dummy = Node(0)
+    dummy.next = head
+
+    prev = dummy
+    curr = head
+
+    while curr:
+        if curr.data == key:
+            # Delete current node
+            prev.next = curr.next
+            curr = curr.next
+        else:
+            # Move forward
+            prev = curr
+            curr = curr.next
+
+    return dummy.next
+
+# Alternative: Without dummy node (more complex)
+def delete_all_occurrences_no_dummy(head, key):
+    # Handle head deletions
+    while head and head.data == key:
+        head = head.next
+
+    if not head:
+        return None
+
+    # Handle rest of the list
+    curr = head
+    while curr.next:
+        if curr.next.data == key:
+            curr.next = curr.next.next
+        else:
+            curr = curr.next
+
+    return head
+
+# Helper function to create list
+def create_list(arr):
+    if not arr:
+        return None
+    head = Node(arr[0])
+    curr = head
+    for val in arr[1:]:
+        curr.next = Node(val)
+        curr = curr.next
+    return head
+
+# Helper function to print list
+def print_list(head):
+    if not head:
+        print("Empty list")
+        return
+    result = []
+    while head:
+        result.append(str(head.data))
+        head = head.next
+    print(" → ".join(result))
+
+# Test case 1: Multiple occurrences
+head1 = create_list([1, 2, 6, 3, 4, 5, 6])
+print("Original:", end=" ")
+print_list(head1)
+head1 = delete_all_occurrences(head1, 6)
+print("After deleting 6:", end=" ")
+print_list(head1)
+
+# Test case 2: Head deletions
+head2 = create_list([6, 6, 1, 2, 6])
+print("\nOriginal:", end=" ")
+print_list(head2)
+head2 = delete_all_occurrences(head2, 6)
+print("After deleting 6:", end=" ")
+print_list(head2)
+
+# Test case 3: All nodes deleted
+head3 = create_list([6, 6, 6])
+print("\nOriginal:", end=" ")
+print_list(head3)
+head3 = delete_all_occurrences(head3, 6)
+print("After deleting 6:", end=" ")
+print_list(head3)
+
+# Test case 4: Key not found
+head4 = create_list([1, 2, 3])
+print("\nOriginal:", end=" ")
+print_list(head4)
+head4 = delete_all_occurrences(head4, 4)
+print("After deleting 4:", end=" ")
+print_list(head4)
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+function deleteAllOccurrences(head, key) {
+    // Create dummy node
+    const dummy = new Node(0);
+    dummy.next = head;
+
+    let prev = dummy;
+    let curr = head;
+
+    while (curr) {
+        if (curr.data === key) {
+            // Delete current node
+            prev.next = curr.next;
+            curr = curr.next;
+        } else {
+            // Move forward
+            prev = curr;
+            curr = curr.next;
+        }
+    }
+
+    return dummy.next;
+}
+
+// Alternative: Without dummy node (more complex)
+function deleteAllOccurrencesNoDummy(head, key) {
+    // Handle head deletions
+    while (head && head.data === key) {
+        head = head.next;
+    }
+
+    if (!head) return null;
+
+    // Handle rest of the list
+    let curr = head;
+    while (curr.next) {
+        if (curr.next.data === key) {
+            curr.next = curr.next.next;
+        } else {
+            curr = curr.next;
+        }
+    }
+
+    return head;
+}
+
+// Helper function to create list
+function createList(arr) {
+    if (arr.length === 0) return null;
+    const head = new Node(arr[0]);
+    let curr = head;
+    for (let i = 1; i < arr.length; i++) {
+        curr.next = new Node(arr[i]);
+        curr = curr.next;
+    }
+    return head;
+}
+
+// Helper function to print list
+function printList(head) {
+    if (!head) {
+        console.log("Empty list");
+        return;
+    }
+    const result = [];
+    while (head) {
+        result.push(head.data);
+        head = head.next;
+    }
+    console.log(result.join(" → "));
+}
+
+// Test case 1: Multiple occurrences
+let head1 = createList([1, 2, 6, 3, 4, 5, 6]);
+console.log("Original:");
+printList(head1);
+head1 = deleteAllOccurrences(head1, 6);
+console.log("After deleting 6:");
+printList(head1);
+
+// Test case 2: Head deletions
+let head2 = createList([6, 6, 1, 2, 6]);
+console.log("\nOriginal:");
+printList(head2);
+head2 = deleteAllOccurrences(head2, 6);
+console.log("After deleting 6:");
+printList(head2);
+
+// Test case 3: All nodes deleted
+let head3 = createList([6, 6, 6]);
+console.log("\nOriginal:");
+printList(head3);
+head3 = deleteAllOccurrences(head3, 6);
+console.log("After deleting 6:");
+printList(head3);
+
+// Test case 4: Key not found
+let head4 = createList([1, 2, 3]);
+console.log("\nOriginal:");
+printList(head4);
+head4 = deleteAllOccurrences(head4, 4);
+console.log("After deleting 4:");
+printList(head4);
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n) <TranslatedText en="single traversal" bn="একক ট্রাভার্সাল" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+## <TranslatedText en="How It Works" bn="এটি কীভাবে কাজ করে" />
+
+```
+Original: 1 → 2 → 6 → 3 → 4 → 5 → 6, key = 6
+
+Using dummy node:
+dummy → 1 → 2 → 6 → 3 → 4 → 5 → 6
+ prev  curr
+
+Step 1: curr.data != key, move forward
+dummy → 1 → 2 → 6 → 3 → 4 → 5 → 6
+       prev curr
+
+Step 2: curr.data != key, move forward
+dummy → 1 → 2 → 6 → 3 → 4 → 5 → 6
+             prev curr
+
+Step 3: curr.data == key, delete
+dummy → 1 → 2 → 3 → 4 → 5 → 6
+             prev curr
+
+Continue...
+Result: 1 → 2 → 3 → 4 → 5
+```
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Dummy node simplifies logic</strong>: Treats head deletion same as others</li>
+        <li><strong>prev pointer is crucial</strong>: Needed to link around deleted nodes</li>
+        <li><strong>Update prev conditionally</strong>: Only when not deleting</li>
+        <li><strong>Handle all deletions</strong>: Including consecutive occurrences</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>ডামি নোড লজিক সহজ করে</strong>: হেড মুছে ফেলাকে অন্যদের মতোই ব্যবহার করে</li>
+        <li><strong>prev পয়েন্টার গুরুত্বপূর্ণ</strong>: মুছে ফেলা নোডের চারপাশে লিঙ্ক করতে প্রয়োজন</li>
+        <li><strong>শর্তসাপেক্ষে prev আপডেট করুন</strong>: শুধুমাত্র মুছে ফেলা না হলে</li>
+        <li><strong>সমস্ত মুছে ফেলা হ্যান্ডেল করুন</strong>: পরপর ঘটনা সহ</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Edge Cases to Consider" bn="বিবেচনা করার জন্য এজ কেস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Empty list</strong>: Return null</li>
+        <li><strong>All nodes match key</strong>: Result is empty list</li>
+        <li><strong>Head node matches key</strong>: Multiple consecutive head deletions</li>
+        <li><strong>Key not found</strong>: Return original list unchanged</li>
+        <li><strong>Consecutive occurrences</strong>: 6 → 6 → 6 → 1</li>
+        <li><strong>Single node</strong>: Either delete or keep</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>খালি লিস্ট</strong>: null ফেরত দিন</li>
+        <li><strong>সমস্ত নোড কীর সাথে মিলে</strong>: ফলাফল খালি লিস্ট</li>
+        <li><strong>হেড নোড কীর সাথে মিলে</strong>: একাধিক পরপর হেড মুছে ফেলা</li>
+        <li><strong>কী পাওয়া যায়নি</strong>: মূল লিস্ট অপরিবর্তিত ফেরত দিন</li>
+        <li><strong>পরপর ঘটনা</strong>: 6 → 6 → 6 → 1</li>
+        <li><strong>একক নোড</strong>: হয় মুছুন বা রাখুন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Explain dummy node benefit</strong>: Simplifies head deletion handling</li>
+        <li><strong>Show both approaches</strong>: With and without dummy node</li>
+        <li><strong>Handle memory</strong>: Mention deleting nodes in C++ (not needed in Python/JS)</li>
+        <li><strong>Discuss edge cases</strong>: All deletions, no deletions, consecutive</li>
+        <li><strong>Time/Space trade-off</strong>: O(n) time, O(1) space is optimal</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>ডামি নোড সুবিধা ব্যাখ্যা করুন</strong>: হেড মুছে ফেলা হ্যান্ডলিং সহজ করে</li>
+        <li><strong>উভয় পদ্ধতি দেখান</strong>: ডামি নোড সহ এবং ছাড়া</li>
+        <li><strong>মেমরি হ্যান্ডেল করুন</strong>: C++ এ নোড মুছে ফেলার কথা উল্লেখ করুন (Python/JS এ প্রয়োজন নেই)</li>
+        <li><strong>এজ কেস আলোচনা করুন</strong>: সমস্ত মুছে ফেলা, কোনো মুছে ফেলা নেই, পরপর</li>
+        <li><strong>সময়/স্থান ট্রেড-অফ</strong>: O(n) সময়, O(1) স্থান সর্বোত্তম</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Common Mistakes to Avoid" bn="এড়ানোর জন্য সাধারণ ভুল" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Not handling head deletion properly</li>
+        <li>Moving prev pointer when deleting (should stay put)</li>
+        <li>Not checking for empty list</li>
+        <li>Memory leak in C++ (not deleting nodes)</li>
+        <li>Skipping consecutive occurrences</li>
+        <li>Not returning the correct new head</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>হেড মুছে ফেলা সঠিকভাবে হ্যান্ডেল না করা</li>
+        <li>মুছে ফেলার সময় prev পয়েন্টার সরানো (একই জায়গায় থাকা উচিত)</li>
+        <li>খালি লিস্ট পরীক্ষা না করা</li>
+        <li>C++ এ মেমরি লিক (নোড মুছে ফেলা না)</li>
+        <li>পরপর ঘটনা এড়িয়ে যাওয়া</li>
+        <li>সঠিক নতুন হেড ফেরত না দেওয়া</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Remove Linked List Elements (LeetCode 203)
+- Delete Node in a Linked List
+- Remove Duplicates from Sorted List
+- Remove Duplicates from Unsorted List
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Dummy node pattern simplifies head deletion</li>
+        <li>Maintain prev pointer to link around deleted nodes</li>
+        <li>Only move prev when not deleting current</li>
+        <li>Handle all edge cases: empty, all deleted, none deleted</li>
+        <li>O(n) time, O(1) space is optimal</li>
+        <li>Remember to free memory in languages without garbage collection</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>ডামি নোড প্যাটার্ন হেড মুছে ফেলা সহজ করে</li>
+        <li>মুছে ফেলা নোডের চারপাশে লিঙ্ক করতে prev পয়েন্টার বজায় রাখুন</li>
+        <li>বর্তমান মুছে ফেলা না হলেই prev সরান</li>
+        <li>সমস্ত এজ কেস হ্যান্ডেল করুন: খালি, সব মুছে গেছে, কিছুই মুছে যায়নি</li>
+        <li>O(n) সময়, O(1) স্থান সর্বোত্তম</li>
+        <li>গার্বেজ কালেকশন ছাড়া ভাষায় মেমরি মুক্ত করতে মনে রাখবেন</li>
+      </ul>
+    </>
+  }
+/>

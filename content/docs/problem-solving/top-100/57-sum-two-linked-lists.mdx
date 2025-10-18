@@ -1,0 +1,638 @@
+---
+title: 57. Sum of Two Linked Lists
+description: Add two numbers represented by linked lists using stack
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Sum of Two Linked Lists" bn="দুটি লিঙ্কড লিস্টের যোগফল" />
+
+<TranslatedText
+  en="Add two numbers represented by linked lists where digits are stored in reverse order or normal order using stack."
+  bn="স্ট্যাক ব্যবহার করে লিঙ্কড লিস্ট দ্বারা প্রতিনিধিত্ব করা দুটি সংখ্যা যোগ করুন যেখানে সংখ্যাগুলি বিপরীত বা স্বাভাবিক ক্রমে সংরক্ষিত থাকে।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each node contains a single digit. Add the two numbers and return the sum as a linked list."
+  bn="আপনাকে দুটি অ-নেগেটিভ পূর্ণসংখ্যা প্রতিনিধিত্বকারী দুটি অ-খালি লিঙ্কড লিস্ট দেওয়া হয়েছে। সংখ্যাগুলি বিপরীত ক্রমে সংরক্ষিত এবং প্রতিটি নোড একটি একক সংখ্যা ধারণ করে। দুটি সংখ্যা যোগ করুন এবং যোগফলটি লিঙ্কড লিস্ট হিসাবে ফেরত দিন।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Example 1 (Reverse Order):
+Input: l1 = [2,4,3], l2 = [5,6,4]
+Output: [7,0,8]
+Explanation: 342 + 465 = 807
+
+Example 2:
+Input: l1 = [0], l2 = [0]
+Output: [0]
+
+Example 3:
+Input: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+Output: [8,9,9,9,0,0,0,1]
+Explanation: 9999999 + 9999 = 10009998
+```
+
+## <TranslatedText en="Approach 1: Direct Addition (Reverse Order)" bn="পদ্ধতি ১: সরাসরি যোগ (বিপরীত ক্রম)" />
+
+<TranslatedText
+  en="Since digits are already in reverse order, we can directly add them from left to right, handling carry."
+  bn="যেহেতু সংখ্যাগুলি ইতিমধ্যে বিপরীত ক্রমে রয়েছে, আমরা সরাসরি বাম থেকে ডানে যোগ করতে পারি, ক্যারি পরিচালনা করে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+Node* addTwoNumbers(Node* l1, Node* l2) {
+    Node* dummy = new Node(0);
+    Node* curr = dummy;
+    int carry = 0;
+
+    while (l1 || l2 || carry) {
+        int sum = carry;
+
+        if (l1) {
+            sum += l1->data;
+            l1 = l1->next;
+        }
+
+        if (l2) {
+            sum += l2->data;
+            l2 = l2->next;
+        }
+
+        carry = sum / 10;
+        curr->next = new Node(sum % 10);
+        curr = curr->next;
+    }
+
+    return dummy->next;
+}
+
+// Helper function to create list from array
+Node* createList(int arr[], int n) {
+    if (n == 0) return nullptr;
+    Node* head = new Node(arr[0]);
+    Node* curr = head;
+    for (int i = 1; i < n; i++) {
+        curr->next = new Node(arr[i]);
+        curr = curr->next;
+    }
+    return head;
+}
+
+// Helper function to print list
+void printList(Node* head) {
+    while (head) {
+        cout << head->data;
+        if (head->next) cout << " → ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    // Test case 1: 342 + 465 = 807
+    int arr1[] = {2, 4, 3};
+    int arr2[] = {5, 6, 4};
+    Node* l1 = createList(arr1, 3);
+    Node* l2 = createList(arr2, 3);
+
+    cout << "List 1: ";
+    printList(l1);
+    cout << "List 2: ";
+    printList(l2);
+
+    Node* result = addTwoNumbers(l1, l2);
+    cout << "Sum: ";
+    printList(result);
+
+    // Test case 2: With carry
+    int arr3[] = {9, 9, 9, 9, 9, 9, 9};
+    int arr4[] = {9, 9, 9, 9};
+    Node* l3 = createList(arr3, 7);
+    Node* l4 = createList(arr4, 4);
+
+    cout << "\nList 3: ";
+    printList(l3);
+    cout << "List 4: ";
+    printList(l4);
+
+    Node* result2 = addTwoNumbers(l3, l4);
+    cout << "Sum: ";
+    printList(result2);
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def add_two_numbers(l1, l2):
+    dummy = Node(0)
+    curr = dummy
+    carry = 0
+
+    while l1 or l2 or carry:
+        sum_val = carry
+
+        if l1:
+            sum_val += l1.data
+            l1 = l1.next
+
+        if l2:
+            sum_val += l2.data
+            l2 = l2.next
+
+        carry = sum_val // 10
+        curr.next = Node(sum_val % 10)
+        curr = curr.next
+
+    return dummy.next
+
+# Helper function to create list from array
+def create_list(arr):
+    if not arr:
+        return None
+    head = Node(arr[0])
+    curr = head
+    for val in arr[1:]:
+        curr.next = Node(val)
+        curr = curr.next
+    return head
+
+# Helper function to print list
+def print_list(head):
+    result = []
+    while head:
+        result.append(str(head.data))
+        head = head.next
+    print(" → ".join(result))
+
+# Test case 1: 342 + 465 = 807
+l1 = create_list([2, 4, 3])
+l2 = create_list([5, 6, 4])
+
+print("List 1:", end=" ")
+print_list(l1)
+print("List 2:", end=" ")
+print_list(l2)
+
+result = add_two_numbers(l1, l2)
+print("Sum:", end=" ")
+print_list(result)
+
+# Test case 2: With carry
+l3 = create_list([9, 9, 9, 9, 9, 9, 9])
+l4 = create_list([9, 9, 9, 9])
+
+print("\nList 3:", end=" ")
+print_list(l3)
+print("List 4:", end=" ")
+print_list(l4)
+
+result2 = add_two_numbers(l3, l4)
+print("Sum:", end=" ")
+print_list(result2)
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+function addTwoNumbers(l1, l2) {
+    const dummy = new Node(0);
+    let curr = dummy;
+    let carry = 0;
+
+    while (l1 || l2 || carry) {
+        let sum = carry;
+
+        if (l1) {
+            sum += l1.data;
+            l1 = l1.next;
+        }
+
+        if (l2) {
+            sum += l2.data;
+            l2 = l2.next;
+        }
+
+        carry = Math.floor(sum / 10);
+        curr.next = new Node(sum % 10);
+        curr = curr.next;
+    }
+
+    return dummy.next;
+}
+
+// Helper function to create list from array
+function createList(arr) {
+    if (arr.length === 0) return null;
+    const head = new Node(arr[0]);
+    let curr = head;
+    for (let i = 1; i < arr.length; i++) {
+        curr.next = new Node(arr[i]);
+        curr = curr.next;
+    }
+    return head;
+}
+
+// Helper function to print list
+function printList(head) {
+    const result = [];
+    while (head) {
+        result.push(head.data);
+        head = head.next;
+    }
+    console.log(result.join(" → "));
+}
+
+// Test case 1: 342 + 465 = 807
+const l1 = createList([2, 4, 3]);
+const l2 = createList([5, 6, 4]);
+
+console.log("List 1:");
+printList(l1);
+console.log("List 2:");
+printList(l2);
+
+const result = addTwoNumbers(l1, l2);
+console.log("Sum:");
+printList(result);
+
+// Test case 2: With carry
+const l3 = createList([9, 9, 9, 9, 9, 9, 9]);
+const l4 = createList([9, 9, 9, 9]);
+
+console.log("\nList 3:");
+printList(l3);
+console.log("List 4:");
+printList(l4);
+
+const result2 = addTwoNumbers(l3, l4);
+console.log("Sum:");
+printList(result2);
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(max(m, n)) <TranslatedText en="where m and n are lengths of the two lists" bn="যেখানে m এবং n হল দুটি লিস্টের দৈর্ঘ্য" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(max(m, n)) <TranslatedText en="for the result list" bn="ফলাফল লিস্টের জন্য" />
+
+## <TranslatedText en="Approach 2: Using Stack (Normal Order)" bn="পদ্ধতি ২: স্ট্যাক ব্যবহার (স্বাভাবিক ক্রম)" />
+
+<TranslatedText
+  en="If digits are stored in normal order (most significant digit first), we can use stacks to reverse the order."
+  bn="যদি সংখ্যাগুলি স্বাভাবিক ক্রমে সংরক্ষিত থাকে (সবচেয়ে গুরুত্বপূর্ণ সংখ্যা প্রথমে), আমরা ক্রম বিপরীত করতে স্ট্যাক ব্যবহার করতে পারি।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <stack>
+using namespace std;
+
+Node* addTwoNumbersUsingStack(Node* l1, Node* l2) {
+    stack<int> s1, s2;
+
+    // Push all digits to stacks
+    while (l1) {
+        s1.push(l1->data);
+        l1 = l1->next;
+    }
+
+    while (l2) {
+        s2.push(l2->data);
+        l2 = l2->next;
+    }
+
+    Node* result = nullptr;
+    int carry = 0;
+
+    // Process from least significant digit
+    while (!s1.empty() || !s2.empty() || carry) {
+        int sum = carry;
+
+        if (!s1.empty()) {
+            sum += s1.top();
+            s1.pop();
+        }
+
+        if (!s2.empty()) {
+            sum += s2.top();
+            s2.pop();
+        }
+
+        carry = sum / 10;
+
+        // Insert at beginning (to maintain normal order)
+        Node* newNode = new Node(sum % 10);
+        newNode->next = result;
+        result = newNode;
+    }
+
+    return result;
+}
+
+int main() {
+    // Test: 243 + 564 = 807 (normal order)
+    int arr1[] = {2, 4, 3};
+    int arr2[] = {5, 6, 4};
+    Node* l1 = createList(arr1, 3);
+    Node* l2 = createList(arr2, 3);
+
+    cout << "List 1 (normal order): ";
+    printList(l1);
+    cout << "List 2 (normal order): ";
+    printList(l2);
+
+    Node* result = addTwoNumbersUsingStack(l1, l2);
+    cout << "Sum: ";
+    printList(result);
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def add_two_numbers_using_stack(l1, l2):
+    s1, s2 = [], []
+
+    # Push all digits to stacks
+    while l1:
+        s1.append(l1.data)
+        l1 = l1.next
+
+    while l2:
+        s2.append(l2.data)
+        l2 = l2.next
+
+    result = None
+    carry = 0
+
+    # Process from least significant digit
+    while s1 or s2 or carry:
+        sum_val = carry
+
+        if s1:
+            sum_val += s1.pop()
+
+        if s2:
+            sum_val += s2.pop()
+
+        carry = sum_val // 10
+
+        # Insert at beginning (to maintain normal order)
+        new_node = Node(sum_val % 10)
+        new_node.next = result
+        result = new_node
+
+    return result
+
+# Test: 243 + 564 = 807 (normal order)
+l1 = create_list([2, 4, 3])
+l2 = create_list([5, 6, 4])
+
+print("List 1 (normal order):", end=" ")
+print_list(l1)
+print("List 2 (normal order):", end=" ")
+print_list(l2)
+
+result = add_two_numbers_using_stack(l1, l2)
+print("Sum:", end=" ")
+print_list(result)
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function addTwoNumbersUsingStack(l1, l2) {
+    const s1 = [], s2 = [];
+
+    // Push all digits to stacks
+    while (l1) {
+        s1.push(l1.data);
+        l1 = l1.next;
+    }
+
+    while (l2) {
+        s2.push(l2.data);
+        l2 = l2.next;
+    }
+
+    let result = null;
+    let carry = 0;
+
+    // Process from least significant digit
+    while (s1.length || s2.length || carry) {
+        let sum = carry;
+
+        if (s1.length) {
+            sum += s1.pop();
+        }
+
+        if (s2.length) {
+            sum += s2.pop();
+        }
+
+        carry = Math.floor(sum / 10);
+
+        // Insert at beginning (to maintain normal order)
+        const newNode = new Node(sum % 10);
+        newNode.next = result;
+        result = newNode;
+    }
+
+    return result;
+}
+
+// Test: 243 + 564 = 807 (normal order)
+const l1 = createList([2, 4, 3]);
+const l2 = createList([5, 6, 4]);
+
+console.log("List 1 (normal order):");
+printList(l1);
+console.log("List 2 (normal order):");
+printList(l2);
+
+const result = addTwoNumbersUsingStack(l1, l2);
+console.log("Sum:");
+printList(result);
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(m + n)
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(m + n) <TranslatedText en="for stacks" bn="স্ট্যাকের জন্য" />
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Carry handling</strong>: Always process carry even after both lists end</li>
+        <li><strong>Dummy node technique</strong>: Simplifies result list creation</li>
+        <li><strong>Stack for normal order</strong>: Reverses the digits for processing</li>
+        <li><strong>Different lengths</strong>: Algorithm handles lists of different lengths automatically</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>ক্যারি হ্যান্ডলিং</strong>: উভয় লিস্ট শেষ হওয়ার পরেও সর্বদা ক্যারি প্রক্রিয়া করুন</li>
+        <li><strong>ডামি নোড কৌশল</strong>: ফলাফল লিস্ট তৈরি সহজ করে</li>
+        <li><strong>স্বাভাবিক ক্রমের জন্য স্ট্যাক</strong>: প্রক্রিয়াকরণের জন্য সংখ্যাগুলি বিপরীত করে</li>
+        <li><strong>বিভিন্ন দৈর্ঘ্য</strong>: অ্যালগরিদম স্বয়ংক্রিয়ভাবে বিভিন্ন দৈর্ঘ্যের লিস্ট পরিচালনা করে</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Edge Cases to Consider" bn="বিবেচনা করার জন্য এজ কেস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Different lengths</strong>: One list longer than the other</li>
+        <li><strong>Carry propagation</strong>: 999 + 1 = 1000</li>
+        <li><strong>Single digit</strong>: [5] + [5] = [10] or [1,0]</li>
+        <li><strong>Zero values</strong>: [0] + [0] = [0]</li>
+        <li><strong>Leading zeros</strong>: Result should not have leading zeros</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>বিভিন্ন দৈর্ঘ্য</strong>: একটি লিস্ট অন্যটির চেয়ে দীর্ঘ</li>
+        <li><strong>ক্যারি প্রচার</strong>: 999 + 1 = 1000</li>
+        <li><strong>একক সংখ্যা</strong>: [5] + [5] = [10] বা [1,0]</li>
+        <li><strong>শূন্য মান</strong>: [0] + [0] = [0]</li>
+        <li><strong>লিডিং শূন্য</strong>: ফলাফলে লিডিং শূন্য থাকা উচিত নয়</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Clarify the order</strong>: Ask if digits are in reverse or normal order</li>
+        <li><strong>Explain carry handling</strong>: Show you understand the carry mechanism</li>
+        <li><strong>Mention both approaches</strong>: Direct (for reverse) and Stack (for normal)</li>
+        <li><strong>Discuss dummy node</strong>: Explain why it simplifies the code</li>
+        <li><strong>Handle edge cases</strong>: Different lengths, carry beyond end</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>ক্রম স্পষ্ট করুন</strong>: জিজ্ঞাসা করুন সংখ্যাগুলি বিপরীত বা স্বাভাবিক ক্রমে আছে কিনা</li>
+        <li><strong>ক্যারি হ্যান্ডলিং ব্যাখ্যা করুন</strong>: দেখান আপনি ক্যারি মেকানিজম বোঝেন</li>
+        <li><strong>উভয় পদ্ধতি উল্লেখ করুন</strong>: সরাসরি (বিপরীতের জন্য) এবং স্ট্যাক (স্বাভাবিকের জন্য)</li>
+        <li><strong>ডামি নোড আলোচনা করুন</strong>: ব্যাখ্যা করুন কেন এটি কোড সহজ করে</li>
+        <li><strong>এজ কেস হ্যান্ডেল করুন</strong>: বিভিন্ন দৈর্ঘ্য, শেষের বাইরে ক্যারি</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Common Mistakes to Avoid" bn="এড়ানোর জন্য সাধারণ ভুল" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Forgetting to handle final carry</li>
+        <li>Not handling lists of different lengths</li>
+        <li>Creating unnecessary nodes for leading zeros</li>
+        <li>Confusing reverse order vs normal order</li>
+        <li>Not using dummy node (complicates code)</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>চূড়ান্ত ক্যারি হ্যান্ডেল করতে ভুলে যাওয়া</li>
+        <li>বিভিন্ন দৈর্ঘ্যের লিস্ট হ্যান্ডেল না করা</li>
+        <li>লিডিং শূন্যের জন্য অপ্রয়োজনীয় নোড তৈরি করা</li>
+        <li>বিপরীত ক্রম বনাম স্বাভাবিক ক্রম বিভ্রান্ত করা</li>
+        <li>ডামি নোড ব্যবহার না করা (কোড জটিল করে)</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Add Two Numbers II (normal order without reversing)
+- Multiply Two Numbers Represented by Linked Lists
+- Add Binary Strings
+- Plus One Linked List
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Reverse order allows direct addition left to right</li>
+        <li>Normal order requires stack or list reversal</li>
+        <li>Always handle carry after processing all digits</li>
+        <li>Dummy node pattern simplifies result list creation</li>
+        <li>Algorithm naturally handles different length lists</li>
+        <li>O(max(m,n)) time complexity is optimal</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>বিপরীত ক্রম বাম থেকে ডানে সরাসরি যোগ করার অনুমতি দেয়</li>
+        <li>স্বাভাবিক ক্রমে স্ট্যাক বা লিস্ট বিপরীত প্রয়োজন</li>
+        <li>সমস্ত সংখ্যা প্রক্রিয়া করার পরে সর্বদা ক্যারি হ্যান্ডেল করুন</li>
+        <li>ডামি নোড প্যাটার্ন ফলাফল লিস্ট তৈরি সহজ করে</li>
+        <li>অ্যালগরিদম স্বাভাবিকভাবে বিভিন্ন দৈর্ঘ্যের লিস্ট পরিচালনা করে</li>
+        <li>O(max(m,n)) সময় জটিলতা সর্বোত্তম</li>
+      </ul>
+    </>
+  }
+/>

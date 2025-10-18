@@ -1,0 +1,627 @@
+---
+title: 63. Remove Duplicates from Unsorted List
+description: Remove all duplicate nodes from an unsorted linked list
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Remove Duplicates from Unsorted List" bn="অসাজানো লিস্ট থেকে ডুপ্লিকেট সরান" />
+
+<TranslatedText
+  en="Remove all duplicate values from an unsorted linked list, keeping only the first occurrence of each value."
+  bn="একটি অসাজানো লিঙ্কড লিস্ট থেকে সমস্ত ডুপ্লিকেট মান সরান, প্রতিটি মানের শুধুমাত্র প্রথম ঘটনা রেখে।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given the head of an unsorted linked list, remove all duplicate nodes such that each value appears only once. Preserve the order of first occurrences."
+  bn="একটি অসাজানো লিঙ্কড লিস্টের হেড দেওয়া হলে, সমস্ত ডুপ্লিকেট নোড সরান যাতে প্রতিটি মান শুধুমাত্র একবার প্রদর্শিত হয়। প্রথম ঘটনার ক্রম সংরক্ষণ করুন।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: 1 → 3 → 2 → 3 → 4 → 1
+Output: 1 → 3 → 2 → 4
+
+Input: 4 → 2 → 5 → 2 → 4
+Output: 4 → 2 → 5
+
+Input: 1 → 1 → 1
+Output: 1
+
+Input: 1 → 2 → 3
+Output: 1 → 2 → 3
+```
+
+## <TranslatedText en="Approach 1: Hash Set (Recommended)" bn="পদ্ধতি ১: হ্যাশ সেট (প্রস্তাবিত)" />
+
+<TranslatedText
+  en="Use a hash set to track seen values. Remove nodes whose values already exist in the set."
+  bn="দেখা মান ট্র্যাক করতে একটি হ্যাশ সেট ব্যবহার করুন। যে নোডের মান ইতিমধ্যে সেটে বিদ্যমান সেগুলি সরান।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+#include <unordered_set>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+Node* removeDuplicates(Node* head) {
+    if (!head) return nullptr;
+
+    unordered_set<int> seen;
+    Node* curr = head;
+    Node* prev = nullptr;
+
+    while (curr) {
+        if (seen.find(curr->data) != seen.end()) {
+            // Duplicate found, remove this node
+            prev->next = curr->next;
+            Node* temp = curr;
+            curr = curr->next;
+            delete temp;
+        } else {
+            // First occurrence, add to set
+            seen.insert(curr->data);
+            prev = curr;
+            curr = curr->next;
+        }
+    }
+
+    return head;
+}
+
+// Helper function to create linked list
+Node* createList(int arr[], int n) {
+    if (n == 0) return nullptr;
+    Node* head = new Node(arr[0]);
+    Node* curr = head;
+    for (int i = 1; i < n; i++) {
+        curr->next = new Node(arr[i]);
+        curr = curr->next;
+    }
+    return head;
+}
+
+// Helper function to print list
+void printList(Node* head) {
+    if (!head) {
+        cout << "[]" << endl;
+        return;
+    }
+    while (head) {
+        cout << head->data;
+        if (head->next) cout << " → ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    // Test case 1: Duplicates scattered
+    int arr1[] = {1, 3, 2, 3, 4, 1};
+    Node* head1 = createList(arr1, 6);
+    cout << "Original: ";
+    printList(head1);
+    head1 = removeDuplicates(head1);
+    cout << "After removing duplicates: ";
+    printList(head1);
+
+    // Test case 2: Multiple duplicates
+    int arr2[] = {4, 2, 5, 2, 4};
+    Node* head2 = createList(arr2, 5);
+    cout << "\nOriginal: ";
+    printList(head2);
+    head2 = removeDuplicates(head2);
+    cout << "After removing duplicates: ";
+    printList(head2);
+
+    // Test case 3: All duplicates
+    int arr3[] = {1, 1, 1};
+    Node* head3 = createList(arr3, 3);
+    cout << "\nOriginal: ";
+    printList(head3);
+    head3 = removeDuplicates(head3);
+    cout << "After removing duplicates: ";
+    printList(head3);
+
+    // Test case 4: No duplicates
+    int arr4[] = {1, 2, 3};
+    Node* head4 = createList(arr4, 3);
+    cout << "\nOriginal: ";
+    printList(head4);
+    head4 = removeDuplicates(head4);
+    cout << "After removing duplicates: ";
+    printList(head4);
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def remove_duplicates(head):
+    if not head:
+        return None
+
+    seen = set()
+    curr = head
+    prev = None
+
+    while curr:
+        if curr.data in seen:
+            # Duplicate found, remove this node
+            prev.next = curr.next
+            curr = curr.next
+        else:
+            # First occurrence, add to set
+            seen.add(curr.data)
+            prev = curr
+            curr = curr.next
+
+    return head
+
+# Helper function to create linked list
+def create_list(arr):
+    if not arr:
+        return None
+    head = Node(arr[0])
+    curr = head
+    for val in arr[1:]:
+        curr.next = Node(val)
+        curr = curr.next
+    return head
+
+# Helper function to print list
+def print_list(head):
+    if not head:
+        print("[]")
+        return
+    result = []
+    while head:
+        result.append(str(head.data))
+        head = head.next
+    print(" → ".join(result))
+
+# Test case 1: Duplicates scattered
+head1 = create_list([1, 3, 2, 3, 4, 1])
+print("Original:", end=" ")
+print_list(head1)
+head1 = remove_duplicates(head1)
+print("After removing duplicates:", end=" ")
+print_list(head1)
+
+# Test case 2: Multiple duplicates
+head2 = create_list([4, 2, 5, 2, 4])
+print("\nOriginal:", end=" ")
+print_list(head2)
+head2 = remove_duplicates(head2)
+print("After removing duplicates:", end=" ")
+print_list(head2)
+
+# Test case 3: All duplicates
+head3 = create_list([1, 1, 1])
+print("\nOriginal:", end=" ")
+print_list(head3)
+head3 = remove_duplicates(head3)
+print("After removing duplicates:", end=" ")
+print_list(head3)
+
+# Test case 4: No duplicates
+head4 = create_list([1, 2, 3])
+print("\nOriginal:", end=" ")
+print_list(head4)
+head4 = remove_duplicates(head4)
+print("After removing duplicates:", end=" ")
+print_list(head4)
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+function removeDuplicates(head) {
+    if (!head) return null;
+
+    const seen = new Set();
+    let curr = head;
+    let prev = null;
+
+    while (curr) {
+        if (seen.has(curr.data)) {
+            // Duplicate found, remove this node
+            prev.next = curr.next;
+            curr = curr.next;
+        } else {
+            // First occurrence, add to set
+            seen.add(curr.data);
+            prev = curr;
+            curr = curr.next;
+        }
+    }
+
+    return head;
+}
+
+// Helper function to create linked list
+function createList(arr) {
+    if (arr.length === 0) return null;
+    const head = new Node(arr[0]);
+    let curr = head;
+    for (let i = 1; i < arr.length; i++) {
+        curr.next = new Node(arr[i]);
+        curr = curr.next;
+    }
+    return head;
+}
+
+// Helper function to print list
+function printList(head) {
+    if (!head) {
+        console.log("[]");
+        return;
+    }
+    const result = [];
+    while (head) {
+        result.push(head.data);
+        head = head.next;
+    }
+    console.log(result.join(" → "));
+}
+
+// Test case 1: Duplicates scattered
+let head1 = createList([1, 3, 2, 3, 4, 1]);
+console.log("Original:");
+printList(head1);
+head1 = removeDuplicates(head1);
+console.log("After removing duplicates:");
+printList(head1);
+
+// Test case 2: Multiple duplicates
+let head2 = createList([4, 2, 5, 2, 4]);
+console.log("\nOriginal:");
+printList(head2);
+head2 = removeDuplicates(head2);
+console.log("After removing duplicates:");
+printList(head2);
+
+// Test case 3: All duplicates
+let head3 = createList([1, 1, 1]);
+console.log("\nOriginal:");
+printList(head3);
+head3 = removeDuplicates(head3);
+console.log("After removing duplicates:");
+printList(head3);
+
+// Test case 4: No duplicates
+let head4 = createList([1, 2, 3]);
+console.log("\nOriginal:");
+printList(head4);
+head4 = removeDuplicates(head4);
+console.log("After removing duplicates:");
+printList(head4);
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n) <TranslatedText en="where n is the number of nodes" bn="যেখানে n হল নোডের সংখ্যা" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(n) <TranslatedText en="for the hash set" bn="হ্যাশ সেটের জন্য" />
+
+## <TranslatedText en="Approach 2: No Extra Space (Two Pointers)" bn="পদ্ধতি ২: অতিরিক্ত স্থান নেই (দুটি পয়েন্টার)" />
+
+<TranslatedText
+  en="Use two nested loops: for each node, scan remaining nodes and remove duplicates. This avoids using extra space but is slower."
+  bn="দুটি নেস্টেড লুপ ব্যবহার করুন: প্রতিটি নোডের জন্য, অবশিষ্ট নোড স্ক্যান করুন এবং ডুপ্লিকেট সরান। এটি অতিরিক্ত স্থান ব্যবহার এড়ায় কিন্তু ধীর।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+Node* removeDuplicatesNoSpace(Node* head) {
+    if (!head) return nullptr;
+
+    Node* curr = head;
+
+    while (curr) {
+        Node* runner = curr;
+
+        // Check all nodes after curr
+        while (runner->next) {
+            if (runner->next->data == curr->data) {
+                // Duplicate found, remove it
+                Node* temp = runner->next;
+                runner->next = runner->next->next;
+                delete temp;
+            } else {
+                runner = runner->next;
+            }
+        }
+
+        curr = curr->next;
+    }
+
+    return head;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+def remove_duplicates_no_space(head):
+    if not head:
+        return None
+
+    curr = head
+
+    while curr:
+        runner = curr
+
+        # Check all nodes after curr
+        while runner.next:
+            if runner.next.data == curr.data:
+                # Duplicate found, remove it
+                runner.next = runner.next.next
+            else:
+                runner = runner.next
+
+        curr = curr.next
+
+    return head
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+function removeDuplicatesNoSpace(head) {
+    if (!head) return null;
+
+    let curr = head;
+
+    while (curr) {
+        let runner = curr;
+
+        // Check all nodes after curr
+        while (runner.next) {
+            if (runner.next.data === curr.data) {
+                // Duplicate found, remove it
+                runner.next = runner.next.next;
+            } else {
+                runner = runner.next;
+            }
+        }
+
+        curr = curr.next;
+    }
+
+    return head;
+}
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n²) <TranslatedText en="nested loops through the list" bn="লিস্টের মাধ্যমে নেস্টেড লুপ" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+## <TranslatedText en="How It Works" bn="এটি কীভাবে কাজ করে" />
+
+<TranslatedText
+  en="The hash set approach tracks seen values:"
+  bn="হ্যাশ সেট পদ্ধতি দেখা মান ট্র্যাক করে:"
+/>
+
+```
+Example: Remove duplicates from 1 → 3 → 2 → 3 → 4 → 1
+
+Initial: seen = {}, prev = null
+         1 → 3 → 2 → 3 → 4 → 1
+         ^
+         curr
+
+Step 1: 1 not in seen
+        seen = {1}, prev = 1
+        1 → 3 → 2 → 3 → 4 → 1
+            ^
+            curr
+
+Step 2: 3 not in seen
+        seen = {1, 3}, prev = 3
+        1 → 3 → 2 → 3 → 4 → 1
+                ^
+                curr
+
+Step 3: 2 not in seen
+        seen = {1, 3, 2}, prev = 2
+        1 → 3 → 2 → 3 → 4 → 1
+                    ^
+                    curr
+
+Step 4: 3 is in seen! Remove it
+        seen = {1, 3, 2}, prev = 2
+        1 → 3 → 2 → 4 → 1
+                    ^
+                    curr
+
+Step 5: 4 not in seen
+        seen = {1, 3, 2, 4}, prev = 4
+        1 → 3 → 2 → 4 → 1
+                        ^
+                        curr
+
+Step 6: 1 is in seen! Remove it
+        seen = {1, 3, 2, 4}, prev = 4
+        1 → 3 → 2 → 4
+                    ^
+                    curr (null)
+
+Result: 1 → 3 → 2 → 4
+```
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Unsorted requires tracking</strong>: Can't just check adjacent nodes like sorted list</li>
+        <li><strong>Hash set is optimal</strong>: O(1) lookup makes it O(n) overall time</li>
+        <li><strong>Space-time tradeoff</strong>: Can save space by using O(n²) two-pointer approach</li>
+        <li><strong>Preserve order</strong>: Keep first occurrence of each value</li>
+        <li><strong>prev pointer crucial</strong>: Needed to remove nodes without losing the list</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>অসাজানো ট্র্যাকিং প্রয়োজন</strong>: সাজানো লিস্টের মতো শুধু সংলগ্ন নোড চেক করতে পারে না</li>
+        <li><strong>হ্যাশ সেট সর্বোত্তম</strong>: O(1) লুকআপ এটিকে সামগ্রিকভাবে O(n) সময় করে তোলে</li>
+        <li><strong>স্থান-সময় ট্রেড-অফ</strong>: O(n²) টু-পয়েন্টার পদ্ধতি ব্যবহার করে স্থান সংরক্ষণ করতে পারে</li>
+        <li><strong>ক্রম সংরক্ষণ করুন</strong>: প্রতিটি মানের প্রথম ঘটনা রাখুন</li>
+        <li><strong>prev পয়েন্টার গুরুত্বপূর্ণ</strong>: লিস্ট না হারিয়ে নোড সরাতে প্রয়োজন</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Edge Cases to Consider" bn="বিবেচনা করার জন্য এজ কেস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Empty list</strong>: Return null</li>
+        <li><strong>Single node</strong>: Return as is (no duplicates possible)</li>
+        <li><strong>No duplicates</strong>: List remains unchanged</li>
+        <li><strong>All duplicates</strong>: Return single node</li>
+        <li><strong>Duplicates at beginning</strong>: First occurrence is kept</li>
+        <li><strong>Duplicates at end</strong>: Removed correctly</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>খালি লিস্ট</strong>: null ফেরত দিন</li>
+        <li><strong>একক নোড</strong>: যেমন আছে তেমন ফেরত দিন (ডুপ্লিকেট সম্ভব নয়)</li>
+        <li><strong>কোন ডুপ্লিকেট নেই</strong>: লিস্ট অপরিবর্তিত থাকে</li>
+        <li><strong>সব ডুপ্লিকেট</strong>: একক নোড ফেরত দিন</li>
+        <li><strong>শুরুতে ডুপ্লিকেট</strong>: প্রথম ঘটনা রাখা হয়</li>
+        <li><strong>শেষে ডুপ্লিকেট</strong>: সঠিকভাবে সরানো হয়</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Clarify constraints</strong>: Ask about extra space allowance</li>
+        <li><strong>Mention both approaches</strong>: Hash set (fast) vs two-pointer (space-efficient)</li>
+        <li><strong>Explain tradeoff</strong>: O(n) time + O(n) space vs O(n²) time + O(1) space</li>
+        <li><strong>Compare with sorted version</strong>: Sorted is O(n) time O(1) space, much simpler</li>
+        <li><strong>Discuss which to use</strong>: Hash set is almost always preferred unless space is severely limited</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>সীমাবদ্ধতা স্পষ্ট করুন</strong>: অতিরিক্ত স্থান ভাতা সম্পর্কে জিজ্ঞাসা করুন</li>
+        <li><strong>উভয় পদ্ধতি উল্লেখ করুন</strong>: হ্যাশ সেট (দ্রুত) বনাম টু-পয়েন্টার (স্থান-দক্ষ)</li>
+        <li><strong>ট্রেড-অফ ব্যাখ্যা করুন</strong>: O(n) সময় + O(n) স্থান বনাম O(n²) সময় + O(1) স্থান</li>
+        <li><strong>সাজানো সংস্করণের সাথে তুলনা করুন</strong>: সাজানো O(n) সময় O(1) স্থান, অনেক সহজ</li>
+        <li><strong>কোনটি ব্যবহার করবেন আলোচনা করুন</strong>: স্থান গুরুতরভাবে সীমিত না হলে হ্যাশ সেট প্রায় সবসময় পছন্দনীয়</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Common Mistakes to Avoid" bn="এড়ানোর জন্য সাধারণ ভুল" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Not maintaining prev pointer correctly when removing nodes</li>
+        <li>Moving prev forward when removing a duplicate (should stay in place)</li>
+        <li>Not checking for null before accessing next pointers</li>
+        <li>Forgetting to delete removed nodes in C++ (memory leak)</li>
+        <li>Using nested loops without realizing O(n²) time complexity</li>
+        <li>Trying to remove first occurrence instead of keeping it</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>নোড সরানোর সময় prev পয়েন্টার সঠিকভাবে বজায় না রাখা</li>
+        <li>ডুপ্লিকেট সরানোর সময় prev এগিয়ে নিয়ে যাওয়া (স্থানে থাকা উচিত)</li>
+        <li>next পয়েন্টার অ্যাক্সেস করার আগে null চেক না করা</li>
+        <li>C++ এ সরানো নোড মুছতে ভুলে যাওয়া (মেমরি লিক)</li>
+        <li>O(n²) সময় জটিলতা উপলব্ধি না করে নেস্টেড লুপ ব্যবহার করা</li>
+        <li>প্রথম ঘটনা রাখার পরিবর্তে সরানোর চেষ্টা করা</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Remove duplicates from sorted linked list (easier: O(n) time O(1) space)
+- Remove duplicates from array (unsorted)
+- First non-repeating element in linked list
+- Find all duplicates in an array
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Unsorted lists require extra data structure (hash set) for efficient duplicate detection</li>
+        <li>Hash set approach is O(n) time with O(n) space - most practical solution</li>
+        <li>Two-pointer approach is O(n²) time with O(1) space - use only if space is critical</li>
+        <li>Much harder than sorted list version which is O(n) time O(1) space</li>
+        <li>Always maintain prev pointer when removing nodes</li>
+        <li>Trade-off between time and space complexity is key consideration</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>অসাজানো লিস্টগুলিতে দক্ষ ডুপ্লিকেট সনাক্তকরণের জন্য অতিরিক্ত ডেটা স্ট্রাকচার (হ্যাশ সেট) প্রয়োজন</li>
+        <li>হ্যাশ সেট পদ্ধতি O(n) সময় O(n) স্থান সহ - সবচেয়ে ব্যবহারিক সমাধান</li>
+        <li>টু-পয়েন্টার পদ্ধতি O(n²) সময় O(1) স্থান সহ - শুধুমাত্র স্থান গুরুত্বপূর্ণ হলে ব্যবহার করুন</li>
+        <li>সাজানো লিস্ট সংস্করণের চেয়ে অনেক কঠিন যা O(n) সময় O(1) স্থান</li>
+        <li>নোড সরানোর সময় সবসময় prev পয়েন্টার বজায় রাখুন</li>
+        <li>সময় এবং স্থান জটিলতার মধ্যে ট্রেড-অফ মূল বিবেচনা</li>
+      </ul>
+    </>
+  }
+/>

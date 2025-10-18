@@ -1,0 +1,396 @@
+---
+title: 54. Find Middle Element in One Pass
+description: Find the middle element of a singly linked list in a single traversal
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { LanguageSwitcher, TranslatedText } from '@/components/LanguageSwitcher';
+
+<LanguageSwitcher />
+
+# <TranslatedText en="Find Middle Element in One Pass" bn="এক পাসে মধ্যম উপাদান খুঁজুন" />
+
+<TranslatedText
+  en="Find the middle element of a singly linked list in a single traversal using the two-pointer technique."
+  bn="টু-পয়েন্টার কৌশল ব্যবহার করে একটি একক ট্রাভার্সালে একক লিঙ্কড লিস্টের মধ্যম উপাদান খুঁজুন।"
+/>
+
+## <TranslatedText en="Problem Statement" bn="সমস্যার বিবৃতি" />
+
+<TranslatedText
+  en="Given a singly linked list, find the middle node. If the list has an even number of nodes, return the second middle node. You must solve this in one pass (single traversal)."
+  bn="একটি সিঙ্গলি লিঙ্কড লিস্ট দেওয়া হলে, মধ্যম নোড খুঁজুন। যদি লিস্টে জোড় সংখ্যক নোড থাকে, তাহলে দ্বিতীয় মধ্যম নোড ফেরত দিন। আপনাকে অবশ্যই এটি এক পাসে (একক ট্রাভার্সাল) সমাধান করতে হবে।"
+/>
+
+### <TranslatedText en="Example" bn="উদাহরণ" />
+
+```
+Input: 1 -> 2 -> 3 -> 4 -> 5
+Output: 3
+
+Input: 1 -> 2 -> 3 -> 4 -> 5 -> 6
+Output: 4
+
+Input: 1
+Output: 1
+```
+
+## <TranslatedText en="Approach: Two Pointer (Slow and Fast)" bn="পদ্ধতি: দুটি পয়েন্টার (ধীর এবং দ্রুত)" />
+
+<TranslatedText
+  en="Use two pointers: slow moves one step at a time, fast moves two steps. When fast reaches the end, slow will be at the middle."
+  bn="দুটি পয়েন্টার ব্যবহার করুন: ধীর একবারে এক ধাপ চলে, দ্রুত দুই ধাপ চলে। যখন দ্রুত শেষে পৌঁছায়, ধীর মাঝখানে থাকবে।"
+/>
+
+<Tabs items={['C++', 'Python', 'JavaScript']} groupId="language">
+  <Tab value="C++">
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+Node* findMiddle(Node* head) {
+    if (!head) return nullptr;
+
+    Node* slow = head;
+    Node* fast = head;
+
+    // Fast moves 2 steps, slow moves 1 step
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    return slow;
+}
+
+// Helper function to create linked list
+Node* createList(int arr[], int n) {
+    if (n == 0) return nullptr;
+    Node* head = new Node(arr[0]);
+    Node* curr = head;
+    for (int i = 1; i < n; i++) {
+        curr->next = new Node(arr[i]);
+        curr = curr->next;
+    }
+    return head;
+}
+
+// Helper function to print list
+void printList(Node* head) {
+    while (head) {
+        cout << head->data;
+        if (head->next) cout << " -> ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    // Test case 1: Odd length
+    int arr1[] = {1, 2, 3, 4, 5};
+    Node* head1 = createList(arr1, 5);
+    cout << "List 1: ";
+    printList(head1);
+    Node* mid1 = findMiddle(head1);
+    cout << "Middle: " << mid1->data << endl;
+
+    // Test case 2: Even length
+    int arr2[] = {1, 2, 3, 4, 5, 6};
+    Node* head2 = createList(arr2, 6);
+    cout << "\nList 2: ";
+    printList(head2);
+    Node* mid2 = findMiddle(head2);
+    cout << "Middle: " << mid2->data << endl;
+
+    return 0;
+}
+```
+  </Tab>
+  <Tab value="Python">
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def find_middle(head):
+    if not head:
+        return None
+
+    slow = head
+    fast = head
+
+    # Fast moves 2 steps, slow moves 1 step
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+
+    return slow
+
+# Helper function to create linked list
+def create_list(arr):
+    if not arr:
+        return None
+    head = Node(arr[0])
+    curr = head
+    for val in arr[1:]:
+        curr.next = Node(val)
+        curr = curr.next
+    return head
+
+# Helper function to print list
+def print_list(head):
+    result = []
+    while head:
+        result.append(str(head.data))
+        head = head.next
+    print(" -> ".join(result))
+
+# Test case 1: Odd length
+head1 = create_list([1, 2, 3, 4, 5])
+print("List 1:", end=" ")
+print_list(head1)
+mid1 = find_middle(head1)
+print(f"Middle: {mid1.data}")
+
+# Test case 2: Even length
+head2 = create_list([1, 2, 3, 4, 5, 6])
+print("\nList 2:", end=" ")
+print_list(head2)
+mid2 = find_middle(head2)
+print(f"Middle: {mid2.data}")
+```
+  </Tab>
+  <Tab value="JavaScript">
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+function findMiddle(head) {
+    if (!head) return null;
+
+    let slow = head;
+    let fast = head;
+
+    // Fast moves 2 steps, slow moves 1 step
+    while (fast && fast.next) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+
+    return slow;
+}
+
+// Helper function to create linked list
+function createList(arr) {
+    if (arr.length === 0) return null;
+    const head = new Node(arr[0]);
+    let curr = head;
+    for (let i = 1; i < arr.length; i++) {
+        curr.next = new Node(arr[i]);
+        curr = curr.next;
+    }
+    return head;
+}
+
+// Helper function to print list
+function printList(head) {
+    const result = [];
+    while (head) {
+        result.push(head.data);
+        head = head.next;
+    }
+    console.log(result.join(" -> "));
+}
+
+// Test case 1: Odd length
+const head1 = createList([1, 2, 3, 4, 5]);
+console.log("List 1:");
+printList(head1);
+const mid1 = findMiddle(head1);
+console.log(`Middle: ${mid1.data}`);
+
+// Test case 2: Even length
+const head2 = createList([1, 2, 3, 4, 5, 6]);
+console.log("\nList 2:");
+printList(head2);
+const mid2 = findMiddle(head2);
+console.log(`Middle: ${mid2.data}`);
+```
+  </Tab>
+</Tabs>
+
+**<TranslatedText en="Time Complexity" bn="সময় জটিলতা" />:** O(n) <TranslatedText en="where n is the number of nodes" bn="যেখানে n হল নোডের সংখ্যা" />
+
+**<TranslatedText en="Space Complexity" bn="স্থান জটিলতা" />:** O(1)
+
+## <TranslatedText en="How It Works" bn="এটি কীভাবে কাজ করে" />
+
+<TranslatedText
+  en="The algorithm uses the two-pointer technique (tortoise and hare):"
+  bn="অ্যালগরিদম টু-পয়েন্টার কৌশল ব্যবহার করে (কচ্ছপ এবং খরগোশ):"
+/>
+
+```
+Step 1: slow = 1, fast = 1
+        1 -> 2 -> 3 -> 4 -> 5
+        ^
+        s,f
+
+Step 2: slow = 2, fast = 3
+        1 -> 2 -> 3 -> 4 -> 5
+             ^    ^
+             s    f
+
+Step 3: slow = 3, fast = 5
+        1 -> 2 -> 3 -> 4 -> 5
+                  ^         ^
+                  s         f
+
+Step 4: fast->next is null, stop
+        Middle node is at slow pointer: 3
+```
+
+## <TranslatedText en="Key Insights" bn="মূল অন্তর্দৃষ্টি" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Two-pointer technique</strong>: When fast pointer moves twice as fast, slow reaches middle when fast reaches end</li>
+        <li><strong>Single traversal</strong>: Only one pass through the list is needed</li>
+        <li><strong>Even length handling</strong>: Returns the second middle node (e.g., for [1,2,3,4], returns 3)</li>
+        <li><strong>Odd length handling</strong>: Returns the exact middle node</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>টু-পয়েন্টার কৌশল</strong>: যখন দ্রুত পয়েন্টার দ্বিগুণ দ্রুত চলে, ধীর মাঝখানে পৌঁছায় যখন দ্রুত শেষে পৌঁছায়</li>
+        <li><strong>একক ট্রাভার্সাল</strong>: লিস্টের মাধ্যমে শুধুমাত্র একটি পাস প্রয়োজন</li>
+        <li><strong>জোড় দৈর্ঘ্য হ্যান্ডলিং</strong>: দ্বিতীয় মধ্যম নোড ফেরত দেয় (যেমন, [1,2,3,4] এর জন্য, 3 ফেরত দেয়)</li>
+        <li><strong>বিজোড় দৈর্ঘ্য হ্যান্ডলিং</strong>: সঠিক মধ্যম নোড ফেরত দেয়</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Edge Cases to Consider" bn="বিবেচনা করার জন্য এজ কেস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Empty list</strong>: Return null</li>
+        <li><strong>Single node</strong>: Return that node</li>
+        <li><strong>Two nodes</strong>: Return the second node</li>
+        <li><strong>Even vs odd length</strong>: For even length, returns second middle</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>খালি লিস্ট</strong>: null ফেরত দিন</li>
+        <li><strong>একক নোড</strong>: সেই নোড ফেরত দিন</li>
+        <li><strong>দুটি নোড</strong>: দ্বিতীয় নোড ফেরত দিন</li>
+        <li><strong>জোড় বনাম বিজোড় দৈর্ঘ্য</strong>: জোড় দৈর্ঘ্যের জন্য, দ্বিতীয় মধ্যম ফেরত দেয়</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Interview Tips" bn="ইন্টারভিউ টিপস" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li><strong>Mention the constraint</strong>: Emphasize that you're solving it in one pass</li>
+        <li><strong>Explain the two-pointer logic</strong>: Why does slow reach middle when fast reaches end?</li>
+        <li><strong>Clarify even length behavior</strong>: Ask if they want first or second middle for even length</li>
+        <li><strong>Discuss alternative</strong>: Could count length first, then traverse to middle, but that's two passes</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li><strong>সীমাবদ্ধতা উল্লেখ করুন</strong>: জোর দিন যে আপনি এটি এক পাসে সমাধান করছেন</li>
+        <li><strong>টু-পয়েন্টার লজিক ব্যাখ্যা করুন</strong>: কেন ধীর মাঝখানে পৌঁছায় যখন দ্রুত শেষে পৌঁছায়?</li>
+        <li><strong>জোড় দৈর্ঘ্য আচরণ স্পষ্ট করুন</strong>: জিজ্ঞাসা করুন তারা জোড় দৈর্ঘ্যের জন্য প্রথম বা দ্বিতীয় মধ্যম চান কিনা</li>
+        <li><strong>বিকল্প আলোচনা করুন</strong>: প্রথমে দৈর্ঘ্য গণনা করতে পারে, তারপর মাঝখানে ট্রাভার্স করুন, তবে এটি দুটি পাস</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Common Mistakes to Avoid" bn="এড়ানোর জন্য সাধারণ ভুল" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Not handling null/empty list</li>
+        <li>Incorrect loop condition causing null pointer access</li>
+        <li>Forgetting to check fast.next before accessing fast.next.next</li>
+        <li>Using two passes (counting first, then finding middle)</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>null/খালি লিস্ট হ্যান্ডেল না করা</li>
+        <li>ভুল লুপ শর্ত যা null পয়েন্টার অ্যাক্সেস ঘটায়</li>
+        <li>fast.next.next অ্যাক্সেস করার আগে fast.next চেক করতে ভুলে যাওয়া</li>
+        <li>দুটি পাস ব্যবহার করা (প্রথমে গণনা করা, তারপর মাঝখানে খুঁজে বের করা)</li>
+      </ul>
+    </>
+  }
+/>
+
+## <TranslatedText en="Related Problems" bn="সম্পর্কিত সমস্যা" />
+
+- Delete middle node of a linked list
+- Palindrome linked list (uses middle finding)
+- Reorder list (uses middle finding)
+- Split linked list into two halves
+
+## <TranslatedText en="Key Takeaways" bn="মূল শিক্ষা" />
+
+<TranslatedText
+  en={
+    <>
+      <ul>
+        <li>Two-pointer technique is essential for linked list problems</li>
+        <li>Fast pointer moves 2x speed of slow pointer</li>
+        <li>When fast reaches end, slow is at middle</li>
+        <li>O(n) time with O(1) space - optimal solution</li>
+        <li>This pattern applies to many linked list problems</li>
+      </ul>
+    </>
+  }
+  bn={
+    <>
+      <ul>
+        <li>টু-পয়েন্টার কৌশল লিঙ্কড লিস্ট সমস্যার জন্য অপরিহার্য</li>
+        <li>দ্রুত পয়েন্টার ধীর পয়েন্টারের 2x গতিতে চলে</li>
+        <li>যখন দ্রুত শেষে পৌঁছায়, ধীর মাঝখানে থাকে</li>
+        <li>O(n) সময় O(1) স্থান সহ - সর্বোত্তম সমাধান</li>
+        <li>এই প্যাটার্ন অনেক লিঙ্কড লিস্ট সমস্যার ক্ষেত্রে প্রযোজ্য</li>
+      </ul>
+    </>
+  }
+/>
