@@ -31,6 +31,11 @@ export function baseOptions(): BaseLayoutProps {
         url: '/test-your-skill',
         active: 'nested-url',
       },
+      {
+        text: 'Playground',
+        url: '/playground',
+        active: 'nested-url',
+      },
     ],
   };
 }
