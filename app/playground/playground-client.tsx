@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import CodeEditor from '@/components/playground/CodeEditor';
 import LanguageSelector from '@/components/playground/LanguageSelector';
 import ProblemSelector from '@/components/playground/ProblemSelector';
@@ -39,6 +39,9 @@ export default function PlaygroundClient({ problems }: PlaygroundClientProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [executionTime, setExecutionTime] = useState<number | undefined>();
 
+  // Ref for the console output panel
+  const outputPanelRef = useRef<HTMLDivElement>(null);
+
   // Update code when language changes
   useEffect(() => {
     setCode(codeTemplates[selectedLanguage as keyof typeof codeTemplates]);
@@ -72,6 +75,11 @@ export default function PlaygroundClient({ problems }: PlaygroundClientProps) {
       } else {
         setError(data.error || 'Execution failed');
       }
+
+      // Scroll to console output after execution
+      setTimeout(() => {
+        outputPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
     } catch (err: any) {
       setError(err.message || 'Failed to execute code');
     } finally {
@@ -110,6 +118,11 @@ export default function PlaygroundClient({ problems }: PlaygroundClientProps) {
       } else {
         setError(data.error || 'Test execution failed');
       }
+
+      // Scroll to console output after test execution
+      setTimeout(() => {
+        outputPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
     } catch (err: any) {
       setError(err.message || 'Failed to run tests');
     } finally {
@@ -216,7 +229,7 @@ export default function PlaygroundClient({ problems }: PlaygroundClientProps) {
             </div>
 
             {/* Output Panel */}
-            <div style={{ height: '250px' }}>
+            <div ref={outputPanelRef} style={{ height: '250px' }}>
               <OutputPanel
                 output={output}
                 error={error}
