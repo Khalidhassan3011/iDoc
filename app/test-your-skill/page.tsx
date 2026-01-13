@@ -15,25 +15,25 @@ const topics: Array<{
   color: string;
   gradient: string;
 }> = [
-  {
-    id: 'flutter',
-    name: 'Flutter',
-    description: 'Test your Flutter knowledge with questions covering widgets, state management, navigation, and more.',
-    icon: 'Flutter',
-    questionCount: 20,
-    color: 'blue',
-    gradient: 'from-blue-500 to-cyan-500'
-  },
-  {
-    id: 'problem-solving',
-    name: 'Problem Solving',
-    description: 'Challenge yourself with algorithmic and problem-solving questions.',
-    icon: 'Puzzle',
-    questionCount: 20,
-    color: 'purple',
-    gradient: 'from-purple-500 to-pink-500'
-  }
-];
+    {
+      id: 'flutter',
+      name: 'Flutter',
+      description: 'Test your Flutter knowledge with questions covering widgets, state management, navigation, and more.',
+      icon: 'Flutter',
+      questionCount: 20,
+      color: 'blue',
+      gradient: 'from-blue-500 to-cyan-500'
+    },
+    {
+      id: 'problem-solving',
+      name: 'Problem Solving',
+      description: 'Challenge yourself with algorithmic and problem-solving questions.',
+      icon: 'Puzzle',
+      questionCount: 20,
+      color: 'purple',
+      gradient: 'from-purple-500 to-pink-500'
+    }
+  ];
 
 const features = [
   {
@@ -78,7 +78,7 @@ const transitionVariants = {
       filter: "blur(0px)",
       y: 0,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         bounce: 0.3,
         duration: 1.5,
       },

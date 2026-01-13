@@ -37,10 +37,11 @@ export async function GET(request: NextRequest) {
       success: true,
       codeBlocks,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching problem code:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch problem code';
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to fetch problem code' },
+      { success: false, error: errorMessage },
       { status: 500 }
     );
   }
@@ -69,8 +70,7 @@ function extractCodeBlocks(content: string): {
   let match;
 
   // Track approaches by looking for headers or approach indicators
-  let currentApproach = 'Approach 1';
-  let approachCounts = { cpp: 0, python: 0, javascript: 0 };
+  const approachCounts = { cpp: 0, python: 0, javascript: 0 };
 
   // Also check for approach headers in the content
   const approachHeaderRegex = /###?\s*(Approach\s+\d+|Solution\s+\d+|Method\s+\d+)/gi;
@@ -120,9 +120,9 @@ function extractCodeBlocks(content: string): {
 
       // Increment approach index when we complete a set of all languages
       if (langKey === 'javascript' &&
-          result.cpp.length === approachCounts.cpp &&
-          result.python.length === approachCounts.python &&
-          result.javascript.length === approachCounts.javascript) {
+        result.cpp.length === approachCounts.cpp &&
+        result.python.length === approachCounts.python &&
+        result.javascript.length === approachCounts.javascript) {
         approachIndex++;
       }
     }

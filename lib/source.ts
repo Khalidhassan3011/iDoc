@@ -54,7 +54,7 @@ export const source = loader({
     }
 
     // Map icon names to components
-    const iconMap: Record<string, any> = {
+    const iconMap: Record<string, React.ElementType> = {
       'BookOpen': BookOpen,
       'Star': Star,
       'CheckCircle2': CheckCircle2,

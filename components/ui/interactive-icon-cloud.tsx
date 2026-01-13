@@ -10,8 +10,7 @@ import {
   SimpleIcon,
 } from "react-icon-cloud"
 
-// Prevent SSR hydration issues
-const isClient = typeof window !== 'undefined'
+// Prevent SSR hydration issues - moved to mounted state pattern
 
 export const cloudProps: Omit<ICloud, "children"> = {
   containerProps: {
@@ -55,7 +54,7 @@ export const renderCustomIcon = (icon: SimpleIcon, theme: string) => {
       href: undefined,
       target: undefined,
       rel: undefined,
-      onClick: (e: any) => e.preventDefault(),
+      onClick: (e: React.MouseEvent) => e.preventDefault(),
     },
   })
 }
@@ -90,7 +89,6 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
   }
 
   return (
-    // @ts-ignore
     <Cloud {...cloudProps}>
       <>{renderedIcons}</>
     </Cloud>

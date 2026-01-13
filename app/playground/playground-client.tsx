@@ -89,8 +89,9 @@ export default function PlaygroundClient({ problems }: PlaygroundClientProps) {
       setTimeout(() => {
         outputPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }, 100);
-    } catch (err: any) {
-      setError(err.message || 'Failed to execute code');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to execute code';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -132,8 +133,9 @@ export default function PlaygroundClient({ problems }: PlaygroundClientProps) {
       setTimeout(() => {
         outputPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }, 100);
-    } catch (err: any) {
-      setError(err.message || 'Failed to run tests');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to run tests';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }

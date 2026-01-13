@@ -3,11 +3,6 @@ import axios from 'axios';
 
 const PISTON_API = 'https://emkc.org/api/v2/piston';
 
-interface TestCase {
-  input: string;
-  expectedOutput: string;
-  description?: string;
-}
 
 interface TestResult {
   passed: boolean;
@@ -77,13 +72,14 @@ export async function POST(request: NextRequest) {
             actual: output,
             error: response.data.run.stderr || undefined,
           });
-        } catch (error: any) {
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : 'Execution failed';
           testResults.push({
             passed: false,
             input: testCase.input,
             expected: testCase.expectedOutput,
             actual: '',
-            error: error.message || 'Execution failed',
+            error: errorMessage,
           });
         }
       }
@@ -126,12 +122,16 @@ export async function POST(request: NextRequest) {
       error: stderr || compileOutput || undefined,
       executionTime: response.data.run.time || 0,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Execution error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Execution failed';
+    // @ts-expect-error - axios error handling
+    const responseDataMessage = error?.response?.data?.message;
+
     return NextResponse.json(
       {
         success: false,
-        error: error.response?.data?.message || error.message || 'Execution failed',
+        error: responseDataMessage || errorMessage,
       },
       { status: 500 }
     );

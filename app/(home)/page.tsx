@@ -1,6 +1,5 @@
 'use client';
-import Link from 'next/link';
-import { ArrowRight, BookOpen, Zap, Target, Code2, Sparkles, CheckCircle2, Lightbulb } from 'lucide-react';
+import { BookOpen, Zap, Target, Code2, Sparkles, CheckCircle2, Lightbulb } from 'lucide-react';
 import { HeroSection } from '@/components/ui/hero-section-1';
 import { FeatureCard } from '@/components/ui/grid-feature-cards';
 import { motion, useReducedMotion } from 'framer-motion';
@@ -220,7 +219,7 @@ function RotatingTip() {
         filter: 'blur(0px)',
         transition: {
           duration: 0.5,
-          ease: [0.25, 0.1, 0.25, 1], // Smooth cubic-bezier easing
+          ease: [0.25, 0.1, 0.25, 1.0] as [number, number, number, number], // Smooth cubic-bezier easing
         },
       },
       exit: {
@@ -230,7 +229,7 @@ function RotatingTip() {
         filter: 'blur(8px)',
         transition: {
           duration: 0.4,
-          ease: [0.25, 0.1, 0.25, 1],
+          ease: [0.25, 0.1, 0.25, 1.0] as [number, number, number, number],
         },
       },
     },

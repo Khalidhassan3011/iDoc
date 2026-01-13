@@ -7,7 +7,6 @@ import { loadQuestions, getRandomQuestions, getTopicDisplayName } from '@/lib/te
 import {
   initializeTest,
   saveTestState,
-  loadTestState,
   clearTestState,
   updateTimeRemaining,
   submitAnswer,
@@ -33,7 +32,6 @@ export default function TestPage() {
   const [testState, setTestState] = useState<TestState | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentAnswer, setCurrentAnswer] = useState<Answer | null>(null);
   const [showReloadDialog, setShowReloadDialog] = useState(false);
 
   // Initialize or load test - always start fresh
@@ -112,7 +110,6 @@ export default function TestPage() {
   const handleAnswerChange = (answer: Answer) => {
     if (!testState) return;
 
-    setCurrentAnswer(answer);
     const updated = submitAnswer(testState, answer);
     setTestState(updated);
     saveTestState(updated);
@@ -145,7 +142,6 @@ export default function TestPage() {
     const updated = nextQuestion(testState);
     setTestState(updated);
     saveTestState(updated);
-    setCurrentAnswer(null);
 
     // If this was the last question, finish the test
     if (updated.isFinished) {
@@ -256,13 +252,12 @@ export default function TestPage() {
         <div className="bg-card border rounded-2xl shadow-sm p-8 md:p-10 mb-6">
           {/* Difficulty Badge */}
           <div className="mb-6">
-            <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium ${
-              currentQuestion.difficulty === 'easy'
-                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-                : currentQuestion.difficulty === 'medium'
+            <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium ${currentQuestion.difficulty === 'basic'
+              ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+              : currentQuestion.difficulty === 'intermediate'
                 ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
                 : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
-            }`}>
+              }`}>
               {currentQuestion.difficulty.charAt(0).toUpperCase() + currentQuestion.difficulty.slice(1)}
             </span>
           </div>
@@ -295,11 +290,10 @@ export default function TestPage() {
           <button
             onClick={handleNext}
             disabled={!isAnswered}
-            className={`px-8 py-3 font-semibold rounded-xl transition-all duration-300 ${
-              isAnswered
-                ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl'
-                : 'bg-muted text-muted-foreground cursor-not-allowed'
-            }`}
+            className={`px-8 py-3 font-semibold rounded-xl transition-all duration-300 ${isAnswered
+              ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl'
+              : 'bg-muted text-muted-foreground cursor-not-allowed'
+              }`}
           >
             {testState.currentQuestionIndex === testState.questions.length - 1
               ? 'Submit Test'
