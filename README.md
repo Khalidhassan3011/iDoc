@@ -10,6 +10,12 @@
 >
 > ---
 >
+> 🚀 **Live Demo**: [https://i-doc-three.vercel.app/](https://i-doc-three.vercel.app/)
+> 
+> 📝 **Test Your Skills**: [https://i-doc-three.vercel.app/test-your-skill](https://i-doc-three.vercel.app/test-your-skill)
+>
+> ---
+>
 > *"The only way to do great work is to love what you do. Keep pushing, keep learning, and keep building!"*
 >
 > ---
