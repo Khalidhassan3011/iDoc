@@ -1,5 +1,20 @@
 # interview-doc
 
+> ✨ **This project is crafted with the power of AI.**
+>
+> **The Vision**: `interview-doc` is a modern, high-performance documentation platform built to centralize interview preparation materials, technical insights, and development workflows. It's designed to help developers stay organized and succeed in their career journeys.
+>
+> 🤝 **Join the Mission**: This is an open-source initiative! We invite everyone to contribute. Whether you're fixing a typo, adding new content, or improving the UI, your help is valued. 
+> 
+> 💡 **Got an issue?** Don't hesitate to submit a **Pull Request**. Your contributions help this project grow!
+>
+> ---
+>
+> *"The only way to do great work is to love what you do. Keep pushing, keep learning, and keep building!"*
+>
+> ---
+
+
 This is a Next.js application generated with
 [Create Fumadocs](https://github.com/fuma-nama/fumadocs).
 
